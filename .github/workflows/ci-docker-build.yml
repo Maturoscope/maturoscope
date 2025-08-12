@@ -12,7 +12,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository | lower }}
 
 jobs:
   build-staging:
@@ -28,7 +27,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # 3. Build API Image (Staging)
+      # 3. Set repository name in lowercase
+      - name: Set repository name
+        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
+      # 4. Build API Image (Staging)
       - name: Build API Image - Staging
         run: |
           docker build \
@@ -39,7 +42,7 @@ jobs:
             --build-arg API_PORT=8000 \
             .
 
-      # 4. Build App Image (Staging)
+      # 5. Build App Image (Staging)
       - name: Build App Image - Staging
         run: |
           docker build \
@@ -49,7 +52,7 @@ jobs:
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.STAGING_GATEWAY_URL }}" \
             .
 
-      # 5. Build Dashboard Image (Staging)
+      # 6. Build Dashboard Image (Staging)
       - name: Build Dashboard Image - Staging
         run: |
           docker build \
@@ -59,7 +62,7 @@ jobs:
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.STAGING_GATEWAY_URL }}" \
             .
 
-      # 6. Success message - Staging
+      # 7. Success message - Staging
       - name: Test build success - Staging
         run: |
           echo "✅ All Docker images built successfully for STAGING!"
@@ -81,7 +84,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # 3. Log in to Container Registry
+      # 3. Set repository name in lowercase
+      - name: Set repository name
+        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
+      # 4. Log in to Container Registry
       - name: Log in to Container Registry
         uses: docker/login-action@v3
         with:
@@ -89,7 +96,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # 4. Build API Image (Production)
+      # 5. Build API Image (Production)
       - name: Build API Image - Production
         run: |
           docker build \
@@ -101,7 +108,7 @@ jobs:
             --build-arg API_PORT=8000 \
             .
 
-      # 5. Build App Image (Production)
+      # 6. Build App Image (Production)
       - name: Build App Image - Production
         run: |
           docker build \
@@ -112,7 +119,7 @@ jobs:
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL }}" \
             .
 
-      # 6. Build Dashboard Image (Production)
+      # 7. Build Dashboard Image (Production)
       - name: Build Dashboard Image - Production
         run: |
           docker build \
@@ -123,7 +130,7 @@ jobs:
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL }}" \
             .
 
-      # 7. Push images to registry
+      # 8. Push images to registry
       - name: Push API Image
         run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:production-${{ github.sha }}
       
@@ -142,7 +149,7 @@ jobs:
       - name: Push Dashboard Image Latest
         run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:latest
 
-      # 8. Success message - Production
+      # 9. Success message - Production
       - name: Test build success - Production
         run: |
           echo "🚀 All Docker images built and pushed successfully for PRODUCTION!"
