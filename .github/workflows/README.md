@@ -1,31 +1,53 @@
 # GitHub Actions CI/CD Setup
 
-Este workflow construye automáticamente todas las imágenes Docker del monorepo cuando se hace push a las ramas `main` o `develop`.
+Este workflow construye automáticamente las imágenes Docker del monorepo de forma inteligente, similar a GitLab CI/CD.
 
-## 🚀 Flujo de trabajo
+## 🚀 Características del Workflow Inteligente
 
-### **Staging (rama `develop` o Pull Requests)**
-- ✅ Construye todas las imágenes Docker
-- ✅ Usa variables de entorno de staging
-- ✅ **NO** hace push al registry (solo build local)
+### **Detección de Cambios:**
+- ✅ **Análisis automático:** Detecta qué aplicaciones cambiaron
+- ✅ **Builds selectivos:** Solo construye lo que necesita actualización
+- ✅ **Optimización:** Ahorra tiempo y recursos de CI/CD
 
-### **Production (rama `main`)**
-- ✅ Construye todas las imágenes Docker
-- ✅ Usa variables de entorno de production
-- ✅ Hace push al GitHub Container Registry
-- ✅ Crea tags con commit SHA y `latest`
+### **Jobs Separados:**
+- 🔍 **`check-changes`** - Analiza qué archivos cambiaron
+- 🏗️ **`build-api`** - Construye API solo si cambió
+- 🏗️ **`build-app`** - Construye App solo si cambió  
+- 🏗️ **`build-dashboard`** - Construye Dashboard solo si cambió
+- 📋 **`summary`** - Resumen final de lo que se construyó
+
+### **Comportamiento Inteligente:**
+
+#### **Si solo cambias la API:**
+```
+✅ check-changes
+✅ build-api (se ejecuta)
+⏭️ build-app (se salta)
+⏭️ build-dashboard (se salta)
+✅ summary
+```
+
+#### **Si cambias solo el dashboard:**
+```
+✅ check-changes
+⏭️ build-api (se salta)
+⏭️ build-app (se salta)
+✅ build-dashboard (se ejecuta)
+✅ summary
+```
+
+#### **Si cambias packages compartidos:**
+```
+✅ check-changes
+✅ build-api (se ejecuta - depende de packages)
+✅ build-app (se ejecuta - depende de packages)
+✅ build-dashboard (se ejecuta - depende de packages)
+✅ summary
+```
 
 ## 🔐 Configuración de Secrets
 
 Ve a tu repositorio en GitHub → Settings → Secrets and variables → Actions
-
-### **Secrets para Staging:**
-```
-STAGING_DATABASE_URL=postgresql://user:pass@staging-host:5432/db
-STAGING_JWT_SECRET=your-staging-secret-key
-STAGING_GOOGLE_MAPS_API_KEY=your-staging-google-maps-key
-STAGING_GATEWAY_URL=https://staging-api.yourapp.com
-```
 
 ### **Secrets para Production:**
 ```
@@ -33,6 +55,14 @@ PROD_DATABASE_URL=postgresql://user:pass@prod-host:5432/db
 PROD_JWT_SECRET=your-production-secret-key
 PROD_GOOGLE_MAPS_API_KEY=your-production-google-maps-key
 PROD_GATEWAY_URL=https://api.yourapp.com
+```
+
+### **Secrets para Staging (opcionales):**
+```
+STAGING_DATABASE_URL=postgresql://user:pass@staging-host:5432/db
+STAGING_JWT_SECRET=your-staging-secret-key
+STAGING_GOOGLE_MAPS_API_KEY=your-staging-google-maps-key
+STAGING_GATEWAY_URL=https://staging-api.yourapp.com
 ```
 
 ## 📦 Imágenes generadas
@@ -87,9 +117,10 @@ El workflow se ejecuta en:
 ## 📊 Monitoreo
 
 Puedes ver el estado de los builds en:
-- GitHub → Actions → CI - Docker Build Monorepo
+- GitHub → Actions → CI - Smart Docker Build
 - Cada job muestra el progreso paso a paso
 - Los logs incluyen información detallada de cada build
+- Resumen final muestra qué se construyó y qué se saltó
 
 ## 📁 Estructura de archivos
 
@@ -108,3 +139,11 @@ apps/
 El workflow convierte automáticamente el nombre del repositorio a minúsculas:
 - `Maturoscope/maturoscope` → `maturoscope/maturoscope`
 - Esto cumple con los requisitos de Docker para nombres de repositorio
+
+## 🎯 Ventajas del Sistema Inteligente
+
+1. **⚡ Velocidad:** Solo construye lo necesario
+2. **💰 Economía:** Ahorra recursos de CI/CD
+3. **👁️ Visibilidad:** Jobs separados como GitLab
+4. **🧠 Inteligencia:** Detección automática de cambios
+5. **🔄 Flexibilidad:** Se adapta a diferentes tipos de cambios

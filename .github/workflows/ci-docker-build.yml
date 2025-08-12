@@ -160,7 +160,7 @@ jobs:
 
       - name: Success - Dashboard
         run: |
-          echo "✅ Dashboard built successfully!"
+          echo "✅ Dashboard built successfully!!"
           echo "📦 Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:${{ github.sha }}"
 
   summary:
