@@ -1,0 +1,89 @@
+# --------------------------------------------------------------------------------------------------------------------
+# BASE
+# --------------------------------------------------------------------------------------------------------------------
+    FROM node:20-alpine AS base
+
+    # Directorio de trabajo
+    WORKDIR /app
+    
+    # Variables comunes
+    ENV NODE_OPTIONS="--max-old-space-size=4096"
+    
+    # Habilitar Yarn Berry (Yarn 3)
+    RUN corepack enable
+    
+    # --------------------------------------------------------------------------------------------------------------------
+    # PRUNNER (Optimización con Turbo)
+    # --------------------------------------------------------------------------------------------------------------------
+    FROM base AS prunner
+    
+    # Copiar solo lo necesario para el prune
+    COPY package.json yarn.lock ./
+    COPY turbo.json ./
+    COPY .yarnrc.yml ./
+    COPY apps/api/package.json ./apps/api/
+    COPY packages/ ./packages/
+    
+    # Instalar dependencias necesarias para turbo prune
+    RUN yarn install
+    
+    # Copiar el código fuente para el prune
+    COPY . .
+    
+    # Prune para generar archivos mínimos para la instalación en Docker
+    RUN yarn turbo prune api --docker
+    
+    # --------------------------------------------------------------------------------------------------------------------
+    # INSTALLER (Instalación y Build)
+    # --------------------------------------------------------------------------------------------------------------------
+    FROM base AS installer
+    
+    WORKDIR /app
+    
+    # Copiar package.json y lockfiles resultantes del prune
+    COPY --from=prunner /app/out/json/ .
+    COPY --from=prunner /app/out/yarn.lock ./yarn.lock
+    
+    # Instalar dependencias
+    RUN yarn install --immutable
+    
+    # Copiar el resto del código pruned
+    COPY --from=prunner /app/out/full/ .
+    
+    # Configuración de entorno
+    ARG NODE_ENV=production
+    ENV NODE_ENV=${NODE_ENV}
+    
+    # Variables de entorno para la API (ejemplo)
+    ARG DATABASE_URL
+    ARG JWT_SECRET
+    ARG API_PORT=8000
+    ENV DATABASE_URL=$DATABASE_URL
+    ENV JWT_SECRET=$JWT_SECRET
+    ENV API_PORT=$API_PORT
+    
+    # Construir solo el servicio de API
+    RUN yarn turbo run build --filter=api
+    
+    # --------------------------------------------------------------------------------------------------------------------
+    # RUNNER (Ejecución final)
+    # --------------------------------------------------------------------------------------------------------------------
+    FROM base AS runner
+    
+    ARG NODE_ENV=production
+    ENV NODE_ENV=${NODE_ENV}
+    
+    # Crear usuario no root
+    RUN addgroup --system --gid 1001 api \
+        && adduser --system --uid 1001 api
+    
+    USER api
+    
+    # Copiar solo archivos necesarios para producción
+    COPY --from=installer --chown=api:api /app .
+    
+    # Exponer puerto de la API
+    EXPOSE 8000
+    
+    # Comando de inicio
+    CMD ["yarn", "turbo", "run", "start", "--filter=api"]

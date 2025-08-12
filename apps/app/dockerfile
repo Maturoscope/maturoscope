@@ -1,0 +1,88 @@
+# --------------------------------------------------------------------------------------------------------------------
+# BASE
+# --------------------------------------------------------------------------------------------------------------------
+    FROM node:20-alpine AS base
+
+    # Directorio de trabajo
+    WORKDIR /app
+    
+    # Variables comunes
+    ENV NODE_OPTIONS="--max-old-space-size=4096"
+    
+    # Habilitar Yarn Berry (Yarn 3)
+    RUN corepack enable
+    
+    # --------------------------------------------------------------------------------------------------------------------
+    # PRUNNER (Optimización con Turbo)
+    # --------------------------------------------------------------------------------------------------------------------
+    FROM base AS prunner
+    
+    # Copiar solo lo necesario para el prune
+    COPY package.json yarn.lock ./
+    COPY turbo.json ./
+    COPY .yarnrc.yml ./
+    COPY apps/app/package.json ./apps/app/
+    COPY packages/ ./packages/
+    
+    # Instalar dependencias necesarias para turbo prune
+    RUN yarn install
+    
+    # Copiar el código fuente para el prune
+    COPY . .
+    
+    # Prune para generar archivos mínimos para la instalación en Docker
+    RUN yarn turbo prune app --docker
+    
+    # --------------------------------------------------------------------------------------------------------------------
+    # INSTALLER (Instalación y Build)
+    # --------------------------------------------------------------------------------------------------------------------
+    FROM base AS installer
+    
+    WORKDIR /app
+    
+    # Copiar package.json y lockfiles resultantes del prune
+    COPY --from=prunner /app/out/json/ .
+    COPY --from=prunner /app/out/yarn.lock ./yarn.lock
+    
+    # Instalar dependencias
+    RUN yarn install --immutable
+    
+    # Copiar el resto del código pruned
+    COPY --from=prunner /app/out/full/ .
+    
+    # Configuración de entorno
+    ARG NODE_ENV=production
+    ENV NODE_ENV=${NODE_ENV}
+    
+    # Variables de entorno para Next.js (ejemplo)
+    ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+    ARG NEXT_PUBLIC_GATEWAY_URL
+    ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+    ENV NEXT_PUBLIC_GATEWAY_URL=$NEXT_PUBLIC_GATEWAY_URL
+    
+    # Construir solo el servicio de app
+    RUN yarn turbo run build --filter=app
+    
+    # --------------------------------------------------------------------------------------------------------------------
+    # RUNNER (Ejecución final)
+    # --------------------------------------------------------------------------------------------------------------------
+    FROM base AS runner
+    
+    ARG NODE_ENV=production
+    ENV NODE_ENV=${NODE_ENV}
+    
+    # Crear usuario no root
+    RUN addgroup --system --gid 1001 app \
+        && adduser --system --uid 1001 app
+    
+    USER app
+    
+    # Copiar solo archivos necesarios para producción
+    COPY --from=installer --chown=app:app /app .
+    
+    # Exponer puerto de la app
+    EXPOSE 3000
+    
+    # Comando de inicio
+    CMD ["yarn", "turbo", "run", "start", "--filter=app"]
+    
