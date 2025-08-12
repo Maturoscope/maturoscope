@@ -37,41 +37,43 @@ PROD_GATEWAY_URL=https://api.yourapp.com
 
 ## 📦 Imágenes generadas
 
+**Nota:** Los nombres de repositorio se convierten automáticamente a minúsculas para cumplir con los requisitos de Docker.
+
 ### **Staging:**
-- `ghcr.io/username/repo/api:staging-{commit-sha}`
-- `ghcr.io/username/repo/app:staging-{commit-sha}`
-- `ghcr.io/username/repo/dashboard:staging-{commit-sha}`
+- `ghcr.io/maturoscope/maturoscope/api:staging-{commit-sha}`
+- `ghcr.io/maturoscope/maturoscope/app:staging-{commit-sha}`
+- `ghcr.io/maturoscope/maturoscope/dashboard:staging-{commit-sha}`
 
 ### **Production:**
-- `ghcr.io/username/repo/api:production-{commit-sha}` + `:latest`
-- `ghcr.io/username/repo/app:production-{commit-sha}` + `:latest`
-- `ghcr.io/username/repo/dashboard:production-{commit-sha}` + `:latest`
+- `ghcr.io/maturoscope/maturoscope/api:production-{commit-sha}` + `:latest`
+- `ghcr.io/maturoscope/maturoscope/app:production-{commit-sha}` + `:latest`
+- `ghcr.io/maturoscope/maturoscope/dashboard:production-{commit-sha}` + `:latest`
 
 ## 🎯 Uso de las imágenes
 
 ### **Pull de imágenes:**
 ```bash
 # Staging
-docker pull ghcr.io/username/repo/api:staging-abc123
-docker pull ghcr.io/username/repo/app:staging-abc123
-docker pull ghcr.io/username/repo/dashboard:staging-abc123
+docker pull ghcr.io/maturoscope/maturoscope/api:staging-abc123
+docker pull ghcr.io/maturoscope/maturoscope/app:staging-abc123
+docker pull ghcr.io/maturoscope/maturoscope/dashboard:staging-abc123
 
 # Production
-docker pull ghcr.io/username/repo/api:latest
-docker pull ghcr.io/username/repo/app:latest
-docker pull ghcr.io/username/repo/dashboard:latest
+docker pull ghcr.io/maturoscope/maturoscope/api:latest
+docker pull ghcr.io/maturoscope/maturoscope/app:latest
+docker pull ghcr.io/maturoscope/maturoscope/dashboard:latest
 ```
 
 ### **Ejecutar contenedores:**
 ```bash
 # API
-docker run -p 8000:8000 ghcr.io/username/repo/api:latest
+docker run -p 8000:8000 ghcr.io/maturoscope/maturoscope/api:latest
 
 # App
-docker run -p 3000:3000 ghcr.io/username/repo/app:latest
+docker run -p 3000:3000 ghcr.io/maturoscope/maturoscope/app:latest
 
 # Dashboard
-docker run -p 3001:3001 ghcr.io/username/repo/dashboard:latest
+docker run -p 3001:3001 ghcr.io/maturoscope/maturoscope/dashboard:latest
 ```
 
 ## 🔄 Triggers
@@ -100,3 +102,9 @@ apps/
 └── dashboard/
     └── Dockerfile          # Dashboard Dockerfile
 ```
+
+## 🔧 Configuración automática
+
+El workflow convierte automáticamente el nombre del repositorio a minúsculas:
+- `Maturoscope/maturoscope` → `maturoscope/maturoscope`
+- Esto cumple con los requisitos de Docker para nombres de repositorio

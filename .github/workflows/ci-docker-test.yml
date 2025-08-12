@@ -10,6 +10,10 @@ on:
       - main
       - develop
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository | lower }}
+
 jobs:
   test-build:
     runs-on: ubuntu-latest
