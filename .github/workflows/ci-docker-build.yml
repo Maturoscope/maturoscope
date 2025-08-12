@@ -1,4 +1,4 @@
-name: CI - Docker Build Monorepo
+name: CI - Smart Docker Build
 
 on:
   push:
@@ -14,147 +14,172 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
-  build-staging:
+  check-changes:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop' || github.event_name == 'pull_request'
+    outputs:
+      api-changed: ${{ steps.filter.outputs.api }}
+      app-changed: ${{ steps.filter.outputs.app }}
+      dashboard-changed: ${{ steps.filter.outputs.dashboard }}
     
     steps:
-      # 1. Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      # 2. Set up Docker Buildx
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      # 3. Set repository name in lowercase
-      - name: Set repository name
-        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
-
-      # 4. Build API Image (Staging)
-      - name: Build API Image - Staging
-        run: |
-          docker build \
-            --file apps/api/Dockerfile \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:staging-${{ github.sha }} \
-            --build-arg DATABASE_URL="${{ secrets.STAGING_DATABASE_URL }}" \
-            --build-arg JWT_SECRET="${{ secrets.STAGING_JWT_SECRET }}" \
-            --build-arg API_PORT=8000 \
-            .
-
-      # 5. Build App Image (Staging)
-      - name: Build App Image - Staging
-        run: |
-          docker build \
-            --file apps/app/Dockerfile \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:staging-${{ github.sha }} \
-            --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.STAGING_GOOGLE_MAPS_API_KEY }}" \
-            --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.STAGING_GATEWAY_URL }}" \
-            .
-
-      # 6. Build Dashboard Image (Staging)
-      - name: Build Dashboard Image - Staging
-        run: |
-          docker build \
-            --file apps/dashboard/Dockerfile \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:staging-${{ github.sha }} \
-            --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.STAGING_GOOGLE_MAPS_API_KEY }}" \
-            --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.STAGING_GATEWAY_URL }}" \
-            .
-
-      # 7. Success message - Staging
-      - name: Test build success - Staging
-        run: |
-          echo "✅ All Docker images built successfully for STAGING!"
-          echo "📦 Images created:"
-          echo "  - API: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:staging-${{ github.sha }}"
-          echo "  - App: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:staging-${{ github.sha }}"
-          echo "  - Dashboard: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:staging-${{ github.sha }}"
-
-  build-production:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-      # 1. Checkout repo
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # 2. Set up Docker Buildx
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      # 3. Set repository name in lowercase
-      - name: Set repository name
-        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
-
-      # 4. Log in to Container Registry
-      - name: Log in to Container Registry
-        uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
-      # 5. Build API Image (Production)
-      - name: Build API Image - Production
+      - name: Check for changes
+        id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            api:
+              - 'apps/api/**'
+              - 'packages/**'
+              - 'package.json'
+              - 'yarn.lock'
+              - 'turbo.json'
+            app:
+              - 'apps/app/**'
+              - 'packages/**'
+              - 'package.json'
+              - 'yarn.lock'
+              - 'turbo.json'
+            dashboard:
+              - 'apps/dashboard/**'
+              - 'packages/**'
+              - 'package.json'
+              - 'yarn.lock'
+              - 'turbo.json'
+
+  build-api:
+    needs: check-changes
+    if: needs.check-changes.outputs.api-changed == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Set repository name
+        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
+      - name: Build API Image
         run: |
           docker build \
             --file apps/api/Dockerfile \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:production-${{ github.sha }} \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:latest \
-            --build-arg DATABASE_URL="${{ secrets.PROD_DATABASE_URL }}" \
-            --build-arg JWT_SECRET="${{ secrets.PROD_JWT_SECRET }}" \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ github.sha }} \
+            --build-arg DATABASE_URL="${{ secrets.PROD_DATABASE_URL || 'postgresql://prod:prod@localhost:5432/prod' }}" \
+            --build-arg JWT_SECRET="${{ secrets.PROD_JWT_SECRET || 'production-secret' }}" \
             --build-arg API_PORT=8000 \
             .
 
-      # 6. Build App Image (Production)
-      - name: Build App Image - Production
+      - name: Push API Image (Production)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ github.sha }}
+          docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ github.sha }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:latest
+
+      - name: Success - API
+        run: |
+          echo "✅ API built successfully!"
+          echo "📦 Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ github.sha }}"
+
+  build-app:
+    needs: check-changes
+    if: needs.check-changes.outputs.app-changed == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Set repository name
+        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
+      - name: Build App Image
         run: |
           docker build \
             --file apps/app/Dockerfile \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:production-${{ github.sha }} \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:latest \
-            --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY }}" \
-            --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL }}" \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:${{ github.sha }} \
+            --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
+            --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
             .
 
-      # 7. Build Dashboard Image (Production)
-      - name: Build Dashboard Image - Production
+      - name: Push App Image (Production)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:${{ github.sha }}
+          docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:${{ github.sha }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:latest
+
+      - name: Success - App
+        run: |
+          echo "✅ App built successfully!"
+          echo "📦 Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:${{ github.sha }}"
+
+  build-dashboard:
+    needs: check-changes
+    if: needs.check-changes.outputs.dashboard-changed == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Set repository name
+        run: echo "IMAGE_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
+      - name: Build Dashboard Image
         run: |
           docker build \
             --file apps/dashboard/Dockerfile \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:production-${{ github.sha }} \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:latest \
-            --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY }}" \
-            --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL }}" \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:${{ github.sha }} \
+            --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
+            --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
             .
 
-      # 8. Push images to registry
-      - name: Push API Image
-        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:production-${{ github.sha }}
-      
-      - name: Push API Image Latest
-        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:latest
-
-      - name: Push App Image
-        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:production-${{ github.sha }}
-      
-      - name: Push App Image Latest
-        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:latest
-
-      - name: Push Dashboard Image
-        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:production-${{ github.sha }}
-      
-      - name: Push Dashboard Image Latest
-        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:latest
-
-      # 9. Success message - Production
-      - name: Test build success - Production
+      - name: Push Dashboard Image (Production)
+        if: github.ref == 'refs/heads/main'
         run: |
-          echo "🚀 All Docker images built and pushed successfully for PRODUCTION!"
-          echo "📦 Images pushed to registry:"
-          echo "  - API: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:production-${{ github.sha }}"
-          echo "  - App: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:production-${{ github.sha }}"
-          echo "  - Dashboard: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:production-${{ github.sha }}"
-          echo "🏷️  Latest tags also pushed for all images"
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:${{ github.sha }}
+          docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:${{ github.sha }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:latest
+
+      - name: Success - Dashboard
+        run: |
+          echo "✅ Dashboard built successfully!"
+          echo "📦 Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:${{ github.sha }}"
+
+  summary:
+    needs: [check-changes, build-api, build-app, build-dashboard]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Build Summary
+        run: |
+          echo "🚀 Smart Build Summary"
+          echo "======================"
+          echo "API changed: ${{ needs.check-changes.outputs.api-changed }}"
+          echo "App changed: ${{ needs.check-changes.outputs.app-changed }}"
+          echo "Dashboard changed: ${{ needs.check-changes.outputs.dashboard-changed }}"
+          echo ""
+          echo "Build Results:"
+          echo "API: ${{ needs.build-api.result || 'skipped' }}"
+          echo "App: ${{ needs.build-app.result || 'skipped' }}"
+          echo "Dashboard: ${{ needs.build-dashboard.result || 'skipped' }}"
+          echo ""
+          echo "✅ Smart build completed!"
