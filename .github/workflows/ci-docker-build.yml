@@ -86,7 +86,7 @@ jobs:
 
       - name: Success - API
         run: |
-          echo "✅ API built successfully!"
+          echo "✅ API built successfully!!"
           echo "📦 Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ github.sha }}"
 
   build-app:
