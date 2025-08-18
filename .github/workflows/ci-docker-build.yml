@@ -63,9 +63,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Set repository name
-        run: echo "IMAGE_NAME=maturoscope" >> $GITHUB_ENV # <-- reemplaza con tu namespace/proyecto en Harbor
-
       - name: Log in to OVH Harbor
         run: echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ env.REGISTRY }} -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
 
@@ -73,14 +70,14 @@ jobs:
         run: |
           docker build \
             --file apps/api/Dockerfile \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ github.sha }} \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:latest \
+            --tag ${{ env.REGISTRY }}/aturoscope-api/api:${{ github.sha }} \
+            --tag ${{ env.REGISTRY }}/aturoscope-api/api:latest \
             --build-arg DATABASE_URL="${{ secrets.PROD_DATABASE_URL || 'postgresql://prod:prod@localhost:5432/prod' }}" \
             --build-arg JWT_SECRET="${{ secrets.PROD_JWT_SECRET || 'production-secret' }}" \
             --build-arg API_PORT=8000 \
             .
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ github.sha }}
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:latest
+          docker push ${{ env.REGISTRY }}/aturoscope-api/api:${{ github.sha }}
+          docker push ${{ env.REGISTRY }}/aturoscope-api/api:latest
 
   build-app:
     needs: check-changes
@@ -94,9 +91,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Set repository name
-        run: echo "IMAGE_NAME=my-project" >> $GITHUB_ENV
-
       - name: Log in to OVH Harbor
         run: echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ env.REGISTRY }} -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
 
@@ -104,13 +98,13 @@ jobs:
         run: |
           docker build \
             --file apps/app/Dockerfile \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:${{ github.sha }} \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:latest \
+            --tag ${{ env.REGISTRY }}/maturoscope-app/app:${{ github.sha }} \
+            --tag ${{ env.REGISTRY }}/maturoscope-app/app:latest \
             --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
             .
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:${{ github.sha }}
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:latest
+          docker push ${{ env.REGISTRY }}/maturoscope-app/app:${{ github.sha }}
+          docker push ${{ env.REGISTRY }}/maturoscope-app/app:latest
 
   build-dashboard:
     needs: check-changes
@@ -124,9 +118,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Set repository name
-        run: echo "IMAGE_NAME=my-project" >> $GITHUB_ENV
-
       - name: Log in to OVH Harbor
         run: echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ env.REGISTRY }} -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
 
@@ -134,13 +125,13 @@ jobs:
         run: |
           docker build \
             --file apps/dashboard/Dockerfile \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:${{ github.sha }} \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:latest \
+            --tag ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:${{ github.sha }} \
+            --tag ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:latest \
             --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
             .
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:${{ github.sha }}
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:latest
+          docker push ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:${{ github.sha }}
+          docker push ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:latest
 
   summary:
     needs: [check-changes, build-api, build-app, build-dashboard]
