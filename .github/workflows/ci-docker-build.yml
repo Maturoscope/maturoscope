@@ -11,7 +11,7 @@ on:
       - develop
 
 env:
-  REGISTRY: docker.io
+  REGISTRY: bv630390.c1.de1.container-registry.ovh.net
 
 jobs:
   check-changes:
@@ -64,30 +64,23 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Set repository name
-        run: echo "IMAGE_NAME=josecalvano" >> $GITHUB_ENV
+        run: echo "IMAGE_NAME=maturoscope" >> $GITHUB_ENV # <-- reemplaza con tu namespace/proyecto en Harbor
 
-      - name: Build API Image
+      - name: Log in to OVH Harbor
+        run: echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ env.REGISTRY }} -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
+
+      - name: Build & Push API Image
         run: |
           docker build \
             --file apps/api/Dockerfile \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ github.sha }} \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:latest \
             --build-arg DATABASE_URL="${{ secrets.PROD_DATABASE_URL || 'postgresql://prod:prod@localhost:5432/prod' }}" \
             --build-arg JWT_SECRET="${{ secrets.PROD_JWT_SECRET || 'production-secret' }}" \
             --build-arg API_PORT=8000 \
             .
-
-      - name: Push API Image (Production)
-        if: github.ref == 'refs/heads/main'
-        run: |
-          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ github.sha }}
-          docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ github.sha }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:latest
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:latest
-
-      - name: Success - API
-        run: |
-          echo "✅ API built successfully!!"
-          echo "📦 Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/api:${{ github.sha }}"
 
   build-app:
     needs: check-changes
@@ -102,29 +95,22 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Set repository name
-        run: echo "IMAGE_NAME=josecalvano" >> $GITHUB_ENV
+        run: echo "IMAGE_NAME=my-project" >> $GITHUB_ENV
 
-      - name: Build App Image
+      - name: Log in to OVH Harbor
+        run: echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ env.REGISTRY }} -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
+
+      - name: Build & Push App Image
         run: |
           docker build \
             --file apps/app/Dockerfile \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:${{ github.sha }} \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:latest \
             --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
             .
-
-      - name: Push App Image (Production)
-        if: github.ref == 'refs/heads/main'
-        run: |
-          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:${{ github.sha }}
-          docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:${{ github.sha }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:latest
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:latest
-
-      - name: Success - App
-        run: |
-          echo "✅ App built successfully!"
-          echo "📦 Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/app:${{ github.sha }}"
 
   build-dashboard:
     needs: check-changes
@@ -139,29 +125,22 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Set repository name
-        run: echo "IMAGE_NAME=josecalvano" >> $GITHUB_ENV
+        run: echo "IMAGE_NAME=my-project" >> $GITHUB_ENV
 
-      - name: Build Dashboard Image
+      - name: Log in to OVH Harbor
+        run: echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ env.REGISTRY }} -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
+
+      - name: Build & Push Dashboard Image
         run: |
           docker build \
             --file apps/dashboard/Dockerfile \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:${{ github.sha }} \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:latest \
             --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
             .
-
-      - name: Push Dashboard Image (Production)
-        if: github.ref == 'refs/heads/main'
-        run: |
-          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:${{ github.sha }}
-          docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:${{ github.sha }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:latest
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:latest
-
-      - name: Success - Dashboard
-        run: |
-          echo "✅ Dashboard built successfully!!"
-          echo "📦 Image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/dashboard:${{ github.sha }}"
 
   summary:
     needs: [check-changes, build-api, build-app, build-dashboard]
