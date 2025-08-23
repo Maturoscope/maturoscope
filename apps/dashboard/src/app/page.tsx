@@ -13,7 +13,7 @@ export default function Home() {
           priority
         />
  
-      <h1>Dashboard web 😉</h1>
+      <h1>Dashboard web 😉 </h1>
 
       </main>
 

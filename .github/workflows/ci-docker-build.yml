@@ -10,6 +10,10 @@ on:
       - main
       - develop
 
+permissions:
+  contents: read
+  actions: write
+
 env:
   REGISTRY: bv630390.c1.de1.container-registry.ovh.net
 
@@ -89,9 +93,16 @@ jobs:
       - name: Dispatch update-infra (API)
         if: success()
         run: |
+          echo "Dispatching update-infra workflow for API with tag: ${{ steps.vars.outputs.TAG }}"
+          echo "Repository: ${{ github.repository }}"
+          
+          # Use PAT for workflow dispatch
+          echo "Dispatching update-infra workflow for API with tag: ${{ steps.vars.outputs.TAG }}"
+          echo "Repository: ${{ github.repository }}"
+          
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: Bearer ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/update-infra-images.yml/dispatches \
             -d '{"ref":"main","inputs":{"api_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
 
@@ -132,9 +143,13 @@ jobs:
       - name: Dispatch update-infra (App)
         if: success()
         run: |
+          echo "Dispatching update-infra workflow for App with tag: ${{ steps.vars.outputs.TAG }}"
+          echo "Repository: ${{ github.repository }}"
+          
+          # Use PAT for workflow dispatch
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: Bearer ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/update-infra-images.yml/dispatches \
             -d '{"ref":"main","inputs":{"web_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
 
@@ -175,9 +190,13 @@ jobs:
       - name: Dispatch update-infra (Dashboard)
         if: success()
         run: |
+          echo "Dispatching update-infra workflow for Dashboard with tag: ${{ steps.vars.outputs.TAG }}"
+          echo "Repository: ${{ github.repository }}"
+          
+          # Use PAT for workflow dispatch
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: Bearer ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/update-infra-images.yml/dispatches \
             -d '{"ref":"main","inputs":{"dashboard_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
 
