@@ -43,78 +43,52 @@ jobs:
           TAG: ${{ github.event.inputs.api_tag != '' && github.event.inputs.api_tag || github.event.client_payload.api_tag }}
           FILE: infra/clusters/de1-staging/apps/api/overlays/staging/kustomization.yaml
           IMAGE_NAME: bv630390.c1.de1.container-registry.ovh.net/maturoscope-api/api
+          APP_NAME: api
         run: |
-          echo "Checking if file exists: $FILE"
+          set -euo pipefail
+          
+          # 1) Si no existe, crear un kustomization.yaml válido y mínimo
           if [ ! -f "$FILE" ]; then
-            echo "File does not exist, creating directory structure..."
             mkdir -p "$(dirname "$FILE")"
             echo "apiVersion: kustomize.config.k8s.io/v1beta1" > "$FILE"
             echo "kind: Kustomization" >> "$FILE"
             echo "namespace: maturoscope" >> "$FILE"
             echo "resources:" >> "$FILE"
             echo "  - ../../base" >> "$FILE"
-            echo "images:" >> "$FILE"
-            echo "  - name: $IMAGE_NAME" >> "$FILE"
-            echo "    newTag: $TAG" >> "$FILE"
+            echo "images: []" >> "$FILE"
           fi
           
-          # Ensure images section exists
-          if ! yq '.images' "$FILE" >/dev/null 2>&1; then
-            echo "Images section does not exist, creating it..."
+          # 2) Garantizar que exista la clave images (array)
+          if ! yq -e '.images' "$FILE" >/dev/null 2>&1; then
             yq -i '.images = []' "$FILE"
           fi
           
-          echo "Updating image tag for $IMAGE_NAME to $TAG"
+          # 3) Actualizar si existe el item con ese name; si no, agregarlo
+          yq -i '
+            # Si ya existe el item con ese name, actualizar newTag
+            (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
+            |
+            # Si NO existe, agregarlo
+            if (.images | map(.name) | index(strenv(IMAGE_NAME))) == null
+              then .images += [{"name": strenv(IMAGE_NAME), "newTag": strenv(TAG)}]
+              else .
+            end
+          ' "$FILE"
           
-          # Check if image already exists in the file
-          if yq ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null 2>&1; then
-            echo "Image exists, updating tag..."
-            yq -i ".images[] | select(.name == \"$IMAGE_NAME\") | .newTag = \"$TAG\"" "$FILE"
-          else
-            echo "Image does not exist, adding new image..."
-            yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
-          fi
-          
-          # Ensure the file has the complete structure for ArgoCD
-          echo "Ensuring complete kustomization structure..."
-          
-          # Check if apiVersion exists, if not add it
-          if ! yq '.apiVersion' "$FILE" >/dev/null 2>&1; then
-            echo "Adding apiVersion..."
-            yq -i '.apiVersion = "kustomize.config.k8s.io/v1beta1"' "$FILE"
-          fi
-          
-          # Check if kind exists, if not add it
-          if ! yq '.kind' "$FILE" >/dev/null 2>&1; then
-            echo "Adding kind..."
-            yq -i '.kind = "Kustomization"' "$FILE"
-          fi
-          
-          # Check if namespace exists, if not add it
-          if ! yq '.namespace' "$FILE" >/dev/null 2>&1; then
-            echo "Adding namespace..."
-            yq -i '.namespace = "maturoscope"' "$FILE"
-          fi
-          
-          # Check if resources exists, if not add it
-          if ! yq '.resources' "$FILE" >/dev/null 2>&1; then
-            echo "Adding resources..."
-            yq -i '.resources = ["../../base"]' "$FILE"
-          fi
-          
-          echo "Updated file content:"
+          echo "Resultado final de $FILE:"
           cat "$FILE"
-
-      - name: Commit & Push API
-        env:
-          TAG: ${{ github.event.inputs.api_tag != '' && github.event.inputs.api_tag || github.event.client_payload.api_tag }}
-        run: |
+          
+          # 4) Rebase para evitar conflictos y commit
           cd infra
           git config user.name "ci-bot"
           git config user.email "ci@maturoscope.io"
-          git add clusters/de1-staging/apps/api/overlays/staging/kustomization.yaml
-          git commit -m "api(staging): bump image to ${TAG}" || echo "No changes to commit"
+          git config pull.rebase true
+          git pull --rebase || true
+          git add "${FILE#infra/}"
+          git commit -m "${APP_NAME}(staging): bump image to ${TAG}" || echo "No changes to commit"
           git push
+
+      
 
   update-infra-dashboard:
     if: github.event.inputs.dashboard_tag != '' || (github.event_name == 'repository_dispatch' && github.event.client_payload.dashboard_tag != '')
@@ -135,77 +109,51 @@ jobs:
           TAG: ${{ github.event.inputs.dashboard_tag != '' && github.event.inputs.dashboard_tag || github.event.client_payload.dashboard_tag }}
           FILE: infra/clusters/de1-staging/apps/dashboard/overlays/staging/kustomization.yaml
           IMAGE_NAME: bv630390.c1.de1.container-registry.ovh.net/maturoscope-dashboard/dashboard
+          APP_NAME: dashboard
         run: |
-          echo "Checking if file exists: $FILE"
+          set -euo pipefail
+          
+          # 1) Si no existe, crear un kustomization.yaml válido y mínimo
           if [ ! -f "$FILE" ]; then
-            echo "File does not exist, creating directory structure..."
             mkdir -p "$(dirname "$FILE")"
             echo "apiVersion: kustomize.config.k8s.io/v1beta1" > "$FILE"
             echo "kind: Kustomization" >> "$FILE"
             echo "namespace: maturoscope" >> "$FILE"
             echo "resources:" >> "$FILE"
             echo "  - ../../base" >> "$FILE"
-            echo "images:" >> "$FILE"
-            echo "  - name: $IMAGE_NAME" >> "$FILE"
-            echo "    newTag: $TAG" >> "$FILE"
+            echo "images: []" >> "$FILE"
           fi
           
-          # Ensure images section exists
-          if ! yq '.images' "$FILE" >/dev/null 2>&1; then
-            echo "Images section does not exist, creating it..."
+          # 2) Garantizar que exista la clave images (array)
+          if ! yq -e '.images' "$FILE" >/dev/null 2>&1; then
             yq -i '.images = []' "$FILE"
           fi
           
-          echo "Updating image tag for $IMAGE_NAME to $TAG"
+          # 3) Actualizar si existe el item con ese name; si no, agregarlo
+          yq -i '
+            # Si ya existe el item con ese name, actualizar newTag
+            (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
+            |
+            # Si NO existe, agregarlo
+            if (.images | map(.name) | index(strenv(IMAGE_NAME))) == null
+              then .images += [{"name": strenv(IMAGE_NAME), "newTag": strenv(TAG)}]
+              else .
+            end
+          ' "$FILE"
           
-          # Check if image already exists in the file
-          if yq ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null 2>&1; then
-            echo "Image exists, updating tag..."
-            yq -i ".images[] | select(.name == \"$IMAGE_NAME\") | .newTag = \"$TAG\"" "$FILE"
-          else
-            echo "Image does not exist, adding new image..."
-            yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
-          fi
-          
-          # Ensure the file has the complete structure for ArgoCD
-          echo "Ensuring complete kustomization structure..."
-          
-          # Check if apiVersion exists, if not add it
-          if ! yq '.apiVersion' "$FILE" >/dev/null 2>&1; then
-            echo "Adding apiVersion..."
-            yq -i '.apiVersion = "kustomize.config.k8s.io/v1beta1"' "$FILE"
-          fi
-          
-          # Check if kind exists, if not add it
-          if ! yq '.kind' "$FILE" >/dev/null 2>&1; then
-            echo "Adding kind..."
-            yq -i '.kind = "Kustomization"' "$FILE"
-          fi
-          
-          # Check if namespace exists, if not add it
-          if ! yq '.namespace' "$FILE" >/dev/null 2>&1; then
-            echo "Adding namespace..."
-            yq -i '.namespace = "maturoscope"' "$FILE"
-          fi
-          
-          # Check if resources exists, if not add it
-          if ! yq '.resources' "$FILE" >/dev/null 2>&1; then
-            echo "Adding resources..."
-            yq -i '.resources = ["../../base"]' "$FILE"
-          fi
-          
-          echo "Updated file content:"
+          echo "Resultado final de $FILE:"
           cat "$FILE"
-      - name: Commit & Push Dashboard
-        env:
-          TAG: ${{ github.event.inputs.dashboard_tag != '' && github.event.inputs.dashboard_tag || github.event.client_payload.dashboard_tag }}
-        run: |
+          
+          # 4) Rebase para evitar conflictos y commit
           cd infra
           git config user.name "ci-bot"
           git config user.email "ci@maturoscope.io"
-          git add clusters/de1-staging/apps/dashboard/overlays/staging/kustomization.yaml
-          git commit -m "dashboard(staging): bump image to ${TAG}" || echo "No changes to commit"
+          git config pull.rebase true
+          git pull --rebase || true
+          git add "${FILE#infra/}"
+          git commit -m "${APP_NAME}(staging): bump image to ${TAG}" || echo "No changes to commit"
           git push
+      
 
   update-infra-web:
     if: github.event.inputs.web_tag != '' || (github.event_name == 'repository_dispatch' && github.event.client_payload.web_tag != '')
@@ -226,74 +174,48 @@ jobs:
           TAG: ${{ github.event.inputs.web_tag != '' && github.event.inputs.web_tag || github.event.client_payload.web_tag }}
           FILE: infra/clusters/de1-staging/apps/web/overlays/staging/kustomization.yaml
           IMAGE_NAME: bv630390.c1.de1.container-registry.ovh.net/maturoscope-app/app
+          APP_NAME: web
         run: |
-          echo "Checking if file exists: $FILE"
+          set -euo pipefail
+          
+          # 1) Si no existe, crear un kustomization.yaml válido y mínimo
           if [ ! -f "$FILE" ]; then
-            echo "File does not exist, creating directory structure..."
             mkdir -p "$(dirname "$FILE")"
             echo "apiVersion: kustomize.config.k8s.io/v1beta1" > "$FILE"
             echo "kind: Kustomization" >> "$FILE"
             echo "namespace: maturoscope" >> "$FILE"
             echo "resources:" >> "$FILE"
             echo "  - ../../base" >> "$FILE"
-            echo "images:" >> "$FILE"
-            echo "  - name: $IMAGE_NAME" >> "$FILE"
-            echo "    newTag: $TAG" >> "$FILE"
+            echo "images: []" >> "$FILE"
           fi
           
-          # Ensure images section exists
-          if ! yq '.images' "$FILE" >/dev/null 2>&1; then
-            echo "Images section does not exist, creating it..."
+          # 2) Garantizar que exista la clave images (array)
+          if ! yq -e '.images' "$FILE" >/dev/null 2>&1; then
             yq -i '.images = []' "$FILE"
           fi
           
-          echo "Updating image tag for $IMAGE_NAME to $TAG"
+          # 3) Actualizar si existe el item con ese name; si no, agregarlo
+          yq -i '
+            # Si ya existe el item con ese name, actualizar newTag
+            (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
+            |
+            # Si NO existe, agregarlo
+            if (.images | map(.name) | index(strenv(IMAGE_NAME))) == null
+              then .images += [{"name": strenv(IMAGE_NAME), "newTag": strenv(TAG)}]
+              else .
+            end
+          ' "$FILE"
           
-          # Check if image already exists in the file
-          if yq ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null 2>&1; then
-            echo "Image exists, updating tag..."
-            yq -i ".images[] | select(.name == \"$IMAGE_NAME\") | .newTag = \"$TAG\"" "$FILE"
-          else
-            echo "Image does not exist, adding new image..."
-            yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
-          fi
-          
-          # Ensure the file has the complete structure for ArgoCD
-          echo "Ensuring complete kustomization structure..."
-          
-          # Check if apiVersion exists, if not add it
-          if ! yq '.apiVersion' "$FILE" >/dev/null 2>&1; then
-            echo "Adding apiVersion..."
-            yq -i '.apiVersion = "kustomize.config.k8s.io/v1beta1"' "$FILE"
-          fi
-          
-          # Check if kind exists, if not add it
-          if ! yq '.kind' "$FILE" >/dev/null 2>&1; then
-            echo "Adding kind..."
-            yq -i '.kind = "Kustomization"' "$FILE"
-          fi
-          
-          # Check if namespace exists, if not add it
-          if ! yq '.namespace' "$FILE" >/dev/null 2>&1; then
-            echo "Adding namespace..."
-            yq -i '.namespace = "maturoscope"' "$FILE"
-          fi
-          
-          # Check if resources exists, if not add it
-          if ! yq '.resources' "$FILE" >/dev/null 2>&1; then
-            echo "Adding resources..."
-            yq -i '.resources = ["../../base"]' "$FILE"
-          fi
-          
-          echo "Updated file content:"
+          echo "Resultado final de $FILE:"
           cat "$FILE"
-      - name: Commit & Push Web
-        env:
-          TAG: ${{ github.event.inputs.web_tag != '' && github.event.inputs.web_tag || github.event.client_payload.web_tag }}
-        run: |
+          
+          # 4) Rebase para evitar conflictos y commit
           cd infra
           git config user.name "ci-bot"
           git config user.email "ci@maturoscope.io"
-          git add clusters/de1-staging/apps/web/overlays/staging/kustomization.yaml
-          git commit -m "web(staging): bump image to ${TAG}" || echo "No changes to commit"
+          git config pull.rebase true
+          git pull --rebase || true
+          git add "${FILE#infra/}"
+          git commit -m "${APP_NAME}(staging): bump image to ${TAG}" || echo "No changes to commit"
           git push
+      
