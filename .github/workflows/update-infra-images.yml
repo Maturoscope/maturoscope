@@ -75,6 +75,33 @@ jobs:
             yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
           fi
           
+          # Ensure the file has the complete structure for ArgoCD
+          echo "Ensuring complete kustomization structure..."
+          
+          # Check if apiVersion exists, if not add it
+          if ! yq '.apiVersion' "$FILE" >/dev/null 2>&1; then
+            echo "Adding apiVersion..."
+            yq -i '.apiVersion = "kustomize.config.k8s.io/v1beta1"' "$FILE"
+          fi
+          
+          # Check if kind exists, if not add it
+          if ! yq '.kind' "$FILE" >/dev/null 2>&1; then
+            echo "Adding kind..."
+            yq -i '.kind = "Kustomization"' "$FILE"
+          fi
+          
+          # Check if namespace exists, if not add it
+          if ! yq '.namespace' "$FILE" >/dev/null 2>&1; then
+            echo "Adding namespace..."
+            yq -i '.namespace = "maturoscope"' "$FILE"
+          fi
+          
+          # Check if resources exists, if not add it
+          if ! yq '.resources' "$FILE" >/dev/null 2>&1; then
+            echo "Adding resources..."
+            yq -i '.resources = ["../../base"]' "$FILE"
+          fi
+          
           echo "Updated file content:"
           cat "$FILE"
 
@@ -140,6 +167,33 @@ jobs:
             yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
           fi
           
+          # Ensure the file has the complete structure for ArgoCD
+          echo "Ensuring complete kustomization structure..."
+          
+          # Check if apiVersion exists, if not add it
+          if ! yq '.apiVersion' "$FILE" >/dev/null 2>&1; then
+            echo "Adding apiVersion..."
+            yq -i '.apiVersion = "kustomize.config.k8s.io/v1beta1"' "$FILE"
+          fi
+          
+          # Check if kind exists, if not add it
+          if ! yq '.kind' "$FILE" >/dev/null 2>&1; then
+            echo "Adding kind..."
+            yq -i '.kind = "Kustomization"' "$FILE"
+          fi
+          
+          # Check if namespace exists, if not add it
+          if ! yq '.namespace' "$FILE" >/dev/null 2>&1; then
+            echo "Adding namespace..."
+            yq -i '.namespace = "maturoscope"' "$FILE"
+          fi
+          
+          # Check if resources exists, if not add it
+          if ! yq '.resources' "$FILE" >/dev/null 2>&1; then
+            echo "Adding resources..."
+            yq -i '.resources = ["../../base"]' "$FILE"
+          fi
+          
           echo "Updated file content:"
           cat "$FILE"
       - name: Commit & Push Dashboard
@@ -202,6 +256,33 @@ jobs:
           else
             echo "Image does not exist, adding new image..."
             yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
+          fi
+          
+          # Ensure the file has the complete structure for ArgoCD
+          echo "Ensuring complete kustomization structure..."
+          
+          # Check if apiVersion exists, if not add it
+          if ! yq '.apiVersion' "$FILE" >/dev/null 2>&1; then
+            echo "Adding apiVersion..."
+            yq -i '.apiVersion = "kustomize.config.k8s.io/v1beta1"' "$FILE"
+          fi
+          
+          # Check if kind exists, if not add it
+          if ! yq '.kind' "$FILE" >/dev/null 2>&1; then
+            echo "Adding kind..."
+            yq -i '.kind = "Kustomization"' "$FILE"
+          fi
+          
+          # Check if namespace exists, if not add it
+          if ! yq '.namespace' "$FILE" >/dev/null 2>&1; then
+            echo "Adding namespace..."
+            yq -i '.namespace = "maturoscope"' "$FILE"
+          fi
+          
+          # Check if resources exists, if not add it
+          if ! yq '.resources' "$FILE" >/dev/null 2>&1; then
+            echo "Adding resources..."
+            yq -i '.resources = ["../../base"]' "$FILE"
           fi
           
           echo "Updated file content:"
