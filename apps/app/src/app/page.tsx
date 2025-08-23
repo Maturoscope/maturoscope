@@ -12,7 +12,7 @@ export default function Home() {
           height={38}
           priority
         />
-        <p>App web 🤓</p>
+        <p>App web 🤓 </p>
 
       </main>
     </div>

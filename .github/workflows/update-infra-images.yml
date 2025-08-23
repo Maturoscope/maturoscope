@@ -28,7 +28,7 @@ jobs:
       - name: Checkout infra repo
         uses: actions/checkout@v4
         with:
-          repository: MATUROSCOPE/MATUROSCOPE-INFRA
+          repository: Maturoscope/maturoscope-infra
           token: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
           path: infra
 
@@ -41,12 +41,24 @@ jobs:
       - name: Update kustomize image tag (API)
         env:
           TAG: ${{ github.event.inputs.api_tag != '' && github.event.inputs.api_tag || github.event.client_payload.api_tag }}
-          FILE: infra/apps/api/overlays/staging/kustomization.yaml
+          FILE: infra/clusters/de1-staging/apps/api/overlays/staging/kustomization.yaml
           IMAGE_NAME: bv630390.c1.de1.container-registry.ovh.net/maturoscope-api/api
         run: |
+          echo "Checking if file exists: $FILE"
+          if [ ! -f "$FILE" ]; then
+            echo "File does not exist, creating directory structure..."
+            mkdir -p "$(dirname "$FILE")"
+            echo "apiVersion: kustomize.config.k8s.io/v1beta1" > "$FILE"
+            echo "kind: Kustomization" >> "$FILE"
+            echo "images: []" >> "$FILE"
+          fi
+          
           if ! yq '.images' "$FILE" >/dev/null 2>&1; then
+            echo "Images section does not exist, creating it..."
             yq -i '.images = []' "$FILE"
           fi
+          
+          echo "Updating image tag for $IMAGE_NAME to $TAG"
           yq -i '
             (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
             | if (.images | map(select(.name == strenv(IMAGE_NAME))) | length) == 0
@@ -54,6 +66,9 @@ jobs:
               else .
               end
           ' "$FILE"
+          
+          echo "Updated file content:"
+          cat "$FILE"
 
       - name: Commit & Push API
         env:
@@ -62,7 +77,7 @@ jobs:
           cd infra
           git config user.name "ci-bot"
           git config user.email "ci@maturoscope.io"
-          git add apps/api/overlays/staging/kustomization.yaml
+          git add clusters/de1-staging/apps/api/overlays/staging/kustomization.yaml
           git commit -m "api(staging): bump image to ${TAG}" || echo "No changes to commit"
           git push
 
@@ -74,7 +89,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: MATUROSCOPE/MATUROSCOPE-INFRA
+          repository: Maturoscope/maturoscope-infra
           token: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
           path: infra
       - run: |
@@ -83,10 +98,24 @@ jobs:
       - name: Update kustomize image tag (Dashboard)
         env:
           TAG: ${{ github.event.inputs.dashboard_tag != '' && github.event.inputs.dashboard_tag || github.event.client_payload.dashboard_tag }}
-          FILE: infra/apps/dashboard/overlays/staging/kustomization.yaml
+          FILE: infra/clusters/de1-staging/apps/dashboard/overlays/staging/kustomization.yaml
           IMAGE_NAME: bv630390.c1.de1.container-registry.ovh.net/maturoscope-dashboard/dashboard
         run: |
-          if ! yq '.images' "$FILE" >/dev/null 2>&1; then yq -i '.images = []' "$FILE"; fi
+          echo "Checking if file exists: $FILE"
+          if [ ! -f "$FILE" ]; then
+            echo "File does not exist, creating directory structure..."
+            mkdir -p "$(dirname "$FILE")"
+            echo "apiVersion: kustomize.config.k8s.io/v1beta1" > "$FILE"
+            echo "kind: Kustomization" >> "$FILE"
+            echo "images: []" >> "$FILE"
+          fi
+          
+          if ! yq '.images' "$FILE" >/dev/null 2>&1; then
+            echo "Images section does not exist, creating it..."
+            yq -i '.images = []' "$FILE"
+          fi
+          
+          echo "Updating image tag for $IMAGE_NAME to $TAG"
           yq -i '
             (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
             | if (.images | map(select(.name == strenv(IMAGE_NAME))) | length) == 0
@@ -94,6 +123,9 @@ jobs:
               else .
               end
           ' "$FILE"
+          
+          echo "Updated file content:"
+          cat "$FILE"
       - name: Commit & Push Dashboard
         env:
           TAG: ${{ github.event.inputs.dashboard_tag != '' && github.event.inputs.dashboard_tag || github.event.client_payload.dashboard_tag }}
@@ -101,7 +133,7 @@ jobs:
           cd infra
           git config user.name "ci-bot"
           git config user.email "ci@maturoscope.io"
-          git add apps/dashboard/overlays/staging/kustomization.yaml
+          git add clusters/de1-staging/apps/dashboard/overlays/staging/kustomization.yaml
           git commit -m "dashboard(staging): bump image to ${TAG}" || echo "No changes to commit"
           git push
 
@@ -113,7 +145,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: MATUROSCOPE/MATUROSCOPE-INFRA
+          repository: Maturoscope/maturoscope-infra
           token: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
           path: infra
       - run: |
@@ -122,10 +154,24 @@ jobs:
       - name: Update kustomize image tag (Web)
         env:
           TAG: ${{ github.event.inputs.web_tag != '' && github.event.inputs.web_tag || github.event.client_payload.web_tag }}
-          FILE: infra/apps/web/overlays/staging/kustomization.yaml
+          FILE: infra/clusters/de1-staging/apps/web/overlays/staging/kustomization.yaml
           IMAGE_NAME: bv630390.c1.de1.container-registry.ovh.net/maturoscope-app/app
         run: |
-          if ! yq '.images' "$FILE" >/dev/null 2>&1; then yq -i '.images = []' "$FILE"; fi
+          echo "Checking if file exists: $FILE"
+          if [ ! -f "$FILE" ]; then
+            echo "File does not exist, creating directory structure..."
+            mkdir -p "$(dirname "$FILE")"
+            echo "apiVersion: kustomize.config.k8s.io/v1beta1" > "$FILE"
+            echo "kind: Kustomization" >> "$FILE"
+            echo "images: []" >> "$FILE"
+          fi
+          
+          if ! yq '.images' "$FILE" >/dev/null 2>&1; then
+            echo "Images section does not exist, creating it..."
+            yq -i '.images = []' "$FILE"
+          fi
+          
+          echo "Updating image tag for $IMAGE_NAME to $TAG"
           yq -i '
             (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
             | if (.images | map(select(.name == strenv(IMAGE_NAME))) | length) == 0
@@ -133,6 +179,9 @@ jobs:
               else .
               end
           ' "$FILE"
+          
+          echo "Updated file content:"
+          cat "$FILE"
       - name: Commit & Push Web
         env:
           TAG: ${{ github.event.inputs.web_tag != '' && github.event.inputs.web_tag || github.event.client_payload.web_tag }}
@@ -140,6 +189,6 @@ jobs:
           cd infra
           git config user.name "ci-bot"
           git config user.email "ci@maturoscope.io"
-          git add apps/web/overlays/staging/kustomization.yaml
+          git add clusters/de1-staging/apps/web/overlays/staging/kustomization.yaml
           git commit -m "web(staging): bump image to ${TAG}" || echo "No changes to commit"
           git push
