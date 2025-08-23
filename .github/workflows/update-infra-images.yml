@@ -58,22 +58,20 @@ jobs:
             echo "images: []" >> "$FILE"
           fi
           
-          # 2) Garantizar que exista la clave images (array)
+          # 2) Asegurar que images exista
           if ! yq -e '.images' "$FILE" >/dev/null 2>&1; then
             yq -i '.images = []' "$FILE"
           fi
           
-          # 3) Actualizar si existe el item con ese name; si no, agregarlo
+          # 3) Actualizar si ya existe
           yq -i '
-            # Si ya existe el item con ese name, actualizar newTag
             (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
-            |
-            # Si NO existe, agregarlo
-            if (.images | map(.name) | index(strenv(IMAGE_NAME))) == null
-              then .images += [{"name": strenv(IMAGE_NAME), "newTag": strenv(TAG)}]
-              else .
-            end
           ' "$FILE"
+          
+          # 4) Agregar si no existe
+          if ! yq -e ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null; then
+            yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
+          fi
           
           echo "Resultado final de $FILE:"
           cat "$FILE"
@@ -124,22 +122,20 @@ jobs:
             echo "images: []" >> "$FILE"
           fi
           
-          # 2) Garantizar que exista la clave images (array)
+          # 2) Asegurar que images exista
           if ! yq -e '.images' "$FILE" >/dev/null 2>&1; then
             yq -i '.images = []' "$FILE"
           fi
           
-          # 3) Actualizar si existe el item con ese name; si no, agregarlo
+          # 3) Actualizar si ya existe
           yq -i '
-            # Si ya existe el item con ese name, actualizar newTag
             (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
-            |
-            # Si NO existe, agregarlo
-            if (.images | map(.name) | index(strenv(IMAGE_NAME))) == null
-              then .images += [{"name": strenv(IMAGE_NAME), "newTag": strenv(TAG)}]
-              else .
-            end
           ' "$FILE"
+          
+          # 4) Agregar si no existe
+          if ! yq -e ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null; then
+            yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
+          fi
           
           echo "Resultado final de $FILE:"
           cat "$FILE"
@@ -189,22 +185,20 @@ jobs:
             echo "images: []" >> "$FILE"
           fi
           
-          # 2) Garantizar que exista la clave images (array)
+          # 2) Asegurar que images exista
           if ! yq -e '.images' "$FILE" >/dev/null 2>&1; then
             yq -i '.images = []' "$FILE"
           fi
           
-          # 3) Actualizar si existe el item con ese name; si no, agregarlo
+          # 3) Actualizar si ya existe
           yq -i '
-            # Si ya existe el item con ese name, actualizar newTag
             (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
-            |
-            # Si NO existe, agregarlo
-            if (.images | map(.name) | index(strenv(IMAGE_NAME))) == null
-              then .images += [{"name": strenv(IMAGE_NAME), "newTag": strenv(TAG)}]
-              else .
-            end
           ' "$FILE"
+          
+          # 4) Agregar si no existe
+          if ! yq -e ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null; then
+            yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
+          fi
           
           echo "Resultado final de $FILE:"
           cat "$FILE"
