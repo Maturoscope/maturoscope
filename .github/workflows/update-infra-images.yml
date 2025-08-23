@@ -50,22 +50,30 @@ jobs:
             mkdir -p "$(dirname "$FILE")"
             echo "apiVersion: kustomize.config.k8s.io/v1beta1" > "$FILE"
             echo "kind: Kustomization" >> "$FILE"
-            echo "images: []" >> "$FILE"
+            echo "namespace: maturoscope" >> "$FILE"
+            echo "resources:" >> "$FILE"
+            echo "  - ../../base" >> "$FILE"
+            echo "images:" >> "$FILE"
+            echo "  - name: $IMAGE_NAME" >> "$FILE"
+            echo "    newTag: $TAG" >> "$FILE"
           fi
           
+          # Ensure images section exists
           if ! yq '.images' "$FILE" >/dev/null 2>&1; then
             echo "Images section does not exist, creating it..."
             yq -i '.images = []' "$FILE"
           fi
           
           echo "Updating image tag for $IMAGE_NAME to $TAG"
-          yq -i '
-            (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
-            | if (.images | map(select(.name == strenv(IMAGE_NAME))) | length) == 0
-              then .images += [{"name": strenv(IMAGE_NAME), "newTag": strenv(TAG)}]
-              else .
-              end
-          ' "$FILE"
+          
+          # Check if image already exists in the file
+          if yq ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null 2>&1; then
+            echo "Image exists, updating tag..."
+            yq -i ".images[] | select(.name == \"$IMAGE_NAME\") | .newTag = \"$TAG\"" "$FILE"
+          else
+            echo "Image does not exist, adding new image..."
+            yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
+          fi
           
           echo "Updated file content:"
           cat "$FILE"
@@ -107,22 +115,30 @@ jobs:
             mkdir -p "$(dirname "$FILE")"
             echo "apiVersion: kustomize.config.k8s.io/v1beta1" > "$FILE"
             echo "kind: Kustomization" >> "$FILE"
-            echo "images: []" >> "$FILE"
+            echo "namespace: maturoscope" >> "$FILE"
+            echo "resources:" >> "$FILE"
+            echo "  - ../../base" >> "$FILE"
+            echo "images:" >> "$FILE"
+            echo "  - name: $IMAGE_NAME" >> "$FILE"
+            echo "    newTag: $TAG" >> "$FILE"
           fi
           
+          # Ensure images section exists
           if ! yq '.images' "$FILE" >/dev/null 2>&1; then
             echo "Images section does not exist, creating it..."
             yq -i '.images = []' "$FILE"
           fi
           
           echo "Updating image tag for $IMAGE_NAME to $TAG"
-          yq -i '
-            (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
-            | if (.images | map(select(.name == strenv(IMAGE_NAME))) | length) == 0
-              then .images += [{"name": strenv(IMAGE_NAME), "newTag": strenv(TAG)}]
-              else .
-              end
-          ' "$FILE"
+          
+          # Check if image already exists in the file
+          if yq ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null 2>&1; then
+            echo "Image exists, updating tag..."
+            yq -i ".images[] | select(.name == \"$IMAGE_NAME\") | .newTag = \"$TAG\"" "$FILE"
+          else
+            echo "Image does not exist, adding new image..."
+            yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
+          fi
           
           echo "Updated file content:"
           cat "$FILE"
@@ -163,22 +179,30 @@ jobs:
             mkdir -p "$(dirname "$FILE")"
             echo "apiVersion: kustomize.config.k8s.io/v1beta1" > "$FILE"
             echo "kind: Kustomization" >> "$FILE"
-            echo "images: []" >> "$FILE"
+            echo "namespace: maturoscope" >> "$FILE"
+            echo "resources:" >> "$FILE"
+            echo "  - ../../base" >> "$FILE"
+            echo "images:" >> "$FILE"
+            echo "  - name: $IMAGE_NAME" >> "$FILE"
+            echo "    newTag: $TAG" >> "$FILE"
           fi
           
+          # Ensure images section exists
           if ! yq '.images' "$FILE" >/dev/null 2>&1; then
             echo "Images section does not exist, creating it..."
             yq -i '.images = []' "$FILE"
           fi
           
           echo "Updating image tag for $IMAGE_NAME to $TAG"
-          yq -i '
-            (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
-            | if (.images | map(select(.name == strenv(IMAGE_NAME))) | length) == 0
-              then .images += [{"name": strenv(IMAGE_NAME), "newTag": strenv(TAG)}]
-              else .
-              end
-          ' "$FILE"
+          
+          # Check if image already exists in the file
+          if yq ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null 2>&1; then
+            echo "Image exists, updating tag..."
+            yq -i ".images[] | select(.name == \"$IMAGE_NAME\") | .newTag = \"$TAG\"" "$FILE"
+          else
+            echo "Image does not exist, adding new image..."
+            yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
+          fi
           
           echo "Updated file content:"
           cat "$FILE"
