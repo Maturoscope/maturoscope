@@ -1,0 +1,145 @@
+name: Update Infrastructure Images
+
+on:
+  repository_dispatch:
+    types: [update-infra-images]
+  workflow_dispatch:
+    inputs:
+      api_tag:
+        description: 'API image tag to update'
+        required: false
+        default: ''
+      dashboard_tag:
+        description: 'Dashboard image tag to update'
+        required: false
+        default: ''
+      web_tag:
+        description: 'Web image tag to update'
+        required: false
+        default: ''
+
+jobs:
+  update-infra-api:
+    if: github.event.inputs.api_tag != '' || (github.event_name == 'repository_dispatch' && github.event.client_payload.api_tag != '')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout infra repo
+        uses: actions/checkout@v4
+        with:
+          repository: MATUROSCOPE/MATUROSCOPE-INFRA
+          token: ${{ secrets.INFRA_TOKEN }}
+          path: infra
+
+      - name: Install yq (CLI)
+        run: |
+          sudo curl -L "https://github.com/mikefarah/yq/releases/download/v4.44.3/yq_linux_amd64" -o /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+          yq --version
+
+      - name: Update kustomize image tag (API)
+        env:
+          TAG: ${{ github.event.inputs.api_tag != '' && github.event.inputs.api_tag || github.event.client_payload.api_tag }}
+          FILE: infra/apps/api/overlays/staging/kustomization.yaml
+          IMAGE_NAME: bv630390.c1.de1.container-registry.ovh.net/maturoscope-api/api
+        run: |
+          if ! yq '.images' "$FILE" >/dev/null 2>&1; then
+            yq -i '.images = []' "$FILE"
+          fi
+          yq -i '
+            (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
+            | if (.images | map(select(.name == strenv(IMAGE_NAME))) | length) == 0
+              then .images += [{"name": strenv(IMAGE_NAME), "newTag": strenv(TAG)}]
+              else .
+              end
+          ' "$FILE"
+
+      - name: Commit & Push API
+        env:
+          TAG: ${{ github.event.inputs.api_tag != '' && github.event.inputs.api_tag || github.event.client_payload.api_tag }}
+        run: |
+          cd infra
+          git config user.name "ci-bot"
+          git config user.email "ci@maturoscope.io"
+          git add apps/api/overlays/staging/kustomization.yaml
+          git commit -m "api(staging): bump image to ${TAG}" || echo "No changes to commit"
+          git push
+
+  update-infra-dashboard:
+    if: github.event.inputs.dashboard_tag != '' || (github.event_name == 'repository_dispatch' && github.event.client_payload.dashboard_tag != '')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: MATUROSCOPE/MATUROSCOPE-INFRA
+          token: ${{ secrets.INFRA_TOKEN }}
+          path: infra
+      - run: |
+          sudo curl -L "https://github.com/mikefarah/yq/releases/download/v4.44.3/yq_linux_amd64" -o /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+      - name: Update kustomize image tag (Dashboard)
+        env:
+          TAG: ${{ github.event.inputs.dashboard_tag != '' && github.event.inputs.dashboard_tag || github.event.client_payload.dashboard_tag }}
+          FILE: infra/apps/dashboard/overlays/staging/kustomization.yaml
+          IMAGE_NAME: bv630390.c1.de1.container-registry.ovh.net/maturoscope-dashboard/dashboard
+        run: |
+          if ! yq '.images' "$FILE" >/dev/null 2>&1; then yq -i '.images = []' "$FILE"; fi
+          yq -i '
+            (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
+            | if (.images | map(select(.name == strenv(IMAGE_NAME))) | length) == 0
+              then .images += [{"name": strenv(IMAGE_NAME), "newTag": strenv(TAG)}]
+              else .
+              end
+          ' "$FILE"
+      - name: Commit & Push Dashboard
+        env:
+          TAG: ${{ github.event.inputs.dashboard_tag != '' && github.event.inputs.dashboard_tag || github.event.client_payload.dashboard_tag }}
+        run: |
+          cd infra
+          git config user.name "ci-bot"
+          git config user.email "ci@maturoscope.io"
+          git add apps/dashboard/overlays/staging/kustomization.yaml
+          git commit -m "dashboard(staging): bump image to ${TAG}" || echo "No changes to commit"
+          git push
+
+  update-infra-web:
+    if: github.event.inputs.web_tag != '' || (github.event_name == 'repository_dispatch' && github.event.client_payload.web_tag != '')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: MATUROSCOPE/MATUROSCOPE-INFRA
+          token: ${{ secrets.INFRA_TOKEN }}
+          path: infra
+      - run: |
+          sudo curl -L "https://github.com/mikefarah/yq/releases/download/v4.44.3/yq_linux_amd64" -o /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+      - name: Update kustomize image tag (Web)
+        env:
+          TAG: ${{ github.event.inputs.web_tag != '' && github.event.inputs.web_tag || github.event.client_payload.web_tag }}
+          FILE: infra/apps/web/overlays/staging/kustomization.yaml
+          IMAGE_NAME: bv630390.c1.de1.container-registry.ovh.net/maturoscope-app/app
+        run: |
+          if ! yq '.images' "$FILE" >/dev/null 2>&1; then yq -i '.images = []' "$FILE"; fi
+          yq -i '
+            (.images[] | select(.name == strenv(IMAGE_NAME)) | .newTag) = strenv(TAG)
+            | if (.images | map(select(.name == strenv(IMAGE_NAME))) | length) == 0
+              then .images += [{"name": strenv(IMAGE_NAME), "newTag": strenv(TAG)}]
+              else .
+              end
+          ' "$FILE"
+      - name: Commit & Push Web
+        env:
+          TAG: ${{ github.event.inputs.web_tag != '' && github.event.inputs.web_tag || github.event.client_payload.web_tag }}
+        run: |
+          cd infra
+          git config user.name "ci-bot"
+          git config user.email "ci@maturoscope.io"
+          git add apps/web/overlays/staging/kustomization.yaml
+          git commit -m "web(staging): bump image to ${TAG}" || echo "No changes to commit"
+          git push

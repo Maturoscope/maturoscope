@@ -55,10 +55,19 @@ jobs:
     needs: check-changes
     if: needs.check-changes.outputs.api-changed == 'true'
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.vars.outputs.TAG }}
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set tag
+        id: vars
+        run: |
+          SHORT_SHA=$(git rev-parse --short $GITHUB_SHA)
+          TS=$(date -u +%Y%m%d-%H%M%S)
+          echo "TAG=staging-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -70,23 +79,39 @@ jobs:
         run: |
           docker build \
             --file apps/api/Dockerfile \
-            --tag ${{ env.REGISTRY }}/maturoscope-api/api:${{ github.sha }} \
-            --tag ${{ env.REGISTRY }}/maturoscope-api/api:latest \
+            --tag ${{ env.REGISTRY }}/maturoscope-api/api:${{ steps.vars.outputs.TAG }} \
             --build-arg DATABASE_URL="${{ secrets.PROD_DATABASE_URL || 'postgresql://prod:prod@localhost:5432/prod' }}" \
             --build-arg JWT_SECRET="${{ secrets.PROD_JWT_SECRET || 'production-secret' }}" \
             --build-arg API_PORT=8000 \
             .
-          docker push ${{ env.REGISTRY }}/maturoscope-api/api:${{ github.sha }}
-          docker push ${{ env.REGISTRY }}/maturoscope-api/api:latest
+          docker push ${{ env.REGISTRY }}/maturoscope-api/api:${{ steps.vars.outputs.TAG }}
+
+      - name: Dispatch update-infra (API)
+        if: success()
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/update-infra-images.yml/dispatches \
+            -d '{"ref":"main","inputs":{"api_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
 
   build-app:
     needs: check-changes
     if: needs.check-changes.outputs.app-changed == 'true'
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.vars.outputs.TAG }}
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set tag
+        id: vars
+        run: |
+          SHORT_SHA=$(git rev-parse --short $GITHUB_SHA)
+          TS=$(date -u +%Y%m%d-%H%M%S)
+          echo "TAG=staging-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -98,22 +123,38 @@ jobs:
         run: |
           docker build \
             --file apps/app/Dockerfile \
-            --tag ${{ env.REGISTRY }}/maturoscope-app/app:${{ github.sha }} \
-            --tag ${{ env.REGISTRY }}/maturoscope-app/app:latest \
+            --tag ${{ env.REGISTRY }}/maturoscope-app/app:${{ steps.vars.outputs.TAG }} \
             --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
             .
-          docker push ${{ env.REGISTRY }}/maturoscope-app/app:${{ github.sha }}
-          docker push ${{ env.REGISTRY }}/maturoscope-app/app:latest
+          docker push ${{ env.REGISTRY }}/maturoscope-app/app:${{ steps.vars.outputs.TAG }}
+
+      - name: Dispatch update-infra (App)
+        if: success()
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/update-infra-images.yml/dispatches \
+            -d '{"ref":"main","inputs":{"web_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
 
   build-dashboard:
     needs: check-changes
     if: needs.check-changes.outputs.dashboard-changed == 'true'
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.vars.outputs.TAG }}
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set tag
+        id: vars
+        run: |
+          SHORT_SHA=$(git rev-parse --short $GITHUB_SHA)
+          TS=$(date -u +%Y%m%d-%H%M%S)
+          echo "TAG=staging-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -125,13 +166,20 @@ jobs:
         run: |
           docker build \
             --file apps/dashboard/Dockerfile \
-            --tag ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:${{ github.sha }} \
-            --tag ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:latest \
+            --tag ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:${{ steps.vars.outputs.TAG }} \
             --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
             .
-          docker push ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:${{ github.sha }}
-          docker push ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:latest
+          docker push ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:${{ steps.vars.outputs.TAG }}
+
+      - name: Dispatch update-infra (Dashboard)
+        if: success()
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/update-infra-images.yml/dispatches \
+            -d '{"ref":"main","inputs":{"dashboard_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
 
   summary:
     needs: [check-changes, build-api, build-app, build-dashboard]
@@ -151,5 +199,10 @@ jobs:
           echo "API: ${{ needs.build-api.result || 'skipped' }}"
           echo "App: ${{ needs.build-app.result || 'skipped' }}"
           echo "Dashboard: ${{ needs.build-dashboard.result || 'skipped' }}"
+          echo ""
+          echo "Generated Tags:"
+          echo "API: ${{ needs.build-api.outputs.tag || 'N/A' }}"
+          echo "App: ${{ needs.build-app.outputs.tag || 'N/A' }}"
+          echo "Dashboard: ${{ needs.build-dashboard.outputs.tag || 'N/A' }}"
           echo ""
           echo "✅ Smart build completed!"
