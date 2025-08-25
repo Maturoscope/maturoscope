@@ -104,7 +104,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/update-infra-images.yml/dispatches \
-            -d '{"ref":"main","inputs":{"api_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
+            -d '{"ref":"staging","inputs":{"api_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
 
   build-app:
     needs: check-changes
@@ -151,7 +151,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/update-infra-images.yml/dispatches \
-            -d '{"ref":"main","inputs":{"web_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
+            -d '{"ref":"staging","inputs":{"web_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
 
   build-dashboard:
     needs: check-changes
@@ -198,7 +198,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/update-infra-images.yml/dispatches \
-            -d '{"ref":"main","inputs":{"dashboard_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
+            -d '{"ref":"staging","inputs":{"dashboard_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
 
   summary:
     needs: [check-changes, build-api, build-app, build-dashboard]
