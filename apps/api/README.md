@@ -2,97 +2,239 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Maturoscope API
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This is the NestJS API backend for the Maturoscope project.
 
-## Description
+## 🚀 Quick Setup
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Prerequisites
 
-## Project setup
+- Node.js >= 18
+- Yarn 3.6.4
+- Docker and Docker Compose
+- PostgreSQL (via Docker)
+
+### 1. Environment Variables Setup
+
+**IMPORTANT:** Before starting the application, you must create the required environment variables.
+
+Create a `.env` file in this directory (`apps/api/`) with the following content:
 
 ```bash
-$ yarn install
+# Database Configuration
+DB_PASSWORD=your_secure_password_here
+DB_NAME=maturoscope_db
 ```
 
-## Compile and run the project
+**⚠️ Security Notes:**
+
+- Replace `your_secure_password_here` with a strong, secure password
+- Never commit the `.env` file to version control
+- The database name `maturoscope_db` will be created automatically
+
+### 2. Database Setup
+
+Start the PostgreSQL database using Docker Compose:
 
 ```bash
-# development
-$ yarn run start
+# Navigate to the API directory
+cd apps/api
 
-# watch mode
-$ yarn run start:dev
+# Start the database container
+docker-compose up -d db
 
-# production mode
-$ yarn run start:prod
+# Verify the database is running
+docker ps
 ```
 
-## Run tests
+You should see a container named `maturoscope-db` running on port 5432.
+
+### 3. Install Dependencies
 
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+yarn install
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 4. Start Development Server
 
 ```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
+# Start in development mode with hot reload
+yarn dev
+
+# Or start in watch mode
+yarn start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+The API will be available at `http://localhost:3000` (or the configured port).
 
-## Resources
+## 🗄️ Database Management
 
-Check out a few resources that may come in handy when working with NestJS:
+### Start Database
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```bash
+docker-compose up -d db
+```
 
-## Support
+### Stop Database
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+docker-compose down
+```
 
-## Stay in touch
+### View Database Logs
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+docker-compose logs db
+```
 
-## License
+### Reset Database (⚠️ This will delete all data)
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+```bash
+docker-compose down -v
+docker-compose up -d db
+```
+
+### Connect to Database Directly
+
+```bash
+# Using psql (if you have PostgreSQL client installed)
+psql -h localhost -p 5432 -U postgres -d maturoscope_db
+
+# Or using Docker
+docker exec -it maturoscope-db psql -U postgres -d maturoscope_db
+```
+
+## 📝 Available Scripts
+
+```bash
+# Development
+yarn dev              # Start in development mode
+yarn start:dev        # Start in watch mode
+yarn start:debug      # Start in debug mode
+
+# Production
+yarn build           # Build the application
+yarn start           # Start production server
+yarn start:prod      # Start production server
+
+# Testing
+yarn test            # Run unit tests
+yarn test:watch      # Run tests in watch mode
+yarn test:cov        # Run tests with coverage
+yarn test:e2e        # Run end-to-end tests
+
+# Code Quality
+yarn lint            # Lint code
+yarn format          # Format code with Prettier
+```
+
+## 🔧 Configuration
+
+### Database Connection
+
+The API connects to PostgreSQL using the following configuration:
+
+- **Host**: localhost
+- **Port**: 5432
+- **Database**: `maturoscope_db` (from DB_NAME env var)
+- **Username**: postgres
+- **Password**: From `DB_PASSWORD` environment variable
+
+### Environment Variables Reference
+
+| Variable      | Required | Description         | Default          |
+| ------------- | -------- | ------------------- | ---------------- |
+| `DB_PASSWORD` | ✅       | PostgreSQL password | -                |
+| `DB_NAME`     | ✅       | Database name       | `maturoscope_db` |
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+yarn test
+
+# Run tests in watch mode
+yarn test:watch
+
+# Run tests with coverage
+yarn test:cov
+
+# Run end-to-end tests
+yarn test:e2e
+```
+
+## 🐛 Troubleshooting
+
+### Database Connection Issues
+
+1. **Check if Docker is running:**
+
+   ```bash
+   docker --version
+   ```
+
+2. **Check if database container is up:**
+
+   ```bash
+   docker ps | grep maturoscope-db
+   ```
+
+3. **Check database logs:**
+
+   ```bash
+   docker-compose logs db
+   ```
+
+4. **Verify environment variables:**
+
+   ```bash
+   cat .env
+   ```
+
+5. **Test database connection:**
+   ```bash
+   docker exec -it maturoscope-db psql -U postgres -d maturoscope_db -c "SELECT 1;"
+   ```
+
+### Port Conflicts
+
+If port 5432 is already in use:
+
+1. Stop other PostgreSQL instances
+2. Or modify the port in `docker-compose.yaml`
+
+### Build Issues
+
+1. **Clear node_modules:**
+
+   ```bash
+   rm -rf node_modules
+   yarn install
+   ```
+
+2. **Clear build cache:**
+   ```bash
+   rm -rf dist
+   yarn build
+   ```
+
+## 📁 Project Structure
+
+```
+src/
+├── app.controller.ts    # Main controller
+├── app.service.ts       # Main service
+├── app.module.ts        # Root module
+└── main.ts             # Application entry point
+```
+
+## 🔗 Related Documentation
+
+- [NestJS Documentation](https://docs.nestjs.com/)
+- [PostgreSQL Docker Image](https://hub.docker.com/_/postgres)
+- [Docker Compose Documentation](https://docs.docker.com/compose/)
+
+## 📄 License
+
+This project is private and unlicensed.
