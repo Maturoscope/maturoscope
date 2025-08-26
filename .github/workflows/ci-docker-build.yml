@@ -84,8 +84,6 @@ jobs:
           docker build \
             --file apps/api/Dockerfile \
             --tag ${{ env.REGISTRY }}/maturoscope-api/api:${{ steps.vars.outputs.TAG }} \
-            --build-arg DATABASE_URL="${{ secrets.PROD_DATABASE_URL || 'postgresql://prod:prod@localhost:5432/prod' }}" \
-            --build-arg JWT_SECRET="${{ secrets.PROD_JWT_SECRET || 'production-secret' }}" \
             --build-arg API_PORT=8000 \
             .
           docker push ${{ env.REGISTRY }}/maturoscope-api/api:${{ steps.vars.outputs.TAG }}
