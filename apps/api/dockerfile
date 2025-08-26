@@ -1,68 +1,77 @@
 # ---------------------------
-# BASE (herramientas comunes)
+# BASE (common tools)
 # ---------------------------
-    FROM node:20-alpine AS base
-    WORKDIR /app
-    ENV NODE_ENV=production
-    ENV NODE_OPTIONS="--max-old-space-size=4096"
-    
-    # Habilitar Yarn Berry (Yarn 3) - solo para build
-    RUN corepack enable
-    
-    # ---------------------------
-    # PRUNNER (turbo prune)
-    # ---------------------------
-    FROM base AS prunner
-    # Archivos mínimos para prune
-    COPY package.json yarn.lock turbo.json .yarnrc.yml ./
-    COPY apps/api/package.json ./apps/api/
-    COPY packages/ ./packages/
-    # Usamos yarn install sin --immutable para permitir actualizaciones del lockfile
-    RUN yarn install
-    COPY . .
-    RUN yarn turbo prune api --docker
-    
-    # ---------------------------
-    # BUILDER (instala y compila)
-    # ---------------------------
-    FROM base AS builder
-    WORKDIR /app
-    
-    # Traemos el árbol pruned y lockfile resultante
-    COPY --from=prunner /app/out/json/ .
-    COPY --from=prunner /app/out/yarn.lock ./yarn.lock
-    
-    # Instalamos dependencias (node_modules)
-    RUN yarn install
-    
-    # Copiamos el código pruned y compilamos solo la API
-    COPY --from=prunner /app/out/full/ .
-    RUN yarn turbo run build --filter=api
-    
-    # ---------------------------
-    # RUNTIME (solo Node.js, sin Yarn)
-    # ---------------------------
-    FROM node:20-alpine AS runner
-    WORKDIR /app
-    ENV NODE_ENV=production
-    
-    # Crear usuario no root (opcional, para seguridad)
-    RUN addgroup --system --gid 1001 app \
-        && adduser --system --uid 1001 app
-    
-    # Copiamos solo lo necesario para ejecutar la API compilada
-    # 1) dist compilado
-    COPY --from=builder --chown=app:app /app/apps/api/dist ./dist
-    # 2) package.json de la API (necesario para Node.js)
-    COPY --from=builder --chown=app:app /app/apps/api/package.json ./package.json
-    # 3) node_modules (necesario para runtime)
-    COPY --from=builder --chown=app:app /app/node_modules ./node_modules
-    
-    # Cambiar al usuario no root
-    USER app
-    
-    # Puerto expuesto
-    EXPOSE 8000
-    
-    # Ejecutar Nest compilado (solo Node.js, sin Yarn)
-    CMD ["node", "dist/main.js"]
+FROM node:20-alpine AS base
+WORKDIR /app
+ENV NODE_ENV=production
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
+# Enable Yarn Berry (Yarn 3) - only for build
+RUN corepack enable
+
+# ---------------------------
+# PRUNNER (turbo prune)
+# ---------------------------
+FROM base AS prunner
+# Minimal files for prune
+COPY package.json yarn.lock turbo.json .yarnrc.yml ./
+COPY apps/api/package.json ./apps/api/
+COPY packages/ ./packages/
+# Use yarn install without --immutable to allow lockfile updates
+RUN yarn install
+COPY . .
+RUN yarn turbo prune api --docker
+
+# ---------------------------
+# BUILDER (install and compile)
+# ---------------------------
+FROM base AS builder
+WORKDIR /app
+
+# Bring pruned tree and lockfile
+COPY --from=prunner /app/out/json/ .
+COPY --from=prunner /app/out/yarn.lock ./yarn.lock
+
+# Install dependencies (node_modules)
+RUN yarn install
+
+# Copy pruned code
+COPY --from=prunner /app/out/full/ .
+
+# Ensure all dependencies are available
+# Copy complete API package.json
+COPY apps/api/package.json ./apps/api/package.json
+
+# Install all API dependencies explicitly
+RUN yarn add @nestjs/typeorm typeorm @nestjs/core @nestjs/common @nestjs/platform-express
+
+# Compile the API
+RUN yarn turbo run build --filter=api
+
+# ---------------------------
+# RUNTIME (Node.js only, no Yarn)
+# ---------------------------
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+
+# Create non-root user (optional, for security)
+RUN addgroup --system --gid 1001 app \
+    && adduser --system --uid 1001 app
+
+# Copy only what's needed to run the compiled API
+# 1) compiled dist
+COPY --from=builder --chown=app:app /app/apps/api/dist ./dist
+# 2) API package.json (needed for Node.js)
+COPY --from=builder --chown=app:app /app/apps/api/package.json ./package.json
+# 3) complete node_modules from builder (includes all pruned dependencies)
+COPY --from=builder --chown=app:app /app/node_modules ./node_modules
+
+# Switch to non-root user
+USER app
+
+# Exposed port
+EXPOSE 8000
+
+# Run compiled Nest (Node.js only, no Yarn)
+CMD ["node", "dist/main.js"]

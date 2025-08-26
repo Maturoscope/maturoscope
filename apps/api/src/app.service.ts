@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class AppService {
   getHello(): string {
-    return 'Hello World 👽 ';
+    return 'www.synoop.io';
   }
 
   getHealth(): { status: string; timestamp: string } {
