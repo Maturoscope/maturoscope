@@ -55,6 +55,16 @@ jobs:
               - 'yarn.lock'
               - 'turbo.json'
 
+      - name: Debug changes
+        run: |
+          echo "🔍 Debugging detected changes:"
+          echo "API changed: ${{ steps.filter.outputs.api }}"
+          echo "App changed: ${{ steps.filter.outputs.app }}"
+          echo "Dashboard changed: ${{ steps.filter.outputs.dashboard }}"
+          echo ""
+          echo "📁 Changed files:"
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} || echo "No diff available"
+
   build-api:
     needs: check-changes
     if: needs.check-changes.outputs.api-changed == 'true'

@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './common/auth-module/auth.module';
 import { IntegrationAuth0Module } from './modules/integration-auth0/integration-auth0.module';
+import * as fs from 'fs';
 
 @Module({
   imports: [
@@ -21,9 +22,9 @@ import { IntegrationAuth0Module } from './modules/integration-auth0/integration-
         idleTimeoutMillis: 30000,
         connectionTimeoutMillis: 60000,
         ssl: {
-          ca: process.env.DB_SSL_CA_PATH ? require('fs').readFileSync(process.env.DB_SSL_CA_PATH) : undefined,
-          servername: process.env.DB_SSL_SERVERNAME,
           rejectUnauthorized: true,
+          ca: fs.readFileSync(process.env.DB_SSL_CA_PATH!, 'utf8'),
+          servername: process.env.DB_SSL_SERVERNAME,
         },
       },
       retryAttempts: 3,
