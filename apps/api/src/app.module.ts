@@ -22,9 +22,9 @@ import * as fs from 'fs';
         idleTimeoutMillis: 30000,
         connectionTimeoutMillis: 60000,
         ssl: {
-          rejectUnauthorized: true,
-          ca: fs.readFileSync(process.env.DB_SSL_CA_PATH!, 'utf8'),
-          servername: process.env.DB_SSL_SERVERNAME,
+          rejectUnauthorized: true,  // ✅ Validación de certificados activada
+          ca: fs.readFileSync(process.env.DB_SSL_CA_PATH!, 'utf8'),  // ✅ Certificado CA correcto
+          servername: process.env.DB_SSL_SERVERNAME,  // ✅ Servername correcto
         },
       },
       retryAttempts: 3,
