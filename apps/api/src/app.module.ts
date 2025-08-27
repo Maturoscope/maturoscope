@@ -20,19 +20,15 @@ import { IntegrationAuth0Module } from './modules/integration-auth0/integration-
         max: 20,
         idleTimeoutMillis: 30000,
         connectionTimeoutMillis: 60000,
-        ssl: process.env.NODE_ENV === 'staging' ? {
-          rejectUnauthorized: false,
-          ca: undefined,
-          key: undefined,
-          cert: undefined,
-        } : false,
+        ssl: {
+          ca: process.env.DB_SSL_CA_PATH ? require('fs').readFileSync(process.env.DB_SSL_CA_PATH) : undefined,
+          servername: process.env.DB_SSL_SERVERNAME,
+          rejectUnauthorized: true,
+        },
       },
       retryAttempts: 3,
       retryDelay: 3000,
-      logging:
-        process.env.NODE_ENV === 'development'
-          ? ['error', 'warn', 'query']
-          : ['error'],
+      logging: process.env.NODE_ENV === 'development' ? ['error', 'warn', 'query'] : ['error'],
     }),
     UsersModule,
     AuthModule,
