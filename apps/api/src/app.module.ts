@@ -13,23 +13,30 @@ import * as fs from 'fs';
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: process.env.DATABASE_URL,
+      host: process.env.DB_HOST,
+      port: +(process.env.DB_PORT || 20184),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: true, // solo en staging
       extra: {
         options: '-c timezone=Europe/Paris',
         max: 20,
         idleTimeoutMillis: 30000,
         connectionTimeoutMillis: 60000,
         ssl: {
-          rejectUnauthorized: true,
-          ca: fs.readFileSync(process.env.DB_SSL_CA_PATH!, 'utf8'),
-          servername: process.env.DB_SSL_SERVERNAME,
+          rejectUnauthorized: true, // ✅ Validación de certificados activada
+          ca: fs.readFileSync(process.env.DB_SSL_CA_PATH!, 'utf8'), // ✅ Certificado CA correcto
+          servername: process.env.DB_SSL_SERVERNAME, // ✅ Servername correcto
         },
       },
       retryAttempts: 3,
       retryDelay: 3000,
-      logging: process.env.NODE_ENV === 'development' ? ['error', 'warn', 'query'] : ['error'],
+      logging:
+        process.env.NODE_ENV === 'development'
+          ? ['error', 'warn', 'query']
+          : ['error'],
     }),
     UsersModule,
     AuthModule,
