@@ -20,7 +20,12 @@ import { IntegrationAuth0Module } from './modules/integration-auth0/integration-
         max: 20,
         idleTimeoutMillis: 30000,
         connectionTimeoutMillis: 60000,
-        ssl: process.env.NODE_ENV === 'staging' ? { rejectUnauthorized: false } : false,
+        ssl: process.env.NODE_ENV === 'staging' ? {
+          rejectUnauthorized: false,
+          ca: undefined,
+          key: undefined,
+          cert: undefined,
+        } : false,
       },
       retryAttempts: 3,
       retryDelay: 3000,
