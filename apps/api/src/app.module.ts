@@ -12,11 +12,7 @@ import { IntegrationAuth0Module } from './modules/integration-auth0/integration-
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST || 'localhost',
-      port: +(process.env.DB_PORT ?? 5432),
-      database: process.env.DB_NAME || 'postgres',
-      username: process.env.DB_USERNAME || 'postgres', 
-      password: process.env.DB_PASSWORD || 'postgres',
+      url: process.env.DATABASE_URL,
       autoLoadEntities: true,
       synchronize: true,
       extra: {
@@ -24,6 +20,7 @@ import { IntegrationAuth0Module } from './modules/integration-auth0/integration-
         max: 20,
         idleTimeoutMillis: 30000,
         connectionTimeoutMillis: 60000,
+        ssl: process.env.NODE_ENV === 'staging' ? { rejectUnauthorized: false } : false,
       },
       retryAttempts: 3,
       retryDelay: 3000,
