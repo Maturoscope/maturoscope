@@ -13,7 +13,6 @@ export const DefaultBrowserLanguageState = "EN";
 
 const availableLanguages = [
   "EN",
-  "ES",
   "EN-GB",
   "EN-US",
   "EN-AU",
