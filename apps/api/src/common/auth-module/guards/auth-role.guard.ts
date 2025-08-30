@@ -42,7 +42,6 @@ export class AuthRoleGuard implements CanActivate {
     }
 
     if (!existingUser.authId) {
-      console.log('!existingUser.authId ~ 🚀 ', existingUser);
       await this.auth0Service.assignRoleToUser(
         user.sub,
         existingUser.roles.map((role) => rolesMapped[role]),

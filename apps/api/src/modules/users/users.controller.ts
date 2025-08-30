@@ -35,7 +35,6 @@ export class UsersController {
   @Get(':id')
   @Auth(ValidRoles.admin)
   findOne(@Param() params: UuidParamDto) {
-    console.log(params);
     return this.usersService.findOne(params.id);
   }
 
