@@ -22,7 +22,6 @@
     COPY turbo.json ./
     COPY .yarnrc.yml ./
     COPY apps/app/package.json ./apps/app/
-    COPY packages/ ./packages/
     
     # Instalar dependencias necesarias para turbo prune
     RUN yarn install
