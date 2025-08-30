@@ -1,7 +1,18 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
+import { useBrowserLanguageState } from "./hooks/contexts/useBrowserLanguage";
 
 export default function Home() {
+  const { t } = useTranslation("EXAMPLE");
+  const { handleBrowserLanguage } = useBrowserLanguageState();
+
+  const handleClick = (key: string) => {
+    handleBrowserLanguage(key);
+  };
+
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -14,11 +25,10 @@ export default function Home() {
           priority
         />
  
-      <h1>Dashboard web 😉</h1>
-      <Button variant="destructive">Click me</Button>
-      <Button variant="outline">Click me</Button>
-      <Button variant="ghost">Click me</Button>
-      <Button variant="link">Click me</Button>
+      <h1>{t("TITLE")}</h1>
+      <Button variant="destructive" onClick={() => handleClick("EN")}>Click me</Button>
+      <Button variant="outline" onClick={() => handleClick("ES")}>Click me</Button>
+      <Button variant="outline" onClick={() => handleClick("FR")}>Click me</Button>
 
 
       </main>
