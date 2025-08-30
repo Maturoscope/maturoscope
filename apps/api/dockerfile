@@ -16,7 +16,6 @@ FROM base AS prunner
 # Minimal files for prune
 COPY package.json yarn.lock turbo.json .yarnrc.yml ./
 COPY apps/api/package.json ./apps/api/
-COPY packages/ ./packages/
 # Use yarn install without --immutable to allow lockfile updates
 RUN yarn install
 COPY . .
