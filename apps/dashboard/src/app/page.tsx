@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
 export default function Home() {
@@ -14,6 +15,11 @@ export default function Home() {
         />
  
       <h1>Dashboard web 😉</h1>
+      <Button variant="destructive">Click me</Button>
+      <Button variant="outline">Click me</Button>
+      <Button variant="ghost">Click me</Button>
+      <Button variant="link">Click me</Button>
+
 
       </main>
 
