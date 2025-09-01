@@ -11,13 +11,13 @@ export const POST = async (req: Request) => {
     const privateKey = forge.pki.privateKeyFromPem(privateKeyPem || '');
     const decryptedPassword = privateKey.decrypt(forge.util.decode64(password));
 
-    const authResponse = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, {
+    const authResponse = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         client_id: process.env.AUTH0_CLIENT_ID,
         client_secret: process.env.AUTH0_CLIENT_SECRET,
-        audience: `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/`,
+        audience: `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/`,
         grant_type: 'client_credentials',
       }),
     });
@@ -32,7 +32,7 @@ export const POST = async (req: Request) => {
 
     const managementToken = authData.access_token;
 
-    const userResponse = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users`, {
+    const userResponse = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ export const POST = async (req: Request) => {
     }
     const rolesToAssign = roles?.map((role: keyof typeof ROLES_MAPPED) => ROLES_MAPPED[role]);
 
-    const assignRolesResponse = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/${userId}/roles`, {
+    const assignRolesResponse = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/users/${userId}/roles`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

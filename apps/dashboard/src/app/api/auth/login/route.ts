@@ -13,8 +13,8 @@ export const POST = async (req: Request) => {
       return NextResponse.json({ error: 'Configuración de servidor incompleta' }, { status: 500 });
     }
 
-    if (!process.env.AUTH0_ISSUER_BASE_URL) {
-      console.error('AUTH0_ISSUER_BASE_URL no está configurada')
+    if (!process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL) {
+      console.error('NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL no está configurada')
       return NextResponse.json({ error: 'Configuración de Auth0 incompleta' }, { status: 500 });
     }
 
@@ -31,7 +31,7 @@ export const POST = async (req: Request) => {
     const privateKey = forge.pki.privateKeyFromPem(privateKeyPem);
     const decryptedPassword = privateKey.decrypt(forge.util.decode64(password));
 
-    const response = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -40,7 +40,7 @@ export const POST = async (req: Request) => {
         client_secret: process.env.AUTH0_CLIENT_SECRET,
         username: email,
         password: decryptedPassword,
-        audience: process.env.AUTH0_AUDIENCE,
+        audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
         scope: 'openid profile email',
         connection: 'Username-Password-Authentication',
       }),

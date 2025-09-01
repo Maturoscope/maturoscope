@@ -10,7 +10,7 @@ interface JwtPayload {
   userRoles: string[];
 }
 
-const AUTH0_ISSUER = process.env.AUTH0_ISSUER_BASE_URL;
+const AUTH0_ISSUER = process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL;
 
 const client = jwksClient({
   jwksUri: `${AUTH0_ISSUER}/.well-known/jwks.json`,
