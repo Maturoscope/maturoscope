@@ -15,7 +15,7 @@ export const POST = async (req: Request) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        client_id: process.env.AUTH0_CLIENT_ID,
+        client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
         client_secret: process.env.AUTH0_CLIENT_SECRET,
         audience: `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/`,
         grant_type: 'client_credentials',

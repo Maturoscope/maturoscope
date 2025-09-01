@@ -18,8 +18,8 @@ export const POST = async (req: Request) => {
       return NextResponse.json({ error: 'Configuración de Auth0 incompleta' }, { status: 500 });
     }
 
-    if (!process.env.AUTH0_CLIENT_ID) {
-      console.error('AUTH0_CLIENT_ID no está configurada')
+    if (!process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID) {
+      console.error('NEXT_PUBLIC_AUTH0_CLIENT_ID no está configurada')
       return NextResponse.json({ error: 'Configuración de Auth0 incompleta' }, { status: 500 });
     }
 
@@ -36,7 +36,7 @@ export const POST = async (req: Request) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         grant_type: 'password',
-        client_id: process.env.AUTH0_CLIENT_ID,
+        client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
         client_secret: process.env.AUTH0_CLIENT_SECRET,
         username: email,
         password: decryptedPassword,
