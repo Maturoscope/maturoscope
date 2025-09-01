@@ -1,5 +1,48 @@
 {
   "EXAMPLE": {
     "TITLE": "Titre"
+  },
+  "LANGUAJES": {
+    "TITLE": "Changer de langue", 
+    "EN": "Anglais",
+    "FR": "Français"
+  },
+  "LOGIN": {
+    "PAGE": {
+      "TITLE": "Connectez-vous à votre compte",
+      "SUBTITLE": "Entrez votre e-mail ci-dessous pour vous connecter à votre compte.",
+      "EMAIL_LABEL": "E-mail",
+      "PASSWORD_LABEL": "Mot de passe",
+      "FORGOT_PASSWORD": "Mot de passe oublié?",
+      "REMEMBER_ME": "Se souvenir de moi",
+      "LOGIN_BUTTON": "Se connecter",
+      "LOGIN_SUCCESS": "Connexion réussie !",
+      "INVALID_CREDENTIALS": "E-mail ou mot de passe invalide."
+    },
+    "BLOCKED_ACCOUNT": {
+      "TITLE": "Votre connexion a été bloquée",
+      "MESSAGE": "Votre compte a été bloqué après plusieurs tentatives de connexion consécutives.",
+      "EMAIL_SENT": "Nous vous avons envoyé une notification par e-mail avec des instructions sur la façon de le débloquer.",
+      "GO_BACK_TO": "Retour à",
+      "SIGN_IN": "Se connecter"
+    },
+    "RESET_PASSWORD": {
+      "TITLE": "Réinitialiser votre mot de passe",
+      "SUBTITLE": "Tapez votre adresse e-mail pour envoyer des instructions de réinitialisation de votre mot de passe dans votre boîte de réception.",
+      "EMAIL_LABEL": "E-mail",
+      "PLACEHOLDER": "Espace réservé",
+      "RESET_BUTTON": "Réinitialiser le mot de passe",
+      "GO_BACK_TO": "Retour à"
+    },
+    "ERRORS": {
+      "INVALID_EMAIL": "Entrez une adresse e-mail valide.",
+      "EMAIL_NOT_FOUND": "Cet e-mail n'existe pas dans notre base de données."
+    },
+    "CHECK_INBOX": {
+      "TITLE": "Vérifiez votre boîte de réception",
+      "MESSAGE": "Nous vous avons envoyé un e-mail à [email]. Suivez les instructions pour accéder à votre compte.",
+      "BACK_TO_LOGIN": "Retour à la connexion",
+      "EDIT_EMAIL": "Modifier l'e-mail"
+    }
   }
 }

@@ -1,0 +1,45 @@
+import jwt from 'jsonwebtoken';
+import jwksClient from 'jwks-rsa';
+
+interface JwtPayload {
+  userName: string;
+  userEmail: string;
+  userId: string;
+  userPicture: string;
+  sub: string;
+  userRoles: string[];
+}
+
+const AUTH0_ISSUER = process.env.AUTH0_ISSUER_BASE_URL;
+
+const client = jwksClient({
+  jwksUri: `${AUTH0_ISSUER}/.well-known/jwks.json`,
+});
+
+function getKey(header: jwt.JwtHeader, callback: jwt.SigningKeyCallback) {
+  client.getSigningKey(header.kid, (err, key) => {
+    if (err) return callback(err);
+    const signingKey = key?.getPublicKey();
+    callback(null, signingKey);
+  });
+}
+
+export function verifyToken(token: string): Promise<JwtPayload | string> {
+  return new Promise((resolve, reject) => {
+    jwt.verify(
+      token,
+      getKey,
+      {
+        algorithms: ['RS256'],
+      },
+      (err, decoded) => {
+        if (err) return resolve({} as JwtPayload);
+        if (decoded) {
+          resolve(decoded as JwtPayload);
+        } else {
+          reject(new Error('Token decoding failed'));
+        }
+      },
+    );
+  });
+}
