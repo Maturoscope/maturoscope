@@ -1,38 +1,13 @@
-"use client";
+import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { useTranslation } from "react-i18next";
-import { useBrowserLanguageState } from "./hooks/contexts/useBrowserLanguage";
+export default async function HomePage() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('token');
 
-export default function Home() {
-  const { t } = useTranslation("EXAMPLE");
-  const { handleBrowserLanguage } = useBrowserLanguageState();
-
-  const handleClick = (key: string) => {
-    handleBrowserLanguage(key);
-  };
-
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
- 
-      <h1>{t("TITLE")}</h1>
-      <Button variant="destructive" onClick={() => handleClick("EN")}>Click me</Button>
-      <Button variant="outline" onClick={() => handleClick("ES")}>Click me</Button>
-      <Button variant="outline" onClick={() => handleClick("FR")}>Click me</Button>
-
-
-      </main>
-
-    </div>
-  );
+  if (token) {
+    redirect('/dashboard');
+  } else {
+    redirect('/login');
+  }
 }
