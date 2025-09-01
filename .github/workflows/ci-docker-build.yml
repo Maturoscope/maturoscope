@@ -235,37 +235,32 @@ jobs:
       - name: Log in to OVH Harbor
         run: echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ env.REGISTRY }} -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
 
-      - name: Set environment variables
-        id: env-vars
-        run: |
-          # Use environment determined in previous step
-          if [[ "${{ steps.vars.outputs.environment }}" == "production" ]]; then
-            # PRODUCTION
-            echo "AUTH0_CLIENT_SECRET=${{ secrets.PROD_AUTH0_CLIENT_SECRET }}" >> $GITHUB_OUTPUT
-            echo "AUTH0_SECRET=${{ secrets.PROD_AUTH0_SECRET }}" >> $GITHUB_OUTPUT
-            echo "PRIVATE_KEY=${{ secrets.PROD_PRIVATE_KEY }}" >> $GITHUB_OUTPUT
-            echo "PUBLIC_KEY=${{ secrets.PROD_PUBLIC_KEY }}" >> $GITHUB_OUTPUT
-          else
-            # STAGING (for staging and develop branches)
-            echo "AUTH0_CLIENT_SECRET=${{ secrets.STAGING_AUTH0_CLIENT_SECRET }}" >> $GITHUB_OUTPUT
-            echo "AUTH0_SECRET=${{ secrets.STAGING_AUTH0_SECRET }}" >> $GITHUB_OUTPUT  
-            echo "PRIVATE_KEY=${{ secrets.STAGING_PRIVATE_KEY }}" >> $GITHUB_OUTPUT
-            echo "PUBLIC_KEY=${{ secrets.STAGING_PUBLIC_KEY }}" >> $GITHUB_OUTPUT
-          fi
-          
-          echo "🔧 Building for: ${{ steps.vars.outputs.environment }}"
-
       - name: Build & Push Dashboard Image
         run: |
           echo "🚀 Building Dashboard for ${{ steps.vars.outputs.environment }} environment..."
           
+          # Set environment-specific variables directly without using GITHUB_OUTPUT
+          if [[ "${{ steps.vars.outputs.environment }}" == "production" ]]; then
+            AUTH0_CLIENT_SECRET="${{ secrets.PROD_AUTH0_CLIENT_SECRET }}"
+            AUTH0_SECRET="${{ secrets.PROD_AUTH0_SECRET }}"
+            PRIVATE_KEY="${{ secrets.PROD_PRIVATE_KEY }}"
+            PUBLIC_KEY="${{ secrets.PROD_PUBLIC_KEY }}"
+            echo "🔧 Using PRODUCTION secrets"
+          else
+            AUTH0_CLIENT_SECRET="${{ secrets.STAGING_AUTH0_CLIENT_SECRET }}"
+            AUTH0_SECRET="${{ secrets.STAGING_AUTH0_SECRET }}"
+            PRIVATE_KEY="${{ secrets.STAGING_PRIVATE_KEY }}"
+            PUBLIC_KEY="${{ secrets.STAGING_PUBLIC_KEY }}"
+            echo "🔧 Using STAGING secrets"
+          fi
+          
           docker build \
             --file apps/dashboard/Dockerfile \
             --tag ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:${{ steps.vars.outputs.TAG }} \
-            --build-arg AUTH0_CLIENT_SECRET="${{ steps.env-vars.outputs.AUTH0_CLIENT_SECRET }}" \
-            --build-arg AUTH0_SECRET="${{ steps.env-vars.outputs.AUTH0_SECRET }}" \
-            --build-arg PRIVATE_KEY="${{ steps.env-vars.outputs.PRIVATE_KEY }}" \
-            --build-arg PUBLIC_KEY="${{ steps.env-vars.outputs.PUBLIC_KEY }}" \
+            --build-arg AUTH0_CLIENT_SECRET="$AUTH0_CLIENT_SECRET" \
+            --build-arg AUTH0_SECRET="$AUTH0_SECRET" \
+            --build-arg PRIVATE_KEY="$PRIVATE_KEY" \
+            --build-arg PUBLIC_KEY="$PUBLIC_KEY" \
             --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
             .
