@@ -23,9 +23,9 @@ jobs:
   check-changes:
     runs-on: ubuntu-latest
     outputs:
-      api-changed: ${{ steps.filter.outputs.api == 'true' || steps.filter.outputs.shared == 'true' }}
-      app-changed: ${{ steps.filter.outputs.app == 'true' || steps.filter.outputs.shared == 'true' }}
-      dashboard-changed: ${{ steps.filter.outputs.dashboard == 'true' || steps.filter.outputs.shared == 'true' }}
+      api-changed: ${{ steps.filter.outputs.api == 'true' }}
+      app-changed: ${{ steps.filter.outputs.app == 'true' }}
+      dashboard-changed: ${{ steps.filter.outputs.dashboard == 'true' }}
       shared-changed: ${{ steps.filter.outputs.shared }}
     
     steps:
@@ -72,9 +72,9 @@ jobs:
           echo "Shared changed: ${{ steps.filter.outputs.shared }}"
           echo ""
           echo "📊 Final build decisions:"
-          echo "Will build API: ${{ steps.filter.outputs.api == 'true' || steps.filter.outputs.shared == 'true' }}"
-          echo "Will build App: ${{ steps.filter.outputs.app == 'true' || steps.filter.outputs.shared == 'true' }}"
-          echo "Will build Dashboard: ${{ steps.filter.outputs.dashboard == 'true' || steps.filter.outputs.shared == 'true' }}"
+          echo "Will build API: ${{ steps.filter.outputs.api == 'true' }}"
+          echo "Will build App: ${{ steps.filter.outputs.app == 'true' }}"
+          echo "Will build Dashboard: ${{ steps.filter.outputs.dashboard == 'true' }}"
           echo ""
           echo "📁 Changed files:"
           git diff --name-only ${{ github.event.before }} ${{ github.sha }} || echo "No diff available"
@@ -294,6 +294,9 @@ jobs:
           echo "  App changed: ${{ needs.check-changes.outputs.app-changed }}"
           echo "  Dashboard changed: ${{ needs.check-changes.outputs.dashboard-changed }}"
           echo "  Shared dependencies changed: ${{ needs.check-changes.outputs.shared-changed }}"
+          echo ""
+          echo "🎯 Build Strategy: Apps only build when their specific code changes"
+          echo "   (Shared deps like yarn.lock no longer trigger all builds)"
           echo ""
           echo "🏗️ Build Results:"
           echo "  API: ${{ needs.build-api.result || 'skipped' }}"
