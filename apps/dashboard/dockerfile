@@ -82,6 +82,22 @@
     ARG NODE_ENV=production
     ENV NODE_ENV=${NODE_ENV}
     
+    # Auth0 variables and RSA keys need to be available at runtime
+    ARG AUTH0_CLIENT_SECRET
+    ARG AUTH0_SECRET
+    ARG PRIVATE_KEY
+    ARG PUBLIC_KEY
+    ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+    ARG NEXT_PUBLIC_GATEWAY_URL
+    
+    # Set environment variables for runtime
+    ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
+    ENV AUTH0_SECRET=$AUTH0_SECRET
+    ENV PRIVATE_KEY=$PRIVATE_KEY
+    ENV PUBLIC_KEY=$PUBLIC_KEY
+    ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+    ENV NEXT_PUBLIC_GATEWAY_URL=$NEXT_PUBLIC_GATEWAY_URL
+    
     # Create non-root user
     RUN addgroup --system --gid 1001 dashboard \
         && adduser --system --uid 1001 dashboard
