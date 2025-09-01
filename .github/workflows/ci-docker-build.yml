@@ -5,10 +5,12 @@ on:
     branches:
       - staging
       - develop
+      - main
   pull_request:
     branches:
       - staging
       - develop
+      - main
 
 permissions:
   contents: read
@@ -21,15 +23,22 @@ jobs:
   check-changes:
     runs-on: ubuntu-latest
     outputs:
-      api-changed: ${{ steps.filter.outputs.api }}
-      app-changed: ${{ steps.filter.outputs.app }}
-      dashboard-changed: ${{ steps.filter.outputs.dashboard }}
+      api-changed: ${{ steps.filter.outputs.api == 'true' || steps.filter.outputs.shared == 'true' }}
+      app-changed: ${{ steps.filter.outputs.app == 'true' || steps.filter.outputs.shared == 'true' }}
+      dashboard-changed: ${{ steps.filter.outputs.dashboard == 'true' || steps.filter.outputs.shared == 'true' }}
+      shared-changed: ${{ steps.filter.outputs.shared }}
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Skip on draft PRs
+        if: github.event_name == 'pull_request' && github.event.pull_request.draft == true
+        run: |
+          echo "⏭️ Skipping CI for draft PR"
+          exit 0
 
       - name: Check for changes
         id: filter
@@ -38,22 +47,21 @@ jobs:
           filters: |
             api:
               - 'apps/api/**'
-              - 'packages/**'
-              - 'package.json'
-              - 'yarn.lock'
-              - 'turbo.json'
+              - 'apps/api/package.json'
+              - 'apps/api/Dockerfile'
             app:
               - 'apps/app/**'
-              - 'packages/**'
-              - 'package.json'
-              - 'yarn.lock'
-              - 'turbo.json'
+              - 'apps/app/package.json'
+              - 'apps/app/Dockerfile'
             dashboard:
               - 'apps/dashboard/**'
-              - 'packages/**'
+              - 'apps/dashboard/package.json'
+              - 'apps/dashboard/Dockerfile'
+            shared:
               - 'package.json'
               - 'yarn.lock'
               - 'turbo.json'
+              - 'packages/**'
 
       - name: Debug changes
         run: |
@@ -61,6 +69,12 @@ jobs:
           echo "API changed: ${{ steps.filter.outputs.api }}"
           echo "App changed: ${{ steps.filter.outputs.app }}"
           echo "Dashboard changed: ${{ steps.filter.outputs.dashboard }}"
+          echo "Shared changed: ${{ steps.filter.outputs.shared }}"
+          echo ""
+          echo "📊 Final build decisions:"
+          echo "Will build API: ${{ steps.filter.outputs.api == 'true' || steps.filter.outputs.shared == 'true' }}"
+          echo "Will build App: ${{ steps.filter.outputs.app == 'true' || steps.filter.outputs.shared == 'true' }}"
+          echo "Will build Dashboard: ${{ steps.filter.outputs.dashboard == 'true' || steps.filter.outputs.shared == 'true' }}"
           echo ""
           echo "📁 Changed files:"
           git diff --name-only ${{ github.event.before }} ${{ github.sha }} || echo "No diff available"
@@ -71,17 +85,29 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.vars.outputs.TAG }}
+      environment: ${{ steps.vars.outputs.environment }}
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set tag
+      - name: Set tag and environment
         id: vars
         run: |
           SHORT_SHA=$(git rev-parse --short $GITHUB_SHA)
           TS=$(date -u +%Y%m%d-%H%M%S)
-          echo "TAG=staging-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          
+          # Determine environment and create appropriate tag
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            ENVIRONMENT="prod"
+            echo "environment=production" >> $GITHUB_OUTPUT
+          else
+            ENVIRONMENT="staging"
+            echo "environment=staging" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "TAG=${ENVIRONMENT}-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "🏷️ API Generated tag: ${ENVIRONMENT}-${TS}-${SHORT_SHA}"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -120,17 +146,29 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.vars.outputs.TAG }}
+      environment: ${{ steps.vars.outputs.environment }}
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set tag
+      - name: Set tag and environment
         id: vars
         run: |
           SHORT_SHA=$(git rev-parse --short $GITHUB_SHA)
           TS=$(date -u +%Y%m%d-%H%M%S)
-          echo "TAG=staging-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          
+          # Determine environment and create appropriate tag
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            ENVIRONMENT="prod"
+            echo "environment=production" >> $GITHUB_OUTPUT
+          else
+            ENVIRONMENT="staging"
+            echo "environment=staging" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "TAG=${ENVIRONMENT}-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "🏷️ App Generated tag: ${ENVIRONMENT}-${TS}-${SHORT_SHA}"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -167,17 +205,29 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.vars.outputs.TAG }}
+      environment: ${{ steps.vars.outputs.environment }}
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set tag
+      - name: Set tag and environment
         id: vars
         run: |
           SHORT_SHA=$(git rev-parse --short $GITHUB_SHA)
           TS=$(date -u +%Y%m%d-%H%M%S)
-          echo "TAG=staging-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          
+          # Determine environment and create appropriate tag
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            ENVIRONMENT="prod"
+            echo "environment=production" >> $GITHUB_OUTPUT
+          else
+            ENVIRONMENT="staging"
+            echo "environment=staging" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "TAG=${ENVIRONMENT}-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "🏷️ Generated tag: ${ENVIRONMENT}-${TS}-${SHORT_SHA}"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -185,11 +235,37 @@ jobs:
       - name: Log in to OVH Harbor
         run: echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ env.REGISTRY }} -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
 
+      - name: Set environment variables
+        id: env-vars
+        run: |
+          # Use environment determined in previous step
+          if [[ "${{ steps.vars.outputs.environment }}" == "production" ]]; then
+            # PRODUCTION
+            echo "AUTH0_CLIENT_SECRET=${{ secrets.PROD_AUTH0_CLIENT_SECRET }}" >> $GITHUB_OUTPUT
+            echo "AUTH0_SECRET=${{ secrets.PROD_AUTH0_SECRET }}" >> $GITHUB_OUTPUT
+            echo "PRIVATE_KEY=${{ secrets.PROD_PRIVATE_KEY }}" >> $GITHUB_OUTPUT
+            echo "PUBLIC_KEY=${{ secrets.PROD_PUBLIC_KEY }}" >> $GITHUB_OUTPUT
+          else
+            # STAGING (for staging and develop branches)
+            echo "AUTH0_CLIENT_SECRET=${{ secrets.STAGING_AUTH0_CLIENT_SECRET }}" >> $GITHUB_OUTPUT
+            echo "AUTH0_SECRET=${{ secrets.STAGING_AUTH0_SECRET }}" >> $GITHUB_OUTPUT  
+            echo "PRIVATE_KEY=${{ secrets.STAGING_PRIVATE_KEY }}" >> $GITHUB_OUTPUT
+            echo "PUBLIC_KEY=${{ secrets.STAGING_PUBLIC_KEY }}" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "🔧 Building for: ${{ steps.vars.outputs.environment }}"
+
       - name: Build & Push Dashboard Image
         run: |
+          echo "🚀 Building Dashboard for ${{ steps.vars.outputs.environment }} environment..."
+          
           docker build \
             --file apps/dashboard/Dockerfile \
             --tag ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:${{ steps.vars.outputs.TAG }} \
+            --build-arg AUTH0_CLIENT_SECRET="${{ steps.env-vars.outputs.AUTH0_CLIENT_SECRET }}" \
+            --build-arg AUTH0_SECRET="${{ steps.env-vars.outputs.AUTH0_SECRET }}" \
+            --build-arg PRIVATE_KEY="${{ steps.env-vars.outputs.PRIVATE_KEY }}" \
+            --build-arg PUBLIC_KEY="${{ steps.env-vars.outputs.PUBLIC_KEY }}" \
             --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
             .
@@ -214,22 +290,28 @@ jobs:
     if: always()
     
     steps:
-      - name: Build Summary
+      - name: Smart Build Summary
         run: |
-          echo "🚀 Smart Build Summary"
-          echo "======================"
-          echo "API changed: ${{ needs.check-changes.outputs.api-changed }}"
-          echo "App changed: ${{ needs.check-changes.outputs.app-changed }}"
-          echo "Dashboard changed: ${{ needs.check-changes.outputs.dashboard-changed }}"
+          echo "🚀 Optimized CI Build Summary"
+          echo "=============================="
+          echo "📊 Change Detection:"
+          echo "  API changed: ${{ needs.check-changes.outputs.api-changed }}"
+          echo "  App changed: ${{ needs.check-changes.outputs.app-changed }}"
+          echo "  Dashboard changed: ${{ needs.check-changes.outputs.dashboard-changed }}"
+          echo "  Shared dependencies changed: ${{ needs.check-changes.outputs.shared-changed }}"
           echo ""
-          echo "Build Results:"
-          echo "API: ${{ needs.build-api.result || 'skipped' }}"
-          echo "App: ${{ needs.build-app.result || 'skipped' }}"
-          echo "Dashboard: ${{ needs.build-dashboard.result || 'skipped' }}"
+          echo "🏗️ Build Results:"
+          echo "  API: ${{ needs.build-api.result || 'skipped' }}"
+          echo "  App: ${{ needs.build-app.result || 'skipped' }}"
+          echo "  Dashboard: ${{ needs.build-dashboard.result || 'skipped' }}"
           echo ""
-          echo "Generated Tags:"
-          echo "API: ${{ needs.build-api.outputs.tag || 'N/A' }}"
-          echo "App: ${{ needs.build-app.outputs.tag || 'N/A' }}"
-          echo "Dashboard: ${{ needs.build-dashboard.outputs.tag || 'N/A' }}"
+          echo "🏷️ Generated Tags:"
+          echo "  API: ${{ needs.build-api.outputs.tag || 'N/A' }}"
+          echo "  App: ${{ needs.build-app.outputs.tag || 'N/A' }}"
+          echo "  Dashboard: ${{ needs.build-dashboard.outputs.tag || 'N/A' }}"
           echo ""
-          echo "✅ Smart build completed!"
+          echo "🌍 Target Environment:"
+          echo "  Branch: ${{ github.ref }}"
+          echo "  Environment: ${{ needs.build-dashboard.outputs.environment || needs.build-api.outputs.environment || needs.build-app.outputs.environment || 'N/A' }}"
+          echo ""
+          echo "✅ Optimized build completed - only changed apps were built!"

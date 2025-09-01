@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export const GET = async () => {
-  const publicKeyPem = process.env.NEXT_PUBLIC_PUBLIC_KEY?.replace(/\\n/g, '\n');
+  const publicKeyPem = process.env.PUBLIC_KEY?.replace(/\\n/g, '\n');
 
   if (!publicKeyPem) {
     return new NextResponse('Public key not found', { status: 500 });

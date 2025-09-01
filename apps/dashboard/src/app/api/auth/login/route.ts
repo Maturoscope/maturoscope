@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import forge from 'node-forge';
 
-const privateKeyPem = process.env.NEXT_PUBLIC_PRIVATE_KEY;
+const privateKeyPem = process.env.PRIVATE_KEY;
 
 export const POST = async (req: Request) => {
   try {
@@ -24,7 +24,7 @@ export const POST = async (req: Request) => {
 
     // Verificar que las variables de entorno estén configuradas
     if (!privateKeyPem) {
-      console.error('NEXT_PUBLIC_PRIVATE_KEY no está configurada')
+      console.error('PRIVATE_KEY no está configurada')
       return NextResponse.json({ error: 'Configuración de servidor incompleta' }, { status: 500 });
     }
 

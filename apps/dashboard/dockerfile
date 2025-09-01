@@ -13,75 +13,87 @@
     RUN corepack enable
     
     # --------------------------------------------------------------------------------------------------------------------
-    # PRUNNER (Optimización con Turbo)
+    # PRUNER (Optimization with Turbo)
     # --------------------------------------------------------------------------------------------------------------------
     FROM base AS prunner
     
-    # Copiar solo lo necesario para el prune
+    # Copy only what's needed for the prune
     COPY package.json yarn.lock ./
     COPY turbo.json ./
     COPY .yarnrc.yml ./
     COPY apps/dashboard/package.json ./apps/dashboard/
     
-    # Instalar dependencias necesarias para turbo prune
+    # Install dependencies needed for turbo prune
     RUN yarn install
     
-    # Copiar el código fuente para el prune
+    # Copy source code for the prune
     COPY . .
     
-    # Prune para generar archivos mínimos para la instalación en Docker
+    # Prune to generate minimal files for Docker installation
     RUN yarn turbo prune dashboard --docker
     
     # --------------------------------------------------------------------------------------------------------------------
-    # INSTALLER (Instalación y Build)
+    # INSTALLER (Installation and Build)
     # --------------------------------------------------------------------------------------------------------------------
     FROM base AS installer
     
     WORKDIR /app
     
-    # Copiar package.json y lockfiles resultantes del prune
+    # Copy package.json and lockfiles resulting from prune
     COPY --from=prunner /app/out/json/ .
     COPY --from=prunner /app/out/yarn.lock ./yarn.lock
     
-    # Instalar dependencias
+    # Install dependencies
     RUN yarn install --immutable
     
-    # Copiar el resto del código pruned
+    # Copy the rest of the pruned code
     COPY --from=prunner /app/out/full/ .
     
-    # Configuración de entorno
+    # Environment configuration
     ARG NODE_ENV=production
     ENV NODE_ENV=${NODE_ENV}
     
-    # Variables de entorno para Next.js (ejemplo)
+    # Environment variables for Next.js
     ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
     ARG NEXT_PUBLIC_GATEWAY_URL
     ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
     ENV NEXT_PUBLIC_GATEWAY_URL=$NEXT_PUBLIC_GATEWAY_URL
     
-    # Construir solo el servicio de dashboard
+    # Auth0 variables and RSA keys (environment-specific)
+    ARG AUTH0_CLIENT_SECRET
+    ARG AUTH0_SECRET
+    ARG PRIVATE_KEY
+    ARG PUBLIC_KEY
+    
+    # Embed secrets at build time for Next.js
+    ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
+    ENV AUTH0_SECRET=$AUTH0_SECRET
+    ENV PRIVATE_KEY=$PRIVATE_KEY
+    ENV PUBLIC_KEY=$PUBLIC_KEY
+    
+    # Build only the dashboard service
     RUN yarn turbo run build --filter=dashboard
     
     # --------------------------------------------------------------------------------------------------------------------
-    # RUNNER (Ejecución final)
+    # RUNNER (Final execution)
     # --------------------------------------------------------------------------------------------------------------------
     FROM base AS runner
     
     ARG NODE_ENV=production
     ENV NODE_ENV=${NODE_ENV}
     
-    # Crear usuario no root
+    # Create non-root user
     RUN addgroup --system --gid 1001 dashboard \
         && adduser --system --uid 1001 dashboard
     
     USER dashboard
     
-    # Copiar solo archivos necesarios para producción
+    # Copy only necessary files for production
     COPY --from=installer --chown=dashboard:dashboard /app .
     
-    # Exponer puerto del dashboard
+    # Expose dashboard port
     EXPOSE 3001
     
-    # Comando de inicio
+    # Startup command
     CMD ["yarn", "turbo", "run", "start", "--filter=dashboard"]
     
