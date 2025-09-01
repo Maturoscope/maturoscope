@@ -2,7 +2,7 @@ import { ROLES_MAPPED } from '@/app/utils/getUserRoles';
 import { NextResponse } from 'next/server';
 import forge from 'node-forge';
 
-const privateKeyPem = process.env.PRIVATE_KEY;
+const privateKeyPem = process.env.NEXT_PUBLIC_PRIVATE_KEY;
 
 export const POST = async (req: Request) => {
   try {
