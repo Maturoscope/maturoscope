@@ -8,16 +8,28 @@ export const POST = async (req: Request) => {
   try {
     const { email, password, firstName, lastName, roles } = await req.json();
 
+    // Forzar lectura de variables en runtime para Kubernetes (usando bracket notation)
+    const clientSecret = process.env['AUTH0_CLIENT_SECRET'] || process.env['NEXT_PUBLIC_AUTH0_CLIENT_SECRET'];
+    const issuerUrl = process.env['NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL'];
+    const clientId = process.env['NEXT_PUBLIC_AUTH0_CLIENT_ID'];
+
+    // DEBUG: Ver qué variables están disponibles en Kubernetes
+    console.log('=== DEBUG REGISTER KUBERNETES ENV ===');
+    console.log('clientSecret exists:', !!clientSecret);
+    console.log('issuerUrl:', issuerUrl);
+    console.log('clientId:', clientId);
+    console.log('=====================================');
+
     const privateKey = forge.pki.privateKeyFromPem(privateKeyPem || '');
     const decryptedPassword = privateKey.decrypt(forge.util.decode64(password));
 
-    const authResponse = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`, {
+    const authResponse = await fetch(`${issuerUrl}/oauth/token`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
-        client_secret: process.env.AUTH0_CLIENT_SECRET,
-        audience: `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/`,
+        client_id: clientId,
+        client_secret: clientSecret,
+        audience: `${issuerUrl}/api/v2/`,
         grant_type: 'client_credentials',
       }),
     });
@@ -32,7 +44,7 @@ export const POST = async (req: Request) => {
 
     const managementToken = authData.access_token;
 
-    const userResponse = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/users`, {
+    const userResponse = await fetch(`${issuerUrl}/api/v2/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -53,7 +65,7 @@ export const POST = async (req: Request) => {
     }
     const rolesToAssign = roles?.map((role: keyof typeof ROLES_MAPPED) => ROLES_MAPPED[role]);
 
-    const assignRolesResponse = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/users/${userId}/roles`, {
+    const assignRolesResponse = await fetch(`${issuerUrl}/api/v2/users/${userId}/roles`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
