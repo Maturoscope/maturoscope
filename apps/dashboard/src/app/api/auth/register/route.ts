@@ -1,14 +1,30 @@
 import { ROLES_MAPPED } from '@/app/utils/getUserRoles';
 import { NextResponse } from 'next/server';
 import forge from 'node-forge';
-
-const privateKeyPem = process.env.PRIVATE_KEY;
+import fs from 'fs';
+import path from 'path';
 
 export const POST = async (req: Request) => {
   try {
     const { email, password, firstName, lastName, roles } = await req.json();
 
-    const privateKey = forge.pki.privateKeyFromPem(privateKeyPem || '');
+    // Leer la clave privada desde el archivo
+    const privateKeyPath = process.env.PRIVATE_KEY_PATH;
+    if (!privateKeyPath) {
+      console.error('PRIVATE_KEY_PATH no está configurada');
+      return NextResponse.json({ error: 'Configuración de servidor incompleta' }, { status: 500 });
+    }
+
+    let privateKeyPem: string;
+    try {
+      const fullPath = path.resolve(process.cwd(), privateKeyPath);
+      privateKeyPem = fs.readFileSync(fullPath, 'utf8');
+    } catch (error) {
+      console.error('Error leyendo la clave privada:', error);
+      return NextResponse.json({ error: 'Error de configuración del servidor' }, { status: 500 });
+    }
+
+    const privateKey = forge.pki.privateKeyFromPem(privateKeyPem);
     const decryptedPassword = privateKey.decrypt(forge.util.decode64(password));
 
     const authResponse = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, {

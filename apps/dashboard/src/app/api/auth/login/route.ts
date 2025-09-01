@@ -1,16 +1,27 @@
 import { NextResponse } from 'next/server';
 import forge from 'node-forge';
-
-const privateKeyPem = process.env.PRIVATE_KEY;
+import fs from 'fs';
+import path from 'path';
 
 export const POST = async (req: Request) => {
   try {
     const { email, password } = await req.json();
 
     // Verificar que las variables de entorno estén configuradas
-    if (!privateKeyPem) {
-      console.error('PRIVATE_KEY no está configurada')
+    const privateKeyPath = process.env.PRIVATE_KEY_PATH;
+    if (!privateKeyPath) {
+      console.error('PRIVATE_KEY_PATH no está configurada')
       return NextResponse.json({ error: 'Configuración de servidor incompleta' }, { status: 500 });
+    }
+
+    // Leer la clave privada desde el archivo
+    let privateKeyPem: string;
+    try {
+      const fullPath = path.resolve(process.cwd(), privateKeyPath);
+      privateKeyPem = fs.readFileSync(fullPath, 'utf8');
+    } catch (error) {
+      console.error('Error leyendo la clave privada:', error);
+      return NextResponse.json({ error: 'Error de configuración del servidor' }, { status: 500 });
     }
 
     if (!process.env.AUTH0_ISSUER_BASE_URL) {
