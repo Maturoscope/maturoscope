@@ -75,6 +75,12 @@
     ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
     ENV AUTH0_SECRET=$AUTH0_SECRET
     
+    # Save secrets to files for runner stage (create /tmp/secrets directory)
+    RUN mkdir -p /tmp/secrets && \
+        echo "$AUTH0_CLIENT_SECRET" > /tmp/secrets/auth0_client_secret && \
+        echo "$AUTH0_SECRET" > /tmp/secrets/auth0_secret && \
+        echo "Secrets saved to files for runner stage"
+    
     # Build only the dashboard service
     RUN yarn turbo run build --filter=dashboard
     
@@ -82,24 +88,39 @@
     # RUNNER (Final execution)
     # --------------------------------------------------------------------------------------------------------------------
     FROM base AS runner
-    
-    ARG NODE_ENV=production
-    ENV NODE_ENV=${NODE_ENV}
-    
-    # Auth0 variables must be available at runtime
-    ARG AUTH0_CLIENT_SECRET
-    ARG AUTH0_SECRET
-    
-    # DEBUG: Check if args made it to runner stage (with timestamp to avoid cache)
-    RUN echo "=== RUNNER DEBUG $(date) ===" && \
-        echo "AUTH0_CLIENT_SECRET length: ${#AUTH0_CLIENT_SECRET}" && \
-        echo "AUTH0_SECRET length: ${#AUTH0_SECRET}" && \
-        echo "AUTH0_CLIENT_SECRET value: ${AUTH0_CLIENT_SECRET:0:8}..." && \
-        echo "AUTH0_SECRET value: ${AUTH0_SECRET:0:8}..." && \
-        echo "=================="
-    
-    ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
-    ENV AUTH0_SECRET=$AUTH0_SECRET
+
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+# Copy secrets from installer stage
+COPY --from=installer /tmp/secrets /tmp/secrets
+
+# Read secrets from files and set as environment variables
+RUN echo "=== RUNNER DEBUG $(date) ===" && \
+    echo "Reading secrets from files..." && \
+    if [ -f "/tmp/secrets/auth0_client_secret" ]; then \
+        export AUTH0_CLIENT_SECRET="$(cat /tmp/secrets/auth0_client_secret)" && \
+        echo "AUTH0_CLIENT_SECRET file found, length: ${#AUTH0_CLIENT_SECRET}"; \
+    else \
+        echo "AUTH0_CLIENT_SECRET file NOT found"; \
+    fi && \
+    if [ -f "/tmp/secrets/auth0_secret" ]; then \
+        export AUTH0_SECRET="$(cat /tmp/secrets/auth0_secret)" && \
+        echo "AUTH0_SECRET file found, length: ${#AUTH0_SECRET}"; \
+    else \
+        echo "AUTH0_SECRET file NOT found"; \
+    fi && \
+    echo "=================="
+
+# Set environment variables from files
+RUN AUTH0_CLIENT_SECRET="$(cat /tmp/secrets/auth0_client_secret 2>/dev/null || echo '')" && \
+    AUTH0_SECRET="$(cat /tmp/secrets/auth0_secret 2>/dev/null || echo '')" && \
+    echo "export AUTH0_CLIENT_SECRET='$AUTH0_CLIENT_SECRET'" > /tmp/env_vars.sh && \
+    echo "export AUTH0_SECRET='$AUTH0_SECRET'" >> /tmp/env_vars.sh && \
+    echo "Environment variables written to /tmp/env_vars.sh"
+
+# Clean up secrets files
+RUN rm -rf /tmp/secrets && echo "Secrets files cleaned up"
     
     # Create non-root user
     RUN addgroup --system --gid 1001 dashboard \
@@ -113,6 +134,6 @@
     # Expose dashboard port
     EXPOSE 3001
     
-    # Startup command
-    CMD ["yarn", "turbo", "run", "start", "--filter=dashboard"]
+    # Startup command that loads environment variables and shows debug info
+CMD ["sh", "-c", "source /tmp/env_vars.sh 2>/dev/null || true && echo '=== STARTUP ENV DEBUG ===' && echo \"AUTH0_CLIENT_SECRET loaded: $([ -n \"$AUTH0_CLIENT_SECRET\" ] && echo 'YES' || echo 'NO')\" && echo \"AUTH0_SECRET loaded: $([ -n \"$AUTH0_SECRET\" ] && echo 'YES' || echo 'NO')\" && echo \"AUTH0_CLIENT_SECRET length: ${#AUTH0_CLIENT_SECRET}\" && echo \"AUTH0_SECRET length: ${#AUTH0_SECRET}\" && echo '=======================' && yarn turbo run start --filter=dashboard"]
     
