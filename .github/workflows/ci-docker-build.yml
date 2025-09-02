@@ -240,15 +240,22 @@ jobs:
           echo "🚀 Building Dashboard for ${{ steps.vars.outputs.environment }} environment..."
           
           # Set environment-specific variables directly without using GITHUB_OUTPUT
+          echo "🔍 DEBUG: Detected environment: ${{ steps.vars.outputs.environment }}"
+          echo "🔍 DEBUG: Current branch: ${{ github.ref }}"
+          
           if [[ "${{ steps.vars.outputs.environment }}" == "production" ]]; then
             AUTH0_CLIENT_SECRET="${{ secrets.PROD_AUTH0_CLIENT_SECRET }}"
             AUTH0_SECRET="${{ secrets.PROD_AUTH0_SECRET }}"
             echo "🔧 Using PRODUCTION secrets"
+            echo "🔍 DEBUG: PROD_AUTH0_CLIENT_SECRET exists: $([ -n '${{ secrets.PROD_AUTH0_CLIENT_SECRET }}' ] && echo 'YES' || echo 'NO')"
           else
             AUTH0_CLIENT_SECRET="${{ secrets.STAGING_AUTH0_CLIENT_SECRET }}"
             AUTH0_SECRET="${{ secrets.STAGING_AUTH0_SECRET }}"
             echo "🔧 Using STAGING secrets"
+            echo "🔍 DEBUG: STAGING_AUTH0_CLIENT_SECRET exists: $([ -n '${{ secrets.STAGING_AUTH0_CLIENT_SECRET }}' ] && echo 'YES' || echo 'NO')"
           fi
+          
+          echo "🔍 DEBUG: Final AUTH0_CLIENT_SECRET length: ${#AUTH0_CLIENT_SECRET}"
           
           docker build \
             --file apps/dashboard/Dockerfile \
