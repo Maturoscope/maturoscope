@@ -63,6 +63,14 @@
     ARG AUTH0_CLIENT_SECRET
     ARG AUTH0_SECRET
     
+    # DEBUG: Check if build args are received (with timestamp to avoid cache)
+    RUN echo "=== BUILD DEBUG $(date) ===" && \
+        echo "AUTH0_CLIENT_SECRET length: ${#AUTH0_CLIENT_SECRET}" && \
+        echo "AUTH0_SECRET length: ${#AUTH0_SECRET}" && \
+        echo "AUTH0_CLIENT_SECRET value: ${AUTH0_CLIENT_SECRET:0:8}..." && \
+        echo "AUTH0_SECRET value: ${AUTH0_SECRET:0:8}..." && \
+        echo "=================="
+    
     # Embed secrets at build time for Next.js
     ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
     ENV AUTH0_SECRET=$AUTH0_SECRET
@@ -81,6 +89,15 @@
     # Auth0 variables must be available at runtime
     ARG AUTH0_CLIENT_SECRET
     ARG AUTH0_SECRET
+    
+    # DEBUG: Check if args made it to runner stage (with timestamp to avoid cache)
+    RUN echo "=== RUNNER DEBUG $(date) ===" && \
+        echo "AUTH0_CLIENT_SECRET length: ${#AUTH0_CLIENT_SECRET}" && \
+        echo "AUTH0_SECRET length: ${#AUTH0_SECRET}" && \
+        echo "AUTH0_CLIENT_SECRET value: ${AUTH0_CLIENT_SECRET:0:8}..." && \
+        echo "AUTH0_SECRET value: ${AUTH0_SECRET:0:8}..." && \
+        echo "=================="
+    
     ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
     ENV AUTH0_SECRET=$AUTH0_SECRET
     
