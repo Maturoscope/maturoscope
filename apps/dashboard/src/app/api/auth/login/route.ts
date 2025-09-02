@@ -11,22 +11,30 @@ export const POST = async (req: Request) => {
     const clientId = process.env['NEXT_PUBLIC_AUTH0_CLIENT_ID'];
     const audience = process.env['NEXT_PUBLIC_AUTH0_AUDIENCE'];
 
+    // DEBUG: Check if build-time variables are available in runtime
+    console.log('=== BUILD-TIME VARS DEBUG ===');
+    console.log('AUTH0_CLIENT_SECRET from env:', !!process.env.AUTH0_CLIENT_SECRET);
+    console.log('AUTH0_SECRET from env:', !!process.env.AUTH0_SECRET);
+    console.log('clientSecret (bracket notation):', !!clientSecret);
+    console.log('clientSecret length:', clientSecret?.length || 0);
+    console.log('============================');
+
     // Decrypt password using Web Crypto API
     const decryptedPassword = await decryptPassword(password, email);
 
     if (!issuerUrl) {
       console.error('NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL no está configurada')
-      return NextResponse.json({ error: 'Configuración de Auth0 incompleta' }, { status: 500 });
+      return NextResponse.json({ error: 'Configuración de Auth0 incompleta - NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL' }, { status: 500 });
     }
 
     if (!clientId) {
       console.error('NEXT_PUBLIC_AUTH0_CLIENT_ID no está configurada')
-      return NextResponse.json({ error: 'Configuración de Auth0 incompleta' }, { status: 500 });
+      return NextResponse.json({ error: 'Configuración de Auth0 incompleta - NEXT_PUBLIC_AUTH0_CLIENT_ID' }, { status: 500 });
     }
 
     if (!clientSecret) {
       console.error('AUTH0_CLIENT_SECRET no está configurada (intentó leer AUTH0_CLIENT_SECRET y NEXT_PUBLIC_AUTH0_CLIENT_SECRET)')
-      return NextResponse.json({ error: 'Configuración de Auth0 incompleta' }, { status: 500 });
+      return NextResponse.json({ error: 'Configuración de Auth0 incompleta - AUTH0_CLIENT_SECRET' }, { status: 500 });
     }
 
 

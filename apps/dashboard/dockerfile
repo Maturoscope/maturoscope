@@ -78,6 +78,12 @@
     ARG NODE_ENV=production
     ENV NODE_ENV=${NODE_ENV}
     
+    # Auth0 variables need to be available at runtime too
+    ARG AUTH0_CLIENT_SECRET
+    ARG AUTH0_SECRET
+    ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
+    ENV AUTH0_SECRET=$AUTH0_SECRET
+    
     # Create non-root user
     RUN addgroup --system --gid 1001 dashboard \
         && adduser --system --uid 1001 dashboard
