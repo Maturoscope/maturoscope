@@ -75,11 +75,7 @@
     ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
     ENV AUTH0_SECRET=$AUTH0_SECRET
     
-    # Save secrets to files for runner stage (create /tmp/secrets directory)
-    RUN mkdir -p /tmp/secrets && \
-        echo "$AUTH0_CLIENT_SECRET" > /tmp/secrets/auth0_client_secret && \
-        echo "$AUTH0_SECRET" > /tmp/secrets/auth0_secret && \
-        echo "Secrets saved to files for runner stage"
+    # Variables embedded for build time (Next.js build needs them)
     
     # Build only the dashboard service
     RUN yarn turbo run build --filter=dashboard
@@ -92,45 +88,17 @@
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
-# Copy secrets from installer stage
-COPY --from=installer /tmp/secrets /tmp/secrets
+# Auth0 variables available in runtime (direct approach like the example)
+ARG AUTH0_CLIENT_SECRET
+ARG AUTH0_SECRET
+ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
+ENV AUTH0_SECRET=$AUTH0_SECRET
 
-# Read secrets from files and set as environment variables
-RUN echo "=== RUNNER DEBUG $(date) ===" && \
-    echo "Reading secrets from files..." && \
-    if [ -f "/tmp/secrets/auth0_client_secret" ]; then \
-        export AUTH0_CLIENT_SECRET="$(cat /tmp/secrets/auth0_client_secret)" && \
-        echo "AUTH0_CLIENT_SECRET file found, length: ${#AUTH0_CLIENT_SECRET}"; \
-    else \
-        echo "AUTH0_CLIENT_SECRET file NOT found"; \
-    fi && \
-    if [ -f "/tmp/secrets/auth0_secret" ]; then \
-        export AUTH0_SECRET="$(cat /tmp/secrets/auth0_secret)" && \
-        echo "AUTH0_SECRET file found, length: ${#AUTH0_SECRET}"; \
-    else \
-        echo "AUTH0_SECRET file NOT found"; \
-    fi && \
-    echo "=================="
-
-# Create startup script that loads env vars and starts the app
-RUN AUTH0_CLIENT_SECRET="$(cat /tmp/secrets/auth0_client_secret 2>/dev/null || echo '')" && \
-    AUTH0_SECRET="$(cat /tmp/secrets/auth0_secret 2>/dev/null || echo '')" && \
-    echo '#!/bin/sh' > /tmp/start-dashboard.sh && \
-    echo 'echo "=== LOADING ENV VARS ==="' >> /tmp/start-dashboard.sh && \
-    echo "export AUTH0_CLIENT_SECRET='$AUTH0_CLIENT_SECRET'" >> /tmp/start-dashboard.sh && \
-    echo "export AUTH0_SECRET='$AUTH0_SECRET'" >> /tmp/start-dashboard.sh && \
-    echo 'echo "AUTH0_CLIENT_SECRET loaded: $([ -n \"$AUTH0_CLIENT_SECRET\" ] && echo \"YES\" || echo \"NO\")"' >> /tmp/start-dashboard.sh && \
-    echo 'echo "AUTH0_SECRET loaded: $([ -n \"$AUTH0_SECRET\" ] && echo \"YES\" || echo \"NO\")"' >> /tmp/start-dashboard.sh && \
-    echo 'echo "AUTH0_CLIENT_SECRET length: ${#AUTH0_CLIENT_SECRET}"' >> /tmp/start-dashboard.sh && \
-    echo 'echo "AUTH0_SECRET length: ${#AUTH0_SECRET}"' >> /tmp/start-dashboard.sh && \
-    echo 'echo "==========================="' >> /tmp/start-dashboard.sh && \
-    echo 'echo "Starting Next.js application..."' >> /tmp/start-dashboard.sh && \
-    echo 'exec yarn turbo run start --filter=dashboard' >> /tmp/start-dashboard.sh && \
-    chmod +x /tmp/start-dashboard.sh && \
-    echo "Startup script created with embedded variables"
-
-# Clean up secrets files
-RUN rm -rf /tmp/secrets && echo "Secrets files cleaned up"
+# Debug runtime variables
+RUN echo "=== RUNTIME ENV DEBUG $(date) ===" && \
+    echo "AUTH0_CLIENT_SECRET set: $([ -n '$AUTH0_CLIENT_SECRET' ] && echo 'YES' || echo 'NO')" && \
+    echo "AUTH0_SECRET set: $([ -n '$AUTH0_SECRET' ] && echo 'YES' || echo 'NO')" && \
+    echo "========================="
     
     # Create non-root user
     RUN addgroup --system --gid 1001 dashboard \
@@ -144,6 +112,6 @@ RUN rm -rf /tmp/secrets && echo "Secrets files cleaned up"
     # Expose dashboard port
     EXPOSE 3001
     
-    # Execute the startup script that exports variables and starts the app
-CMD ["/tmp/start-dashboard.sh"]
+    # Ultra simple startup like the second example  
+CMD ["sh", "-c", "env | grep AUTH0 && yarn turbo run start --filter=dashboard --env-mode=loose --force"]
     
