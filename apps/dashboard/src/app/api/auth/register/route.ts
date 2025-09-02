@@ -6,9 +6,10 @@ export const POST = async (req: Request) => {
   try {
     const { email, password, firstName, lastName, roles } = await req.json();
 
-    const clientSecret = process.env['AUTH0_CLIENT_SECRET'] || process.env['NEXT_PUBLIC_AUTH0_CLIENT_SECRET'];
-    const issuerUrl = process.env['NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL'];
-    const clientId = process.env['NEXT_PUBLIC_AUTH0_CLIENT_ID'];
+    // Read Auth0 configuration directly from environment variables
+    const clientSecret = process.env.AUTH0_CLIENT_SECRET;
+    const issuerUrl = process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL;
+    const clientId = process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID;
 
     const decryptedPassword = await decryptPassword(password, email);
 

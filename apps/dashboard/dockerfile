@@ -78,7 +78,7 @@
     ARG NODE_ENV=production
     ENV NODE_ENV=${NODE_ENV}
     
-    # Auth0 variables need to be available at runtime too
+    # Auth0 variables must be available at runtime
     ARG AUTH0_CLIENT_SECRET
     ARG AUTH0_SECRET
     ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET

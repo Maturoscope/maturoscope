@@ -5,19 +5,19 @@ export const POST = async (req: Request) => {
   try {
     const { email, password } = await req.json();
 
-    // Forzar lectura de variables en runtime para Kubernetes (usando bracket notation)
-    const clientSecret = process.env['AUTH0_CLIENT_SECRET'] || process.env['NEXT_PUBLIC_AUTH0_CLIENT_SECRET'];
-    const issuerUrl = process.env['NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL'];
-    const clientId = process.env['NEXT_PUBLIC_AUTH0_CLIENT_ID'];
-    const audience = process.env['NEXT_PUBLIC_AUTH0_AUDIENCE'];
+    // Read Auth0 configuration directly from environment variables
+    const clientSecret = process.env.AUTH0_CLIENT_SECRET;
+    const issuerUrl = process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL;
+    const clientId = process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID;
+    const audience = process.env.NEXT_PUBLIC_AUTH0_AUDIENCE;
 
-    // DEBUG: Check if build-time variables are available in runtime
-    console.log('=== BUILD-TIME VARS DEBUG ===');
-    console.log('AUTH0_CLIENT_SECRET from env:', !!process.env.AUTH0_CLIENT_SECRET);
-    console.log('AUTH0_SECRET from env:', !!process.env.AUTH0_SECRET);
-    console.log('clientSecret (bracket notation):', !!clientSecret);
-    console.log('clientSecret length:', clientSecret?.length || 0);
-    console.log('============================');
+    // DEBUG: Simple check of environment variables
+    console.log('=== ENV VARS DEBUG ===');
+    console.log('AUTH0_CLIENT_SECRET:', !!clientSecret);
+    console.log('issuerUrl:', !!issuerUrl);
+    console.log('clientId:', !!clientId);
+    console.log('audience:', !!audience);
+    console.log('==================');
 
     // Decrypt password using Web Crypto API
     const decryptedPassword = await decryptPassword(password, email);
