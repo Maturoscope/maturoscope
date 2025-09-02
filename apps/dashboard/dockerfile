@@ -112,12 +112,22 @@ RUN echo "=== RUNNER DEBUG $(date) ===" && \
     fi && \
     echo "=================="
 
-# Set environment variables from files
+# Create startup script that loads env vars and starts the app
 RUN AUTH0_CLIENT_SECRET="$(cat /tmp/secrets/auth0_client_secret 2>/dev/null || echo '')" && \
     AUTH0_SECRET="$(cat /tmp/secrets/auth0_secret 2>/dev/null || echo '')" && \
-    echo "export AUTH0_CLIENT_SECRET='$AUTH0_CLIENT_SECRET'" > /tmp/env_vars.sh && \
-    echo "export AUTH0_SECRET='$AUTH0_SECRET'" >> /tmp/env_vars.sh && \
-    echo "Environment variables written to /tmp/env_vars.sh"
+    echo '#!/bin/sh' > /tmp/start-dashboard.sh && \
+    echo 'echo "=== LOADING ENV VARS ==="' >> /tmp/start-dashboard.sh && \
+    echo "export AUTH0_CLIENT_SECRET='$AUTH0_CLIENT_SECRET'" >> /tmp/start-dashboard.sh && \
+    echo "export AUTH0_SECRET='$AUTH0_SECRET'" >> /tmp/start-dashboard.sh && \
+    echo 'echo "AUTH0_CLIENT_SECRET loaded: $([ -n \"$AUTH0_CLIENT_SECRET\" ] && echo \"YES\" || echo \"NO\")"' >> /tmp/start-dashboard.sh && \
+    echo 'echo "AUTH0_SECRET loaded: $([ -n \"$AUTH0_SECRET\" ] && echo \"YES\" || echo \"NO\")"' >> /tmp/start-dashboard.sh && \
+    echo 'echo "AUTH0_CLIENT_SECRET length: ${#AUTH0_CLIENT_SECRET}"' >> /tmp/start-dashboard.sh && \
+    echo 'echo "AUTH0_SECRET length: ${#AUTH0_SECRET}"' >> /tmp/start-dashboard.sh && \
+    echo 'echo "==========================="' >> /tmp/start-dashboard.sh && \
+    echo 'echo "Starting Next.js application..."' >> /tmp/start-dashboard.sh && \
+    echo 'exec yarn turbo run start --filter=dashboard' >> /tmp/start-dashboard.sh && \
+    chmod +x /tmp/start-dashboard.sh && \
+    echo "Startup script created with embedded variables"
 
 # Clean up secrets files
 RUN rm -rf /tmp/secrets && echo "Secrets files cleaned up"
@@ -134,6 +144,6 @@ RUN rm -rf /tmp/secrets && echo "Secrets files cleaned up"
     # Expose dashboard port
     EXPOSE 3001
     
-    # Startup command that loads environment variables and shows debug info
-CMD ["sh", "-c", "source /tmp/env_vars.sh 2>/dev/null || true && echo '=== STARTUP ENV DEBUG ===' && echo \"AUTH0_CLIENT_SECRET loaded: $([ -n \"$AUTH0_CLIENT_SECRET\" ] && echo 'YES' || echo 'NO')\" && echo \"AUTH0_SECRET loaded: $([ -n \"$AUTH0_SECRET\" ] && echo 'YES' || echo 'NO')\" && echo \"AUTH0_CLIENT_SECRET length: ${#AUTH0_CLIENT_SECRET}\" && echo \"AUTH0_SECRET length: ${#AUTH0_SECRET}\" && echo '=======================' && yarn turbo run start --filter=dashboard"]
+    # Execute the startup script that exports variables and starts the app
+CMD ["/tmp/start-dashboard.sh"]
     
