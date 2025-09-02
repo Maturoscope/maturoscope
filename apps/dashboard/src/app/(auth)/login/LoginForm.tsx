@@ -7,10 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import forge from "node-forge";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
+import { encryptPassword } from "@/app/utils/crypto";
 
 const isValidEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -30,7 +31,7 @@ export default function LoginForm({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [publicKey, setPublicKey] = useState<string | null>(null);
+
   const [errorEmail, setErrorEmail] = useState(false);
   const router = useRouter();
   const { t } = useTranslation("LOGIN");
@@ -40,28 +41,9 @@ export default function LoginForm({
     if (savedEmail) {
       setFormData((prev) => ({ ...prev, email: savedEmail, rememberMe: true }));
     }
-
-    const fetchPublicKey = async () => {
-      try {
-        await fetch("/api/auth/public-key")
-          .then((res) => res.text())
-          .then(setPublicKey)
-          .catch((err) => console.error("Error getting public key:", err));
-      } catch (err) {
-        console.error("Error getting public key:", err);
-      }
-    };
-    fetchPublicKey();
   }, []);
 
-  const encryptPassword = useCallback(
-    (password: string) => {
-      if (!publicKey) return password;
-      const rsa = forge.pki.publicKeyFromPem(publicKey);
-      return forge.util.encode64(rsa.encrypt(password));
-    },
-    [publicKey]
-  );
+
 
   const handleRememberMeChange = useCallback(
     (checked: boolean) => {
@@ -108,7 +90,7 @@ export default function LoginForm({
     }
 
     try {
-      const encryptedPassword = await encryptPassword(formData.password);
+      const encryptedPassword = await encryptPassword(formData.password, formData.email);
 
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -235,7 +217,6 @@ export default function LoginForm({
             className="w-full"
             disabled={
               isLoading ||
-              !publicKey ||
               !formData.email.trim() ||
               !formData.password.trim() ||
               !isValidEmail(formData.email)

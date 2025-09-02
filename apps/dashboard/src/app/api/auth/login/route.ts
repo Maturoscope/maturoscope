@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import forge from 'node-forge';
-
-const privateKeyPem = process.env.PRIVATE_KEY;
+import { decryptPassword } from '@/app/utils/crypto';
 
 export const POST = async (req: Request) => {
   try {
@@ -13,20 +11,8 @@ export const POST = async (req: Request) => {
     const clientId = process.env['NEXT_PUBLIC_AUTH0_CLIENT_ID'];
     const audience = process.env['NEXT_PUBLIC_AUTH0_AUDIENCE'];
 
-    // DEBUG: Ver qué variables están disponibles en Kubernetes
-    console.log('=== DEBUG KUBERNETES ENV ===');
-    console.log('clientSecret exists:', !!clientSecret);
-    console.log('clientSecret length:', clientSecret?.length || 0);
-    console.log('issuerUrl:', issuerUrl);
-    console.log('clientId:', clientId);
-    console.log('audience:', audience);
-    console.log('============================');
-
-    // Verificar que las variables de entorno estén configuradas
-    if (!privateKeyPem) {
-      console.error('PRIVATE_KEY no está configurada')
-      return NextResponse.json({ error: 'Configuración de servidor incompleta' }, { status: 500 });
-    }
+    // Decrypt password using Web Crypto API
+    const decryptedPassword = await decryptPassword(password, email);
 
     if (!issuerUrl) {
       console.error('NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL no está configurada')
@@ -43,8 +29,7 @@ export const POST = async (req: Request) => {
       return NextResponse.json({ error: 'Configuración de Auth0 incompleta' }, { status: 500 });
     }
 
-    const privateKey = forge.pki.privateKeyFromPem(privateKeyPem);
-    const decryptedPassword = privateKey.decrypt(forge.util.decode64(password));
+
 
     const response = await fetch(`${issuerUrl}/oauth/token`, {
       method: 'POST',

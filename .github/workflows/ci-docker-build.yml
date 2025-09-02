@@ -243,14 +243,10 @@ jobs:
           if [[ "${{ steps.vars.outputs.environment }}" == "production" ]]; then
             AUTH0_CLIENT_SECRET="${{ secrets.PROD_AUTH0_CLIENT_SECRET }}"
             AUTH0_SECRET="${{ secrets.PROD_AUTH0_SECRET }}"
-            PRIVATE_KEY="${{ secrets.PROD_PRIVATE_KEY }}"
-            PUBLIC_KEY="${{ secrets.PROD_PUBLIC_KEY }}"
             echo "🔧 Using PRODUCTION secrets"
           else
             AUTH0_CLIENT_SECRET="${{ secrets.STAGING_AUTH0_CLIENT_SECRET }}"
             AUTH0_SECRET="${{ secrets.STAGING_AUTH0_SECRET }}"
-            PRIVATE_KEY="${{ secrets.STAGING_PRIVATE_KEY }}"
-            PUBLIC_KEY="${{ secrets.STAGING_PUBLIC_KEY }}"
             echo "🔧 Using STAGING secrets"
           fi
           
@@ -259,8 +255,6 @@ jobs:
             --tag ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:${{ steps.vars.outputs.TAG }} \
             --build-arg AUTH0_CLIENT_SECRET="$AUTH0_CLIENT_SECRET" \
             --build-arg AUTH0_SECRET="$AUTH0_SECRET" \
-            --build-arg PRIVATE_KEY="$PRIVATE_KEY" \
-            --build-arg PUBLIC_KEY="$PUBLIC_KEY" \
             --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
             .

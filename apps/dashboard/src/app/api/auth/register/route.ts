@@ -1,27 +1,16 @@
 import { ROLES_MAPPED } from '@/app/utils/getUserRoles';
 import { NextResponse } from 'next/server';
-import forge from 'node-forge';
-
-const privateKeyPem = process.env.PRIVATE_KEY;
+import { decryptPassword } from '@/app/utils/crypto';
 
 export const POST = async (req: Request) => {
   try {
     const { email, password, firstName, lastName, roles } = await req.json();
 
-    // Forzar lectura de variables en runtime para Kubernetes (usando bracket notation)
     const clientSecret = process.env['AUTH0_CLIENT_SECRET'] || process.env['NEXT_PUBLIC_AUTH0_CLIENT_SECRET'];
     const issuerUrl = process.env['NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL'];
     const clientId = process.env['NEXT_PUBLIC_AUTH0_CLIENT_ID'];
 
-    // DEBUG: Ver qué variables están disponibles en Kubernetes
-    console.log('=== DEBUG REGISTER KUBERNETES ENV ===');
-    console.log('clientSecret exists:', !!clientSecret);
-    console.log('issuerUrl:', issuerUrl);
-    console.log('clientId:', clientId);
-    console.log('=====================================');
-
-    const privateKey = forge.pki.privateKeyFromPem(privateKeyPem || '');
-    const decryptedPassword = privateKey.decrypt(forge.util.decode64(password));
+    const decryptedPassword = await decryptPassword(password, email);
 
     const authResponse = await fetch(`${issuerUrl}/oauth/token`, {
       method: 'POST',
