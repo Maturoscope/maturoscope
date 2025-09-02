@@ -70,6 +70,12 @@ export default function LoginForm({
     [formData.rememberMe]
   );
 
+  const handleEmailBlur = useCallback(() => {
+    if (formData.email.trim() && !isValidEmail(formData.email)) {
+      setErrorEmail(true);
+    }
+  }, [formData.email]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -166,13 +172,11 @@ export default function LoginForm({
               placeholder={t("PAGE.EMAIL_LABEL")}
               value={formData.email}
               onChange={(e) => handleEmailChange(e.target.value)}
+              onBlur={handleEmailBlur}
               required
               disabled={isLoading}
               className={errorEmail || error ? "border-red-500" : ""}
             />
-            {errorEmail && (
-              <p className="text-sm text-red-600">{t("ERRORS.INVALID_EMAIL")}</p>
-            )}
           </div>
           <div className="grid gap-2">
             <div className="flex items-center">
@@ -199,6 +203,7 @@ export default function LoginForm({
             />
           </div>
 
+          {errorEmail && <p className="text-sm text-red-600 mt-[-15px]">{t("ERRORS.INVALID_EMAIL")}</p>}
           {error && <p className="text-sm text-red-600 mt-[-15px]">{error}</p>}
 
           <div className="flex items-center space-x-2">

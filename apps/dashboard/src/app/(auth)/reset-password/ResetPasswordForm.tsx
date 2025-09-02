@@ -35,6 +35,12 @@ export default function ResetPasswordForm({
     setEmailError(false);
   }, []);
 
+  const handleEmailBlur = useCallback(() => {
+    if (email.trim() && !isValidEmail(email)) {
+      setEmailError(true);
+    }
+  }, [email]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -109,16 +115,15 @@ export default function ResetPasswordForm({
               placeholder={t("RESET_PASSWORD.EMAIL_LABEL")}
               value={email}
               onChange={(e) => handleEmailChange(e.target.value)}
+              onBlur={handleEmailBlur}
               required
               disabled={isLoading}
               className={emailError || error ? "border-red-500" : ""}
             />
-            {emailError && (
-              <p className="text-sm text-red-600">{t("ERRORS.INVALID_EMAIL")}</p>
-            )}
           </div>
 
-          {error && <p className="text-sm text-red-600">{error}</p>}
+          {emailError && <p className="text-sm text-red-600 mt-[-15px]">{t("ERRORS.INVALID_EMAIL")}</p>}
+          {error && <p className="text-sm text-red-600 mt-[-15px]">{error}</p>}
 
           <Button
             type="submit"
