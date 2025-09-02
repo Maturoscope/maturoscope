@@ -1,117 +1,97 @@
 # --------------------------------------------------------------------------------------------------------------------
 # BASE
 # --------------------------------------------------------------------------------------------------------------------
-    FROM node:20-alpine AS base
+FROM node:20-alpine AS base
 
-    # Directorio de trabajo
-    WORKDIR /app
-    
-    # Variables comunes
-    ENV NODE_OPTIONS="--max-old-space-size=4096"
-    
-    # Habilitar Yarn Berry (Yarn 3)
-    RUN corepack enable
-    
-    # --------------------------------------------------------------------------------------------------------------------
-    # PRUNER (Optimization with Turbo)
-    # --------------------------------------------------------------------------------------------------------------------
-    FROM base AS prunner
-    
-    # Copy only what's needed for the prune
-    COPY package.json yarn.lock ./
-    COPY turbo.json ./
-    COPY .yarnrc.yml ./
-    COPY apps/dashboard/package.json ./apps/dashboard/
-    
-    # Install dependencies needed for turbo prune
-    RUN yarn install
-    
-    # Copy source code for the prune
-    COPY . .
-    
-    # Prune to generate minimal files for Docker installation
-    RUN yarn turbo prune dashboard --docker
-    
-    # --------------------------------------------------------------------------------------------------------------------
-    # INSTALLER (Installation and Build)
-    # --------------------------------------------------------------------------------------------------------------------
-    FROM base AS installer
-    
-    WORKDIR /app
-    
-    # Copy package.json and lockfiles resulting from prune
-    COPY --from=prunner /app/out/json/ .
-    COPY --from=prunner /app/out/yarn.lock ./yarn.lock
-    
-    # Install dependencies
-    RUN yarn install --immutable
-    
-    # Copy the rest of the pruned code
-    COPY --from=prunner /app/out/full/ .
-    
-    # Environment configuration
-    ARG NODE_ENV=production
-    ENV NODE_ENV=${NODE_ENV}
-    
-    # Environment variables for Next.js
-    ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-    ARG NEXT_PUBLIC_GATEWAY_URL
-    ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-    ENV NEXT_PUBLIC_GATEWAY_URL=$NEXT_PUBLIC_GATEWAY_URL
-    
-    # Auth0 variables (environment-specific)
-    ARG AUTH0_CLIENT_SECRET
-    ARG AUTH0_SECRET
-    
-    # DEBUG: Check if build args are received (with timestamp to avoid cache)
-    RUN echo "=== BUILD DEBUG $(date) ===" && \
-        echo "AUTH0_CLIENT_SECRET length: ${#AUTH0_CLIENT_SECRET}" && \
-        echo "AUTH0_SECRET length: ${#AUTH0_SECRET}" && \
-        echo "AUTH0_CLIENT_SECRET value: ${AUTH0_CLIENT_SECRET:0:8}..." && \
-        echo "AUTH0_SECRET value: ${AUTH0_SECRET:0:8}..." && \
-        echo "=================="
-    
-    # Embed secrets at build time for Next.js
-    ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
-    ENV AUTH0_SECRET=$AUTH0_SECRET
-    
-    # Variables embedded for build time (Next.js build needs them)
-    
-    # Build only the dashboard service
-    RUN yarn turbo run build --filter=dashboard
-    
-    # --------------------------------------------------------------------------------------------------------------------
-    # RUNNER (Final execution)
-    # --------------------------------------------------------------------------------------------------------------------
-    FROM base AS runner
+WORKDIR /app
 
+# Common environment variables
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
+# Enable Yarn Berry (Yarn 3)
+RUN corepack enable
+
+# --------------------------------------------------------------------------------------------------------------------
+# PRUNER (Optimization with Turbo)
+# --------------------------------------------------------------------------------------------------------------------
+FROM base AS prunner
+
+# Copy only what's needed for the prune
+COPY package.json yarn.lock ./
+COPY turbo.json ./
+COPY .yarnrc.yml ./
+COPY apps/dashboard/package.json ./apps/dashboard/
+
+# Install dependencies needed for turbo prune
+RUN yarn install
+
+# Copy source code for the prune
+COPY . .
+
+# Prune to generate minimal files for Docker installation
+RUN yarn turbo prune dashboard --docker
+
+# --------------------------------------------------------------------------------------------------------------------
+# INSTALLER (Installation and Build)
+# --------------------------------------------------------------------------------------------------------------------
+FROM base AS installer
+
+WORKDIR /app
+
+# Copy package.json and lockfiles resulting from prune
+COPY --from=prunner /app/out/json/ .
+COPY --from=prunner /app/out/yarn.lock ./yarn.lock
+
+# Install dependencies
+RUN yarn install --immutable
+
+# Copy the rest of the pruned code
+COPY --from=prunner /app/out/full/ .
+
+# Environment configuration
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
-# Auth0 variables available in runtime (direct approach like the example)
+# Environment variables for Next.js
+ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+ARG NEXT_PUBLIC_GATEWAY_URL
+ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+ENV NEXT_PUBLIC_GATEWAY_URL=$NEXT_PUBLIC_GATEWAY_URL
+
+# Auth0 variables (environment-specific)
 ARG AUTH0_CLIENT_SECRET
 ARG AUTH0_SECRET
 ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
 ENV AUTH0_SECRET=$AUTH0_SECRET
 
-# Debug runtime variables
-RUN echo "=== RUNTIME ENV DEBUG $(date) ===" && \
-    echo "AUTH0_CLIENT_SECRET set: $([ -n '$AUTH0_CLIENT_SECRET' ] && echo 'YES' || echo 'NO')" && \
-    echo "AUTH0_SECRET set: $([ -n '$AUTH0_SECRET' ] && echo 'YES' || echo 'NO')" && \
-    echo "========================="
-    
-    # Create non-root user
-    RUN addgroup --system --gid 1001 dashboard \
-        && adduser --system --uid 1001 dashboard
-    
-    USER dashboard
-    
-    # Copy only necessary files for production
-    COPY --from=installer --chown=dashboard:dashboard /app .
-    
-    # Expose dashboard port
-    EXPOSE 3001
-    
-    # Ultra simple startup like the second example  
-CMD ["sh", "-c", "env | grep AUTH0 && yarn turbo run start --filter=dashboard --env-mode=loose --force"]
-    
+# Build dashboard service
+RUN yarn turbo run build --filter=dashboard
+
+# --------------------------------------------------------------------------------------------------------------------
+# RUNNER (Final execution)
+# --------------------------------------------------------------------------------------------------------------------
+FROM base AS runner
+
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+# Auth0 variables available at runtime
+ARG AUTH0_CLIENT_SECRET
+ARG AUTH0_SECRET
+ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
+ENV AUTH0_SECRET=$AUTH0_SECRET
+
+# Create non-root user
+RUN addgroup --system --gid 1001 dashboard \
+    && adduser --system --uid 1001 dashboard
+
+USER dashboard
+
+# Copy only necessary files for production
+COPY --from=installer --chown=dashboard:dashboard /app .
+
+# Expose dashboard port
+EXPOSE 3001
+
+# Start the application
+CMD ["yarn", "turbo", "run", "start", "--filter=dashboard", "--env-mode=loose", "--force"]

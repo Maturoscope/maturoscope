@@ -4,40 +4,12 @@ import { decryptPassword } from '@/app/utils/crypto';
 export const POST = async (req: Request) => {
   try {
     const { email, password } = await req.json();
-
-    // Read Auth0 configuration directly from environment variables
     const clientSecret = process.env.AUTH0_CLIENT_SECRET;
     const issuerUrl = process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL;
     const clientId = process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID;
     const audience = process.env.NEXT_PUBLIC_AUTH0_AUDIENCE;
 
-    // DEBUG: Simple check of environment variables
-    console.log('=== ENV VARS DEBUG ===');
-    console.log('AUTH0_CLIENT_SECRET:', !!clientSecret);
-    console.log('issuerUrl:', !!issuerUrl);
-    console.log('clientId:', !!clientId);
-    console.log('audience:', !!audience);
-    console.log('==================');
-
-    // Decrypt password using Web Crypto API
     const decryptedPassword = await decryptPassword(password, email);
-
-    if (!issuerUrl) {
-      console.error('NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL no está configurada')
-      return NextResponse.json({ error: 'Configuración de Auth0 incompleta - NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL' }, { status: 500 });
-    }
-
-    if (!clientId) {
-      console.error('NEXT_PUBLIC_AUTH0_CLIENT_ID no está configurada')
-      return NextResponse.json({ error: 'Configuración de Auth0 incompleta - NEXT_PUBLIC_AUTH0_CLIENT_ID' }, { status: 500 });
-    }
-
-    if (!clientSecret) {
-      console.error('AUTH0_CLIENT_SECRET no está configurada (intentó leer AUTH0_CLIENT_SECRET y NEXT_PUBLIC_AUTH0_CLIENT_SECRET)')
-      return NextResponse.json({ error: 'Configuración de Auth0 incompleta - AUTH0_CLIENT_SECRET' }, { status: 500 });
-    }
-
-
 
     const response = await fetch(`${issuerUrl}/oauth/token`, {
       method: 'POST',

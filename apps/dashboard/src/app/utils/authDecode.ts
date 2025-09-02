@@ -24,20 +24,24 @@ function getKey(header: jwt.JwtHeader, callback: jwt.SigningKeyCallback) {
   });
 }
 
-export function verifyToken(token: string): Promise<JwtPayload | string> {
+export function verifyToken(token: string): Promise<JwtPayload> {
   return new Promise((resolve, reject) => {
     jwt.verify(
       token,
       getKey,
       {
         algorithms: ['RS256'],
+        audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
+        issuer: process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL + '/',
       },
       (err, decoded) => {
-        if (err) return resolve({} as JwtPayload);
-        if (decoded) {
+        if (err) {
+          return reject(new Error(`Token verification failed: ${err.message}`));
+        }
+        if (decoded && typeof decoded === 'object') {
           resolve(decoded as JwtPayload);
         } else {
-          reject(new Error('Token decoding failed'));
+          reject(new Error('Token decoding failed - invalid token structure'));
         }
       },
     );

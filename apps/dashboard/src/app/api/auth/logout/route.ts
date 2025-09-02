@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+const clearTokens = () => {
   const response = NextResponse.json({ message: 'Successful logout' });
 
   const cookiesToClear = ['token', 'next-auth.session-token'];
@@ -15,4 +15,12 @@ export async function GET() {
   });
 
   return response;
+};
+
+export async function GET() {
+  return clearTokens();
+}
+
+export async function POST() {
+  return clearTokens();
 }
