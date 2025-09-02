@@ -71,6 +71,14 @@
     ENV PRIVATE_KEY=$PRIVATE_KEY
     ENV PUBLIC_KEY=$PUBLIC_KEY
     
+    # Save runtime variables to file for multi-stage persistence
+    RUN echo "AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET" > /tmp/runtime-vars.env && \
+        echo "AUTH0_SECRET=$AUTH0_SECRET" >> /tmp/runtime-vars.env && \
+        echo "PRIVATE_KEY=$PRIVATE_KEY" >> /tmp/runtime-vars.env && \
+        echo "PUBLIC_KEY=$PUBLIC_KEY" >> /tmp/runtime-vars.env && \
+        echo "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY" >> /tmp/runtime-vars.env && \
+        echo "NEXT_PUBLIC_GATEWAY_URL=$NEXT_PUBLIC_GATEWAY_URL" >> /tmp/runtime-vars.env
+    
     # Build only the dashboard service
     RUN yarn turbo run build --filter=dashboard
     
@@ -82,21 +90,20 @@
     ARG NODE_ENV=production
     ENV NODE_ENV=${NODE_ENV}
     
-    # Auth0 variables and RSA keys need to be available at runtime
-    ARG AUTH0_CLIENT_SECRET
-    ARG AUTH0_SECRET
-    ARG PRIVATE_KEY
-    ARG PUBLIC_KEY
-    ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-    ARG NEXT_PUBLIC_GATEWAY_URL
+    # Copy runtime variables file from installer stage
+    COPY --from=installer /tmp/runtime-vars.env /tmp/runtime-vars.env
     
-    # Set environment variables for runtime
-    ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
-    ENV AUTH0_SECRET=$AUTH0_SECRET
-    ENV PRIVATE_KEY=$PRIVATE_KEY
-    ENV PUBLIC_KEY=$PUBLIC_KEY
-    ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-    ENV NEXT_PUBLIC_GATEWAY_URL=$NEXT_PUBLIC_GATEWAY_URL
+    # Create startup script that loads environment variables
+    RUN echo '#!/bin/bash' > /usr/local/bin/start-dashboard.sh && \
+        echo 'set -a' >> /usr/local/bin/start-dashboard.sh && \
+        echo '. /tmp/runtime-vars.env' >> /usr/local/bin/start-dashboard.sh && \
+        echo 'set +a' >> /usr/local/bin/start-dashboard.sh && \
+        echo 'echo "=== STARTUP ENV DEBUG ===" ' >> /usr/local/bin/start-dashboard.sh && \
+        echo 'echo "PUBLIC_KEY loaded: $([ -n "$PUBLIC_KEY" ] && echo "YES" || echo "NO")"' >> /usr/local/bin/start-dashboard.sh && \
+        echo 'echo "PRIVATE_KEY loaded: $([ -n "$PRIVATE_KEY" ] && echo "YES" || echo "NO")"' >> /usr/local/bin/start-dashboard.sh && \
+        echo 'echo "======================="' >> /usr/local/bin/start-dashboard.sh && \
+        echo 'exec "$@"' >> /usr/local/bin/start-dashboard.sh && \
+        chmod +x /usr/local/bin/start-dashboard.sh
     
     # Create non-root user
     RUN addgroup --system --gid 1001 dashboard \
@@ -110,6 +117,6 @@
     # Expose dashboard port
     EXPOSE 3001
     
-    # Startup command
-    CMD ["yarn", "turbo", "run", "start", "--filter=dashboard"]
+    # Startup command using our script that loads environment variables
+    CMD ["/usr/local/bin/start-dashboard.sh", "yarn", "turbo", "run", "start", "--filter=dashboard"]
     
