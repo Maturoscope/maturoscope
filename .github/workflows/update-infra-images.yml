@@ -76,15 +76,56 @@ jobs:
           echo "Resultado final de $FILE:"
           cat "$FILE"
           
-          # 4) Rebase para evitar conflictos y commit
+          # 4) Git operations with proper conflict handling (API)
           cd infra
           git config user.name "ci-bot"
           git config user.email "ci@maturoscope.io"
           git config pull.rebase true
-          git pull --rebase || true
+          
+          # Add changes first, then pull
           git add "${FILE#infra/}"
-          git commit -m "${APP_NAME}(staging): bump image to ${TAG}" || echo "No changes to commit"
-          git push
+          
+          # Retry logic for git operations
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "API - Attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            
+            # Pull latest changes
+            if git pull --rebase origin main; then
+              echo "Successfully pulled and rebased"
+            else
+              echo "Rebase failed, stashing changes and retrying..."
+              git stash
+              git pull --rebase origin main
+              git stash pop || echo "No stash to pop"
+              git add "${FILE#infra/}"
+            fi
+            
+            # Try to commit and push
+            if git diff --staged --quiet; then
+              echo "No changes to commit"
+              break
+            fi
+            
+            git commit -m "${APP_NAME}(staging): bump image to ${TAG}"
+            
+            if git push origin main; then
+              echo "Successfully pushed changes"
+              break
+            else
+              echo "Push failed, will retry..."
+              git reset HEAD~1  # Undo commit to retry
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+              sleep $((RETRY_COUNT * 2))  # Exponential backoff
+            fi
+          done
+          
+          if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+            echo "Failed to push after $MAX_RETRIES attempts"
+            exit 1
+          fi
 
       
 
@@ -140,15 +181,56 @@ jobs:
           echo "Resultado final de $FILE:"
           cat "$FILE"
           
-          # 4) Rebase para evitar conflictos y commit
+          # 4) Git operations with proper conflict handling (Dashboard)
           cd infra
           git config user.name "ci-bot"
           git config user.email "ci@maturoscope.io"
           git config pull.rebase true
-          git pull --rebase || true
+          
+          # Add changes first, then pull
           git add "${FILE#infra/}"
-          git commit -m "${APP_NAME}(staging): bump image to ${TAG}" || echo "No changes to commit"
-          git push
+          
+          # Retry logic for git operations
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Dashboard - Attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            
+            # Pull latest changes
+            if git pull --rebase origin main; then
+              echo "Successfully pulled and rebased"
+            else
+              echo "Rebase failed, stashing changes and retrying..."
+              git stash
+              git pull --rebase origin main
+              git stash pop || echo "No stash to pop"
+              git add "${FILE#infra/}"
+            fi
+            
+            # Try to commit and push
+            if git diff --staged --quiet; then
+              echo "No changes to commit"
+              break
+            fi
+            
+            git commit -m "${APP_NAME}(staging): bump image to ${TAG}"
+            
+            if git push origin main; then
+              echo "Successfully pushed changes"
+              break
+            else
+              echo "Push failed, will retry..."
+              git reset HEAD~1  # Undo commit to retry
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+              sleep $((RETRY_COUNT * 2))  # Exponential backoff
+            fi
+          done
+          
+          if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+            echo "Failed to push after $MAX_RETRIES attempts"
+            exit 1
+          fi
       
 
   update-infra-web:
@@ -203,13 +285,54 @@ jobs:
           echo "Resultado final de $FILE:"
           cat "$FILE"
           
-          # 4) Rebase para evitar conflictos y commit
+          # 4) Git operations with proper conflict handling (Web)
           cd infra
           git config user.name "ci-bot"
           git config user.email "ci@maturoscope.io"
           git config pull.rebase true
-          git pull --rebase || true
+          
+          # Add changes first, then pull
           git add "${FILE#infra/}"
-          git commit -m "${APP_NAME}(staging): bump image to ${TAG}" || echo "No changes to commit"
-          git push
+          
+          # Retry logic for git operations
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Web - Attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            
+            # Pull latest changes
+            if git pull --rebase origin main; then
+              echo "Successfully pulled and rebased"
+            else
+              echo "Rebase failed, stashing changes and retrying..."
+              git stash
+              git pull --rebase origin main
+              git stash pop || echo "No stash to pop"
+              git add "${FILE#infra/}"
+            fi
+            
+            # Try to commit and push
+            if git diff --staged --quiet; then
+              echo "No changes to commit"
+              break
+            fi
+            
+            git commit -m "${APP_NAME}(staging): bump image to ${TAG}"
+            
+            if git push origin main; then
+              echo "Successfully pushed changes"
+              break
+            else
+              echo "Push failed, will retry..."
+              git reset HEAD~1  # Undo commit to retry
+              RETRY_COUNT=$((RETRY_COUNT + 1))
+              sleep $((RETRY_COUNT * 2))  # Exponential backoff
+            fi
+          done
+          
+          if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then
+            echo "Failed to push after $MAX_RETRIES attempts"
+            exit 1
+          fi
       
