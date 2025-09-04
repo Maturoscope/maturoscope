@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Organization } from '../organizations/entities/organization.entity';
 import { validate as uuidValidate } from 'uuid';
 
 @Injectable()
@@ -11,9 +12,20 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(Organization)
+    private readonly organizationRepository: Repository<Organization>,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    // Validate organization exists
+    const organization = await this.organizationRepository.findOne({
+      where: { id: createUserDto.organizationId },
+    });
+
+    if (!organization) {
+      throw new NotFoundException(`Organization with ID ${createUserDto.organizationId} not found`);
+    }
+
     // Check if email already exists
     const existingUser = await this.userRepository.findOne({
       where: { email: createUserDto.email },
@@ -31,6 +43,7 @@ export class UsersService {
   async findAll(): Promise<User[]> {
     return await this.userRepository.find({
       order: { createdAt: 'DESC' },
+      relations: ['organization'],
     });
   }
 
@@ -41,6 +54,7 @@ export class UsersService {
 
     const user = await this.userRepository.findOne({
       where: { id },
+      relations: ['organization'],
     });
 
     if (!user) {
@@ -53,19 +67,44 @@ export class UsersService {
   async findByEmail(email: string): Promise<User | null> {
     return await this.userRepository.findOne({
       where: { email },
+      relations: ['organization'],
     });
   }
 
   async findByUserEmail(email: string): Promise<User | null> {
     return await this.userRepository.findOne({
       where: { email },
+      relations: ['organization'],
+    });
+  }
+
+  async findByAuthId(authId: string): Promise<User | null> {
+    return await this.userRepository.findOne({
+      where: { authId },
+      relations: ['organization'],
+    });
+  }
+
+  async findByOrganization(organizationId: string): Promise<User[]> {
+    return await this.userRepository.find({
+      where: { organizationId },
+      relations: ['organization'],
+      order: { createdAt: 'DESC' },
     });
   }
 
   async updateUser(email: string, updateData: Partial<User>): Promise<User> {
-    const user = await this.findByEmail(email);
+    const user = await this.findByUserEmail(email);
     if (!user) {
-      throw new Error(`User with email ${email} not found`);
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+    
+    // If email is being updated, check that it doesn't already exist
+    if (updateData.email && updateData.email !== user.email) {
+      const existingUser = await this.findByUserEmail(updateData.email);
+      if (existingUser) {
+        throw new ConflictException('Email is already registered');
+      }
     }
     
     Object.assign(user, updateData);
@@ -84,6 +123,16 @@ export class UsersService {
     }
 
     const user = await this.findOne(id);
+
+    // If organizationId is being updated, check that the organization exists
+    if (updateUserDto.organizationId && updateUserDto.organizationId !== user.organizationId) {
+      const organization = await this.organizationRepository.findOne({
+        where: { id: updateUserDto.organizationId },
+      });
+      if (!organization) {
+        throw new NotFoundException(`Organization with ID ${updateUserDto.organizationId} not found`);
+      }
+    }
 
     // If email is being updated, check that it doesn't already exist
     if (updateUserDto.email && updateUserDto.email !== user.email) {

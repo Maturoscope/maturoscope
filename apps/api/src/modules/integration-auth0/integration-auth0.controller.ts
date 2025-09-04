@@ -8,6 +8,6 @@ export class IntegrationAuth0Controller {
 
   @Post('assign-role')
   async assignRole(@Body() body: UpdateRoleIntegrationAuth0Dto) {
-    return this.auth0Service.assignRoleToUser(body.userId, body.userRoles);
+    return this.auth0Service.assignRoleToUser(body.userId, body.roles);
   }
 }

@@ -5,5 +5,5 @@ export class UpdateRoleIntegrationAuth0Dto {
   userId: string;
 
   @IsString()
-  userRoles: string[];
+  roles: string[];
 }

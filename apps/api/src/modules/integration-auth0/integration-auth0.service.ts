@@ -239,7 +239,7 @@ export class IntegrationAuth0Service {
   }
 
   // Role Management
-  async assignRoleToUser(userId: string, userRoles: string[]) {
+  async assignRoleToUser(userId: string, roles: string[]) {
     const accessToken = await this.getValidAccessToken();
 
     try {
@@ -251,7 +251,7 @@ export class IntegrationAuth0Service {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ roles: userRoles }),
+        body: JSON.stringify({ roles: roles }),
       });
 
       if (!response.ok) {

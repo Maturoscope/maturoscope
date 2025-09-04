@@ -1,6 +1,13 @@
-import { IsString, IsEmail, IsOptional, MinLength, MaxLength, IsArray, ArrayMinSize, ArrayMaxSize } from 'class-validator';
+import { IsString, IsOptional, MinLength, MaxLength, IsArray, ArrayMinSize, ArrayMaxSize, IsUUID, IsBoolean, IsEmail } from 'class-validator';
 
 export class CreateUserDto {
+  @IsUUID()
+  organizationId: string;
+
+  @IsOptional()
+  @IsString()
+  authId?: string;
+
   @IsString()
   @MinLength(2)
   @MaxLength(100)
@@ -9,12 +16,7 @@ export class CreateUserDto {
   @IsString()
   @MinLength(2)
   @MaxLength(100)
-  secondName: string;
-
-  @IsOptional()
-  @IsString()
-  @MaxLength(200)
-  company?: string;
+  lastName: string;
 
   @IsEmail()
   @MaxLength(255)
@@ -27,4 +29,8 @@ export class CreateUserDto {
   @IsString({ each: true })
   @MaxLength(50, { each: true })
   roles?: string[];
+
+  @IsOptional()
+  @IsBoolean()
+  isActive?: boolean;
 }
