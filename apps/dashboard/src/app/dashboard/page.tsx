@@ -10,6 +10,7 @@ export default function DashboardPage() {
   const [mounted, setMounted] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
+  const demoAvatarUrl = 'https://maturoscope-staging.s3.eu-west-par.io.cloud.ovh.net/organizations/59032b5a-2058-425c-ab74-b1de11ed369a/avatar.png';
 
   useEffect(() => {
     setMounted(true);
@@ -69,7 +70,7 @@ export default function DashboardPage() {
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center space-x-4">
             <UserAvatar 
-              src={user.picture} 
+              src={demoAvatarUrl || user.picture} 
               alt={user.name}
               size="lg"
             />
@@ -92,7 +93,7 @@ export default function DashboardPage() {
           <div className="p-6 bg-card rounded-lg border">
             <div className="flex items-center space-x-3 mb-4">
               <UserAvatar 
-                src={user.picture} 
+                src={demoAvatarUrl || user.picture} 
                 alt={user.name}
                 size="md"
               />

@@ -8,12 +8,17 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UploadedFile,
+  UseInterceptors,
+  Req,
 } from '@nestjs/common';
 import { OrganizationsService } from './organizations.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { Auth } from 'src/common';
 import { ValidRoles } from 'src/common/auth-module/interfaces/valid-roles';
+import { FileInterceptor } from '@nestjs/platform-express';
+import type { UploadedFile as UploadedFileType } from '../../common/types/uploaded-file.type';
 
 @Controller('organizations')
 export class OrganizationsController {
@@ -31,14 +36,25 @@ export class OrganizationsController {
     return this.organizationsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.organizationsService.findOne(id);
-  }
-
   @Get('key/:key')
   findByKey(@Param('key') key: string) {
     return this.organizationsService.findByKey(key);
+  }
+
+  @Auth(ValidRoles.user)
+  @Patch('avatar')
+  @UseInterceptors(FileInterceptor('file'))
+  updateAvatarForCurrentUser(
+    @Req() req: any,
+    @UploadedFile() file: UploadedFileType,
+  ) {
+    const user = req.user as { email?: string } | undefined;
+    return this.organizationsService.updateAvatarByUserEmail(user?.email, file);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.organizationsService.findOne(id);
   }
 
   @Patch(':id')

@@ -32,6 +32,9 @@ export class Organization {
   @Column({ type: 'text', nullable: true })
   language: string;
 
+  @Column({ type: 'text', nullable: true })
+  avatar: string;
+
   @Column({
     type: 'enum',
     enum: OrganizationStatus,

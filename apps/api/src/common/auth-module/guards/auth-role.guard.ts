@@ -27,12 +27,13 @@ export class AuthRoleGuard implements CanActivate {
     if (!validateRoles.length) return true;
 
     const req = context.switchToHttp().getRequest();
-    const user = req.user;
-    if (!user) throw new Error('User not found');
+    const user = req.user as { email?: string; name?: string; sub?: string } | undefined;
+    if (!user) throw new ForbiddenException('User not found in request context');
+    if (!user.email) {
+      throw new ForbiddenException('Authenticated user missing email claim');
+    }
 
-    const existingUser = await this.usersService.findByUserEmail(
-      user.email,
-    );
+    const existingUser = await this.usersService.findByUserEmail(user.email);
 
     if (!existingUser) {
       throw new ForbiddenException(
@@ -43,6 +44,9 @@ export class AuthRoleGuard implements CanActivate {
       const rolesMapped = getRolesMapped();
 
       if (!existingUser.authId) {
+        if (!user.sub) {
+          throw new ForbiddenException('Authenticated user missing sub claim');
+        }
         const validRoles = existingUser.roles
           ?.filter((role) => role && rolesMapped[role])
           .map((role) => rolesMapped[role]) || [];
@@ -50,9 +54,8 @@ export class AuthRoleGuard implements CanActivate {
       
         await this.auth0Service.assignRoleToUser(user.sub, validRoles);
       }
-      // Change the authId for userId from Auth0.
+      // Persist only the authId from Auth0; do not override local roles or other fields
       await this.usersService.updateUser(existingUser.email, {
-        ...user,
         authId: user.sub,
       });
     }

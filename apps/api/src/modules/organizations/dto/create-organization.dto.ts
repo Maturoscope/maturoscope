@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsOptional, MinLength, MaxLength, IsEnum } from 'class-validator';
+import { IsString, IsEmail, IsOptional, MinLength, MaxLength, IsEnum, IsUrl } from 'class-validator';
 import { OrganizationStatus } from '../entities/organization.entity';
 
 export class CreateOrganizationDto {
@@ -31,6 +31,10 @@ export class CreateOrganizationDto {
   @IsOptional()
   @IsString()
   language?: string;
+
+  @IsOptional()
+  @IsUrl()
+  avatar?: string;
 
   @IsOptional()
   @IsEnum(OrganizationStatus)

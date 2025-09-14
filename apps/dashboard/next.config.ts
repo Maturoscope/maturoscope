@@ -11,6 +11,12 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'maturoscope-staging.s3.eu-west-par.io.cloud.ovh.net',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'cdn.auth0.com',
         port: '',
         pathname: '/avatars/**',

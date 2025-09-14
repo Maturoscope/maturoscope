@@ -1,7 +1,10 @@
-import { Injectable, ConflictException, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Organization } from './entities/organization.entity';
+import { OvhS3Service } from '../../common/storage/ovh-s3.service';
+import { UploadedFile } from '../../common/types/uploaded-file.type';
+import { UsersService } from '../users/users.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { validate as uuidValidate } from 'uuid';
@@ -11,6 +14,8 @@ export class OrganizationsService {
   constructor(
     @InjectRepository(Organization)
     private readonly organizationRepository: Repository<Organization>,
+    private readonly ovhS3: OvhS3Service,
+    private readonly usersService: UsersService,
   ) {}
 
   async create(createOrganizationDto: CreateOrganizationDto): Promise<Organization> {
@@ -96,6 +101,39 @@ export class OrganizationsService {
 
     Object.assign(organization, updateOrganizationDto);
     return await this.organizationRepository.save(organization);
+  }
+
+  async updateAvatar(id: string, file: UploadedFile): Promise<Organization> {
+    if (!uuidValidate(id)) {
+      throw new BadRequestException(`Invalid UUID format: ${id}`);
+    }
+
+    if (!file || !file.buffer || !file.mimetype) {
+      throw new BadRequestException('Invalid file upload');
+    }
+
+    const organization = await this.findOne(id);
+    const extension = file.mimetype.split('/')[1] || 'bin';
+    const key = `organizations/${id}/avatar.${extension}`;
+
+    const { url } = await this.ovhS3.uploadObject(file, key);
+
+    organization.avatar = url;
+    return await this.organizationRepository.save(organization);
+  }
+
+  async updateAvatarByUserEmail(email: string | undefined, file: UploadedFile): Promise<Organization> {
+    if (!email) {
+      throw new UnauthorizedException('Missing auth token or email claim');
+    }
+    const user = await this.usersService.findByUserEmail(email);
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+    if (!user.organizationId) {
+      throw new BadRequestException('User is not associated with an organization');
+    }
+    return this.updateAvatar(user.organizationId, file);
   }
 
   async remove(id: string): Promise<void> {

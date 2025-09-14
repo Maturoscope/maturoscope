@@ -23,6 +23,26 @@ export class Auth0Strategy extends PassportStrategy(Strategy) {
   }
 
   validate(payload: unknown): unknown {
-    return payload;
+    type JwtPayload = {
+      sub?: string;
+      email?: string;
+      name?: string;
+      picture?: string;
+      userEmail?: string;
+      userName?: string;
+      userPicture?: string;
+      userId?: string;
+      userRoles?: string[];
+    };
+
+    const p = payload as JwtPayload;
+
+    return {
+      sub: p.sub,
+      email: p.userEmail ?? p.email,
+      name: p.userName ?? p.name,
+      picture: p.userPicture ?? p.picture,
+      roles: p.userRoles ?? [],
+    };
   }
 }
