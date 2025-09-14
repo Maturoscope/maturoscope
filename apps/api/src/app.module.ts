@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './modules/users/users.module';
+import { OrganizationsModule } from './modules/organizations/organizations.module';
 import { AuthModule } from './common/auth-module/auth.module';
 import { IntegrationAuth0Module } from './modules/integration-auth0/integration-auth0.module';
 import * as fs from 'fs';
@@ -25,11 +26,13 @@ import * as fs from 'fs';
         max: 20,
         idleTimeoutMillis: 30000,
         connectionTimeoutMillis: 60000,
-        ssl: {
-          rejectUnauthorized: true, // ✅ Validación de certificados activada
-          ca: fs.readFileSync(process.env.DB_SSL_CA_PATH!, 'utf8'), // ✅ Certificado CA correcto
-          servername: process.env.DB_SSL_SERVERNAME, // ✅ Servername correcto
-        },
+        ...(process.env.DB_SSL_CA_PATH && {
+          ssl: {
+            rejectUnauthorized: true,
+            ca: fs.readFileSync(process.env.DB_SSL_CA_PATH, 'utf8'),
+            servername: process.env.DB_SSL_SERVERNAME,
+          },
+        }),
       },
       retryAttempts: 3,
       retryDelay: 3000,
@@ -39,6 +42,7 @@ import * as fs from 'fs';
           : ['error'],
     }),
     UsersModule,
+    OrganizationsModule,
     AuthModule,
     IntegrationAuth0Module,
   ],

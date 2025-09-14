@@ -32,6 +32,12 @@ export class UsersController {
    return this.usersService.findAll();
   }
 
+  @Get(':email')
+  @Auth()
+  findByEmail(@Param('email') email: string) {
+    return this.usersService.findByEmail(email);
+  }
+
   @Get(':id')
   @Auth(ValidRoles.admin)
   findOne(@Param() params: UuidParamDto) {

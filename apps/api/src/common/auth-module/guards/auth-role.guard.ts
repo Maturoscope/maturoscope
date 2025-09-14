@@ -8,7 +8,7 @@ import { Reflector } from '@nestjs/core';
 import { META_ROLES } from '../../decorators/auth.decorator';
 import { UsersService } from '../../../modules/users/users.service';
 import { IntegrationAuth0Service } from '../../../modules/integration-auth0/integration-auth0.service';
-import { rolesMapped } from '../interfaces/valid-roles';
+import { getRolesMapped } from '../interfaces/valid-roles';
 
 @Injectable()
 export class AuthRoleGuard implements CanActivate {
@@ -40,12 +40,16 @@ export class AuthRoleGuard implements CanActivate {
           user.email,
       );
     }
+      const rolesMapped = getRolesMapped();
 
-    if (!existingUser.authId) {
-      await this.auth0Service.assignRoleToUser(
-        user.sub,
-        existingUser.roles.map((role) => rolesMapped[role]),
-      );
+      if (!existingUser.authId) {
+        const validRoles = existingUser.roles
+          ?.filter((role) => role && rolesMapped[role])
+          .map((role) => rolesMapped[role]) || [];
+      if (validRoles.length > 0) {
+      
+        await this.auth0Service.assignRoleToUser(user.sub, validRoles);
+      }
       // Change the authId for userId from Auth0.
       await this.usersService.updateUser(existingUser.email, {
         ...user,
