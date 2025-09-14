@@ -8,6 +8,7 @@ import { OrganizationsModule } from './modules/organizations/organizations.modul
 import { AuthModule } from './common/auth-module/auth.module';
 import { IntegrationAuth0Module } from './modules/integration-auth0/integration-auth0.module';
 import * as fs from 'fs';
+import { SchemaInitService } from './common/schema-init/schema-init.service';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import * as fs from 'fs';
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      synchronize: true, // solo en staging
+      synchronize: process.env.NODE_ENV !== 'production', // disable in production
       extra: {
         options: '-c timezone=Europe/Paris',
         max: 20,
@@ -47,6 +48,6 @@ import * as fs from 'fs';
     IntegrationAuth0Module,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SchemaInitService],
 })
 export class AppModule {}
