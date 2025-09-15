@@ -1,13 +1,12 @@
 import { applyDecorators, UseGuards, SetMetadata } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtLoggingAuthGuard } from '../auth-module/guards/jwt-logging.guard';
 import { AuthRoleGuard } from '../auth-module/guards/auth-role.guard';
 import { ValidRoles } from '../auth-module/interfaces/valid-roles';
 
 export const META_ROLES = 'roles';
 
 export function Auth(...roles: ValidRoles[]) {
-  return applyDecorators(
-    SetMetadata(META_ROLES, roles),
-    UseGuards(AuthGuard(), AuthRoleGuard),
-  );
+  const guardToUse = process.env.AUTH_DEBUG !== 'false' ? JwtLoggingAuthGuard : (AuthGuard() as any);
+  return applyDecorators(SetMetadata(META_ROLES, roles), UseGuards(guardToUse, AuthRoleGuard));
 }
