@@ -23,8 +23,11 @@ export class AuthRoleGuard implements CanActivate {
       META_ROLES,
       context.getHandler(),
     );
+    console.log('validateRoles --> ', validateRoles);
     if (!validateRoles) return true;
     if (!validateRoles.length) return true;
+
+    console.log('validateRoles --> ', validateRoles);
 
     const req = context.switchToHttp().getRequest();
     const user = req.user as { email?: string; name?: string; sub?: string } | undefined;
