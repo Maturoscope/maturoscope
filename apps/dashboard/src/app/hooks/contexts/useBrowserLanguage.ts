@@ -11,32 +11,11 @@ import i18n from "@/app/languages/i18n";
 
 export const DefaultBrowserLanguageState = "EN";
 
-const availableLanguages = [
-  "EN",
-  "EN-GB",
-  "EN-US",
-  "EN-AU",
-  "EN-CA",
-  "EN-NZ",
-  "EN-IN",
-  "EN-IE",
-  "FR",
-  "FR-FR",
-  "FR-CA",
-  "FR-BE",
-  "FR-CH",
-  "FR-LU",
-  "FR-MC",
-];
-
 const STORED_LANGUAGE_KEY = "SELECTED_LANGUAGE";
 
 const useBrowserLanguage = () => {
   const [browserLanguage, setBrowserLanguage] = useState<string>("EN");
-  let savedLanguage: string | null = "";
-  if (typeof window !== "undefined") {
-    savedLanguage = localStorage.getItem(STORED_LANGUAGE_KEY);
-  }
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const handleBrowserLanguage = (language: string) => {
     setBrowserLanguage(language);
@@ -48,14 +27,41 @@ const useBrowserLanguage = () => {
     setBrowserLanguage(DefaultBrowserLanguageState);
 
   useEffect(() => {
-    let language: string = DefaultBrowserLanguageState;
-    const browserLanguage = String(window.navigator.language).toUpperCase();
-    if (availableLanguages.includes(browserLanguage)) {
-      language = browserLanguage;
+    if (isInitialized) return;
+    
+    const savedLanguage = localStorage.getItem(STORED_LANGUAGE_KEY);
+
+    let normalizedSavedLanguage = savedLanguage;
+    if (savedLanguage) {
+      if (savedLanguage.startsWith("EN")) {
+        normalizedSavedLanguage = "EN";
+      } else if (savedLanguage.startsWith("FR")) {
+        normalizedSavedLanguage = "FR";
+      } else {
+        normalizedSavedLanguage = DefaultBrowserLanguageState;
+      }
     }
-    if (savedLanguage) handleBrowserLanguage(savedLanguage);
-    else handleBrowserLanguage(language);
-  }, [savedLanguage]);
+    
+    if (normalizedSavedLanguage && (normalizedSavedLanguage === "EN" || normalizedSavedLanguage === "FR")) {
+      handleBrowserLanguage(normalizedSavedLanguage);
+      setIsInitialized(true);
+      return;
+    }
+    
+    let detectedLanguage: string = DefaultBrowserLanguageState;
+    const browserLang = String(window.navigator.language).toUpperCase();
+    
+    if (browserLang.startsWith("EN")) {
+      detectedLanguage = "EN";
+    } else if (browserLang.startsWith("FR")) {
+      detectedLanguage = "FR";
+    } else {
+      detectedLanguage = DefaultBrowserLanguageState;
+    }
+    
+    handleBrowserLanguage(detectedLanguage);
+    setIsInitialized(true);
+  }, [isInitialized]);
 
   return { browserLanguage, handleBrowserLanguage, resetBrowserLanguageState };
 };
