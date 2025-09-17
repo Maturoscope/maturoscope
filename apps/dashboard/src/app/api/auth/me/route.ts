@@ -15,11 +15,11 @@ export async function GET(req: NextRequest) {
 
     let userApiData = null;
     
-    if (process.env.API_BASE_URL && decoded.userEmail) {
+    if (process.env.NEXT_PUBLIC_API_BASE_URL && decoded.userEmail) {
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
-        const apiUrl = `${process.env.API_BASE_URL}/users/${decoded.userEmail}`;
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${decoded.userEmail}`;
   
         const userData = await fetch(apiUrl, {
           method: 'GET',
@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
         });
       }
     } else {
-      console.warn('API_BASE_URL not configured or userEmail missing');
+      console.warn('NEXT_PUBLIC_API_BASE_URL not configured or userEmail missing');
       console.log('Using token data only');
       
     
