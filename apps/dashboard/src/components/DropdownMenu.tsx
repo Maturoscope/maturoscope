@@ -27,7 +27,6 @@ import {
         })
         
         if (response.ok) {
-          // Redirect to login after successful logout
           router.push('/login')
         } else {
           console.error('Logout failed')

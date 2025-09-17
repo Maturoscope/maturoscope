@@ -23,17 +23,15 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-// Helper function to generate navigation data based on user roles
 const generateNavData = (user: User | null, t: (key: string) => string) => {
   const sections = [];
   const userRoles = user?.roles || [];
   
-  // User section - shown if user has 'user' role OR if user has 'admin' role (admins can see user features too)
   const hasUserAccess = userRoles.includes('user') || userRoles.includes('admin') || userRoles.length === 0;
   
   if (hasUserAccess) {
     sections.push({
-      title: user?.organization?.name || "Organización",
+      title: user?.organization?.name || "Organization",
       items: [
         {
           title: t('DASHBOARD'),
@@ -59,7 +57,6 @@ const generateNavData = (user: User | null, t: (key: string) => string) => {
     });
   }
   
-  // Admin section - shown ONLY if user explicitly has 'admin' role
   const hasAdminAccess = userRoles.includes('admin');
   
   if (hasAdminAccess) {
@@ -88,10 +85,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user, loading } = useUserContext()
   const { t } = useTranslation("DASHBOARD")
   
-  // Generate navigation data based on user roles
   const navData = generateNavData(user, t)
   
-  // Loading state
   if (loading) {
     return (
       <Sidebar {...props} className="w-[var(--sidebar-width)]">

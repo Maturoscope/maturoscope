@@ -15,19 +15,17 @@ interface BreadcrumbsResult {
 export const useBreadcrumbs = (currentPageLabel: string): BreadcrumbsResult => {
   const { user, loading } = useUserContext()
   
-  // During loading, return loading state
   if (loading) {
     return {
       breadcrumbs: [
-        { label: "", href: "/dashboard" }, // Empty label for skeleton
+        { label: "", href: "/dashboard" },
         { label: currentPageLabel }
       ],
       isLoading: true
     }
   }
   
-  // Use dynamic organization name or fallback
-  const organizationName = user?.organization?.name || "Organización"
+  const organizationName = user?.organization?.name || "Organization"
   
   return {
     breadcrumbs: [

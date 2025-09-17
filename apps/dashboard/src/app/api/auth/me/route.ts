@@ -38,7 +38,6 @@ export async function GET(req: NextRequest) {
           const errorText = await userData.text();
           console.error('User API returned non-OK status:', userData.status, errorText);
           
-          // Fallback: usar datos del token si la API falla
           console.log('Falling back to token data');
           return NextResponse.json({
             userId: decoded.sub,
@@ -55,7 +54,7 @@ export async function GET(req: NextRequest) {
       } catch (apiError) {
         console.error('Failed to fetch from user API:', apiError);
         
-        // Fallback: usar datos del token si la API falla
+        
         console.log('Falling back to token data due to API error');
         return NextResponse.json({
           userId: decoded.sub,
@@ -73,7 +72,7 @@ export async function GET(req: NextRequest) {
       console.warn('API_BASE_URL not configured or userEmail missing');
       console.log('Using token data only');
       
-      // Usar datos del token cuando no hay configuración de API
+    
       return NextResponse.json({
         userId: decoded.sub,
         email: decoded.userEmail,
