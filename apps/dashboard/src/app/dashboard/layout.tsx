@@ -1,6 +1,7 @@
 import type React from "react"
 import { AppSidebar } from "@/components/Sidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { UserProvider } from "@/app/hooks/contexts/UserProvider"
 
 export default function DashboardLayout({
   children,
@@ -8,9 +9,11 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>{children}</SidebarInset>
-    </SidebarProvider>
+    <UserProvider>
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>{children}</SidebarInset>
+      </SidebarProvider>
+    </UserProvider>
   )
 }

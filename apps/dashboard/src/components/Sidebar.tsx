@@ -6,6 +6,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
 import logo from "./../../public/icons/logo.svg"
+import { useUserContext } from "@/app/hooks/contexts/UserProvider"
+import { User } from "@/app/hooks/useUser"
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import {
@@ -20,10 +22,17 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-const data = {
-  navMain: [
-    {
-      title: "Nobatek",
+// Helper function to generate navigation data based on user roles
+const generateNavData = (user: User | null) => {
+  const sections = [];
+  const userRoles = user?.roles || [];
+  
+  // User section - shown if user has 'user' role OR if user has 'admin' role (admins can see user features too)
+  const hasUserAccess = userRoles.includes('user') || userRoles.includes('admin') || userRoles.length === 0;
+  
+  if (hasUserAccess) {
+    sections.push({
+      title: user?.organization?.name || "Organización",
       items: [
         {
           title: "Dashboard",
@@ -46,8 +55,14 @@ const data = {
           icon: Settings,
         },
       ],
-    },
-    {
+    });
+  }
+  
+  // Admin section - shown ONLY if user explicitly has 'admin' role
+  const hasAdminAccess = userRoles.includes('admin');
+  
+  if (hasAdminAccess) {
+    sections.push({
       title: "Super-Admin",
       items: [
         {
@@ -61,12 +76,45 @@ const data = {
           icon: LineChart,
         },
       ],
-    },
-  ],
+    });
+  }
+
+  return { navMain: sections };
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
+  const { user, loading } = useUserContext()
+  
+  // Generate navigation data based on user roles
+  const navData = generateNavData(user)
+  
+  // Loading state
+  if (loading) {
+    return (
+      <Sidebar {...props} className="w-[var(--sidebar-width)]">
+        <SidebarHeader className="border-b border-sidebar-border h-16 flex justify-center px-4">
+          <div className="flex items-center gap-3">
+            <Image src={logo} alt="Logo" width={32} height={32} />
+            <div>
+              <h2 className="font-semibold text-sidebar-foreground text-sm">Maturoscope</h2>
+              <p className="text-xs text-muted-foreground">v1.01</p>
+            </div>
+          </div>
+        </SidebarHeader>
+        <SidebarContent className="gap-0">
+          <div className="p-4">
+            <div className="animate-pulse space-y-3">
+              <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+              <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+              <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+            </div>
+          </div>
+        </SidebarContent>
+      </Sidebar>
+    )
+  }
+  
   return (
     <Sidebar {...props} className="w-[var(--sidebar-width)]">
       <SidebarHeader className="border-b border-sidebar-border h-16 flex justify-center px-4">
@@ -79,7 +127,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </div>
       </SidebarHeader>
       <SidebarContent className="gap-0">
-        {data.navMain.map((section) => (
+        {navData.navMain.map((section) => (
           <Collapsible key={section.title} title={section.title} defaultOpen className="group/collapsible">
             <SidebarGroup>
               <SidebarGroupLabel

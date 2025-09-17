@@ -13,44 +13,90 @@ export async function GET(req: NextRequest) {
   try {
     const decoded = await verifyToken(token.value);
 
-    let termsAccepted = false;
+    let userApiData = null;
     
     if (process.env.API_BASE_URL && decoded.userEmail) {
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
-        
-        const userData = await fetch(`${process.env.API_BASE_URL}/gateway-users/${decoded.userEmail}`, {
+        const apiUrl = `${process.env.API_BASE_URL}/users/${decoded.userEmail}`;
+  
+        const userData = await fetch(apiUrl, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token.value}`,
           },
           signal: controller.signal,
         });
         
         clearTimeout(timeoutId);
-
+        
         if (userData.ok) {
-          const userDataJson = await userData.json();
-          termsAccepted = userDataJson.termsAccepted || false;
-          console.log('External API data fetched successfully');
+          userApiData = await userData.json();
         } else {
-          console.warn('External API returned non-OK status:', userData.status);
+          const errorText = await userData.text();
+          console.error('User API returned non-OK status:', userData.status, errorText);
+          
+          // Fallback: usar datos del token si la API falla
+          console.log('Falling back to token data');
+          return NextResponse.json({
+            userId: decoded.sub,
+            email: decoded.userEmail,
+            name: decoded.userName || decoded.userEmail.split('@')[0],
+            picture: decoded.userPicture || '/logo.png',
+            roles: decoded.userRoles || [],
+            firstName: decoded.userName?.split(' ')[0] || decoded.userEmail.split('@')[0],
+            lastName: decoded.userName?.split(' ')[1] || '',
+            organization: null,
+            termsAccepted: false,
+          });
         }
       } catch (apiError) {
-        console.warn('Failed to fetch from external API, using token data only:', apiError);
+        console.error('Failed to fetch from user API:', apiError);
+        
+        // Fallback: usar datos del token si la API falla
+        console.log('Falling back to token data due to API error');
+        return NextResponse.json({
+          userId: decoded.sub,
+          email: decoded.userEmail,
+          name: decoded.userName || decoded.userEmail.split('@')[0],
+          picture: decoded.userPicture || '/logo.png',
+          roles: decoded.userRoles || [],
+          firstName: decoded.userName?.split(' ')[0] || decoded.userEmail.split('@')[0],
+          lastName: decoded.userName?.split(' ')[1] || '',
+          organization: null,
+          termsAccepted: false,
+        });
       }
     } else {
       console.warn('API_BASE_URL not configured or userEmail missing');
+      console.log('Using token data only');
+      
+      // Usar datos del token cuando no hay configuración de API
+      return NextResponse.json({
+        userId: decoded.sub,
+        email: decoded.userEmail,
+        name: decoded.userName || decoded.userEmail.split('@')[0],
+        picture: decoded.userPicture || '/logo.png',
+        roles: decoded.userRoles || [],
+        firstName: decoded.userName?.split(' ')[0] || decoded.userEmail.split('@')[0],
+        lastName: decoded.userName?.split(' ')[1] || '',
+        organization: null,
+        termsAccepted: false,
+      });
     }
 
     return NextResponse.json({
       userId: decoded.sub,
       email: decoded.userEmail,
-      name: decoded.userName,
-      picture: decoded.userPicture,
+      name: userApiData ? `${userApiData.firstName} ${userApiData.lastName}` : decoded.userName,
+      picture: userApiData?.organization?.avatar || decoded.userPicture,
       roles: decoded.userRoles || [],
-      termsAccepted: termsAccepted,
+      firstName: userApiData?.firstName,
+      lastName: userApiData?.lastName,
+      organization: userApiData?.organization,
+      termsAccepted: userApiData?.termsAccepted || false,
     });
 
   } catch (error) {

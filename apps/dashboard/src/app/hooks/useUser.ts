@@ -7,6 +7,14 @@ export interface User {
   name: string;
   picture: string;
   roles: string[];
+  firstName?: string;
+  lastName?: string;
+  organization?: {
+    id?: string;
+    name?: string;
+    avatar?: string;
+    [key: string]: any;
+  };
   termsAccepted: boolean;
 }
 
