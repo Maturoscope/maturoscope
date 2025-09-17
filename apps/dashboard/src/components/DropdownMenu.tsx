@@ -10,11 +10,13 @@ import {
   import { useState } from "react"
   import { useUserContext } from "@/app/hooks/contexts/UserProvider"
   import { useRouter } from "next/navigation"
+  import { useTranslation } from "react-i18next"
   import Link from "next/link"
   
   export function UserDropdown() {
     const [isOpen, setIsOpen] = useState(false)
     const { user, loading } = useUserContext()
+    const { t } = useTranslation("DASHBOARD")
     const router = useRouter()
     
     const handleLogout = async () => {
@@ -76,7 +78,7 @@ import {
           <DropdownMenuItem className="flex items-center gap-2" asChild>
             <Link href="/dashboard/settings">
               <Settings className="h-4 w-4" />
-              Settings
+              {t('SETTINGS')}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem 
@@ -84,7 +86,7 @@ import {
             onClick={handleLogout}
           >
             <LogOut className="h-4 w-4" />
-            Log Out
+            {t('LOG_OUT')}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

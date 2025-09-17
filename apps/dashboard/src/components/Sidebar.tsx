@@ -8,6 +8,7 @@ import Image from "next/image"
 import logo from "./../../public/icons/logo.svg"
 import { useUserContext } from "@/app/hooks/contexts/UserProvider"
 import { User } from "@/app/hooks/useUser"
+import { useTranslation } from "react-i18next"
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import {
@@ -23,7 +24,7 @@ import {
 } from "@/components/ui/sidebar"
 
 // Helper function to generate navigation data based on user roles
-const generateNavData = (user: User | null) => {
+const generateNavData = (user: User | null, t: (key: string) => string) => {
   const sections = [];
   const userRoles = user?.roles || [];
   
@@ -35,22 +36,22 @@ const generateNavData = (user: User | null) => {
       title: user?.organization?.name || "Organización",
       items: [
         {
-          title: "Dashboard",
+          title: t('DASHBOARD'),
           url: "/dashboard/overview",
           icon: LayoutDashboard,
         },
         {
-          title: "Services",
+          title: t('SERVICES'),
           url: "/dashboard/services",
           icon: File,
         },
         {
-          title: "Members",
+          title: t('MEMBERS'),
           url: "/dashboard/members",
           icon: Users,
         },
         {
-          title: "Settings",
+          title: t('SETTINGS'),
           url: "/dashboard/settings",
           icon: Settings,
         },
@@ -63,15 +64,15 @@ const generateNavData = (user: User | null) => {
   
   if (hasAdminAccess) {
     sections.push({
-      title: "Super-Admin",
+      title: t('SUPER_ADMIN'),
       items: [
         {
-          title: "Reports",
+          title: t('REPORTS'),
           url: "/dashboard/reports",
           icon: SquareUser,
         },
         {
-          title: "Organizations",
+          title: t('ORGANIZATIONS'),
           url: "/dashboard/organizations",
           icon: LineChart,
         },
@@ -85,9 +86,10 @@ const generateNavData = (user: User | null) => {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
   const { user, loading } = useUserContext()
+  const { t } = useTranslation("DASHBOARD")
   
   // Generate navigation data based on user roles
-  const navData = generateNavData(user)
+  const navData = generateNavData(user, t)
   
   // Loading state
   if (loading) {
