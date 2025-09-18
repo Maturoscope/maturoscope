@@ -1,4 +1,6 @@
 "use client"
+
+import React, { useState } from "react"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -7,7 +9,6 @@ import {
   } from "@/components/ui/dropdown-menu"
   import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
   import { Settings, LogOut, ChevronDown } from "lucide-react"
-  import { useState } from "react"
   import { useUserContext } from "@/app/hooks/contexts/UserProvider"
   import { useRouter } from "next/navigation"
   import { useTranslation } from "react-i18next"
