@@ -44,5 +44,16 @@
       "BACK_TO_LOGIN": "Retour à la connexion",
       "EDIT_EMAIL": "Modifier l'e-mail"
     }
+  },
+  "DASHBOARD": {
+    "BRAND": "Nobatek",
+    "DASHBOARD": "Tableau de bord",
+    "SERVICES": "Services",
+    "MEMBERS": "Membres",
+    "SETTINGS": "Paramètres",
+    "SUPER_ADMIN": "Super-Admin",
+    "REPORTS": "Rapports",
+    "ORGANIZATIONS": "Organisations",
+    "LOG_OUT": "Se déconnecter"
   }
 }

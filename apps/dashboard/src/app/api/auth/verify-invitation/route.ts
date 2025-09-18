@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ message: 'Token not provided' }, { status: 400 });
     }
 
-    const response = await fetch(`${process.env.API_BASE_URL}/user-invitation/verify?token=${token}`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/user-invitation/verify?token=${token}`);
     const data = await response.json();
 
     if (!response.ok) {
