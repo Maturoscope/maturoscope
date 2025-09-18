@@ -36,25 +36,20 @@ export class OrganizationsController {
     return this.organizationsService.findAll();
   }
 
-  @Get('key/:key')
-  findByKey(@Param('key') key: string) {
-    return this.organizationsService.findByKey(key);
-  }
-
   @Auth(ValidRoles.user)
   @Patch('avatar')
   @UseInterceptors(FileInterceptor('file'))
   updateAvatarForCurrentUser(
-    @Req() req: any,
+    @Req() req: { user?: { email?: string } },
     @UploadedFile() file: UploadedFileType,
   ) {
     const user = req.user as { email?: string } | undefined;
     return this.organizationsService.updateAvatarByUserEmail(user?.email, file);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.organizationsService.findOne(id);
+  @Get(':key')
+  findByKey(@Param('key') key: string) {
+    return this.organizationsService.findByKey(key);
   }
 
   @Patch(':id')

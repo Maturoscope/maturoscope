@@ -64,11 +64,16 @@ export class OrganizationsService {
     return organization;
   }
 
-  async findByKey(key: string): Promise<Organization | null> {
-    return await this.organizationRepository.findOne({
-      where: { key },
-      relations: ['users'],
+  async findByKey(key: string): Promise<Organization> {
+    const organization = await this.organizationRepository.findOne({
+      where: { key }
     });
+
+    if (!organization) {
+      throw new NotFoundException(`Organization with key ${key} not found`);
+    }
+
+    return organization;
   }
 
   async findByEmail(email: string): Promise<Organization | null> {
