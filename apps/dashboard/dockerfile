@@ -42,8 +42,8 @@ WORKDIR /app
 COPY --from=prunner /app/out/json/ .
 COPY --from=prunner /app/out/yarn.lock ./yarn.lock
 
-# Install dependencies
-RUN yarn install --immutable
+# Install dependencies (sin --immutable porque el lockfile fue generado por prune)
+RUN yarn install
 
 # Copy the rest of the pruned code
 COPY --from=prunner /app/out/full/ .
