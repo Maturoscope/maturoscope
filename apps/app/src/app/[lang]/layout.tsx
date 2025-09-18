@@ -1,8 +1,14 @@
+// Packages
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
+// Dictionaries
+import {
+  getDictionary,
+  DEFAULT_LANGUAGE,
+  Locale,
+} from "@/dictionaries/dictionaries"
+// Styles
 import "../globals.css"
-
-const DEFAULT_LANGUAGE = "en"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,15 +30,17 @@ export default async function RootLayout({
   params,
 }: Readonly<{
   children: React.ReactNode
-  params: Promise<{ lang: string }>
+  params: Promise<{ lang: Locale }>
 }>) {
   const { lang = DEFAULT_LANGUAGE } = await params
+  const dictionary = await getDictionary(lang)
 
   return (
     <html lang={lang}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <h1>{dictionary.test}</h1>
         {children}
       </body>
     </html>
