@@ -1,4 +1,9 @@
 {
   "lang": "en",
-  "test": "This is a testing string for i18n purposes"
+  "homepage": {
+    "hero": {
+      "title": "Welcome to the Maturoscope, the tool that guides your innovation to the market",
+      "description": "Designed by experts from the building and construction sector. This tool is meant to guide you throughout the entire maturation process of your innovation."
+    }
+  }
 }

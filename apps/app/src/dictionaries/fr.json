@@ -1,4 +1,9 @@
 {
   "lang": "fr",
-  "test": "Ceci est une chaîne de test pour les objectifs d'i18n"
+  "homepage": {
+    "hero": {
+      "title": "Bienvenue dans le Maturoscope, l'outil qui vous guide dans la maturation de votre innovation",
+      "description": "Conçu par des experts du secteur de la construction. Cet outil vous guide tout au long du processus de maturation de votre innovation."
+    }
+  }
 }
