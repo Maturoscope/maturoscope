@@ -9,7 +9,7 @@ const PrivacyPolicy = ({ description }: PrivacyPolicyProps) => {
   return (
     <div className="flex gap-4 w-full max-w-[1280px] px-6 mt-24">
       <Image
-        src="/icons/flag-europe.svg"
+        src="/icons/homepage/flag-europe.svg"
         alt="Europe Flag"
         width={90}
         height={60}

@@ -23,12 +23,13 @@ const Home = async ({ searchParams, params }: HomeProps) => {
   const dictionary = await getDictionary(lang)
 
   const {
+    lang: langFromDictionary,
     homepage: { hero, policy },
   } = dictionary
 
   return (
     <main className="w-full flex flex-col items-center justify-center">
-      <Hero {...hero} />
+      <Hero {...hero} lang={langFromDictionary} />
       <PrivacyPolicy {...policy} />
     </main>
   )

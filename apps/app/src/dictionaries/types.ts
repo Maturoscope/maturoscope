@@ -17,4 +17,12 @@ export type Dictionary = {
       description: string
     }
   }
+  why: {
+    hero: {
+      heading: HeadingProps & {
+        list: { icon: string; title: string; description: string }[]
+        buttonLabel: string
+      }
+    }
+  }
 }
