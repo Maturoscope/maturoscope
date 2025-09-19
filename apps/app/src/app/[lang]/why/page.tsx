@@ -5,15 +5,13 @@ import Hero from "@/components/custom/Why/Hero/Hero"
 // Dictionaries
 import { getDictionary, Locale } from "@/dictionaries/dictionaries"
 
-interface HomeProps {
-  searchParams: {
-    key: string
-  }
+interface WhyProps {
+  searchParams: Promise<{ key: string }>
   params: Promise<{ lang: Locale }>
 }
 
-const Why = async ({ searchParams, params }: HomeProps) => {
-  const { key } = searchParams
+const Why = async ({ searchParams, params }: WhyProps) => {
+  const { key } = await searchParams
   const { lang } = await params
   const organization = await getOrganizationByKey(key)
 
