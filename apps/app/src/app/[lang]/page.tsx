@@ -2,6 +2,7 @@
 import { getOrganizationByKey } from "@/actions/organization"
 // Components
 import Hero from "@/components/custom/Homepage/Hero/Hero"
+import PrivacyPolicy from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
 // Dictionaries
 import { getDictionary, Locale } from "@/dictionaries/dictionaries"
 
@@ -22,12 +23,13 @@ const Home = async ({ searchParams, params }: HomeProps) => {
   const dictionary = await getDictionary(lang)
 
   const {
-    homepage: { hero },
+    homepage: { hero, policy },
   } = dictionary
 
   return (
-    <main className="w-max px-6 flex flex-col items-center justify-center gap-24">
+    <main className="w-full flex flex-col items-center justify-center">
       <Hero {...hero} />
+      <PrivacyPolicy {...policy} />
     </main>
   )
 }

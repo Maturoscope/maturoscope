@@ -5,8 +5,34 @@
   },
   "homepage": {
     "hero": {
+      "heading": {
       "title": "Bienvenue dans le Maturoscope, l'outil qui vous guide dans la maturation de votre innovation",
-      "description": "Conçu par des experts du secteur de la construction. Cet outil vous guide tout au long du processus de maturation de votre innovation."
+        "description": "Conçu par des experts du secteur de la construction. Cet outil vous guide tout au long du processus de maturation de votre innovation.",
+        "buttonLabel": "Continuer"
+      },
+      "criteria": {
+        "title": "Il évalue 3 critères :",
+        "keys": [
+          {
+            "icon": "/icons/criteria-trl.svg",
+            "title": "TRL - Niveau de maturité de la technologie",
+            "description": "Un système de mesure standardisé, développé par la NASA, utilisé pour évaluer la maturité et la prêt pour le marché d'une technologie."
+          },
+          {
+            "icon": "/icons/criteria-mkrl.svg",
+            "title": "MKRL - Niveau de maturité du marché",
+            "description": "Une échelle qui évalue la prêt pour le marché d'une innovation, en tenant compte de la potentialité commerciale, de la validation du client et de la position concurrentielle."
+          },
+          {
+            "icon": "/icons/criteria-mfrl.svg",
+            "title": "MFRL - Niveau de maturité de la fabrication",
+            "description": "Une échelle qui évalue la maturité des capacités de fabrication nécessaires pour produire l'innovation à grande échelle."
+          }
+        ]
+      }
+    },
+    "policy": {
+      "description": "Le projet METABUILDING LABS a reçu un financement de la part de la Commission européenne dans le cadre du Programme européen de recherche et d'innovation Horizon 2020 sous le numéro de convention No. 953193. La responsabilité exclusive du contenu de ce document repose entièrement sur l'avis du déposant. La Commission européenne n'est pas responsable de l'utilisation qui peut en être faite."
     }
   }
 }

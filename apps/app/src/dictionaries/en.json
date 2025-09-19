@@ -5,8 +5,34 @@
   },
   "homepage": {
     "hero": {
-      "title": "Welcome to the Maturoscope, the tool that guides your innovation to the market",
-      "description": "Designed by experts from the building and construction sector. This tool is meant to guide you throughout the entire maturation process of your innovation."
+      "heading": {
+        "title": "Welcome to the Maturoscope, the tool that guides your innovation to the market",
+        "description": "Designed by experts from the building and construction sector. This tool is meant to guide you throughout the entire maturation process of your innovation.",
+        "buttonLabel": "Continue"
+      },
+      "criteria": {
+        "title": "It evaluates 3 key criteria:",
+        "keys": [
+          {
+            "icon": "/icons/criteria-trl.svg",
+            "title": "TRL - Technology Readiness Level",
+            "description": "A standardized measurement system, developed by NASA, used to assess the maturity and readiness of a technology."
+          },
+          {
+            "icon": "/icons/criteria-mkrl.svg",
+            "title": "MKRL - Market Readiness Level",
+            "description": "A scale that evaluates how ready an innovation is for the market, looking at business potential, customer validation, and competitive positioning."
+          },
+          {
+            "icon": "/icons/criteria-mfrl.svg",
+            "title": "MFRL - Manufacturing Readiness Level",
+            "description": "A scale that assesses the maturity of manufacturing capabilities needed to produce the innovation at scale."
+          }
+        ]
+      }
+    },
+    "policy": {
+      "description": "METABUILDING LABS Project has received funding from the European Union's Horizon 2020 Research and Innovation Programme under Grant Agreement No. 953193. The sole responsibility for the content of this document lies entirely with the author's view. The European Commission is not responsible for any use that may be made of the information it contains."
     }
   }
 }
