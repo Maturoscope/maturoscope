@@ -1,8 +1,17 @@
+"use client"
+
 // Packages
 import Image from "next/image"
+import { motion } from "motion/react"
 // Components
 import { Button } from "@/components/ui/button"
 import Heading, { HeadingProps } from "@/components/common/Heading/Heading"
+// Animations
+import {
+  SIMPLE_FADE_VARIANT,
+  STAGGERED_LIST_ITEM_VARIANT,
+  STAGGERED_LIST_VARIANT,
+} from "@/animations/common"
 // Types
 import { ListItem } from "@/types/list-item"
 
@@ -19,12 +28,25 @@ const Hero = ({ heading, checks }: HeroProps) => {
 
   return (
     <div className="flex items-start justify-between w-full max-w-[1280px] gap-16 px-6">
-      <div className="flex flex-col items-start justify-start w-full max-w-[584px] gap-12">
+      <motion.div
+        variants={SIMPLE_FADE_VARIANT}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="flex flex-col items-start justify-start w-full max-w-[584px] gap-12"
+      >
         <Heading {...heading} />
-        <ul className="w-full flex flex-col gap-6">
+        <motion.ul
+          variants={STAGGERED_LIST_VARIANT}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="w-full flex flex-col gap-6"
+        >
           {list.map((item) => (
-            <li
+            <motion.li
               key={item.title}
+              variants={STAGGERED_LIST_ITEM_VARIANT}
               className="flex items-start justify-start gap-4"
             >
               <div className="flex items-center justify-center aspect-square w-10 h-10 border rounded-md">
@@ -43,16 +65,26 @@ const Hero = ({ heading, checks }: HeroProps) => {
                   {item.description}
                 </span>
               </div>
-            </li>
+            </motion.li>
           ))}
-        </ul>
+        </motion.ul>
         <Button variant="default" size="lg" className="w-full">
           {buttonLabel}
         </Button>
-      </div>
-      <ul className="w-full max-w-[584px] flex flex-col gap-8">
+      </motion.div>
+      <motion.ul
+        variants={STAGGERED_LIST_VARIANT}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="w-full max-w-[584px] flex flex-col gap-8"
+      >
         {checks.map((item) => (
-          <li key={item.title} className="flex items-start justify-start gap-4">
+          <motion.li
+            key={item.title}
+            variants={STAGGERED_LIST_ITEM_VARIANT}
+            className="flex items-start justify-start gap-4"
+          >
             <Image src={item.icon} alt={item.title} width={20} height={20} />
             <div className="flex flex-col items-start justify-start gap-1">
               <p className="text-base font-semibold text-foreground">
@@ -62,9 +94,9 @@ const Hero = ({ heading, checks }: HeroProps) => {
                 {item.description}
               </span>
             </div>
-          </li>
+          </motion.li>
         ))}
-      </ul>
+      </motion.ul>
     </div>
   )
 }

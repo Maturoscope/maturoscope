@@ -17,7 +17,7 @@ export const STAGGERED_LIST_VARIANT = {
     y: 0,
     transition: {
       staggerChildren: 0.3,
-      delayChildren: 0.5,
+      delayChildren: 0.4,
     },
   },
   viewport: { once: true, amount: 0.7 },
