@@ -23,17 +23,21 @@
     COPY .yarnrc.yml ./
     COPY apps/app/package.json ./apps/app/
     
-    # Copiar cache de Yarn para preservar patches
-    COPY .yarn/ ./.yarn/
-    
     # Instalar dependencias necesarias para turbo prune
-    RUN yarn install
+    RUN yarn install --network-timeout 300000
     
     # Copiar el código fuente para el prune
     COPY . .
     
-    # Regenerar lockfile y hacer prune (workaround para patches de TypeScript)
-    RUN rm yarn.lock && yarn install && yarn turbo prune app --docker
+    # Workaround para patches de TypeScript en CI/CD
+    RUN echo "compressionLevel: mixed" > .yarnrc-temp.yml && \
+        echo "enableGlobalCache: false" >> .yarnrc-temp.yml && \
+        echo "nodeLinker: node-modules" >> .yarnrc-temp.yml && \
+        mv .yarnrc.yml .yarnrc.yml.backup && \
+        mv .yarnrc-temp.yml .yarnrc.yml && \
+        rm -f yarn.lock && \
+        yarn install --network-timeout 300000 && \
+        yarn turbo prune app --docker
     
     # --------------------------------------------------------------------------------------------------------------------
     # INSTALLER (Instalación y Build)

@@ -22,17 +22,21 @@ FROM base AS prunner
     COPY .yarnrc.yml ./
     COPY apps/dashboard/package.json ./apps/dashboard/
     
-    # Copy Yarn cache to preserve patches
-    COPY .yarn/ ./.yarn/
-    
     # Install dependencies needed for turbo prune
-    RUN yarn install
+    RUN yarn install --network-timeout 300000
 
 # Copy source code for the prune
 COPY . .
 
-# Regenerate lockfile and make prune (workaround for TypeScript patches)
-RUN rm yarn.lock && yarn install && yarn turbo prune dashboard --docker
+# Workaround para patches de TypeScript en CI/CD
+RUN echo "compressionLevel: mixed" > .yarnrc-temp.yml && \
+    echo "enableGlobalCache: false" >> .yarnrc-temp.yml && \
+    echo "nodeLinker: node-modules" >> .yarnrc-temp.yml && \
+    mv .yarnrc.yml .yarnrc.yml.backup && \
+    mv .yarnrc-temp.yml .yarnrc.yml && \
+    rm -f yarn.lock && \
+    yarn install --network-timeout 300000 && \
+    yarn turbo prune dashboard --docker
 
 # --------------------------------------------------------------------------------------------------------------------
 # INSTALLER (Installation and Build)

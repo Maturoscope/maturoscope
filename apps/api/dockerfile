@@ -17,14 +17,18 @@ FROM base AS prunner
 COPY package.json yarn.lock turbo.json .yarnrc.yml ./
 COPY apps/api/package.json ./apps/api/
 
-# Copy Yarn cache to preserve patches
-COPY .yarn/ ./.yarn/
-
 # Use yarn install without --immutable to allow lockfile updates
-RUN yarn install
+RUN yarn install --network-timeout 300000
 COPY . .
-# Regenerate lockfile and make prune (workaround for TypeScript patches)
-RUN rm yarn.lock && yarn install && yarn turbo prune api --docker
+# Workaround para patches de TypeScript en CI/CD
+RUN echo "compressionLevel: mixed" > .yarnrc-temp.yml && \
+    echo "enableGlobalCache: false" >> .yarnrc-temp.yml && \
+    echo "nodeLinker: node-modules" >> .yarnrc-temp.yml && \
+    mv .yarnrc.yml .yarnrc.yml.backup && \
+    mv .yarnrc-temp.yml .yarnrc.yml && \
+    rm -f yarn.lock && \
+    yarn install --network-timeout 300000 && \
+    yarn turbo prune api --docker
 
 # ---------------------------
 # BUILDER (install and compile)
