@@ -24,7 +24,7 @@ import type { UploadedFile as UploadedFileType } from '../../common/types/upload
 export class OrganizationsController {
   constructor(private readonly organizationsService: OrganizationsService) {}
 
-  // @Auth(ValidRoles.admin)
+  @Auth(ValidRoles.admin)
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(@Body() createOrganizationDto: CreateOrganizationDto) {
