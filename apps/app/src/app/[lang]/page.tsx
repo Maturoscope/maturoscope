@@ -1,6 +1,20 @@
+// Packages
 import Image from "next/image"
+// Actions
+import { getOrganizationByKey } from "@/actions/organization"
 
-export default function Home() {
+interface HomeProps {
+  searchParams: {
+    key: string
+  }
+}
+
+const Home = async ({ searchParams }: HomeProps) => {
+  const { key } = searchParams
+  const organization = await getOrganizationByKey(key)
+
+  console.log({ organization })
+
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -17,3 +31,5 @@ export default function Home() {
     </div>
   )
 }
+
+export default Home
