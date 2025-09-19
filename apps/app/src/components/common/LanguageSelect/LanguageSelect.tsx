@@ -1,15 +1,18 @@
+"use client"
+
 // Packages
 import Image from "next/image"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+// Dictionaries
+import { Locale } from "@/dictionaries/dictionaries"
 // Components
 import {
   Select,
   SelectContent,
-  SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-// Dictionaries
-import { Locale } from "@/dictionaries/dictionaries"
 
 interface LanguageSelectProps {
   defaultLanguage: Locale
@@ -17,6 +20,11 @@ interface LanguageSelectProps {
 
 const LanguageSelect = ({ defaultLanguage }: LanguageSelectProps) => {
   const placeholder = defaultLanguage.toUpperCase()
+  const currPathname = usePathname()
+  const pathWithoutLocale = currPathname.split("/").slice(2)
+
+  const getLocaleUrl = (locale: Locale) =>
+    `/${locale}/${pathWithoutLocale.join("/")}`
 
   return (
     <div className="w-full max-w-[100px]">
@@ -32,8 +40,11 @@ const LanguageSelect = ({ defaultLanguage }: LanguageSelectProps) => {
             <SelectValue placeholder={placeholder} />
           </div>
         </SelectTrigger>
-        <SelectContent className="w-full min-w-[100px] max-w-[100px]">
-          <SelectItem value="en">
+        <SelectContent className="w-full min-w-[100px] max-w-[100px] flex flex-col gap-2">
+          <Link
+            href={getLocaleUrl("en")}
+            className="w-full h-8 flex items-center justify-start px-2 py-1.5 hover:bg-accent rounded-sm"
+          >
             <div className="flex items-center gap-2 text-sm text-foreground font-medium">
               <Image
                 src={`/icons/flag-en.svg`}
@@ -43,8 +54,11 @@ const LanguageSelect = ({ defaultLanguage }: LanguageSelectProps) => {
               />
               <SelectValue placeholder="EN" />
             </div>
-          </SelectItem>
-          <SelectItem value="fr">
+          </Link>
+          <Link
+            href={getLocaleUrl("fr")}
+            className="w-full h-8 flex items-center justify-start px-2 py-1.5 hover:bg-accent rounded-sm"
+          >
             <div className="flex items-center gap-2 text-sm text-foreground font-medium">
               <Image
                 src={`/icons/flag-fr.svg`}
@@ -54,7 +68,7 @@ const LanguageSelect = ({ defaultLanguage }: LanguageSelectProps) => {
               />
               <SelectValue placeholder="FR" />
             </div>
-          </SelectItem>
+          </Link>
         </SelectContent>
       </Select>
     </div>
