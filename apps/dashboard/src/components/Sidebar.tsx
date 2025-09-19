@@ -1,7 +1,7 @@
 "use client"
 
 import type * as React from "react"
-import { ChevronDown, LayoutDashboard, Users, Settings, File, SquareUser, Server, LineChart } from "lucide-react"
+import { ChevronDown, LayoutDashboard, Users, Settings, File, SquareUser, LineChart } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"

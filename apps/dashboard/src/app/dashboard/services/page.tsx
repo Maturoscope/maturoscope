@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react";
 import { DynamicPageHeader } from "@/components/DynamicPageHeader"
 import { useTranslation } from "react-i18next"
 

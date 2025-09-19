@@ -1,3 +1,4 @@
+import React from "react";
 import { LanguageButton } from "@/components/LanguajeSelector/LanguajeButton";
 import { Search } from "lucide-react"
 

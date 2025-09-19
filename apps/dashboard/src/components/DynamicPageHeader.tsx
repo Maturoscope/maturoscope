@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react";
 import { PageHeader } from "@/components/Header"
 import { useBreadcrumbs } from "@/app/hooks/useBreadcrumbs"
 import { Separator } from "@/components/ui/separator"

@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react";
 import { PageHeader } from "@/components/Header"
 import { useTranslation } from "react-i18next"
 

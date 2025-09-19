@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -108,8 +108,6 @@ export default function LoginForm({
           password: encryptedPassword,
         }),
       });
-
-      const data = await response.json();
 
       if (!response.ok) {
         if (response.status === 423) {

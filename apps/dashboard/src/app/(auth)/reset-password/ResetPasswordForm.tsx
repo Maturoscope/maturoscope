@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -71,6 +71,7 @@ export default function ResetPasswordForm({
       onEmailSent(email);
       
     } catch (err) {
+      console.error(err);
       setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);

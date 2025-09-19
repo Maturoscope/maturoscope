@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import ResetPasswordForm from "./ResetPasswordForm";
 import CheckInbox from "./CheckInbox";
 import { useState } from "react";
