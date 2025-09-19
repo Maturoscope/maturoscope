@@ -1,9 +1,14 @@
+"use client"
+
 // Packages
 import Image from "next/image"
+import { motion } from "motion/react"
 // Dictionaries
 import { Locale } from "@/dictionaries/dictionaries"
 // Components
 import LanguageSelect from "@/components/common/LanguageSelect/LanguageSelect"
+// Animations
+import { SIMPLE_FADE_VARIANT } from "@/animations/common"
 
 interface HeaderProps {
   stringConnector: string
@@ -12,7 +17,13 @@ interface HeaderProps {
 
 const Header = ({ stringConnector, defaultLanguage }: HeaderProps) => {
   return (
-    <header className="w-full px-6 h-9 flex items-center justify-between mb-14 max-w-[1280px]">
+    <motion.header
+      variants={SIMPLE_FADE_VARIANT}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="w-full px-6 h-9 flex items-center justify-between mb-14 max-w-[1280px]"
+    >
       <div className="flex items-center gap-2 text-foreground">
         <div className="flex items-center gap-2">
           <Image
@@ -35,7 +46,7 @@ const Header = ({ stringConnector, defaultLanguage }: HeaderProps) => {
         <span className="text-sm font-medium">Nobatek</span>
       </div>
       <LanguageSelect defaultLanguage={defaultLanguage} />
-    </header>
+    </motion.header>
   )
 }
 
