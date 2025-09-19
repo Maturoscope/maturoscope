@@ -34,20 +34,13 @@ export default async function RootLayout({
   const dictionary = await getDictionary(lang)
 
   const {
-    lang: langFromDictionary,
     header: { stringConnector },
   } = dictionary
 
   return (
-    <html
-      lang={langFromDictionary}
-      className={`${geist.className} antialiased`}
-    >
+    <html lang={lang} className={`${geist.className} antialiased`}>
       <body className="flex flex-col items-center justify-center w-full h-svh">
-        <Header
-          stringConnector={stringConnector}
-          defaultLanguage={langFromDictionary}
-        />
+        <Header stringConnector={stringConnector} />
         {children}
       </body>
     </html>
