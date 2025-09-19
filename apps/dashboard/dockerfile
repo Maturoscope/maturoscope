@@ -31,8 +31,8 @@ FROM base AS prunner
 # Copy source code for the prune
 COPY . .
 
-# Prune to generate minimal files for Docker installation
-RUN yarn turbo prune dashboard --docker
+# Regenerate lockfile and make prune (workaround for TypeScript patches)
+RUN rm yarn.lock && yarn install && yarn turbo prune dashboard --docker
 
 # --------------------------------------------------------------------------------------------------------------------
 # INSTALLER (Installation and Build)
@@ -61,11 +61,7 @@ ARG NEXT_PUBLIC_GATEWAY_URL
 ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 ENV NEXT_PUBLIC_GATEWAY_URL=$NEXT_PUBLIC_GATEWAY_URL
 
-# Auth0 variables (environment-specific)
-ARG AUTH0_CLIENT_SECRET
-ARG AUTH0_SECRET
-ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
-ENV AUTH0_SECRET=$AUTH0_SECRET
+    # Auth0 variables are handled by Kubernetes secrets
 
 # Build dashboard service
 RUN yarn turbo run build --filter=dashboard
@@ -75,14 +71,10 @@ RUN yarn turbo run build --filter=dashboard
 # --------------------------------------------------------------------------------------------------------------------
 FROM base AS runner
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
-# Auth0 variables available at runtime
-ARG AUTH0_CLIENT_SECRET
-ARG AUTH0_SECRET
-ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET
-ENV AUTH0_SECRET=$AUTH0_SECRET
+    ARG NODE_ENV=production
+    ENV NODE_ENV=${NODE_ENV}
+    
+    # Auth0 variables are handled by Kubernetes secrets at runtime
 
 # Create non-root user
 RUN addgroup --system --gid 1001 dashboard \

@@ -23,7 +23,8 @@ COPY .yarn/ ./.yarn/
 # Use yarn install without --immutable to allow lockfile updates
 RUN yarn install
 COPY . .
-RUN yarn turbo prune api --docker
+# Regenerate lockfile and make prune (workaround for TypeScript patches)
+RUN rm yarn.lock && yarn install && yarn turbo prune api --docker
 
 # ---------------------------
 # BUILDER (install and compile)
