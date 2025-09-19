@@ -3,8 +3,6 @@
 // Packages
 import Image from "next/image"
 import { motion } from "motion/react"
-// Dictionaries
-import { Locale } from "@/dictionaries/dictionaries"
 // Components
 import LanguageSelect from "@/components/common/LanguageSelect/LanguageSelect"
 // Animations
@@ -12,10 +10,9 @@ import { SIMPLE_FADE_VARIANT } from "@/animations/common"
 
 interface HeaderProps {
   stringConnector: string
-  defaultLanguage: Locale
 }
 
-const Header = ({ stringConnector, defaultLanguage }: HeaderProps) => {
+const Header = ({ stringConnector }: HeaderProps) => {
   return (
     <motion.header
       variants={SIMPLE_FADE_VARIANT}
@@ -45,7 +42,7 @@ const Header = ({ stringConnector, defaultLanguage }: HeaderProps) => {
         </div>
         <span className="text-sm font-medium">Nobatek</span>
       </div>
-      <LanguageSelect defaultLanguage={defaultLanguage} />
+      <LanguageSelect />
     </motion.header>
   )
 }

@@ -3,7 +3,7 @@
 // Packages
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useParams } from "next/navigation"
 // Dictionaries
 import { Locale } from "@/dictionaries/dictionaries"
 // Components
@@ -14,12 +14,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-interface LanguageSelectProps {
-  defaultLanguage: Locale
-}
-
-const LanguageSelect = ({ defaultLanguage }: LanguageSelectProps) => {
-  const placeholder = defaultLanguage.toUpperCase()
+const LanguageSelect = () => {
+  const { lang } = useParams<{ lang: Locale }>()
+  const placeholder = lang.toUpperCase()
   const currPathname = usePathname()
   const pathWithoutLocale = currPathname.split("/").slice(2)
 
@@ -32,7 +29,7 @@ const LanguageSelect = ({ defaultLanguage }: LanguageSelectProps) => {
         <SelectTrigger className="justify-center gap-2">
           <div className="flex items-center gap-2 text-sm text-foreground font-medium">
             <Image
-              src={`/icons/flag-${defaultLanguage}.svg`}
+              src={`/icons/flag-${lang}.svg`}
               alt={placeholder}
               width={16}
               height={16}
