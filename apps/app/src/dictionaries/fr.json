@@ -1,5 +1,8 @@
 {
   "lang": "fr",
+  "header": {
+    "stringConnector": "par"
+  },
   "homepage": {
     "hero": {
       "title": "Bienvenue dans le Maturoscope, l'outil qui vous guide dans la maturation de votre innovation",
