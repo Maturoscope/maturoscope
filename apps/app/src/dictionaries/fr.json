@@ -1,4 +1,81 @@
 {
   "lang": "fr",
-  "test": "Ceci est une chaîne de test pour les objectifs d'i18n"
+  "header": {
+    "stringConnector": "par"
+  },
+  "homepage": {
+    "hero": {
+      "heading": {
+      "title": "Bienvenue dans le Maturoscope, l'outil qui vous guide dans la maturation de votre innovation",
+        "description": "Conçu par des experts du secteur de la construction. Cet outil vous guide tout au long du processus de maturation de votre innovation.",
+        "buttonLabel": "Continuer"
+      },
+      "criteria": {
+        "title": "Il évalue 3 critères :",
+        "keys": [
+          {
+            "icon": "/icons/homepage/criteria-trl.svg",
+            "title": "TRL - Niveau de maturité de la technologie",
+            "description": "Un système de mesure standardisé, développé par la NASA, utilisé pour évaluer la maturité et la prêt pour le marché d'une technologie."
+          },
+          {
+            "icon": "/icons/homepage/criteria-mkrl.svg",
+            "title": "MKRL - Niveau de maturité du marché",
+            "description": "Une échelle qui évalue la prêt pour le marché d'une innovation, en tenant compte de la potentialité commerciale, de la validation du client et de la position concurrentielle."
+          },
+          {
+            "icon": "/icons/homepage/criteria-mfrl.svg",
+            "title": "MFRL - Niveau de maturité de la fabrication",
+            "description": "Une échelle qui évalue la maturité des capacités de fabrication nécessaires pour produire l'innovation à grande échelle."
+          }
+        ]
+      }
+    },
+    "policy": {
+      "description": "Le projet METABUILDING LABS a reçu un financement de la part de la Commission européenne dans le cadre du Programme européen de recherche et d'innovation Horizon 2020 sous le numéro de convention No. 953193. La responsabilité exclusive du contenu de ce document repose entièrement sur l'avis du déposant. La Commission européenne n'est pas responsable de l'utilisation qui peut en être faite."
+    }
+  },
+  "why": {
+    "hero": {
+      "heading": {
+        "title": "Pourquoi le Maturoscope?",
+        "description": "Vous développez une solution innovante dans le secteur de la construction ? Que ce soit un produit, un process ou un service, le Maturoscope vous permet d'évaluer sa maturité en quelques clics et vous guide à travers les étapes suivantes vers la commercialisation.",
+        "list": [
+          {
+            "icon": "/icons/why/less-than-five-minutes.svg",
+            "title": "Moins de 5 minutes",
+            "description": "Complétez un questionnaire rapide pour vous retourner au plus vite."
+          },
+          {
+            "icon": "/icons/why/no-account-required.svg",
+            "title": "Aucun compte requis",
+            "description": "Commencez instantanément—pas de création de compte ou de mots de passe—donc il n'y a pas de friction."
+          },
+          {
+            "icon": "/icons/why/not-store-information.svg",
+            "title": "Nous ne stockons pas vos informations",
+            "description": "Vos réponses ne sont pas stockées ou partagées ; tous les données sont supprimées lorsque la session se termine."
+          }
+        ],
+        "buttonLabel": "Commencer le questionnaire"
+      },
+      "checks": [
+        {
+          "icon": "/icons/black-check.svg",
+          "title": "Compréhension claire de la maturité de votre innovation",
+          "description": "Découvrez rapidement où se situe votre solution en termes de maturité technique, industrielle et marchée, vous aidant à identifier les bonnes étapes suivantes."
+        },
+        {
+          "icon": "/icons/black-check.svg",
+          "title": "Rapport personnalisé instantané",
+          "description": "Recevez un résumé détaillé de vos résultats dans un format PDF, ce qui facilite le partage et le suivi de votre progression."
+        },
+        {
+          "icon": "/icons/black-check.svg",
+          "title": "Guidance personnalisée pour un développement plus rapide",
+          "description": "Accédez à une sélection de services personnalisés conçus pour accélérer le développement et le succès de votre innovation."
+        }
+      ]
+    }
+  }
 }

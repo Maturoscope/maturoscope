@@ -1,8 +1,7 @@
 // Actions
 import { getOrganizationByKey } from "@/actions/organization"
 // Components
-import Hero from "@/components/custom/Homepage/Hero/Hero"
-import PrivacyPolicy from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
+import Hero from "@/components/custom/Why/Hero/Hero"
 // Dictionaries
 import { getDictionary, Locale } from "@/dictionaries/dictionaries"
 
@@ -13,7 +12,7 @@ interface HomeProps {
   params: Promise<{ lang: Locale }>
 }
 
-const Home = async ({ searchParams, params }: HomeProps) => {
+const Why = async ({ searchParams, params }: HomeProps) => {
   const { key } = searchParams
   const { lang } = await params
   const organization = await getOrganizationByKey(key)
@@ -23,16 +22,14 @@ const Home = async ({ searchParams, params }: HomeProps) => {
   const dictionary = await getDictionary(lang)
 
   const {
-    lang: langFromDictionary,
-    homepage: { hero, policy },
+    why: { hero },
   } = dictionary
 
   return (
     <main className="w-full flex flex-col items-center justify-center">
-      <Hero {...hero} lang={langFromDictionary} />
-      <PrivacyPolicy {...policy} />
+      <Hero {...hero} />
     </main>
   )
 }
 
-export default Home
+export default Why

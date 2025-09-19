@@ -5,10 +5,16 @@ export type Locale = "en" | "fr"
 
 export const DEFAULT_LANGUAGE: Locale = "en"
 
+export const AVAILABLE_LANGUAGES: Locale[] = ["en", "fr"]
+
 const dictionaries = {
   en: () => import("./en.json").then((module) => module.default),
   fr: () => import("./fr.json").then((module) => module.default),
 }
 
-export const getDictionary = async (locale: Locale) =>
-  dictionaries[locale]() as Promise<Dictionary>
+export const getDictionary = async (locale: Locale) => {
+  if (!AVAILABLE_LANGUAGES.includes(locale))
+    return dictionaries[DEFAULT_LANGUAGE]() as Promise<Dictionary>
+
+  return dictionaries[locale]() as Promise<Dictionary>
+}
