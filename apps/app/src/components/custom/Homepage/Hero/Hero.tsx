@@ -20,7 +20,7 @@ const Hero = async ({ lang, heading, criteria }: HeroProps) => {
 
   return (
     <div className="flex items-start justify-between w-full max-w-[1280px] gap-16 px-6">
-      <div className="flex flex-col items-start justify-start w-full max-w-[548px] gap-12">
+      <div className="flex flex-col items-start justify-start w-full max-w-[584px] gap-12">
         <Heading {...heading} />
         <Link href={`/${lang}/why`} className="w-full">
           <Button variant="default" size="lg" className="w-full">

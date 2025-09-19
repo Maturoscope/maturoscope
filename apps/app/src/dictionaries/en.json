@@ -58,7 +58,24 @@
           }
         ],
         "buttonLabel": "Start the questionnaire"
-      }
+      },
+      "checks": [
+        {
+          "icon": "/icons/black-check.svg",
+          "title": "Clear understanding of your innovation's maturity",
+          "description": "Quickly discover where your solution stands in terms of technical, industrial, and market readiness, helping you identify the right next steps."
+        },
+        {
+          "icon": "/icons/black-check.svg",
+          "title": "Instant personalized report",
+          "description": "Receive a detailed summary of your results in a PDF format, making it easy to share and keep track of your progress."
+        },
+        {
+          "icon": "/icons/black-check.svg",
+          "title": "Tailored guidance for faster growth",
+          "description": "Get access to a personalized selection of services designed to accelerate the development and success of your innovation."
+        }
+      ]
     }
   }
 }

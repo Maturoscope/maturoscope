@@ -2,22 +2,18 @@
 import Image from "next/image"
 // Components
 import Box from "@/components/common/Box/Box"
-
-interface KeyCriteria {
-  icon: string
-  title: string
-  description: string
-}
+// Types
+import { ListItem } from "@/types/list-item"
 
 export interface KeysCriteriaProps {
   title: string
-  keys: KeyCriteria[]
+  keys: ListItem[]
 }
 
 const KeysCriteria = ({ title, keys }: KeysCriteriaProps) => {
   return (
     <Box>
-      <div className="flex flex-col items-start justify-start w-full max-w-[548px] gap-8">
+      <div className="flex flex-col items-start justify-start w-full max-w-[584px] gap-8">
         <span className="text-lg font-semibold text-foreground">{title}</span>
         <div className="flex flex-col items-start justify-start w-full gap-6">
           {keys.map((key) => (

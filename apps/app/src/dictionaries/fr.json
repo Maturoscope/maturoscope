@@ -38,7 +38,7 @@
   "why": {
     "hero": {
       "heading": {
-        "title": "Pourquoi utiliser le Maturoscope ?",
+        "title": "Pourquoi le Maturoscope?",
         "description": "Vous développez une solution innovante dans le secteur de la construction ? Que ce soit un produit, un process ou un service, le Maturoscope vous permet d'évaluer sa maturité en quelques clics et vous guide à travers les étapes suivantes vers la commercialisation.",
         "list": [
           {
@@ -58,7 +58,24 @@
           }
         ],
         "buttonLabel": "Commencer le questionnaire"
-      }
+      },
+      "checks": [
+        {
+          "icon": "/icons/black-check.svg",
+          "title": "Compréhension claire de la maturité de votre innovation",
+          "description": "Découvrez rapidement où se situe votre solution en termes de maturité technique, industrielle et marchée, vous aidant à identifier les bonnes étapes suivantes."
+        },
+        {
+          "icon": "/icons/black-check.svg",
+          "title": "Rapport personnalisé instantané",
+          "description": "Recevez un résumé détaillé de vos résultats dans un format PDF, ce qui facilite le partage et le suivi de votre progression."
+        },
+        {
+          "icon": "/icons/black-check.svg",
+          "title": "Guidance personnalisée pour un développement plus rapide",
+          "description": "Accédez à une sélection de services personnalisés conçus pour accélérer le développement et le succès de votre innovation."
+        }
+      ]
     }
   }
 }
