@@ -23,14 +23,17 @@
     COPY .yarnrc.yml ./
     COPY apps/app/package.json ./apps/app/
     
+    # Copiar cache de Yarn para preservar patches
+    COPY .yarn/ ./.yarn/
+    
     # Instalar dependencias necesarias para turbo prune
     RUN yarn install
     
     # Copiar el código fuente para el prune
     COPY . .
     
-    # Prune para generar archivos mínimos para la instalación en Docker
-    RUN yarn turbo prune app --docker
+    # Regenerar lockfile y hacer prune (workaround para patches de TypeScript)
+    RUN rm yarn.lock && yarn install && yarn turbo prune app --docker
     
     # --------------------------------------------------------------------------------------------------------------------
     # INSTALLER (Instalación y Build)

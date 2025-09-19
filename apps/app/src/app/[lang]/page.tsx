@@ -6,15 +6,15 @@ import PrivacyPolicy from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPol
 // Dictionaries
 import { getDictionary, Locale } from "@/dictionaries/dictionaries"
 
-interface HomeProps {
-  searchParams: Promise<{ key: string }>
+type HomeProps = {
+  searchParams: Promise<{ key?: string }>
   params: Promise<{ lang: Locale }>
 }
 
 const Home = async ({ searchParams, params }: HomeProps) => {
   const { key } = await searchParams
   const { lang } = await params
-  const organization = await getOrganizationByKey(key)
+  const organization = key ? await getOrganizationByKey(key) : null
 
   console.log({ organization })
 

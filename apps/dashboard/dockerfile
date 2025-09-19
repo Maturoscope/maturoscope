@@ -16,14 +16,17 @@ RUN corepack enable
 # --------------------------------------------------------------------------------------------------------------------
 FROM base AS prunner
 
-# Copy only what's needed for the prune
-COPY package.json yarn.lock ./
-COPY turbo.json ./
-COPY .yarnrc.yml ./
-COPY apps/dashboard/package.json ./apps/dashboard/
-
-# Install dependencies needed for turbo prune
-RUN yarn install
+    # Copy only what's needed for the prune
+    COPY package.json yarn.lock ./
+    COPY turbo.json ./
+    COPY .yarnrc.yml ./
+    COPY apps/dashboard/package.json ./apps/dashboard/
+    
+    # Copy Yarn cache to preserve patches
+    COPY .yarn/ ./.yarn/
+    
+    # Install dependencies needed for turbo prune
+    RUN yarn install
 
 # Copy source code for the prune
 COPY . .
