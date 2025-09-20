@@ -67,21 +67,18 @@ const Stage = ({
   }
 
   const handleNextButtonClick = () => {
-    if (isLastQuestion) {
-      setIsCheckpoint(true)
-    } else {
-      setCurrQuestionId(stage.questions[questionIndex + 1].id)
-    }
+    if (isLastQuestion) setIsCheckpoint(true)
+    else setCurrQuestionId(stage.questions[questionIndex + 1].id)
     setIsNextButtonDisabled(true)
   }
-
-  const handleQuestionClick = () => setIsNextButtonDisabled(false)
 
   const handleCheckpointButtonClick = () => {
     setStage(nextStage.id)
     setCurrQuestionId(nextStage.questions[0].id)
     setIsCheckpoint(false)
   }
+
+  const handleQuestionClick = () => setIsNextButtonDisabled(false)
 
   if (isCheckpoint) {
     return (
