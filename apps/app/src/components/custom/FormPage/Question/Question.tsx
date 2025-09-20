@@ -8,6 +8,7 @@ import { StageId } from "../Stage/Stage"
 interface Option {
   id: string
   title: string
+  defaultChecked?: boolean
 }
 
 export interface QuestionProps {

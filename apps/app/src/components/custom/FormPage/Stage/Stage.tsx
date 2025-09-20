@@ -49,7 +49,7 @@ const Stage = ({
 }: StageProps) => {
   const [isCheckpoint, setIsCheckpoint] = useState(false)
   const [currQuestionId, setCurrQuestionId] = useState(stage.questions[0].id)
-  const [isNextButtonDisabled, setIsNextButtonDisabled] = useState(true)
+  const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false)
 
   const question = stage.questions.find(
     (question) => question.id === currQuestionId
@@ -60,17 +60,18 @@ const Stage = ({
 
   const stageStepNumber = STAGES_STEP_NUMBER[stage.id]
   const isLastQuestion = questionIndex === stage.questions.length - 1
-  const isPrevButtonDisabled = questionIndex === 0
+  const isPrevButtonEnabled = questionIndex !== 0
 
   const handlePrevButtonClick = () => {
-    if (isPrevButtonDisabled) return
+    if (!isPrevButtonEnabled) return
+    setIsNextButtonEnabled(true)
     setCurrQuestionId(stage.questions[questionIndex - 1].id)
   }
 
   const handleNextButtonClick = () => {
     if (isLastQuestion) setIsCheckpoint(true)
     else setCurrQuestionId(stage.questions[questionIndex + 1].id)
-    setIsNextButtonDisabled(true)
+    setIsNextButtonEnabled(false)
   }
 
   const handleCheckpointButtonClick = () => {
@@ -79,7 +80,7 @@ const Stage = ({
     setIsCheckpoint(false)
   }
 
-  const handleQuestionClick = () => setIsNextButtonDisabled(false)
+  const handleQuestionClick = () => setIsNextButtonEnabled(true)
 
   if (isCheckpoint) {
     return (
@@ -114,13 +115,13 @@ const Stage = ({
             <Button
               variant="outline"
               onClick={handlePrevButtonClick}
-              disabled={isPrevButtonDisabled}
+              disabled={!isPrevButtonEnabled}
             >
               {buttonPrevLabel}
             </Button>
             <Button
               onClick={handleNextButtonClick}
-              disabled={isNextButtonDisabled}
+              disabled={!isNextButtonEnabled}
             >
               {buttonNextLabel}
             </Button>
