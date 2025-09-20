@@ -43,12 +43,15 @@ const Stage = ({
   buttonNextLabel,
   buttonPrevLabel,
   control,
-  getValues,
   // setStage,
   // handleFinishClick,
 }: StageProps) => {
   const [isCheckpoint, setIsCheckpoint] = useState(false)
   const [currQuestionId, setCurrQuestionId] = useState(stage.questions[0].id)
+  const [isNextButtonDisabled, setIsNextButtonDisabled] = useState(true)
+
+  console.log({ isNextButtonDisabled })
+
   const question = stage.questions.find(
     (question) => question.id === currQuestionId
   ) as QuestionProps
@@ -59,7 +62,6 @@ const Stage = ({
   const stageStepNumber = STAGES_STEP_NUMBER[stage.id]
   const isLastQuestion = questionIndex === stage.questions.length - 1
   const isPrevButtonDisabled = questionIndex === 0
-  const isNextButtonDisabled = false
 
   const handlePrevButtonClick = () => {
     if (isPrevButtonDisabled) return
@@ -73,6 +75,8 @@ const Stage = ({
       setCurrQuestionId(stage.questions[questionIndex + 1].id)
     }
   }
+
+  const handleQuestionClick = () => setIsNextButtonDisabled(false)
 
   if (isCheckpoint) {
     return (
@@ -96,7 +100,12 @@ const Stage = ({
       </div>
       <div className="w-full flex items-end justify-between gap-8">
         <div className="w-full flex flex-col gap-[70px] max-w-[600px]">
-          <Question {...question} name={stage.id} control={control} />
+          <Question
+            {...question}
+            name={stage.id}
+            control={control}
+            onQuestionClick={handleQuestionClick}
+          />
           <div className="w-full flex items-center justify-between">
             <Button
               variant="outline"
@@ -105,7 +114,12 @@ const Stage = ({
             >
               {buttonPrevLabel}
             </Button>
-            <Button onClick={handleNextButtonClick}>{buttonNextLabel}</Button>
+            <Button
+              onClick={handleNextButtonClick}
+              disabled={isNextButtonDisabled}
+            >
+              {buttonNextLabel}
+            </Button>
           </div>
         </div>
 

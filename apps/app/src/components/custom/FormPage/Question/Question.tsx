@@ -16,6 +16,7 @@ export interface QuestionProps {
   title: string
   options: Option[]
   control: Control<DefaultValues>
+  onQuestionClick: () => void
 }
 
 const Question = ({
@@ -23,12 +24,14 @@ const Question = ({
   name,
   options: initOptions,
   control,
+  onQuestionClick,
 }: QuestionProps) => {
   const radioGroupName = `${name}.${id}` as `${StageId}.${string}`
   const options = initOptions.map((option) => ({
     ...option,
     control,
     name: radioGroupName,
+    onClick: onQuestionClick,
   }))
 
   return (
