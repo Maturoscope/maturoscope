@@ -18,7 +18,7 @@ export interface FormProps {
   stages: StageType[]
 }
 
-const Form = ({ stages }: FormProps) => {
+const Form = ({ stages, buttonNextLabel, buttonPrevLabel }: FormProps) => {
   const [currStageId, setCurrStageId] = useState<StageId>(stages[0].id)
   const currStage = stages.find(
     (stage) => stage.id === currStageId
@@ -32,6 +32,8 @@ const Form = ({ stages }: FormProps) => {
   return (
     <Stage
       stage={currStage}
+      buttonNextLabel={buttonNextLabel}
+      buttonPrevLabel={buttonPrevLabel}
       control={control}
       setStage={setCurrStageId}
       register={register}

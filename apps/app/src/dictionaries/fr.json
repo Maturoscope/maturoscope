@@ -107,92 +107,92 @@
           },
           {
             "id": "trl2",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "Avez-vous mené des études de faisabilité et des expériences de preuve de concept ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucune étude de faisabilité n'a encore été menée." },
+              { "id": "2", "title": "La faisabilité théorique de base a été évaluée par une revue de littérature." },
+              { "id": "3", "title": "Les études de faisabilité initiales sont terminées avec des résultats préliminaires positifs." },
+              { "id": "4", "title": "Une analyse de faisabilité complète couvrant les aspects techniques et économiques a été menée." },
+              { "id": "5", "title": "Les expériences de preuve de concept démontrent avec succès les fonctionnalités principales." },
+              { "id": "6", "title": "Plusieurs tests de preuve de concept valident différents cas d'usage." },
+              { "id": "7", "title": "La faisabilité confirmée par une validation indépendante de tiers." },
+              { "id": "8", "title": "Une documentation complète de faisabilité soutient le développement du business case." },
+              { "id": "9", "title": "Toutes les préoccupations de faisabilité abordées avec une feuille de route détaillée d'implémentation." }
             ]
           },
           {
             "id": "trl3",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "Quel est le statut actuel du développement de votre prototype ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucun prototype n'a encore été développé." },
+              { "id": "2", "title": "La conception conceptuelle et les croquis de base sont disponibles." },
+              { "id": "3", "title": "Des maquettes numériques et des modèles 3D ont été créés." },
+              { "id": "4", "title": "Premier prototype physique construit avec des fonctionnalités de base." },
+              { "id": "5", "title": "Prototype fonctionnel démontre avec succès les caractéristiques principales." },
+              { "id": "6", "title": "Prototype affiné testé dans des conditions de laboratoire contrôlées." },
+              { "id": "7", "title": "Prototype avancé validé dans des scénarios simulés du monde réel." },
+              { "id": "8", "title": "Plusieurs itérations de prototype testées et optimisées." },
+              { "id": "9", "title": "Prototype prêt pour la production répond à toutes les spécifications techniques." }
             ]
           },
           {
             "id": "trl4",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "À quel point avez-vous testé les performances de votre technologie ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucun test de performance n'a été effectué." },
+              { "id": "2", "title": "Tests de fonctionnalité de base terminés avec succès." },
+              { "id": "3", "title": "Benchmarks de performance établis et tests initiaux commencés." },
+              { "id": "4", "title": "Tests de performance complets dans diverses conditions." },
+              { "id": "5", "title": "Les performances répondent constamment ou dépassent les spécifications de conception." },
+              { "id": "6", "title": "Tests de durabilité et de fiabilité à long terme terminés." },
+              { "id": "7", "title": "Performance validée par des laboratoires de test indépendants." },
+              { "id": "8", "title": "L'analyse comparative montre des performances supérieures aux solutions existantes." },
+              { "id": "9", "title": "Toutes les métriques de performance documentées et certifiées pour un usage commercial." }
             ]
           },
           {
             "id": "trl5",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "Quel niveau de tests d'intégration avez-vous terminé ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucun test d'intégration n'a été effectué." },
+              { "id": "2", "title": "Intégration de composants de base démontrée avec succès." },
+              { "id": "3", "title": "Tests d'intégration système en environnement contrôlé terminés." },
+              { "id": "4", "title": "Intégration avec les systèmes de bâtiment existants testée avec succès." },
+              { "id": "5", "title": "L'intégration complète du système fonctionne de manière fiable dans des conditions normales." },
+              { "id": "6", "title": "Les tests d'intégration couvrent plusieurs types de bâtiments et configurations." },
+              { "id": "7", "title": "Intégration système validée dans de vrais environnements de construction." },
+              { "id": "8", "title": "Intégration transparente réalisée avec des protocoles standards de l'industrie." },
+              { "id": "9", "title": "Package d'intégration complet prêt pour le déploiement commercial." }
             ]
           },
           {
             "id": "trl6",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "À quel point votre implémentation de projet pilote est-elle avancée ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucun projet pilote n'a été initié." },
+              { "id": "2", "title": "Planification du projet pilote et sélection du site en cours." },
+              { "id": "3", "title": "Premier projet pilote lancé avec implémentation initiale." },
+              { "id": "4", "title": "Projet pilote montrant des résultats préliminaires prometteurs." },
+              { "id": "5", "title": "Achèvement réussi du projet pilote avec des résultats documentés." },
+              { "id": "6", "title": "Plusieurs projets pilotes dans différents types de bâtiments terminés." },
+              { "id": "7", "title": "Les projets pilotes démontrent des performances et une fiabilité constantes." },
+              { "id": "8", "title": "Les résultats du projet pilote soutiennent le déploiement commercial à grande échelle." },
+              { "id": "9", "title": "Programme pilote complet valide la préparation au marché." }
             ]
           },
           {
             "id": "trl7",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "Quel est le statut de la conformité réglementaire et des certifications ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucune exigence réglementaire n'a été identifiée." },
+              { "id": "2", "title": "Les réglementations et normes pertinentes ont été recherchées." },
+              { "id": "3", "title": "Stratégie de conformité développée avec feuille de route réglementaire." },
+              { "id": "4", "title": "Tests de conformité initiaux et documentation en cours." },
+              { "id": "5", "title": "Principales exigences réglementaires satisfaites avec preuves à l'appui." },
+              { "id": "6", "title": "Demandes de certification soumises aux autorités compétentes." },
+              { "id": "7", "title": "Certifications clés obtenues pour les marchés primaires." },
+              { "id": "8", "title": "Conformité réglementaire complète atteinte sur les marchés cibles." },
+              { "id": "9", "title": "Toutes les certifications à jour et prêtes pour le lancement commercial." }
             ]
           }
         ]
@@ -222,92 +222,92 @@
           },
           {
             "id": "mkrl2",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "À quel point votre marché cible et vos segments de clients sont-ils bien définis ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Le marché cible n'a pas encore été identifié." },
+              { "id": "2", "title": "Catégorie de marché générale identifiée avec recherche de base." },
+              { "id": "3", "title": "Segments cibles principaux définis avec analyse démographique." },
+              { "id": "4", "title": "Personas clients détaillés développés avec besoins spécifiques identifiés." },
+              { "id": "5", "title": "Segments de marché validés par des sondages et entretiens." },
+              { "id": "6", "title": "Stratégie d'acquisition client développée pour chaque segment." },
+              { "id": "7", "title": "Premiers adoptants identifiés et engagés dans le processus de développement." },
+              { "id": "8", "title": "Segmentation du marché affinée basée sur les retours clients." },
+              { "id": "9", "title": "Analyse de marché complète soutient la stratégie de mise sur le marché." }
             ]
           },
           {
             "id": "mkrl3",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "Quelle est votre analyse concurrentielle actuelle et positionnement marché ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucune analyse concurrentielle n'a été menée." },
+              { "id": "2", "title": "Conscience de base des concurrents directs sur le marché." },
+              { "id": "3", "title": "Analyse complète du paysage concurrentiel terminée." },
+              { "id": "4", "title": "Avantages concurrentiels et différenciateurs clairement identifiés." },
+              { "id": "5", "title": "Stratégie de positionnement marché développée basée sur l'analyse concurrentielle." },
+              { "id": "6", "title": "Proposition de valeur unique validée contre les offres concurrentes." },
+              { "id": "7", "title": "Système de veille concurrentielle établi pour surveillance continue." },
+              { "id": "8", "title": "Position marché renforcée grâce aux partenariats stratégiques." },
+              { "id": "9", "title": "Position dominante sur le marché atteinte dans les segments cibles." }
             ]
           },
           {
             "id": "mkrl4",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "À quel point votre stratégie de prix et modèle d'affaires sont-ils développés ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucune stratégie de prix n'a été développée." },
+              { "id": "2", "title": "Analyse de coûts de base et estimations de prix préliminaires disponibles." },
+              { "id": "3", "title": "Stratégie de prix développée basée sur la recherche marché." },
+              { "id": "4", "title": "Modèle d'affaires défini avec multiples sources de revenus identifiées." },
+              { "id": "5", "title": "Prix validé par entretiens clients et tests marché." },
+              { "id": "6", "title": "Modèles de prix flexibles développés pour différents segments clients." },
+              { "id": "7", "title": "Projections de revenus et modèles financiers terminés." },
+              { "id": "8", "title": "Stratégie de prix optimisée basée sur les résultats du projet pilote." },
+              { "id": "9", "title": "Modèle d'affaires prouvé avec prix établi et rentabilité." }
             ]
           },
           {
             "id": "mkrl5",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "Quel est le statut de votre stratégie marketing et ventes ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucune stratégie marketing ou ventes n'a été développée." },
+              { "id": "2", "title": "Concepts marketing de base et approche ventes identifiés." },
+              { "id": "3", "title": "Stratégie marketing développée avec messages clés et canaux." },
+              { "id": "4", "title": "Processus de vente défini avec entonnoir d'acquisition client." },
+              { "id": "5", "title": "Campagnes marketing lancées avec engagement client initial." },
+              { "id": "6", "title": "Équipe ventes formée et active dans l'acquisition client." },
+              { "id": "7", "title": "Stratégies marketing et ventes validées par retours clients." },
+              { "id": "8", "title": "ROI marketing prouvé et performance ventes constante." },
+              { "id": "9", "title": "Opérations marketing et ventes évolutives prêtes pour expansion." }
             ]
           },
           {
             "id": "mkrl6",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "À quel point vos relations clients et partenariats sont-ils établis ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucune relation client ou partenariat établi." },
+              { "id": "2", "title": "Contacts initiaux pris avec clients et partenaires potentiels." },
+              { "id": "3", "title": "Lettres d'intention ou accords préliminaires signés." },
+              { "id": "4", "title": "Partenariats stratégiques établis avec acteurs clés de l'industrie." },
+              { "id": "5", "title": "Premiers clients acquis avec livraison de projet réussie." },
+              { "id": "6", "title": "Base client croissante avec affaires répétées et références." },
+              { "id": "7", "title": "Réseau de partenaires fort soutenant l'expansion marché." },
+              { "id": "8", "title": "Présence marché établie avec communauté client loyale." },
+              { "id": "9", "title": "Position de leadership marché avec écosystème de partenaires étendu." }
             ]
           },
           {
             "id": "mkrl7",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "Quelle est votre traction marché actuelle et trajectoire de croissance ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucune traction marché ou métriques de croissance disponibles." },
+              { "id": "2", "title": "Intérêt marché initial et premières demandes reçues." },
+              { "id": "3", "title": "Conscience marché croissante et demandes clients en augmentation." },
+              { "id": "4", "title": "Acquisition client constante avec tendances de croissance positives." },
+              { "id": "5", "title": "Forte traction marché avec taux de croissance accélérés." },
+              { "id": "6", "title": "Leadership marché émergent avec avantages concurrentiels." },
+              { "id": "7", "title": "Modèle de croissance durable avec flux de revenus prévisibles." },
+              { "id": "8", "title": "Expansion marché vers nouveaux segments et régions géographiques." },
+              { "id": "9", "title": "Position marché dominante avec opportunités d'expansion continues." }
             ]
           }
         ]
@@ -337,92 +337,92 @@
           },
           {
             "id": "mfrl2",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "À quel point la conception de votre processus de fabrication est-elle développée ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucun processus de fabrication n'a été conçu." },
+              { "id": "2", "title": "Concepts de fabrication de base et exigences identifiées." },
+              { "id": "3", "title": "Flux de processus de fabrication préliminaire documenté." },
+              { "id": "4", "title": "Conception détaillée du processus de fabrication terminée." },
+              { "id": "5", "title": "Processus de fabrication validé par production à petite échelle." },
+              { "id": "6", "title": "Optimisation du processus terminée avec contrôles qualité établis." },
+              { "id": "7", "title": "Processus de fabrication mis à l'échelle et testé aux volumes de production." },
+              { "id": "8", "title": "Processus de fabrication entièrement automatisé avec assurance qualité." },
+              { "id": "9", "title": "Processus de fabrication de classe mondiale prêt pour production globale." }
             ]
           },
           {
             "id": "mfrl3",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "Quel est le statut de votre chaîne d'approvisionnement et sourcing matériaux ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucune analyse de chaîne d'approvisionnement n'a été menée." },
+              { "id": "2", "title": "Matériaux et composants clés identifiés avec recherche de sourcing de base." },
+              { "id": "3", "title": "Fournisseurs potentiels identifiés et contact initial établi." },
+              { "id": "4", "title": "Relations fournisseurs développées avec accords préliminaires." },
+              { "id": "5", "title": "Chaîne d'approvisionnement établie avec sourcing matériaux fiable." },
+              { "id": "6", "title": "Options multiples de fournisseurs sécurisées avec prix compétitifs." },
+              { "id": "7", "title": "Chaîne d'approvisionnement optimisée pour coût, qualité et performance livraison." },
+              { "id": "8", "title": "Chaîne d'approvisionnement résiliente avec gestion des risques et fournisseurs de secours." },
+              { "id": "9", "title": "Réseau de chaîne d'approvisionnement global optimisé pour production évolutive." }
             ]
           },
           {
             "id": "mfrl4",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "À quel point votre installation de production et configuration équipement sont-elles avancées ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucune installation de production ou exigences équipement définies." },
+              { "id": "2", "title": "Exigences d'installation de base et besoins équipement identifiés." },
+              { "id": "3", "title": "Plan d'installation de production développé avec spécifications équipement." },
+              { "id": "4", "title": "Installation de production pilote établie avec équipement de base." },
+              { "id": "5", "title": "Installation de production opérationnelle avec équipement nécessaire installé." },
+              { "id": "6", "title": "Installation optimisée pour efficacité avec équipement de fabrication avancé." },
+              { "id": "7", "title": "Installation de production à grande échelle avec systèmes automatisés opérationnels." },
+              { "id": "8", "title": "Installations de production multiples avec redondance et évolutivité." },
+              { "id": "9", "title": "Installations de fabrication de classe mondiale avec capacités Industrie 4.0." }
             ]
           },
           {
             "id": "mfrl5",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "Quel est le statut de vos systèmes de contrôle qualité et de test ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucun système de contrôle qualité n'a été établi." },
+              { "id": "2", "title": "Exigences qualité de base et procédures de test identifiées." },
+              { "id": "3", "title": "Plan de contrôle qualité développé avec protocoles de test." },
+              { "id": "4", "title": "Équipement de test qualité installé et procédures implémentées." },
+              { "id": "5", "title": "Système d'assurance qualité complet opérationnel." },
+              { "id": "6", "title": "Système de contrôle qualité validé et continuellement amélioré." },
+              { "id": "7", "title": "Systèmes qualité avancés avec surveillance et contrôle en temps réel." },
+              { "id": "8", "title": "Standards qualité leaders de l'industrie avec certification tierce partie." },
+              { "id": "9", "title": "Systèmes qualité de classe mondiale avec capacité fabrication zéro défaut." }
             ]
           },
           {
             "id": "mfrl6",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "À quel point votre main-d'œuvre et expertise de fabrication sont-elles développées ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucune main-d'œuvre ou expertise de fabrication disponible." },
+              { "id": "2", "title": "Compétences de fabrication de base et exigences main-d'œuvre identifiées." },
+              { "id": "3", "title": "Personnel clé recruté avec expérience fabrication pertinente." },
+              { "id": "4", "title": "Équipe fabrication formée et opérationnelle avec capacités de base." },
+              { "id": "5", "title": "Main-d'œuvre fabrication qualifiée avec expertise production établie." },
+              { "id": "6", "title": "Équipe fabrication avancée avec capacités amélioration continue." },
+              { "id": "7", "title": "Main-d'œuvre fabrication experte avec capacités leaders industrie." },
+              { "id": "8", "title": "Organisation fabrication classe mondiale avec capacités innovation." },
+              { "id": "9", "title": "Expertise fabrication globale avec capacités transfert connaissances." }
             ]
           },
           {
             "id": "mfrl7",
-            "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
+            "title": "Quel est votre statut actuel d'évolutivité production et optimisation coûts ? *",
             "options": [
-              { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
-              { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
-              { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
-              { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
-              { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "1", "title": "Aucune analyse d'évolutivité ou optimisation coûts menée." },
+              { "id": "2", "title": "Analyse coûts production de base et évaluation évolutivité terminées." },
+              { "id": "3", "title": "Plan d'évolutivité développé avec stratégies optimisation coûts." },
+              { "id": "4", "title": "Mise à l'échelle production démontrée avec efficacité coûts améliorée." },
+              { "id": "5", "title": "Production évolutive atteinte avec structure coûts compétitive." },
+              { "id": "6", "title": "Optimisation production délivrant coûts compétitifs industrie." },
+              { "id": "7", "title": "Production hautement évolutive avec leadership coûts marchés cibles." },
+              { "id": "8", "title": "Évolutivité production globale avec structure coûts optimisée." },
+              { "id": "9", "title": "Efficacité production classe mondiale avec position coûts plus bas industrie." }
             ]
           }
         ]

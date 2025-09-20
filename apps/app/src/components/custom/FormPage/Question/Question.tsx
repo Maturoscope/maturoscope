@@ -21,7 +21,6 @@ export interface QuestionProps {
 const Question = ({
   id,
   name,
-  title,
   options: initOptions,
   control,
 }: QuestionProps) => {
@@ -32,12 +31,7 @@ const Question = ({
     name: radioGroupName,
   }))
 
-  return (
-    <div className="w-full flex flex-col items-start justify-start gap-7">
-      <h1 className="text-3xl font-semibold">{title}</h1>
-      <RadioGroup options={options} className="w-full max-w-[600px]" />
-    </div>
-  )
+  return <RadioGroup options={options} className="w-full" />
 }
 
 export default Question
