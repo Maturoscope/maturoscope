@@ -7,6 +7,7 @@ import Question from "@/components/custom/FormPage/Question/Question"
 import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 import { QuestionProps } from "@/components/custom/FormPage/Question/Question"
 import { Button } from "@/components/ui/button"
+import ProgressBar from "../ProgressBar/ProgressBar"
 
 export type StageId = "trl" | "mkrl" | "mfrl"
 
@@ -55,6 +56,7 @@ const Stage = ({
 
   const stageStepNumber = STAGES_STEP_NUMBER[stage.id]
   const isPrevButtonDisabled = questionIndex === 0
+  const isNextButtonDisabled = questionIndex === stage.questions.length - 1
 
   const handlePrevButtonClick = () => {
     if (isPrevButtonDisabled) return
@@ -77,7 +79,7 @@ const Stage = ({
         </span>
         <h1 className="text-3xl font-semibold">{question.title}</h1>
       </div>
-      <div className="w-full">
+      <div className="w-full flex items-end justify-between gap-8">
         <div className="w-full flex flex-col gap-20 max-w-[600px]">
           <Question {...question} name={stage.id} control={control} />
           <div className="w-full flex items-center justify-between">
@@ -88,9 +90,20 @@ const Stage = ({
             >
               {buttonPrevLabel}
             </Button>
-            <Button onClick={handleNextButtonClick}>{buttonNextLabel}</Button>
+            <Button
+              onClick={handleNextButtonClick}
+              disabled={isNextButtonDisabled}
+            >
+              {buttonNextLabel}
+            </Button>
           </div>
         </div>
+
+        <ProgressBar
+          min={questionIndex + 1}
+          max={stage.questions.length}
+          className="w-full max-w-[224px]"
+        />
       </div>
     </div>
   )
