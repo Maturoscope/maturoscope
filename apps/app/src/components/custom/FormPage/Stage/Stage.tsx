@@ -72,6 +72,7 @@ const Stage = ({
     } else {
       setCurrQuestionId(stage.questions[questionIndex + 1].id)
     }
+    setIsNextButtonDisabled(true)
   }
 
   const handleQuestionClick = () => setIsNextButtonDisabled(false)
