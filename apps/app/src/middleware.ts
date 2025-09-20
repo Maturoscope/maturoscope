@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server"
+import { Locale } from "./dictionaries/dictionaries"
 
-const LOCALES = ["en", "fr"]
+const LOCALES: Locale[] = ["en", "fr"]
 const DEFAULT_LOCALE = "en"
 
 export const middleware = (request: NextRequest) => {
