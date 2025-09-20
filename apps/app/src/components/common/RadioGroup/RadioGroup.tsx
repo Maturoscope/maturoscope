@@ -7,10 +7,11 @@ import { cn } from "@/lib/utils"
 
 interface RadioGroupProps {
   options: RadioItemProps[]
+  name: string
   className?: string
 }
 
-const RadioGroup = ({ options, className }: RadioGroupProps) => {
+const RadioGroup = ({ options, name, className }: RadioGroupProps) => {
   return (
     <div
       className={cn(
@@ -19,7 +20,7 @@ const RadioGroup = ({ options, className }: RadioGroupProps) => {
       )}
     >
       {options.map((option) => (
-        <RadioItem key={option.id} {...option} />
+        <RadioItem key={`${name}-${option.id}`} {...option} />
       ))}
     </div>
   )

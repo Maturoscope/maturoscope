@@ -31,7 +31,9 @@ const Question = ({
     name: radioGroupName,
   }))
 
-  return <RadioGroup options={options} className="w-full" />
+  return (
+    <RadioGroup options={options} name={radioGroupName} className="w-full" />
+  )
 }
 
 export default Question

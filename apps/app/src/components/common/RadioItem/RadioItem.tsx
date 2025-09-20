@@ -15,7 +15,7 @@ export interface RadioItemProps {
 }
 
 const RadioItem = ({ id, title, name, control, value }: RadioItemProps) => {
-  const { field } = useController({ control, name })
+  const { field } = useController({ control, name, shouldUnregister: false })
 
   return (
     <label className="w-full flex items-center justify-start gap-3 p-3 rounded-lg border border-input relative cursor-pointer">

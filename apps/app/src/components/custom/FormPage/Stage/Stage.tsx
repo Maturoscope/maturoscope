@@ -1,6 +1,6 @@
 // Packages
 import { useState } from "react"
-import { Control, UseFormHandleSubmit, UseFormRegister } from "react-hook-form"
+import { Control, UseFormHandleSubmit } from "react-hook-form"
 // Components
 import Question from "@/components/custom/FormPage/Question/Question"
 // Types
@@ -26,7 +26,6 @@ export interface StageProps {
   buttonPrevLabel: string
   control: Control<DefaultValues>
   handleFinishClick: UseFormHandleSubmit<DefaultValues, DefaultValues>
-  register: UseFormRegister<DefaultValues>
   setStage: (stage: StageId) => void
 }
 
@@ -41,11 +40,9 @@ const Stage = ({
   buttonNextLabel,
   buttonPrevLabel,
   control,
-  setStage,
-  handleFinishClick,
+  // setStage,
+  // handleFinishClick,
 }: StageProps) => {
-  console.log({ setStage, handleFinishClick })
-
   const [currQuestionId, setCurrQuestionId] = useState<string>(
     stage.questions[0].id
   )
@@ -80,7 +77,7 @@ const Stage = ({
         </span>
         <h1 className="text-3xl font-semibold">{question.title}</h1>
       </div>
-      <div>
+      <div className="w-full">
         <div className="w-full flex flex-col gap-20 max-w-[600px]">
           <Question {...question} name={stage.id} control={control} />
           <div className="w-full flex items-center justify-between">
