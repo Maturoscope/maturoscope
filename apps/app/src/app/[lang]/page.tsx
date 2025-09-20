@@ -14,11 +14,10 @@ type HomeProps = {
 const Home = async ({ searchParams, params }: HomeProps) => {
   const { key } = await searchParams
   const { lang } = await params
+  const dictionary = await getDictionary(lang)
   const organization = key ? await getOrganizationByKey(key) : null
 
   console.log({ organization })
-
-  const dictionary = await getDictionary(lang)
 
   const {
     lang: langFromDictionary,

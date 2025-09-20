@@ -4,6 +4,7 @@ import { KeysCriteriaProps } from "@/components/custom/Homepage/KeysCriteria/Key
 // Types
 import { ListItem } from "@/types/list-item"
 import { Locale } from "@/dictionaries/dictionaries"
+import { Stage } from "@/app/[lang]/form/page"
 
 export type Dictionary = {
   lang: Locale
@@ -27,5 +28,10 @@ export type Dictionary = {
       }
       checks: ListItem[]
     }
+  }
+  form: {
+    buttonNextLabel: string
+    buttonPrevLabel: string
+    stages: Stage[]
   }
 }

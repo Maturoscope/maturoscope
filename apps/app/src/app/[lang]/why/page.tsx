@@ -13,11 +13,10 @@ interface WhyProps {
 const Why = async ({ searchParams, params }: WhyProps) => {
   const { key } = await searchParams
   const { lang } = await params
+  const dictionary = await getDictionary(lang)
   const organization = await getOrganizationByKey(key)
 
   console.log({ organization })
-
-  const dictionary = await getDictionary(lang)
 
   const {
     why: { hero },
