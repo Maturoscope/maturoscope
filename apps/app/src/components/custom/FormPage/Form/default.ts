@@ -1,4 +1,4 @@
-import { StageId } from "@/app/[lang]/form/page"
+import { StageId } from "@/components/custom/FormPage/Stage/Stage"
 
 export type DefaultValues = Record<StageId, Record<string, string>>
 

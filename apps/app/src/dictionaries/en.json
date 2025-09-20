@@ -91,7 +91,7 @@
         "buttonLabel": "Continue to MkRL",
         "questions": [
           {
-            "id": "trl-1",
+            "id": "trl1",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -106,7 +106,7 @@
             ]
           },
           {
-            "id": "trl-2",
+            "id": "trl2",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -121,7 +121,7 @@
             ]
           },
           {
-            "id": "trl-3",
+            "id": "trl3",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -136,7 +136,7 @@
             ]
           },
           {
-            "id": "trl-4",
+            "id": "trl4",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -151,7 +151,7 @@
             ]
           },
           {
-            "id": "trl-5",
+            "id": "trl5",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -166,7 +166,7 @@
             ]
           },
           {
-            "id": "trl-6",
+            "id": "trl6",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -181,7 +181,7 @@
             ]
           },
           {
-            "id": "trl-7",
+            "id": "trl7",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -206,7 +206,7 @@
         "buttonLabel": "Continue to MfRL",
         "questions": [
           {
-            "id": "mkrl-1",
+            "id": "mkrl1",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -221,7 +221,7 @@
             ]
           },
           {
-            "id": "mkrl-2",
+            "id": "mkrl2",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -236,7 +236,7 @@
             ]
           },
           {
-            "id": "mkrl-3",
+            "id": "mkrl3",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -251,7 +251,7 @@
             ]
           },
           {
-            "id": "mkrl-4",
+            "id": "mkrl4",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -266,7 +266,7 @@
             ]
           },
           {
-            "id": "mkrl-5",
+            "id": "mkrl5",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -281,7 +281,7 @@
             ]
           },
           {
-            "id": "mkrl-6",
+            "id": "mkrl6",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -296,7 +296,7 @@
             ]
           },
           {
-            "id": "mkrl-7",
+            "id": "mkrl7",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -321,7 +321,7 @@
         "buttonLabel": "See report",
         "questions": [
           {
-            "id": "mfrl-1",
+            "id": "mfrl1",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -336,7 +336,7 @@
             ]
           },
           {
-            "id": "mfrl-2",
+            "id": "mfrl2",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -351,7 +351,7 @@
             ]
           },
           {
-            "id": "mfrl-3",
+            "id": "mfrl3",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -366,7 +366,7 @@
             ]
           },
           {
-            "id": "mfrl-4",
+            "id": "mfrl4",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -381,7 +381,7 @@
             ]
           },
           {
-            "id": "mfrl-5",
+            "id": "mfrl5",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -396,7 +396,7 @@
             ]
           },
           {
-            "id": "mfrl-6",
+            "id": "mfrl6",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -411,7 +411,7 @@
             ]
           },
           {
-            "id": "mfrl-7",
+            "id": "mfrl7",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },

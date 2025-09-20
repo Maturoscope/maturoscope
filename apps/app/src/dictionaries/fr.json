@@ -91,7 +91,7 @@
         "buttonLabel": "Continuer à MkRL",
         "questions": [
           {
-            "id": "trl-1",
+            "id": "trl1",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -106,7 +106,7 @@
             ]
           },
           {
-            "id": "trl-2",
+            "id": "trl2",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -121,7 +121,7 @@
             ]
           },
           {
-            "id": "trl-3",
+            "id": "trl3",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -136,7 +136,7 @@
             ]
           },
           {
-            "id": "trl-4",
+            "id": "trl4",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -151,7 +151,7 @@
             ]
           },
           {
-            "id": "trl-5",
+            "id": "trl5",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -166,7 +166,7 @@
             ]
           },
           {
-            "id": "trl-6",
+            "id": "trl6",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -181,7 +181,7 @@
             ]
           },
           {
-            "id": "trl-7",
+            "id": "trl7",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -206,7 +206,7 @@
         "buttonLabel": "Continuer à MfRL",
         "questions": [
           {
-            "id": "trl-1",
+            "id": "mkrl1",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -221,7 +221,7 @@
             ]
           },
           {
-            "id": "trl-2",
+            "id": "mkrl2",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -236,7 +236,7 @@
             ]
           },
           {
-            "id": "trl-3",
+            "id": "mkrl3",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -251,7 +251,7 @@
             ]
           },
           {
-            "id": "trl-4",
+            "id": "mkrl4",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -266,7 +266,7 @@
             ]
           },
           {
-            "id": "trl-5",
+            "id": "mkrl5",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -281,7 +281,7 @@
             ]
           },
           {
-            "id": "trl-6",
+            "id": "mkrl6",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -296,7 +296,7 @@
             ]
           },
           {
-            "id": "trl-7",
+            "id": "mkrl7",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -321,7 +321,7 @@
         "buttonLabel": "Voir le rapport",
         "questions": [
           {
-            "id": "trl-1",
+            "id": "mfrl1",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -336,7 +336,7 @@
             ]
           },
           {
-            "id": "trl-2",
+            "id": "mfrl2",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -351,7 +351,7 @@
             ]
           },
           {
-            "id": "trl-3",
+            "id": "mfrl3",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -366,7 +366,7 @@
             ]
           },
           {
-            "id": "trl-4",
+            "id": "mfrl4",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -381,7 +381,7 @@
             ]
           },
           {
-            "id": "trl-5",
+            "id": "mfrl5",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -396,7 +396,7 @@
             ]
           },
           {
-            "id": "trl-6",
+            "id": "mfrl6",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -411,7 +411,7 @@
             ]
           },
           {
-            "id": "trl-7",
+            "id": "mfrl7",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },

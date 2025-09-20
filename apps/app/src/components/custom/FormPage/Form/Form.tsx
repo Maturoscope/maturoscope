@@ -8,7 +8,7 @@ import {
   DEFAULT_VALUES,
   DefaultValues,
 } from "@/components/custom/FormPage/Form/default"
-import { Stage as StageType, StageId } from "@/app/[lang]/form/page"
+import { StageType, StageId } from "@/components/custom/FormPage/Stage/Stage"
 // Components
 import Stage from "@/components/custom/FormPage/Stage/Stage"
 
@@ -23,13 +23,16 @@ const Form = ({ stages }: FormProps) => {
   const currStage = stages.find(
     (stage) => stage.id === currStageId
   ) as StageType
-  const { register, handleSubmit } = useForm<DefaultValues>({
+  const { watch, control, register, handleSubmit } = useForm<DefaultValues>({
     defaultValues: DEFAULT_VALUES,
   })
+
+  console.log(watch())
 
   return (
     <Stage
       stage={currStage}
+      control={control}
       setStage={setCurrStageId}
       register={register}
       handleFinishClick={handleSubmit}

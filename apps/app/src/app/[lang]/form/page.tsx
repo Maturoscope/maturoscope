@@ -3,29 +3,6 @@ import Form from "@/components/custom/FormPage/Form/Form"
 // Dictionaries
 import { getDictionary, Locale } from "@/dictionaries/dictionaries"
 
-interface Option {
-  id: string
-  title: string
-}
-
-interface Question {
-  id: string
-  title: string
-  options: Option[]
-}
-
-export type StageId = "trl" | "mkrl" | "mfrl"
-
-export interface Stage {
-  id: StageId
-  icon: string
-  name: string
-  title: string
-  description: string
-  buttonLabel: string
-  questions: Question[]
-}
-
 interface FormPageProps {
   params: Promise<{ lang: Locale }>
 }
