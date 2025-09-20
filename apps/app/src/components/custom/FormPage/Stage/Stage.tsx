@@ -44,6 +44,7 @@ const Stage = ({
   buttonNextLabel,
   buttonPrevLabel,
   control,
+  getValues,
   setStage,
 }: StageProps) => {
   const [isCheckpoint, setIsCheckpoint] = useState(false)
@@ -106,6 +107,7 @@ const Stage = ({
             {...question}
             name={stage.id}
             control={control}
+            getValues={getValues}
             onQuestionClick={handleQuestionClick}
           />
           <div className="w-full flex items-center justify-between">
