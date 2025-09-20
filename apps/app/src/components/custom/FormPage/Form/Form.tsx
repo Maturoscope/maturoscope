@@ -4,22 +4,37 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 // Utils
-import { DEFAULT_VALUES } from "@/components/custom/FormPage/Form/default"
-import { Stage, StageId } from "@/app/[lang]/form/page"
+import {
+  DEFAULT_VALUES,
+  DefaultValues,
+} from "@/components/custom/FormPage/Form/default"
+import { Stage as StageType, StageId } from "@/app/[lang]/form/page"
+// Components
+import Stage from "@/components/custom/FormPage/Stage/Stage"
 
 export interface FormProps {
   buttonNextLabel: string
   buttonPrevLabel: string
-  stages: Stage[]
+  stages: StageType[]
 }
 
 const Form = ({ stages }: FormProps) => {
-  const [currStage, setCurrStage] = useState<StageId>(stages[0].id)
-  const { register, handleSubmit } = useForm({
+  const [currStageId, setCurrStageId] = useState<StageId>(stages[0].id)
+  const currStage = stages.find(
+    (stage) => stage.id === currStageId
+  ) as StageType
+  const { register, handleSubmit } = useForm<DefaultValues>({
     defaultValues: DEFAULT_VALUES,
   })
 
-  return <div>Form</div>
+  return (
+    <Stage
+      stage={currStage}
+      setStage={setCurrStageId}
+      register={register}
+      handleFinishClick={handleSubmit}
+    />
+  )
 }
 
 export default Form

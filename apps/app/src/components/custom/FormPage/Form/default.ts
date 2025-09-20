@@ -1,4 +1,8 @@
-export const DEFAULT_VALUES = {
+import { StageId } from "@/app/[lang]/form/page"
+
+export type DefaultValues = Record<StageId, Record<string, string>>
+
+export const DEFAULT_VALUES: DefaultValues = {
   trl: {
     trl1: "",
     trl2: "",
