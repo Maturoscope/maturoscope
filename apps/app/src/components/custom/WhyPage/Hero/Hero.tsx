@@ -2,6 +2,8 @@
 
 // Packages
 import Image from "next/image"
+import Link from "next/link"
+import { useParams } from "next/navigation"
 import { motion } from "motion/react"
 // Components
 import { Button } from "@/components/ui/button"
@@ -14,6 +16,7 @@ import {
 } from "@/animations/common"
 // Types
 import { ListItem } from "@/types/list-item"
+import { Locale } from "@/dictionaries/dictionaries"
 
 export interface HeroProps {
   heading: HeadingProps & {
@@ -25,6 +28,7 @@ export interface HeroProps {
 
 const Hero = ({ heading, checks }: HeroProps) => {
   const { buttonLabel, list } = heading
+  const { lang } = useParams<{ lang: Locale }>()
 
   return (
     <div className="flex items-start justify-between w-full max-w-[1280px] gap-16 px-6">
@@ -68,9 +72,11 @@ const Hero = ({ heading, checks }: HeroProps) => {
             </motion.li>
           ))}
         </motion.ul>
-        <Button variant="default" size="lg" className="w-full">
-          {buttonLabel}
-        </Button>
+        <Link href={`/${lang}/form`}>
+          <Button variant="default" size="lg" className="w-full">
+            {buttonLabel}
+          </Button>
+        </Link>
       </motion.div>
       <motion.ul
         variants={STAGGERED_LIST_VARIANT}

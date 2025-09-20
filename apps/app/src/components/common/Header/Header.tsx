@@ -8,7 +8,7 @@ import LanguageSelect from "@/components/common/LanguageSelect/LanguageSelect"
 // Animations
 import { SIMPLE_FADE_VARIANT } from "@/animations/common"
 
-interface HeaderProps {
+export interface HeaderProps {
   stringConnector: string
 }
 
@@ -19,7 +19,7 @@ const Header = ({ stringConnector }: HeaderProps) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="w-full px-6 h-9 flex items-center justify-between mb-14 max-w-[1280px]"
+      className="w-full px-6 h-9 flex items-center justify-between mt-[max(8vh,32px)] max-w-[1280px]"
     >
       <div className="flex items-center gap-2 text-foreground">
         <div className="flex items-center gap-2">

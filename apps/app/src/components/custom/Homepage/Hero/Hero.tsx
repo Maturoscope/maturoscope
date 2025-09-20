@@ -3,6 +3,7 @@
 // Packages
 import Link from "next/link"
 import { motion } from "motion/react"
+import { useParams } from "next/navigation"
 // Components
 import { Button } from "@/components/ui/button"
 import Heading, { HeadingProps } from "@/components/common/Heading/Heading"
@@ -15,13 +16,13 @@ import { SIMPLE_FADE_VARIANT } from "@/animations/common"
 import { Locale } from "@/dictionaries/dictionaries"
 
 export interface HeroProps {
-  lang: Locale
   heading: HeadingProps & { buttonLabel: string }
   criteria: KeysCriteriaProps
 }
 
-const Hero = ({ lang, heading, criteria }: HeroProps) => {
+const Hero = ({ heading, criteria }: HeroProps) => {
   const { buttonLabel } = heading
+  const { lang } = useParams<{ lang: Locale }>()
 
   return (
     <div className="flex items-start justify-between w-full max-w-[1280px] gap-16 px-6">

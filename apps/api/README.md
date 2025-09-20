@@ -4,7 +4,7 @@
 
 # Maturoscope API
 
-This is the NestJS API backend for the Maturoscope project.
+This is the NestJS API backend for Maturoscope project.
 
 ## 🚀 Quick Setup
 

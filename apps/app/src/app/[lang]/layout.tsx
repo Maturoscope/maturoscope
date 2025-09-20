@@ -39,7 +39,7 @@ export default async function RootLayout({
 
   return (
     <html lang={lang} className={`${geist.className} antialiased`}>
-      <body className="flex flex-col items-center justify-center w-full h-svh">
+      <body className="flex flex-col items-center justify-start w-full h-svh">
         <Header stringConnector={stringConnector} />
         {children}
       </body>
