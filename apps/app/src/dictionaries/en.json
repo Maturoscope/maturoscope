@@ -95,14 +95,14 @@
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
-              { "id": "2", "title": "A first formalization is available, accompanied by an illustration or diagram. This is a radio description." },
+              { "id": "2", "title": "A first formalization is available, accompanied by an illustration or diagram." },
               { "id": "3", "title": "The solution is described as a whole, with its key functionalities and components. An analysis of existing solutions has been performed (benchmark, state of the art)." },
-              { "id": "4", "title": "All key components are chosen and described, with their functions. This is a radio description." },
+              { "id": "4", "title": "All key components are chosen and described, with their functions." },
               { "id": "5", "title": "The entire product is described, with components and their interfaces." },
               { "id": "6", "title": "The product and its implementation and integration process to the building is described for the target application domain." },
               { "id": "7", "title": "A first positive feedback from process implementation has been documented." },
-              { "id": "8", "title": "Several feedback experiences have been collected and cover the entire target application domain. This is a radio description." },
-              { "id": "9", "title": "Consolidated technical file, ready for commercial or industrial use. This is a radio description." }
+              { "id": "8", "title": "Several feedback experiences have been collected and cover the entire target application domain." },
+              { "id": "9", "title": "Consolidated technical file, ready for commercial or industrial use." }
             ]
           },
           {
@@ -210,14 +210,14 @@
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
-              { "id": "2", "title": "A first formalization is available, accompanied by an illustration or diagram. This is a radio description." },
+              { "id": "2", "title": "A first formalization is available, accompanied by an illustration or diagram." },
               { "id": "3", "title": "The solution is described as a whole, with its key functionalities and components. An analysis of existing solutions has been performed (benchmark, state of the art)." },
-              { "id": "4", "title": "All key components are chosen and described, with their functions. This is a radio description." },
+              { "id": "4", "title": "All key components are chosen and described, with their functions." },
               { "id": "5", "title": "The entire product is described, with components and their interfaces." },
               { "id": "6", "title": "The product and its implementation and integration process to the building is described for the target application domain." },
               { "id": "7", "title": "A first positive feedback from process implementation has been documented." },
-              { "id": "8", "title": "Several feedback experiences have been collected and cover the entire target application domain. This is a radio description." },
-              { "id": "9", "title": "Consolidated technical file, ready for commercial or industrial use. This is a radio description." }
+              { "id": "8", "title": "Several feedback experiences have been collected and cover the entire target application domain." },
+              { "id": "9", "title": "Consolidated technical file, ready for commercial or industrial use." }
             ]
           },
           {
@@ -325,14 +325,14 @@
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
-              { "id": "2", "title": "A first formalization is available, accompanied by an illustration or diagram. This is a radio description." },
+              { "id": "2", "title": "A first formalization is available, accompanied by an illustration or diagram." },
               { "id": "3", "title": "The solution is described as a whole, with its key functionalities and components. An analysis of existing solutions has been performed (benchmark, state of the art)." },
-              { "id": "4", "title": "All key components are chosen and described, with their functions. This is a radio description." },
+              { "id": "4", "title": "All key components are chosen and described, with their functions." },
               { "id": "5", "title": "The entire product is described, with components and their interfaces." },
               { "id": "6", "title": "The product and its implementation and integration process to the building is described for the target application domain." },
               { "id": "7", "title": "A first positive feedback from process implementation has been documented." },
-              { "id": "8", "title": "Several feedback experiences have been collected and cover the entire target application domain. This is a radio description." },
-              { "id": "9", "title": "Consolidated technical file, ready for commercial or industrial use. This is a radio description." }
+              { "id": "8", "title": "Several feedback experiences have been collected and cover the entire target application domain." },
+              { "id": "9", "title": "Consolidated technical file, ready for commercial or industrial use." }
             ]
           },
           {

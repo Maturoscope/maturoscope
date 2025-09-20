@@ -13,7 +13,7 @@ const FormPage = async ({ params }: FormPageProps) => {
   const { form } = dictionary
 
   return (
-    <main className="w-full flex flex-col items-center justify-center">
+    <main className="w-full h-full flex flex-col items-center justify-center">
       <Form {...form} />
     </main>
   )

@@ -95,14 +95,14 @@
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
+              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme." },
               { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
+              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions." },
               { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
               { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
               { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible." },
+              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie." }
             ]
           },
           {
@@ -210,14 +210,14 @@
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
+              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme." },
               { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
+              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions." },
               { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
               { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
               { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible." },
+              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie." }
             ]
           },
           {
@@ -325,14 +325,14 @@
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
-              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme. C'est une description radio." },
+              { "id": "2", "title": "Une première formalisation est disponible, accompagnée d'une illustration ou d'un diagramme." },
               { "id": "3", "title": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse des solutions existantes a été effectuée (benchmark, état de l'art)." },
-              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions. C'est une description radio." },
+              { "id": "4", "title": "Tous les composants clés sont choisis et décrits, avec leurs fonctions." },
               { "id": "5", "title": "Le produit est entièrement décrit, avec ses composants et leurs interfaces." },
               { "id": "6", "title": "Le produit et son processus d'implémentation et d'intégration au bâtiment sont décrits pour le domaine d'application cible." },
               { "id": "7", "title": "Un premier retour positif sur la mise en œuvre du processus a été documenté." },
-              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible. C'est une description radio." },
-              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie. C'est une description radio." }
+              { "id": "8", "title": "Plusieurs retours positifs sur la mise en œuvre du processus ont été collectés et couvrent l'ensemble du domaine d'application cible." },
+              { "id": "9", "title": "Fichier technique consolidé, prêt pour la commercialisation ou l'industrie." }
             ]
           },
           {

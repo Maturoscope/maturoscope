@@ -23,11 +23,9 @@ const Form = ({ stages, buttonNextLabel, buttonPrevLabel }: FormProps) => {
   const currStage = stages.find(
     (stage) => stage.id === currStageId
   ) as StageType
-  const { watch, control, handleSubmit } = useForm<DefaultValues>({
+  const { getValues, control, handleSubmit } = useForm<DefaultValues>({
     defaultValues: DEFAULT_VALUES,
   })
-
-  console.log(watch())
 
   return (
     <Stage
@@ -35,6 +33,7 @@ const Form = ({ stages, buttonNextLabel, buttonPrevLabel }: FormProps) => {
       buttonNextLabel={buttonNextLabel}
       buttonPrevLabel={buttonPrevLabel}
       control={control}
+      getValues={getValues}
       setStage={setCurrStageId}
       handleFinishClick={handleSubmit}
     />

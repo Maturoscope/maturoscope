@@ -23,7 +23,7 @@ const WhyPage = async ({ searchParams, params }: WhyPageProps) => {
   } = dictionary
 
   return (
-    <main className="w-full flex flex-col items-center justify-center">
+    <main className="w-full flex flex-col items-center justify-center mt-14">
       <Hero {...hero} />
     </main>
   )
