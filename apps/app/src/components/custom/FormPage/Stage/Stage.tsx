@@ -1,6 +1,6 @@
 // Packages
 import { useState } from "react"
-import { Control, UseFormGetValues, UseFormHandleSubmit } from "react-hook-form"
+import { Control, UseFormGetValues } from "react-hook-form"
 // Components
 import CheckpointScreen from "../CheckpointScreen/CheckpointScreen"
 import Question from "@/components/custom/FormPage/Question/Question"
@@ -24,11 +24,11 @@ export interface StageType {
 
 export interface StageProps {
   stage: StageType
+  nextStage: StageType
   buttonNextLabel: string
   buttonPrevLabel: string
   control: Control<DefaultValues>
   getValues: UseFormGetValues<DefaultValues>
-  handleFinishClick: UseFormHandleSubmit<DefaultValues, DefaultValues>
   setStage: (stage: StageId) => void
 }
 
@@ -40,17 +40,15 @@ const STAGES_STEP_NUMBER: Record<StageId, number> = {
 
 const Stage = ({
   stage,
+  nextStage,
   buttonNextLabel,
   buttonPrevLabel,
   control,
-  // setStage,
-  // handleFinishClick,
+  setStage,
 }: StageProps) => {
   const [isCheckpoint, setIsCheckpoint] = useState(false)
   const [currQuestionId, setCurrQuestionId] = useState(stage.questions[0].id)
   const [isNextButtonDisabled, setIsNextButtonDisabled] = useState(true)
-
-  console.log({ isNextButtonDisabled })
 
   const question = stage.questions.find(
     (question) => question.id === currQuestionId
@@ -78,6 +76,12 @@ const Stage = ({
 
   const handleQuestionClick = () => setIsNextButtonDisabled(false)
 
+  const handleCheckpointButtonClick = () => {
+    setStage(nextStage.id)
+    setCurrQuestionId(nextStage.questions[0].id)
+    setIsCheckpoint(false)
+  }
+
   if (isCheckpoint) {
     return (
       <CheckpointScreen
@@ -85,7 +89,7 @@ const Stage = ({
         title={stage.title}
         description={stage.description}
         buttonLabel={stage.buttonLabel}
-        onButtonClick={handleNextButtonClick}
+        onButtonClick={handleCheckpointButtonClick}
       />
     )
   }

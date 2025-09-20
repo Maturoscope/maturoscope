@@ -20,22 +20,26 @@ export interface FormProps {
 
 const Form = ({ stages, buttonNextLabel, buttonPrevLabel }: FormProps) => {
   const [currStageId, setCurrStageId] = useState<StageId>(stages[0].id)
+
+  const { getValues, control } = useForm<DefaultValues>({
+    defaultValues: DEFAULT_VALUES,
+  })
+
   const currStage = stages.find(
     (stage) => stage.id === currStageId
   ) as StageType
-  const { getValues, control, handleSubmit } = useForm<DefaultValues>({
-    defaultValues: DEFAULT_VALUES,
-  })
+  const currStageIndex = stages.findIndex((stage) => stage.id === currStageId)
+  const nextStage = stages[currStageIndex + 1]
 
   return (
     <Stage
       stage={currStage}
+      nextStage={nextStage}
       buttonNextLabel={buttonNextLabel}
       buttonPrevLabel={buttonPrevLabel}
       control={control}
       getValues={getValues}
       setStage={setCurrStageId}
-      handleFinishClick={handleSubmit}
     />
   )
 }
