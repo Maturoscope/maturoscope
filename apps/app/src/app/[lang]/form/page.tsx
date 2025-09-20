@@ -1,4 +1,5 @@
-// Packages
+// Components
+import Form from "@/components/custom/FormPage/Form/Form"
 // Dictionaries
 import { getDictionary, Locale } from "@/dictionaries/dictionaries"
 
@@ -13,8 +14,10 @@ interface Question {
   options: Option[]
 }
 
+export type StageId = "trl" | "mkrl" | "mfrl"
+
 export interface Stage {
-  id: string
+  id: StageId
   icon: string
   name: string
   title: string
@@ -23,21 +26,20 @@ export interface Stage {
   questions: Question[]
 }
 
-interface FormProps {
+interface FormPageProps {
   params: Promise<{ lang: Locale }>
 }
 
-const Form = async ({ params }: FormProps) => {
+const FormPage = async ({ params }: FormPageProps) => {
   const { lang } = await params
   const dictionary = await getDictionary(lang)
-
-  console.log(dictionary)
+  const { form } = dictionary
 
   return (
     <main className="w-full flex flex-col items-center justify-center">
-      <h1>Form</h1>
+      <Form {...form} />
     </main>
   )
 }
 
-export default Form
+export default FormPage

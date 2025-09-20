@@ -1,37 +1,20 @@
-// Components
-import { HeadingProps } from "@/components/common/Heading/Heading"
-import { KeysCriteriaProps } from "@/components/custom/Homepage/KeysCriteria/KeysCriteria"
 // Types
-import { ListItem } from "@/types/list-item"
 import { Locale } from "@/dictionaries/dictionaries"
-import { Stage } from "@/app/[lang]/form/page"
+import { HeaderProps } from "@/components/common/Header/Header"
+import { HeroProps as HomepageHeroProps } from "@/components/custom/Homepage/Hero/Hero"
+import { PrivacyPolicyProps } from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
+import { HeroProps as WhyHeroProps } from "@/components/custom/WhyPage/Hero/Hero"
+import { FormProps } from "@/components/custom/FormPage/Form/Form"
 
 export type Dictionary = {
   lang: Locale
-  header: {
-    stringConnector: string
-  }
+  header: HeaderProps
   homepage: {
-    hero: {
-      heading: HeadingProps & { buttonLabel: string }
-      criteria: KeysCriteriaProps
-    }
-    policy: {
-      description: string
-    }
+    hero: HomepageHeroProps
+    policy: PrivacyPolicyProps
   }
   why: {
-    hero: {
-      heading: HeadingProps & {
-        list: ListItem[]
-        buttonLabel: string
-      }
-      checks: ListItem[]
-    }
+    hero: WhyHeroProps
   }
-  form: {
-    buttonNextLabel: string
-    buttonPrevLabel: string
-    stages: Stage[]
-  }
+  form: FormProps
 }

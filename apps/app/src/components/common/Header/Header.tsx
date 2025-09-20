@@ -8,7 +8,7 @@ import LanguageSelect from "@/components/common/LanguageSelect/LanguageSelect"
 // Animations
 import { SIMPLE_FADE_VARIANT } from "@/animations/common"
 
-interface HeaderProps {
+export interface HeaderProps {
   stringConnector: string
 }
 

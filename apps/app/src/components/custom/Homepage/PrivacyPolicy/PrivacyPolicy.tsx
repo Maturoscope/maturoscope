@@ -6,7 +6,7 @@ import { motion } from "motion/react"
 // Animations
 import { SIMPLE_FADE_VARIANT } from "@/animations/common"
 
-interface PrivacyPolicyProps {
+export interface PrivacyPolicyProps {
   description: string
 }
 
