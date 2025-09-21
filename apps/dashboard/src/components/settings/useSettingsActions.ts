@@ -60,7 +60,6 @@ export function useSettingsActions({
 }: UseSettingsActionsProps) {
   const router = useRouter()
 
-  // Handle browser navigation (refresh, back button, etc.)
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (hasChanges) {
@@ -127,13 +126,11 @@ export function useSettingsActions({
     setErrors({})
     
     try {
-      // Get current user email from context
       if (!user?.email) {
         throw new Error('User email is required to update profile')
       }
       const userEmail = user.email
       
-      // Call the API route
       const requestUrl = `/api/user/${encodeURIComponent(userEmail)}`
       const requestBody = {
         firstName: profileForm.firstName,
@@ -161,17 +158,14 @@ export function useSettingsActions({
         throw new Error(errorData.error || 'Failed to update profile')
       }
       
-        // Update the original form state to reflect the new saved state
         setOriginalProfileForm({ ...profileForm })
         
-        // Update user data locally (only firstName and lastName)
         updateUser({
           firstName: profileForm.firstName,
           lastName: profileForm.lastName,
           name: `${profileForm.firstName} ${profileForm.lastName}`
         })
         
-        // Show success toast
         setSuccessToastType('profile')
         setShowSuccessToast(true)
     } catch (error) {
@@ -197,25 +191,22 @@ export function useSettingsActions({
     setErrors({})
     
     try {
-      // Get current user email from context
       if (!user?.email) {
         throw new Error('User email is required to update password')
       }
       
-      // Call the UserService (which now calls Auth0 API)
+      // Call the UserService (which now calls Auth0 API) 
       await UserService.updatePassword({
         currentPassword: passwordForm.currentPassword,
         newPassword: passwordForm.newPassword
       })
       
-      // Clear the password form for security
       setPasswordForm({
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
       })
       
-      // Show success toast with appropriate message
       setSuccessToastType('password')
       setShowSuccessToast(true)
     } catch (error) {
@@ -267,7 +258,6 @@ export function useSettingsActions({
     }
   }
 
-  // Handle section change with unsaved changes confirmation
   const handleSectionChange = (newSection: string) => {
     if (hasChanges && activeSection !== newSection) {
       setPendingSection(newSection)
@@ -281,9 +271,8 @@ export function useSettingsActions({
     setErrors({})
     
     if (pendingSection) {
-      // Section change navigation - Parent component should handle setActiveSection
+      // Section change navigation - Parent component should handle setActiveSection  
     } else if (pendingNavigation) {
-      // Global navigation
       pendingNavigation()
       setPendingNavigation(null)
     }
@@ -291,7 +280,6 @@ export function useSettingsActions({
     setShowUnsavedChangesDialog(false)
   }
 
-  // Cancel leaving
   const handleCancelLeave = () => {
     setPendingSection(null)
     setPendingNavigation(null)
