@@ -106,7 +106,10 @@ export default function SettingsUserPage() {
   if (loading) {
     return (
       <>
-        <DynamicPageHeader currentPageLabel={t('TITLE')} />
+        <DynamicPageHeader 
+          currentPageLabel={t('TITLE')} 
+          activeSection={settingsState.activeSection} 
+        />
         <div className="flex flex-1 flex-col gap-4 p-6">
           <div className="space-y-6 max-w-2xl">
             <div className="animate-pulse">
@@ -124,7 +127,10 @@ export default function SettingsUserPage() {
 
   return (
     <>
-      <DynamicPageHeader currentPageLabel={t('TITLE')} />
+      <DynamicPageHeader 
+        currentPageLabel={t('TITLE')} 
+        activeSection={settingsState.activeSection} 
+      />
       <div className="flex flex-1 flex-col gap-4 p-6">
         <div className="space-y-6 max-w-2xl">
           <h2 className="text-xl font-semibold">{t('TITLE')}</h2>

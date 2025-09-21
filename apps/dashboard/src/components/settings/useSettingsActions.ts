@@ -201,10 +201,9 @@ export function useSettingsActions({
       if (!user?.email) {
         throw new Error('User email is required to update password')
       }
-      const userEmail = user.email
       
       // Call the UserService (which now calls Auth0 API)
-      await UserService.updatePassword(userEmail, {
+      await UserService.updatePassword({
         currentPassword: passwordForm.currentPassword,
         newPassword: passwordForm.newPassword
       })
