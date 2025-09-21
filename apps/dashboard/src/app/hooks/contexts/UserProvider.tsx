@@ -7,15 +7,17 @@ interface UserContextType {
   user: User | null;
   loading: boolean;
   error: string | null;
+  refetch: () => Promise<void>;
+  updateUser: (updates: Partial<User>) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
-  const { user, loading, error } = useUser();
+  const { user, loading, error, refetch, updateUser } = useUser();
 
   return (
-    <UserContext.Provider value={{ user, loading, error }}>
+    <UserContext.Provider value={{ user, loading, error, refetch, updateUser }}>
       {children}
     </UserContext.Provider>
   );

@@ -55,5 +55,55 @@
     "REPORTS": "Rapports",
     "ORGANIZATIONS": "Organisations",
     "LOG_OUT": "Se déconnecter"
+  },
+  "USER_SETTINGS": {
+    "TITLE": "Paramètres",
+    "PROFILE": {
+      "TITLE": "Profil",
+      "FIRST_NAME": "Prénom",
+      "LAST_NAME": "Nom",
+      "EMAIL": "E-mail",
+      "ORGANIZATION": "Organisation",
+      "UPDATE_PROFILE": "Mettre à jour le profil",
+      "SUCCESS_TITLE": "Informations du profil mises à jour",
+      "SUCCESS_MESSAGE": "Vos modifications ont été enregistrées avec succès."
+    },
+    "PASSWORD": {
+      "TITLE": "Mot de passe",
+      "CURRENT_PASSWORD": "Mot de passe actuel",
+      "NEW_PASSWORD": "Nouveau mot de passe",
+      "CONFIRM_PASSWORD": "Confirmer le nouveau mot de passe",
+      "UPDATE_PASSWORD": "Mettre à jour le mot de passe",
+      "SUCCESS_TITLE": "Mot de passe mis à jour",
+      "SUCCESS_MESSAGE": "Votre mot de passe a été modifié avec succès.",
+      "REQUIREMENTS": "Votre nouveau mot de passe doit contenir au moins",
+      "MIN_CHARACTERS": "10 caractères",
+      "ONE_LETTER": "1 lettre",
+      "ONE_NUMBER_SPECIAL": "1 chiffre ou caractère spécial (exemple: # ? ! &)"
+    },
+    "CUSTOMIZATION": {
+      "TITLE": "Personnalisation",
+      "THEME": "Thème",
+      "LANGUAGE": "Langue",
+      "LANGUAGE_DESCRIPTION": "Ceci est la langue qui sera utilisée dans le tableau de bord.",
+      "SAVE_PREFERENCES": "Enregistrer les préférences",
+      "UPDATE_CUSTOMIZATION": "Mettre à jour la personnalisation",
+      "SUCCESS_TITLE": "Personnalisation mise à jour",
+      "SUCCESS_MESSAGE": "Vos préférences ont été enregistrées avec succès."
+    },
+    "ERRORS": {
+      "FIELD_REQUIRED": "Ce champ ne peut pas être laissé vide.",
+      "PASSWORD_TOO_SHORT": "Le mot de passe doit contenir au moins 10 caractères.",
+      "PASSWORD_NO_LETTER": "Le mot de passe doit contenir au moins 1 lettre.",
+      "PASSWORD_NO_NUMBER_SPECIAL": "Le mot de passe doit contenir au moins 1 chiffre ou caractère spécial.",
+      "PASSWORDS_DONT_MATCH": "Les mots de passe ne correspondent pas.",
+      "CURRENT_PASSWORD_INCORRECT": "Le mot de passe actuel est incorrect."
+    },
+    "UNSAVED_CHANGES": {
+      "TITLE": "Modifications non sauvegardées",
+      "MESSAGE": "Vous avez des modifications non sauvegardées. Si vous partez maintenant, vos dernières mises à jour seront perdues.",
+      "CANCEL": "Annuler",
+      "LEAVE_ANYWAY": "Partir quand même"
+    }
   }
 }

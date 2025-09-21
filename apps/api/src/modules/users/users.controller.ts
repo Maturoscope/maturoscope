@@ -50,6 +50,12 @@ export class UsersController {
     return this.usersService.update(params.id, updateUserDto);
   }
 
+  @Patch('email/:email')
+  @Auth()
+  updateByEmail(@Param('email') email: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.updateByEmail(email, updateUserDto);
+  }
+
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @Auth()
