@@ -9,6 +9,7 @@ import { UserDropdown } from "./DropdownMenu"
 
 interface DynamicPageHeaderProps {
   currentPageLabel: string
+  activeSection?: string
 }
 
 function BreadcrumbSkeleton({ currentPageLabel }: { currentPageLabel: string }) {
@@ -21,8 +22,8 @@ function BreadcrumbSkeleton({ currentPageLabel }: { currentPageLabel: string }) 
   )
 }
 
-export function DynamicPageHeader({ currentPageLabel }: DynamicPageHeaderProps) {
-  const { breadcrumbs, isLoading } = useBreadcrumbs(currentPageLabel)
+export function DynamicPageHeader({ currentPageLabel, activeSection }: DynamicPageHeaderProps) {
+  const { breadcrumbs, isLoading } = useBreadcrumbs(currentPageLabel, activeSection)
   
   if (isLoading) {
     return (

@@ -76,7 +76,7 @@ import {
   
         <DropdownMenuContent className="w-[200px]">
           <DropdownMenuItem className="flex items-center gap-2" asChild>
-            <Link href="/dashboard/settings">
+            <Link href="/dashboard/settingsUser">
               <Settings className="h-4 w-4" />
               {t('SETTINGS')}
             </Link>

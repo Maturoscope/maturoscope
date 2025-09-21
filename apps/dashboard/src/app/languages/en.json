@@ -55,5 +55,55 @@
     "REPORTS": "Reports",
     "ORGANIZATIONS": "Organizations",
     "LOG_OUT": "Log Out"
+  },
+  "USER_SETTINGS": {
+    "TITLE": "Settings",
+    "PROFILE": {
+      "TITLE": "Profile",
+      "FIRST_NAME": "First Name",
+      "LAST_NAME": "Last Name",
+      "EMAIL": "Email",
+      "ORGANIZATION": "Organization",
+      "UPDATE_PROFILE": "Update profile",
+      "SUCCESS_TITLE": "Profile Information Updated",
+      "SUCCESS_MESSAGE": "Your updates have been saved successfully."
+    },
+    "PASSWORD": {
+      "TITLE": "Password",
+      "CURRENT_PASSWORD": "Current password",
+      "NEW_PASSWORD": "New password",
+      "CONFIRM_PASSWORD": "Confirm new password",
+      "UPDATE_PASSWORD": "Update password",
+      "SUCCESS_TITLE": "Password Updated",
+      "SUCCESS_MESSAGE": "Your password has been changed successfully.",
+      "REQUIREMENTS": "Your new password must contain at least",
+      "MIN_CHARACTERS": "10 characters",
+      "ONE_LETTER": "1 letter",
+      "ONE_NUMBER_SPECIAL": "1 number or special character (example: # ? ! &)"
+    },
+    "CUSTOMIZATION": {
+      "TITLE": "Customization",
+      "THEME": "Theme",
+      "LANGUAGE": "Language",
+      "LANGUAGE_DESCRIPTION": "This is the language that will be used in the dashboard.",
+      "SAVE_PREFERENCES": "Save preferences",
+      "UPDATE_CUSTOMIZATION": "Update customization",
+      "SUCCESS_TITLE": "Customization Updated",
+      "SUCCESS_MESSAGE": "Your preferences have been saved successfully."
+    },
+    "ERRORS": {
+      "FIELD_REQUIRED": "This field cannot be left blank.",
+      "PASSWORD_TOO_SHORT": "Password must be at least 10 characters long.",
+      "PASSWORD_NO_LETTER": "Password must contain at least 1 letter.",
+      "PASSWORD_NO_NUMBER_SPECIAL": "Password must contain at least 1 number or special character.",
+      "PASSWORDS_DONT_MATCH": "Passwords do not match.",
+      "CURRENT_PASSWORD_INCORRECT": "Current password is incorrect."
+    },
+    "UNSAVED_CHANGES": {
+      "TITLE": "Unsaved Changes",
+      "MESSAGE": "You have unsaved changes. If you leave now, your latest updates will be lost.",
+      "CANCEL": "Cancel",
+      "LEAVE_ANYWAY": "Leave Anyway"
+    }
   }
 }

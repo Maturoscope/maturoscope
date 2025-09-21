@@ -98,8 +98,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException(`User with email ${email} not found`);
     }
-    
-    // If email is being updated, check that it doesn't already exist
+
     if (updateData.email && updateData.email !== user.email) {
       const existingUser = await this.findByUserEmail(updateData.email);
       if (existingUser) {
@@ -146,8 +145,34 @@ export class UsersService {
     return await this.userRepository.save(user);
   }
 
+  async updateByEmail(email: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.findByEmail(email);
+    
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+
+    if (updateUserDto.organizationId && updateUserDto.organizationId !== user.organizationId) {
+      const organization = await this.organizationRepository.findOne({
+        where: { id: updateUserDto.organizationId },
+      });
+      if (!organization) {
+        throw new NotFoundException(`Organization with ID ${updateUserDto.organizationId} not found`);
+      }
+    }
+
+    if (updateUserDto.email && updateUserDto.email !== user.email) {
+      const existingUser = await this.findByEmail(updateUserDto.email);
+      if (existingUser) {
+        throw new ConflictException('Email is already registered');
+      }
+    }
+
+    Object.assign(user, updateUserDto);
+    return await this.userRepository.save(user);
+  }
+
   async remove(id: string): Promise<void> {
-    // Validate UUID format
     if (!uuidValidate(id)) {
       throw new BadRequestException(`Invalid UUID format: ${id}`);
     }
