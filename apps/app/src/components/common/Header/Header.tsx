@@ -19,7 +19,7 @@ const Header = ({ stringConnector }: HeaderProps) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="w-full px-6 h-9 flex items-center justify-between mt-[max(8vh,32px)] max-w-[1280px]"
+      className="w-full px-6 h-9 flex items-center justify-between mt-16 2xl:mt-24 max-w-[1280px]"
     >
       <div className="flex items-center gap-2 text-foreground">
         <div className="flex items-center gap-2">
@@ -40,7 +40,7 @@ const Header = ({ stringConnector }: HeaderProps) => {
             height={24}
           />
         </div>
-        <span className="text-sm font-medium">Nobatek</span>
+        <span className="text-sm font-medium hidden lg:block">Nobatek</span>
       </div>
       <LanguageSelect />
     </motion.header>

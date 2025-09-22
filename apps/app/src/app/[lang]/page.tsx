@@ -24,7 +24,7 @@ const HomePage = async ({ searchParams, params }: HomePageProps) => {
   } = dictionary
 
   return (
-    <main className="w-full flex flex-col items-center justify-center mt-14">
+    <main className="w-full flex flex-col items-center justify-between mt-14 h-full pb-16">
       <Hero {...hero} />
       <PrivacyPolicy {...policy} />
     </main>

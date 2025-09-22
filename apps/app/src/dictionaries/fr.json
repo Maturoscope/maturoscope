@@ -6,7 +6,8 @@
   "homepage": {
     "hero": {
       "heading": {
-      "title": "Bienvenue dans le Maturoscope, l'outil qui vous guide dans la maturation de votre innovation",
+        "title": "Bienvenue 👋 dans le Maturoscope",
+        "secondTitle": "L'outil qui vous guide dans la maturation de votre innovation",
         "description": "Conçu par des experts du secteur de la construction. Cet outil vous guide tout au long du processus de maturation de votre innovation.",
         "buttonLabel": "Continuer"
       },

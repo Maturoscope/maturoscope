@@ -36,9 +36,9 @@ const RadioItem = ({
           name={name}
           value={id}
           defaultChecked={defaultChecked}
-          className="peer appearance-none outline-none relative"
+          className="peer appearance-none absolute outline-none"
         />
-        <div className="absolute top-0 left-0 w-full h-full rounded-lg bg-primary/10 border border-primary hidden peer-checked:block" />
+        <div className="absolute top-0 left-0 w-full h-full rounded-[10px] bg-primary/10 border border-primary hidden peer-checked:block" />
         <Image
           src="/icons/form/checked.svg"
           alt="Radio checked"

@@ -1,5 +1,7 @@
 // Packages
+import Image from "next/image"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Control, UseFormGetValues } from "react-hook-form"
 // Components
 import CheckpointScreen from "../CheckpointScreen/CheckpointScreen"
@@ -50,6 +52,7 @@ const Stage = ({
   const [isCheckpoint, setIsCheckpoint] = useState(false)
   const [currQuestionId, setCurrQuestionId] = useState(stage.questions[0].id)
   const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false)
+  const router = useRouter()
 
   const question = stage.questions.find(
     (question) => question.id === currQuestionId
@@ -75,6 +78,15 @@ const Stage = ({
   }
 
   const handleCheckpointButtonClick = () => {
+    const isLastCheckpoint = !nextStage?.id
+
+    console.log(isLastCheckpoint)
+
+    if (isLastCheckpoint) {
+      router.push("/results")
+      return
+    }
+
     setStage(nextStage.id)
     setCurrQuestionId(nextStage.questions[0].id)
     setIsCheckpoint(false)
@@ -97,13 +109,13 @@ const Stage = ({
   return (
     <div className="w-full max-w-[1280px] px-6 flex flex-col items-start justify-start mt-7">
       <div className="w-full flex flex-col items-start justify-start gap-2 mb-7">
-        <span className="text-base text-muted-foreground uppercase leading-none">
+        <span className="text-sm lg:text-base text-muted-foreground uppercase leading-none font-semibold">
           {stage.name} level | stage {stageStepNumber} of 3
         </span>
-        <h1 className="text-3xl font-semibold">{question.title}</h1>
+        <h1 className="text-xl lg:text-3xl font-semibold">{question.title}</h1>
       </div>
-      <div className="w-full flex items-end justify-between gap-8">
-        <div className="w-full flex flex-col gap-[70px] max-w-[600px]">
+      <div className="w-full flex items-end justify-between gap-8 flex-wrap">
+        <div className="w-full flex flex-col gap-7 lg:gap-[70px] lg:max-w-[600px]">
           <Question
             {...question}
             name={stage.id}
@@ -111,19 +123,32 @@ const Stage = ({
             getValues={getValues}
             onQuestionClick={handleQuestionClick}
           />
-          <div className="w-full flex items-center justify-between">
+          <div className="w-full flex items-center justify-between gap-3">
             <Button
               variant="outline"
               onClick={handlePrevButtonClick}
               disabled={!isPrevButtonEnabled}
             >
-              {buttonPrevLabel}
+              <Image
+                src="/icons/form/arrow-prev.svg"
+                alt="Arrow Prev"
+                width={16}
+                height={16}
+              />
+              <span className="hidden lg:block">{buttonPrevLabel}</span>
             </Button>
             <Button
               onClick={handleNextButtonClick}
               disabled={!isNextButtonEnabled}
+              className="w-full lg:w-auto"
             >
-              {buttonNextLabel}
+              <span>{buttonNextLabel}</span>
+              <Image
+                src="/icons/form/arrow-next.svg"
+                alt="Arrow Next"
+                width={16}
+                height={16}
+              />
             </Button>
           </div>
         </div>
@@ -131,7 +156,7 @@ const Stage = ({
         <ProgressBar
           min={questionIndex + 1}
           max={stage.questions.length}
-          className="w-full max-w-[224px]"
+          className="w-full lg:max-w-[224px]"
         />
       </div>
     </div>

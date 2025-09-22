@@ -16,12 +16,12 @@ const ProgressBar = ({ min, max, className }: ProgressBarProps) => {
   return (
     <div
       className={cn(
-        "w-full flex flex-col items-end justify-end gap-1.5",
+        "w-full flex flex-col items-end justify-end gap-1.5 lg:flex-col-reverse",
         className
       )}
     >
-      <span className="text-base font-medium">{label}</span>
       <Progress value={value} />
+      <span className="text-base font-medium">{label}</span>
     </div>
   )
 }
