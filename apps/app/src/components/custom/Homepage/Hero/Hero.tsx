@@ -25,13 +25,13 @@ const Hero = ({ heading, criteria }: HeroProps) => {
   const { lang } = useParams<{ lang: Locale }>()
 
   return (
-    <div className="flex items-start justify-between w-full max-w-[1280px] gap-16 px-6">
+    <div className="flex lg:items-start justify-between w-full max-w-[1280px] gap-12 lg:gap-16 px-6 lg:flex-row flex-col items-center">
       <motion.div
         variants={SIMPLE_FADE_VARIANT}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="flex flex-col items-start justify-start w-full max-w-[584px] gap-12"
+        className="flex flex-col items-start justify-start w-full lg:max-w-[584px] gap-12"
       >
         <Heading {...heading} />
         <Link href={`/${lang}/why`} className="w-full">

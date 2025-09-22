@@ -31,13 +31,13 @@ const Hero = ({ heading, checks }: HeroProps) => {
   const { lang } = useParams<{ lang: Locale }>()
 
   return (
-    <div className="flex items-start justify-between w-full max-w-[1280px] gap-16 px-6">
+    <div className="flex lg:items-start justify-between w-full max-w-[1280px] gap-12 lg:gap-16 px-6 lg:flex-row flex-col items-center">
       <motion.div
         variants={SIMPLE_FADE_VARIANT}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="flex flex-col items-start justify-start w-full max-w-[584px] gap-12"
+        className="flex flex-col items-start justify-start w-full lg:max-w-[584px] gap-12"
       >
         <Heading {...heading} />
         <motion.ul
@@ -51,7 +51,7 @@ const Hero = ({ heading, checks }: HeroProps) => {
             <motion.li
               key={item.title}
               variants={STAGGERED_LIST_ITEM_VARIANT}
-              className="flex items-start justify-start gap-4"
+              className="flex items-start justify-start gap-4 lg:gap-5"
             >
               <div className="flex items-center justify-center aspect-square w-10 h-10 border rounded-md">
                 <Image
@@ -72,7 +72,7 @@ const Hero = ({ heading, checks }: HeroProps) => {
             </motion.li>
           ))}
         </motion.ul>
-        <Link href={`/${lang}/form`}>
+        <Link href={`/${lang}/form`} className="w-full">
           <Button variant="default" size="lg" className="w-full">
             {buttonLabel}
           </Button>
@@ -83,7 +83,7 @@ const Hero = ({ heading, checks }: HeroProps) => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="w-full max-w-[584px] flex flex-col gap-8"
+        className="w-full lg:max-w-[584px] flex flex-col gap-8"
       >
         {checks.map((item) => (
           <motion.li

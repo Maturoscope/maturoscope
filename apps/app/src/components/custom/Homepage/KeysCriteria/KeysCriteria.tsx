@@ -21,31 +21,32 @@ export interface KeysCriteriaProps {
 
 const KeysCriteria = ({ title, keys }: KeysCriteriaProps) => {
   return (
-    <Box>
-      <div className="flex flex-col items-start justify-start w-full max-w-[584px] gap-8">
-        <motion.span
-          variants={SIMPLE_FADE_VARIANT}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="text-lg font-semibold text-foreground"
-        >
-          {title}
-        </motion.span>
-        <motion.ul
-          variants={STAGGERED_LIST_VARIANT}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="flex flex-col items-start justify-start w-full gap-6"
-        >
-          {keys.map((key) => (
+    <div className="flex flex-col items-start justify-start w-full lg:max-w-[584px] gap-3">
+      <motion.span
+        variants={SIMPLE_FADE_VARIANT}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="text-lg font-semibold text-foreground"
+      >
+        {title}
+      </motion.span>
+      <motion.ul
+        variants={STAGGERED_LIST_VARIANT}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="flex flex-col items-start justify-start w-full gap-3"
+      >
+        {keys.map((key) => (
+          <Box key={key.icon}>
             <motion.li
-              key={key.icon}
               variants={STAGGERED_LIST_ITEM_VARIANT}
-              className="flex items-start justify-start w-full gap-4"
+              className="flex items-start justify-start w-full gap-4 lg:flex-row flex-col"
             >
-              <Image src={key.icon} alt={key.title} width={24} height={24} />
+              <div className="flex items-center justify-center aspect-square w-10 h-10 rounded-md bg-primary/5">
+                <Image src={key.icon} alt={key.title} width={20} height={20} />
+              </div>
               <div className="flex flex-col items-start justify-start gap-1.5">
                 <span className="text-base font-semibold text-foreground">
                   {key.title}
@@ -55,10 +56,10 @@ const KeysCriteria = ({ title, keys }: KeysCriteriaProps) => {
                 </span>
               </div>
             </motion.li>
-          ))}
-        </motion.ul>
-      </div>
-    </Box>
+          </Box>
+        ))}
+      </motion.ul>
+    </div>
   )
 }
 

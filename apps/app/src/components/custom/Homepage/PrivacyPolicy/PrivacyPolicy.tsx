@@ -17,7 +17,7 @@ const PrivacyPolicy = ({ description }: PrivacyPolicyProps) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="flex gap-4 w-full max-w-[1280px] px-6 mt-24"
+      className="flex gap-4 w-full max-w-[1280px] px-6 mt-11 lg:flex-row flex-col"
     >
       <Image
         src="/icons/homepage/flag-europe.svg"

@@ -6,8 +6,9 @@
   "homepage": {
     "hero": {
       "heading": {
-        "title": "Welcome to Maturoscope, the tool that guides your innovation to the market",
-        "description": "Designed by experts from the building and construction sector. This tool is meant to guide you throughout the entire maturation process of your innovation.",
+        "title": "Welcome 👋 to Maturoscope",
+        "secondTitle": "The tool that guides your innovation to the market",
+        "description": "Designed by experts from the building and construction sector.\nThis tool is meant to guide you throughout the entire maturation process of your innovation.",
         "buttonLabel": "Continue"
       },
       "criteria": {
@@ -39,7 +40,7 @@
     "hero": {
       "heading": {
         "title": "Why use Maturoscope?",
-        "description": "Are you developing an innovative solution in the construction sector? Whether it's a product, a process, or a service, Maturoscope allows you to assess its maturity level in just a few clicks and guides you through the next steps towards commercialization.",
+        "description": "Are you developing an innovative solution in the construction sector?\nWhether it's a product, a process, or a service, Maturoscope allows you to assess its maturity level in just a few clicks and guides you through the next steps towards commercialization.",
         "list": [
           {
             "icon": "/icons/why/less-than-five-minutes.svg",
