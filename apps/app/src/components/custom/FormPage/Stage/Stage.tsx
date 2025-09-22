@@ -73,7 +73,7 @@ const Stage = ({
 
   const handleNextButtonClick = () => {
     const nextQuestionIndex = questionIndex + 1
-    const nextQuestionId = stage.questions[nextQuestionIndex].id
+    const nextQuestionId = stage.questions[nextQuestionIndex]?.id
     const nextQuestionHasValue = !!getValues(`${stage.id}.${nextQuestionId}`)
 
     if (isLastQuestion) setIsCheckpoint(true)
