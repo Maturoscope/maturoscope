@@ -56,8 +56,6 @@ export const ProgressProvider = ({
   const { getValues } = useFormContext()
   const router = useRouter()
 
-  console.log({ currStageId, currQuestionId })
-
   const currStageIndex = stages.findIndex((stage) => stage.id === currStageId)
   const currStage = stages[currStageIndex]
   const currQuestion = currStage.questions.find(
