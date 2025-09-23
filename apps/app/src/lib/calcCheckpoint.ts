@@ -1,5 +1,5 @@
 // Types
-import { StageId } from "@/components/custom/FormPage/Stage/Stage"
+import { StageId } from "@/components/custom/FormPage/Form/Form"
 import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 
 export const calcCheckpoint = (defaultValues: DefaultValues) => {
@@ -17,6 +17,7 @@ export const calcCheckpoint = (defaultValues: DefaultValues) => {
     const stageId = stagesOrdered[i]
 
     for (const question of Object.keys(stage)) {
+      console.log({ stageId, stage, question })
       if (!stage[question]) {
         checkpoint = { lastSavedStage: stageId, lastSavedQuestion: question }
         return checkpoint

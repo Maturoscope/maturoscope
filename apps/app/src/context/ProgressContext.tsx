@@ -1,13 +1,15 @@
 "use client"
 
 // Packages
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 // Context
 import { useFormContext } from "@/context/FormContext"
 // Types
 import { StageId, StageType } from "@/components/custom/FormPage/Form/Form"
 import { QuestionProps } from "@/components/custom/FormPage/Question/Question"
+// Utils
+import { calcCheckpoint } from "@/lib/calcCheckpoint"
 
 interface ProgressContextType {
   currStage: StageType
@@ -51,6 +53,8 @@ export const ProgressProvider = ({
   const { getValues } = useFormContext()
   const router = useRouter()
 
+  console.log({ currStageId, currQuestionId })
+
   const currStageIndex = stages.findIndex((stage) => stage.id === currStageId)
   const currStage = stages[currStageIndex]
   const currQuestion = currStage.questions.find(
@@ -90,10 +94,7 @@ export const ProgressProvider = ({
     const nextStage = stages[currStageIndex + 1]
     const isLastCheckpoint = !nextStage?.id
 
-    if (isLastCheckpoint) {
-      router.push("/results")
-      return
-    }
+    if (isLastCheckpoint) return router.push("/results")
 
     setCurrStageId(nextStage.id)
     setCurrQuestionId(nextStage.questions[0].id)
@@ -101,6 +102,17 @@ export const ProgressProvider = ({
   }
 
   const handleQuestionClick = () => setIsNextButtonEnabled(true)
+
+  useEffect(() => {
+    const savedForm = JSON.parse(localStorage.getItem("form") || "{}")
+    const checkpoint = calcCheckpoint(savedForm)
+
+    if (!checkpoint) return
+    const { lastSavedStage, lastSavedQuestion } = checkpoint
+
+    setCurrStageId(lastSavedStage)
+    setCurrQuestionId(lastSavedQuestion)
+  }, [getValues])
 
   return (
     <ProgressContext.Provider
