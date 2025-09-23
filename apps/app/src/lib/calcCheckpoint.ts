@@ -16,9 +16,13 @@ export const calcCheckpoint = (defaultValues: DefaultValues) => {
     const stage = orderedStages[i]
     const stageId = stagesOrdered[i]
 
-    for (const question of Object.keys(stage)) {
-      console.log({ stageId, stage, question })
-      if (!stage[question]) {
+    for (let j = 0; j < Object.keys(stage).length; j++) {
+      const question = Object.keys(stage)[j]
+      const isLastQuestionAndLastStage =
+        i === orderedStages.length - 1 && j === Object.keys(stage).length - 1
+      const questionIsNotFilled = !stage[question]
+
+      if (questionIsNotFilled || isLastQuestionAndLastStage) {
         checkpoint = { lastSavedStage: stageId, lastSavedQuestion: question }
         return checkpoint
       }

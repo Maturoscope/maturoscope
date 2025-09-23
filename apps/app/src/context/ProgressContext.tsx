@@ -10,6 +10,7 @@ import { StageId, StageType } from "@/components/custom/FormPage/Form/Form"
 import { QuestionProps } from "@/components/custom/FormPage/Question/Question"
 // Utils
 import { calcCheckpoint } from "@/lib/calcCheckpoint"
+import { Locale } from "@/dictionaries/dictionaries"
 
 interface ProgressContextType {
   currStage: StageType
@@ -26,6 +27,7 @@ interface ProgressContextType {
 }
 
 interface ProgressProviderProps {
+  lang: Locale
   stages: StageType[]
   children: React.ReactNode
 }
@@ -41,6 +43,7 @@ const STAGES_STEP_NUMBER: Record<StageId, number> = {
 const ProgressContext = createContext<ProgressContextType | null>(null)
 
 export const ProgressProvider = ({
+  lang,
   stages,
   children,
 }: ProgressProviderProps) => {
@@ -94,7 +97,7 @@ export const ProgressProvider = ({
     const nextStage = stages[currStageIndex + 1]
     const isLastCheckpoint = !nextStage?.id
 
-    if (isLastCheckpoint) return router.push("/results")
+    if (isLastCheckpoint) return router.push(`/${lang}/results`)
 
     setCurrStageId(nextStage.id)
     setCurrQuestionId(nextStage.questions[0].id)
@@ -110,9 +113,15 @@ export const ProgressProvider = ({
     if (!checkpoint) return
     const { lastSavedStage, lastSavedQuestion } = checkpoint
 
+    const hasAnswerAllQuestions = Object.keys(savedForm[lastSavedStage]).every(
+      (question) => !!savedForm[lastSavedStage][question]
+    )
+
+    if (hasAnswerAllQuestions) return router.push(`/${lang}/results`)
+
     setCurrStageId(lastSavedStage)
     setCurrQuestionId(lastSavedQuestion)
-  }, [getValues])
+  }, [getValues, router, lang])
 
   return (
     <ProgressContext.Provider

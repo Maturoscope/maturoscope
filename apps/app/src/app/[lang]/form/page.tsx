@@ -20,7 +20,7 @@ const FormPage = async ({ params }: FormPageProps) => {
   return (
     <main className="w-full h-full flex flex-col items-center justify-start pb-16">
       <FormProvider>
-        <ProgressProvider stages={form.stages}>
+        <ProgressProvider lang={lang} stages={form.stages}>
           <Form {...form} />
         </ProgressProvider>
       </FormProvider>
