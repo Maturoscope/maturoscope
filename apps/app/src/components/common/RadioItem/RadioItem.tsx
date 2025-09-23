@@ -1,19 +1,22 @@
+"use client"
+
 // Packages
 import Image from "next/image"
-import { Control, useController } from "react-hook-form"
+import { useController } from "react-hook-form"
+// Context
+import { useFormContext } from "@/context/FormContext"
 // Types
 import { StageId } from "@/components/custom/FormPage/Stage/Stage"
-import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 
 export interface RadioItemProps {
   id: string
   title: string
   name: `${StageId}.${string}`
-  control: Control<DefaultValues>
   onClick: () => void
 }
 
-const RadioItem = ({ id, title, name, control, onClick }: RadioItemProps) => {
+const RadioItem = ({ id, title, name, onClick }: RadioItemProps) => {
+  const { control } = useFormContext()
   const { field } = useController({ control, name })
   const isChecked = field.value === id
 

@@ -4,7 +4,7 @@
 import Image from "next/image"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Control, UseFormGetValues } from "react-hook-form"
+import { UseFormGetValues } from "react-hook-form"
 // Components
 import CheckpointScreen from "../CheckpointScreen/CheckpointScreen"
 import Question from "@/components/custom/FormPage/Question/Question"
@@ -31,7 +31,6 @@ export interface StageProps {
   nextStage: StageType
   buttonNextLabel: string
   buttonPrevLabel: string
-  control: Control<DefaultValues>
   getValues: UseFormGetValues<DefaultValues>
   setStage: (stage: StageId) => void
 }
@@ -47,7 +46,6 @@ const Stage = ({
   nextStage,
   buttonNextLabel,
   buttonPrevLabel,
-  control,
   getValues,
   setStage,
 }: StageProps) => {
@@ -128,7 +126,6 @@ const Stage = ({
           <Question
             {...question}
             name={stage.id}
-            control={control}
             onQuestionClick={handleQuestionClick}
           />
           <div className="w-full flex items-center justify-between gap-3">
