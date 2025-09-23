@@ -3,6 +3,9 @@ import { StageId } from "@/components/custom/FormPage/Form/Form"
 import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 
 export const calcCheckpoint = (defaultValues: DefaultValues) => {
+  const defaultValuesAreEmpty = Object.keys(defaultValues).length === 0
+  if (defaultValuesAreEmpty) return null
+
   const stagesOrdered: StageId[] = ["trl", "mkrl", "mfrl"]
   const orderedStages = stagesOrdered.map(
     (stageId) => defaultValues[stageId as StageId]
