@@ -72,9 +72,13 @@ const Stage = ({
   }
 
   const handleNextButtonClick = () => {
+    const nextQuestionIndex = questionIndex + 1
+    const nextQuestionId = stage.questions[nextQuestionIndex]?.id
+    const nextQuestionHasValue = !!getValues(`${stage.id}.${nextQuestionId}`)
+
     if (isLastQuestion) setIsCheckpoint(true)
     else setCurrQuestionId(stage.questions[questionIndex + 1].id)
-    setIsNextButtonEnabled(false)
+    setIsNextButtonEnabled(nextQuestionHasValue)
   }
 
   const handleCheckpointButtonClick = () => {

@@ -22,17 +22,20 @@ const RadioItem = ({
   defaultChecked,
   onClick,
 }: RadioItemProps) => {
-  const { field } = useController({ control, name, shouldUnregister: false })
+  const { field } = useController({ control, name })
+
+  const handleChange = () => {
+    field.onChange(id)
+    onClick()
+  }
 
   return (
-    <label
-      className="w-full flex items-center justify-start rounded-lg border border-input relative cursor-pointer"
-      onClick={onClick}
-    >
+    <label className="w-full flex items-center justify-start rounded-lg border border-input relative cursor-pointer">
       <div className="flex items-start justify-start gap-3 w-full relative z-20 -mt-px p-3">
         <input
           type="radio"
           {...field}
+          onChange={handleChange}
           name={name}
           value={id}
           defaultChecked={defaultChecked}
