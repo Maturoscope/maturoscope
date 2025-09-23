@@ -1,7 +1,7 @@
 // Components
 import RadioGroup from "@/components/common/RadioGroup/RadioGroup"
 // Types
-import { StageId } from "@/components/custom/FormPage/Stage/Stage"
+import { StageId } from "@/components/custom/FormPage/Form/Form"
 
 interface Option {
   id: string
