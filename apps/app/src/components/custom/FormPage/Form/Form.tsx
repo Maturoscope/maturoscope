@@ -2,15 +2,12 @@
 
 // Packages
 import Image from "next/image"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
 // Components
 import CheckpointScreen from "@/components/custom/FormPage/CheckpointScreen/CheckpointScreen"
 import Question from "@/components/custom/FormPage/Question/Question"
 import ProgressBar from "@/components/custom/FormPage/ProgressBar/ProgressBar"
 import { Button } from "@/components/ui/button"
 // Context
-import { useFormContext } from "@/context/FormContext"
 import { useProgressContext } from "@/context/ProgressContext"
 // Types
 import { QuestionProps } from "@/components/custom/FormPage/Question/Question"
@@ -41,65 +38,20 @@ export interface FormProps {
   stages: StageType[]
 }
 
-const STAGES_STEP_NUMBER: Record<StageId, number> = {
-  trl: 1,
-  mkrl: 2,
-  mfrl: 3,
-}
-
 const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {
-  const [isCheckpoint, setIsCheckpoint] = useState(false)
-  const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false)
-  const router = useRouter()
-  const { getValues } = useFormContext()
   const {
     currStage,
-    nextStage,
     currQuestionIndex,
     currQuestion,
-    setCurrQuestionId,
-    setCurrStageId,
-    saveProgress,
+    isCheckpoint,
+    stageStepNumber,
+    isPrevButtonEnabled,
+    isNextButtonEnabled,
+    handleCheckpointButtonClick,
+    handleQuestionClick,
+    handlePrevButtonClick,
+    handleNextButtonClick,
   } = useProgressContext()
-
-  const stageStepNumber = STAGES_STEP_NUMBER[currStage.id]
-  const isLastQuestion = currQuestionIndex === currStage.questions.length - 1
-  const isPrevButtonEnabled = currQuestionIndex !== 0
-
-  const handlePrevButtonClick = () => {
-    if (!isPrevButtonEnabled) return
-    setIsNextButtonEnabled(true)
-    setCurrQuestionId(currStage.questions[currQuestionIndex - 1].id)
-  }
-
-  const handleNextButtonClick = () => {
-    saveProgress()
-
-    const nextQuestionIndex = currQuestionIndex + 1
-    const nextQuestionId = currStage.questions[nextQuestionIndex]?.id
-    const nextQuestionHasValue = !!getValues(
-      `${currStage.id}.${nextQuestionId}`
-    )
-
-    if (isLastQuestion) setIsCheckpoint(true)
-    else setCurrQuestionId(currStage.questions[currQuestionIndex + 1].id)
-    setIsNextButtonEnabled(nextQuestionHasValue)
-  }
-
-  const handleCheckpointButtonClick = () => {
-    const isLastCheckpoint = !nextStage?.id
-
-    if (isLastCheckpoint) {
-      router.push("/results")
-      return
-    }
-
-    setCurrStageId(nextStage.id)
-    setCurrQuestionId(nextStage.questions[0].id)
-    setIsCheckpoint(false)
-  }
-
-  const handleQuestionClick = () => setIsNextButtonEnabled(true)
 
   if (isCheckpoint) {
     return (

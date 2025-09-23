@@ -2,6 +2,7 @@
 
 // Packages
 import { createContext, useContext, useState } from "react"
+import { useRouter } from "next/navigation"
 // Context
 import { useFormContext } from "@/context/FormContext"
 // Types
@@ -9,15 +10,17 @@ import { StageId, StageType } from "@/components/custom/FormPage/Form/Form"
 import { QuestionProps } from "@/components/custom/FormPage/Question/Question"
 
 interface ProgressContextType {
-  currStageId: string
-  nextStageId: string
   currStage: StageType
-  nextStage: StageType
   currQuestionIndex: number
   currQuestion: QuestionProps
-  setCurrStageId: (stage: StageId) => void
-  setCurrQuestionId: (question: string) => void
-  saveProgress: () => void
+  isCheckpoint: boolean
+  stageStepNumber: number
+  isPrevButtonEnabled: boolean
+  isNextButtonEnabled: boolean
+  handlePrevButtonClick: () => void
+  handleNextButtonClick: () => void
+  handleCheckpointButtonClick: () => void
+  handleQuestionClick: () => void
 }
 
 interface ProgressProviderProps {
@@ -27,45 +30,92 @@ interface ProgressProviderProps {
 
 const DEFAULT_STAGE_ID: StageId = "trl"
 
+const STAGES_STEP_NUMBER: Record<StageId, number> = {
+  trl: 1,
+  mkrl: 2,
+  mfrl: 3,
+}
+
 const ProgressContext = createContext<ProgressContextType | null>(null)
 
 export const ProgressProvider = ({
   stages,
   children,
 }: ProgressProviderProps) => {
+  const [isCheckpoint, setIsCheckpoint] = useState(false)
+  const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false)
   const [currStageId, setCurrStageId] = useState<StageId>(DEFAULT_STAGE_ID)
   const [currQuestionId, setCurrQuestionId] = useState(
     stages[0].questions[0].id
   )
   const { getValues } = useFormContext()
+  const router = useRouter()
 
   const currStageIndex = stages.findIndex((stage) => stage.id === currStageId)
   const currStage = stages[currStageIndex]
-  const nextStage = stages[currStageIndex + 1]
-  const nextStageId = nextStage?.id
-
   const currQuestion = currStage.questions.find(
     (question) => question.id === currQuestionId
   ) as QuestionProps
   const currQuestionIndex = currStage.questions.findIndex(
     (question) => question.id === currQuestionId
   )
+  const stageStepNumber = STAGES_STEP_NUMBER[currStage.id]
+  const isPrevButtonEnabled = currQuestionIndex !== 0
 
   const saveProgress = () =>
     localStorage.setItem("form", JSON.stringify(getValues()))
 
+  const handlePrevButtonClick = () => {
+    if (!isPrevButtonEnabled) return
+    setIsNextButtonEnabled(true)
+    setCurrQuestionId(currStage.questions[currQuestionIndex - 1].id)
+  }
+
+  const handleNextButtonClick = () => {
+    saveProgress()
+
+    const isLastQuestion = currQuestionIndex === currStage.questions.length - 1
+    const nextQuestionIndex = currQuestionIndex + 1
+    const nextQuestionId = currStage.questions[nextQuestionIndex]?.id
+    const nextQuestionHasValue = !!getValues(
+      `${currStage.id}.${nextQuestionId}`
+    )
+
+    if (isLastQuestion) setIsCheckpoint(true)
+    else setCurrQuestionId(currStage.questions[currQuestionIndex + 1].id)
+    setIsNextButtonEnabled(nextQuestionHasValue)
+  }
+
+  const handleCheckpointButtonClick = () => {
+    const nextStage = stages[currStageIndex + 1]
+    const isLastCheckpoint = !nextStage?.id
+
+    if (isLastCheckpoint) {
+      router.push("/results")
+      return
+    }
+
+    setCurrStageId(nextStage.id)
+    setCurrQuestionId(nextStage.questions[0].id)
+    setIsCheckpoint(false)
+  }
+
+  const handleQuestionClick = () => setIsNextButtonEnabled(true)
+
   return (
     <ProgressContext.Provider
       value={{
-        currStageId,
-        nextStageId,
         currStage,
-        nextStage,
         currQuestionIndex,
         currQuestion,
-        setCurrStageId,
-        setCurrQuestionId,
-        saveProgress,
+        isCheckpoint,
+        stageStepNumber,
+        isPrevButtonEnabled,
+        isNextButtonEnabled,
+        handlePrevButtonClick,
+        handleNextButtonClick,
+        handleCheckpointButtonClick,
+        handleQuestionClick,
       }}
     >
       {children}
