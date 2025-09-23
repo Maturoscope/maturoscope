@@ -10,19 +10,12 @@ export interface RadioItemProps {
   title: string
   name: `${StageId}.${string}`
   control: Control<DefaultValues>
-  defaultChecked?: boolean
   onClick: () => void
 }
 
-const RadioItem = ({
-  id,
-  title,
-  name,
-  control,
-  defaultChecked,
-  onClick,
-}: RadioItemProps) => {
+const RadioItem = ({ id, title, name, control, onClick }: RadioItemProps) => {
   const { field } = useController({ control, name })
+  const isChecked = field.value === id
 
   const handleChange = () => {
     field.onChange(id)
@@ -38,7 +31,7 @@ const RadioItem = ({
           onChange={handleChange}
           name={name}
           value={id}
-          defaultChecked={defaultChecked}
+          checked={isChecked}
           className="peer appearance-none absolute outline-none"
         />
         <div className="absolute top-0 left-0 w-full h-full rounded-[10px] bg-primary/10 border border-primary hidden peer-checked:block" />

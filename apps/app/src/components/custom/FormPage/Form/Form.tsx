@@ -1,16 +1,18 @@
 "use client"
 
 // Packages
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 // Utils
 import {
   DEFAULT_VALUES,
   DefaultValues,
 } from "@/components/custom/FormPage/Form/default"
-import { StageType, StageId } from "@/components/custom/FormPage/Stage/Stage"
+import { calcCheckpoint } from "@/lib/calcCheckpoint"
 // Components
 import Stage from "@/components/custom/FormPage/Stage/Stage"
+// Types
+import { StageType, StageId } from "@/components/custom/FormPage/Stage/Stage"
 
 export interface FormProps {
   buttonNextLabel: string
@@ -20,8 +22,7 @@ export interface FormProps {
 
 const Form = ({ stages, buttonNextLabel, buttonPrevLabel }: FormProps) => {
   const [currStageId, setCurrStageId] = useState<StageId>(stages[0].id)
-
-  const { getValues, control } = useForm<DefaultValues>({
+  const { getValues, control, reset } = useForm<DefaultValues>({
     defaultValues: DEFAULT_VALUES,
   })
 
@@ -30,6 +31,17 @@ const Form = ({ stages, buttonNextLabel, buttonPrevLabel }: FormProps) => {
   ) as StageType
   const currStageIndex = stages.findIndex((stage) => stage.id === currStageId)
   const nextStage = stages[currStageIndex + 1]
+
+  useEffect(() => {
+    const savedForm = JSON.parse(localStorage.getItem("form") || "{}")
+    if (!savedForm) return
+    reset(savedForm)
+
+    // const { lastSavedStage } = calcCheckpoint(savedForm) || {}
+    // console.log({ lastSavedStage })
+    // if (!lastSavedStage) return
+    // setCurrStageId(lastSavedStage)
+  }, [reset])
 
   return (
     <Stage

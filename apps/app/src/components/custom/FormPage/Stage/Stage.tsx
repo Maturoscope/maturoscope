@@ -1,3 +1,5 @@
+"use client"
+
 // Packages
 import Image from "next/image"
 import { useState } from "react"
@@ -65,6 +67,9 @@ const Stage = ({
   const isLastQuestion = questionIndex === stage.questions.length - 1
   const isPrevButtonEnabled = questionIndex !== 0
 
+  const saveProgress = () =>
+    localStorage.setItem("form", JSON.stringify(getValues()))
+
   const handlePrevButtonClick = () => {
     if (!isPrevButtonEnabled) return
     setIsNextButtonEnabled(true)
@@ -72,6 +77,8 @@ const Stage = ({
   }
 
   const handleNextButtonClick = () => {
+    saveProgress()
+
     const nextQuestionIndex = questionIndex + 1
     const nextQuestionId = stage.questions[nextQuestionIndex]?.id
     const nextQuestionHasValue = !!getValues(`${stage.id}.${nextQuestionId}`)
@@ -83,8 +90,6 @@ const Stage = ({
 
   const handleCheckpointButtonClick = () => {
     const isLastCheckpoint = !nextStage?.id
-
-    console.log(isLastCheckpoint)
 
     if (isLastCheckpoint) {
       router.push("/results")
@@ -124,7 +129,6 @@ const Stage = ({
             {...question}
             name={stage.id}
             control={control}
-            getValues={getValues}
             onQuestionClick={handleQuestionClick}
           />
           <div className="w-full flex items-center justify-between gap-3">
