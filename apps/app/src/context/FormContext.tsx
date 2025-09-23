@@ -28,11 +28,6 @@ export const FormProvider = ({ children }: FormProviderProps) => {
     const savedForm = JSON.parse(localStorage.getItem("form") || "{}")
     if (!savedForm) return
     reset(savedForm)
-
-    // const { lastSavedStage } = calcCheckpoint(savedForm) || {}
-    // console.log({ lastSavedStage })
-    // if (!lastSavedStage) return
-    // setCurrStageId(lastSavedStage)
   }, [reset])
 
   return (

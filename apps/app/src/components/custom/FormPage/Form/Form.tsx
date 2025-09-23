@@ -1,13 +1,9 @@
 "use client"
 
-// Packages
-import { useState } from "react"
 // Components
-import Stage from "@/components/custom/FormPage/Stage/Stage"
+import Stage, { StageType } from "@/components/custom/FormPage/Stage/Stage"
 // Context
-import { useFormContext } from "@/context/FormContext"
-// Types
-import { StageType, StageId } from "@/components/custom/FormPage/Stage/Stage"
+import { useProgressContext } from "@/context/ProgressContext"
 
 export interface FormProps {
   buttonNextLabel: string
@@ -15,15 +11,8 @@ export interface FormProps {
   stages: StageType[]
 }
 
-const Form = ({ stages, buttonNextLabel, buttonPrevLabel }: FormProps) => {
-  const [currStageId, setCurrStageId] = useState<StageId>(stages[0].id)
-  const { getValues } = useFormContext()
-
-  const currStage = stages.find(
-    (stage) => stage.id === currStageId
-  ) as StageType
-  const currStageIndex = stages.findIndex((stage) => stage.id === currStageId)
-  const nextStage = stages[currStageIndex + 1]
+const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {
+  const { currStage, nextStage, setCurrStageId } = useProgressContext()
 
   return (
     <Stage
@@ -31,7 +20,6 @@ const Form = ({ stages, buttonNextLabel, buttonPrevLabel }: FormProps) => {
       nextStage={nextStage}
       buttonNextLabel={buttonNextLabel}
       buttonPrevLabel={buttonPrevLabel}
-      getValues={getValues}
       setStage={setCurrStageId}
     />
   )

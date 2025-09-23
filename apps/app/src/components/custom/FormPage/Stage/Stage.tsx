@@ -4,14 +4,15 @@
 import Image from "next/image"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { UseFormGetValues } from "react-hook-form"
 // Components
-import CheckpointScreen from "../CheckpointScreen/CheckpointScreen"
+import CheckpointScreen from "@/components/custom/FormPage/CheckpointScreen/CheckpointScreen"
 import Question from "@/components/custom/FormPage/Question/Question"
-import ProgressBar from "../ProgressBar/ProgressBar"
+import ProgressBar from "@/components/custom/FormPage/ProgressBar/ProgressBar"
 import { Button } from "@/components/ui/button"
+// Context
+import { useFormContext } from "@/context/FormContext"
+import { useProgressContext } from "@/context/ProgressContext"
 // Types
-import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 import { QuestionProps } from "@/components/custom/FormPage/Question/Question"
 
 export type StageId = "trl" | "mkrl" | "mfrl"
@@ -31,7 +32,6 @@ export interface StageProps {
   nextStage: StageType
   buttonNextLabel: string
   buttonPrevLabel: string
-  getValues: UseFormGetValues<DefaultValues>
   setStage: (stage: StageId) => void
 }
 
@@ -46,13 +46,14 @@ const Stage = ({
   nextStage,
   buttonNextLabel,
   buttonPrevLabel,
-  getValues,
   setStage,
 }: StageProps) => {
   const [isCheckpoint, setIsCheckpoint] = useState(false)
   const [currQuestionId, setCurrQuestionId] = useState(stage.questions[0].id)
   const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false)
   const router = useRouter()
+  const { getValues } = useFormContext()
+  const { saveProgress } = useProgressContext()
 
   const question = stage.questions.find(
     (question) => question.id === currQuestionId
@@ -64,9 +65,6 @@ const Stage = ({
   const stageStepNumber = STAGES_STEP_NUMBER[stage.id]
   const isLastQuestion = questionIndex === stage.questions.length - 1
   const isPrevButtonEnabled = questionIndex !== 0
-
-  const saveProgress = () =>
-    localStorage.setItem("form", JSON.stringify(getValues()))
 
   const handlePrevButtonClick = () => {
     if (!isPrevButtonEnabled) return
