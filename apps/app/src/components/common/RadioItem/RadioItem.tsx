@@ -6,7 +6,7 @@ import { useController } from "react-hook-form"
 // Context
 import { useFormContext } from "@/context/FormContext"
 // Types
-import { StageId } from "@/components/custom/FormPage/Stage/Stage"
+import { StageId } from "@/components/custom/FormPage/Form/Form"
 
 export interface RadioItemProps {
   id: string
