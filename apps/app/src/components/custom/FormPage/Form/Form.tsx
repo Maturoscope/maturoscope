@@ -1,16 +1,36 @@
 "use client"
 
 // Packages
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-// Utils
-import {
-  DEFAULT_VALUES,
-  DefaultValues,
-} from "@/components/custom/FormPage/Form/default"
-import { StageType, StageId } from "@/components/custom/FormPage/Stage/Stage"
+import Image from "next/image"
 // Components
-import Stage from "@/components/custom/FormPage/Stage/Stage"
+import CheckpointScreen from "@/components/custom/FormPage/CheckpointScreen/CheckpointScreen"
+import Question from "@/components/custom/FormPage/Question/Question"
+import ProgressBar from "@/components/custom/FormPage/ProgressBar/ProgressBar"
+import { Button } from "@/components/ui/button"
+// Context
+import { useProgressContext } from "@/context/ProgressContext"
+// Types
+import { QuestionProps } from "@/components/custom/FormPage/Question/Question"
+
+export type StageId = "trl" | "mkrl" | "mfrl"
+
+export interface StageType {
+  id: StageId
+  icon: string
+  name: string
+  title: string
+  description: string
+  buttonLabel: string
+  questions: QuestionProps[]
+}
+
+export interface StageProps {
+  stage: StageType
+  nextStage: StageType
+  buttonNextLabel: string
+  buttonPrevLabel: string
+  setStage: (stage: StageId) => void
+}
 
 export interface FormProps {
   buttonNextLabel: string
@@ -18,29 +38,87 @@ export interface FormProps {
   stages: StageType[]
 }
 
-const Form = ({ stages, buttonNextLabel, buttonPrevLabel }: FormProps) => {
-  const [currStageId, setCurrStageId] = useState<StageId>(stages[0].id)
+const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {
+  const {
+    currStage,
+    currQuestionIndex,
+    currQuestion,
+    isCheckpoint,
+    stageStepNumber,
+    isPrevButtonEnabled,
+    isNextButtonEnabled,
+    handleCheckpointButtonClick,
+    handleQuestionClick,
+    handlePrevButtonClick,
+    handleNextButtonClick,
+  } = useProgressContext()
 
-  const { getValues, control } = useForm<DefaultValues>({
-    defaultValues: DEFAULT_VALUES,
-  })
-
-  const currStage = stages.find(
-    (stage) => stage.id === currStageId
-  ) as StageType
-  const currStageIndex = stages.findIndex((stage) => stage.id === currStageId)
-  const nextStage = stages[currStageIndex + 1]
+  if (isCheckpoint) {
+    return (
+      <CheckpointScreen
+        icon={currStage.icon}
+        title={currStage.title}
+        description={currStage.description}
+        buttonLabel={currStage.buttonLabel}
+        onButtonClick={handleCheckpointButtonClick}
+      />
+    )
+  }
 
   return (
-    <Stage
-      stage={currStage}
-      nextStage={nextStage}
-      buttonNextLabel={buttonNextLabel}
-      buttonPrevLabel={buttonPrevLabel}
-      control={control}
-      getValues={getValues}
-      setStage={setCurrStageId}
-    />
+    <div className="w-full max-w-[1280px] px-6 flex flex-col items-start justify-start mt-7">
+      <div className="w-full flex flex-col items-start justify-start gap-2 mb-7">
+        <span className="text-sm lg:text-base text-muted-foreground uppercase leading-none font-semibold">
+          {currStage.name} level | stage {stageStepNumber} of 3
+        </span>
+        <h1 className="text-xl lg:text-3xl font-semibold">
+          {currQuestion.title}
+        </h1>
+      </div>
+      <div className="w-full flex items-end justify-between gap-8 flex-wrap">
+        <div className="w-full flex flex-col gap-7 lg:gap-[70px] lg:max-w-[600px]">
+          <Question
+            {...currQuestion}
+            name={currStage.id}
+            onQuestionClick={handleQuestionClick}
+          />
+          <div className="w-full flex items-center justify-between gap-3">
+            <Button
+              variant="outline"
+              onClick={handlePrevButtonClick}
+              disabled={!isPrevButtonEnabled}
+            >
+              <Image
+                src="/icons/form/arrow-prev.svg"
+                alt="Arrow Prev"
+                width={16}
+                height={16}
+              />
+              <span className="hidden lg:block">{buttonPrevLabel}</span>
+            </Button>
+            <Button
+              onClick={handleNextButtonClick}
+              disabled={!isNextButtonEnabled}
+              className="w-full lg:w-auto"
+            >
+              <span>{buttonNextLabel}</span>
+              <Image
+                src="/icons/form/arrow-next.svg"
+                alt="Arrow Next"
+                width={16}
+                height={16}
+              />
+            </Button>
+          </div>
+        </div>
+
+        <ProgressBar
+          min={currQuestionIndex + 1}
+          max={currStage.questions.length}
+          className="w-full lg:max-w-[224px]"
+        />
+      </div>
+    </div>
   )
 }
 

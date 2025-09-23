@@ -1,0 +1,148 @@
+"use client"
+
+// Packages
+import { createContext, useContext, useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+// Context
+import { useFormContext } from "@/context/FormContext"
+// Types
+import { StageId, StageType } from "@/components/custom/FormPage/Form/Form"
+import { QuestionProps } from "@/components/custom/FormPage/Question/Question"
+// Utils
+import { calcCheckpoint } from "@/lib/calcCheckpoint"
+import { Locale } from "@/dictionaries/dictionaries"
+
+interface ProgressContextType {
+  currStage: StageType
+  currQuestionIndex: number
+  currQuestion: QuestionProps
+  isCheckpoint: boolean
+  stageStepNumber: number
+  isPrevButtonEnabled: boolean
+  isNextButtonEnabled: boolean
+  handlePrevButtonClick: () => void
+  handleNextButtonClick: () => void
+  handleCheckpointButtonClick: () => void
+  handleQuestionClick: () => void
+}
+
+interface ProgressProviderProps {
+  lang: Locale
+  stages: StageType[]
+  children: React.ReactNode
+}
+
+const DEFAULT_STAGE_ID: StageId = "trl"
+
+const STAGES_STEP_NUMBER: Record<StageId, number> = {
+  trl: 1,
+  mkrl: 2,
+  mfrl: 3,
+}
+
+const ProgressContext = createContext<ProgressContextType | null>(null)
+
+export const ProgressProvider = ({
+  lang,
+  stages,
+  children,
+}: ProgressProviderProps) => {
+  const [isCheckpoint, setIsCheckpoint] = useState(false)
+  const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false)
+  const [currStageId, setCurrStageId] = useState<StageId>(DEFAULT_STAGE_ID)
+  const [currQuestionId, setCurrQuestionId] = useState(
+    stages[0].questions[0].id
+  )
+  const { getValues } = useFormContext()
+  const router = useRouter()
+
+  console.log({ currStageId, currQuestionId })
+
+  const currStageIndex = stages.findIndex((stage) => stage.id === currStageId)
+  const currStage = stages[currStageIndex]
+  const currQuestion = currStage.questions.find(
+    (question) => question.id === currQuestionId
+  ) as QuestionProps
+  const currQuestionIndex = currStage.questions.findIndex(
+    (question) => question.id === currQuestionId
+  )
+  const stageStepNumber = STAGES_STEP_NUMBER[currStage.id]
+  const isPrevButtonEnabled = currQuestionIndex !== 0
+
+  const saveProgress = () =>
+    localStorage.setItem("form", JSON.stringify(getValues()))
+
+  const handlePrevButtonClick = () => {
+    if (!isPrevButtonEnabled) return
+    setIsNextButtonEnabled(true)
+    setCurrQuestionId(currStage.questions[currQuestionIndex - 1].id)
+  }
+
+  const handleNextButtonClick = () => {
+    saveProgress()
+
+    const isLastQuestion = currQuestionIndex === currStage.questions.length - 1
+    const nextQuestionIndex = currQuestionIndex + 1
+    const nextQuestionId = currStage.questions[nextQuestionIndex]?.id
+    const nextQuestionHasValue = !!getValues(
+      `${currStage.id}.${nextQuestionId}`
+    )
+
+    if (isLastQuestion) setIsCheckpoint(true)
+    else setCurrQuestionId(currStage.questions[currQuestionIndex + 1].id)
+    setIsNextButtonEnabled(nextQuestionHasValue)
+  }
+
+  const handleCheckpointButtonClick = () => {
+    const nextStage = stages[currStageIndex + 1]
+    const isLastCheckpoint = !nextStage?.id
+
+    if (isLastCheckpoint) return router.push(`/${lang}/results`)
+
+    setCurrStageId(nextStage.id)
+    setCurrQuestionId(nextStage.questions[0].id)
+    setIsCheckpoint(false)
+  }
+
+  const handleQuestionClick = () => setIsNextButtonEnabled(true)
+
+  useEffect(() => {
+    const savedForm = JSON.parse(localStorage.getItem("form") || "{}")
+    const checkpoint = calcCheckpoint(savedForm)
+
+    if (!checkpoint) return
+    const { lastSavedStage, lastSavedQuestion } = checkpoint
+
+    const hasAnswerAllQuestions = Object.keys(savedForm[lastSavedStage]).every(
+      (question) => !!savedForm[lastSavedStage][question]
+    )
+
+    if (hasAnswerAllQuestions) return router.push(`/${lang}/results`)
+
+    setCurrStageId(lastSavedStage)
+    setCurrQuestionId(lastSavedQuestion)
+  }, [getValues, router, lang])
+
+  return (
+    <ProgressContext.Provider
+      value={{
+        currStage,
+        currQuestionIndex,
+        currQuestion,
+        isCheckpoint,
+        stageStepNumber,
+        isPrevButtonEnabled,
+        isNextButtonEnabled,
+        handlePrevButtonClick,
+        handleNextButtonClick,
+        handleCheckpointButtonClick,
+        handleQuestionClick,
+      }}
+    >
+      {children}
+    </ProgressContext.Provider>
+  )
+}
+
+export const useProgressContext = () =>
+  useContext(ProgressContext) as ProgressContextType

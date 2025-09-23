@@ -1,7 +1,12 @@
 // Components
 import Form from "@/components/custom/FormPage/Form/Form"
+// Context
+import { FormProvider } from "@/context/FormContext"
+import { ProgressProvider } from "@/context/ProgressContext"
 // Dictionaries
-import { getDictionary, Locale } from "@/dictionaries/dictionaries"
+import { getDictionary } from "@/dictionaries/dictionaries"
+// Types
+import { Locale } from "@/dictionaries/dictionaries"
 
 interface FormPageProps {
   params: Promise<{ lang: Locale }>
@@ -14,7 +19,11 @@ const FormPage = async ({ params }: FormPageProps) => {
 
   return (
     <main className="w-full h-full flex flex-col items-center justify-start pb-16">
-      <Form {...form} />
+      <FormProvider>
+        <ProgressProvider lang={lang} stages={form.stages}>
+          <Form {...form} />
+        </ProgressProvider>
+      </FormProvider>
     </main>
   )
 }
