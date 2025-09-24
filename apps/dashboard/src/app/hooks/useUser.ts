@@ -11,8 +11,14 @@ export interface User {
   lastName?: string;
   organization?: {
     id?: string;
+    key?: string;
     name?: string;
+    email?: string;
     avatar?: string;
+    font?: string;
+    theme?: string;
+    signature?: string;
+    language?: string;
   };
   termsAccepted: boolean;
 }

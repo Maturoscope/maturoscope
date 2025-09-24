@@ -43,7 +43,6 @@ export class OrganizationsService {
   async findAll(): Promise<Organization[]> {
     return await this.organizationRepository.find({
       order: { createdAt: 'DESC' },
-      relations: ['users'],
     });
   }
 
@@ -54,7 +53,6 @@ export class OrganizationsService {
 
     const organization = await this.organizationRepository.findOne({
       where: { id },
-      relations: ['users'],
     });
 
     if (!organization) {
@@ -79,7 +77,6 @@ export class OrganizationsService {
   async findByEmail(email: string): Promise<Organization | null> {
     return await this.organizationRepository.findOne({
       where: { email },
-      relations: ['users'],
     });
   }
 
@@ -139,6 +136,156 @@ export class OrganizationsService {
       throw new BadRequestException('User is not associated with an organization');
     }
     return this.updateAvatar(user.organizationId, file);
+  }
+
+  async removeAvatarByUserEmail(email: string | undefined): Promise<Organization> {
+    if (!email) {
+      throw new UnauthorizedException('Missing auth token or email claim');
+    }
+    const user = await this.usersService.findByUserEmail(email);
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+    if (!user.organizationId) {
+      throw new BadRequestException('User is not associated with an organization');
+    }
+    
+    const organization = await this.findOne(user.organizationId);
+    organization.avatar = '';
+    return await this.organizationRepository.save(organization);
+  }
+
+  async updateSignatureByUserEmail(email: string | undefined, file: UploadedFile): Promise<Organization> {
+    if (!email) {
+      throw new UnauthorizedException('Missing auth token or email claim');
+    }
+    const user = await this.usersService.findByUserEmail(email);
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+    if (!user.organizationId) {
+      throw new BadRequestException('User is not associated with an organization');
+    }
+    return this.updateSignature(user.organizationId, file);
+  }
+
+  async updateSignature(organizationId: string, file: UploadedFile): Promise<Organization> {
+    if (!uuidValidate(organizationId)) {
+      throw new BadRequestException(`Invalid UUID format: ${organizationId}`);
+    }
+
+    if (!file) {
+      throw new BadRequestException('No signature file provided');
+    }
+
+    // Validate file type (images only for signatures)
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    if (!allowedTypes.includes(file.mimetype)) {
+      throw new BadRequestException('Invalid file type. Only images are allowed for signatures.');
+    }
+
+    // Validate file size (max 4MB)
+    const maxSize = 4 * 1024 * 1024; // 4MB
+    if (file.size && file.size > maxSize) {
+      throw new BadRequestException('File size too large. Maximum size is 4MB.');
+    }
+
+    const organization = await this.findOne(organizationId);
+    const extension = file.mimetype.split('/')[1] || 'bin';
+    const key = `organizations/${organizationId}/pdfsignature.${extension}`;
+
+    const { url } = await this.ovhS3.uploadObject(file, key);
+
+    organization.signature = url;
+    return await this.organizationRepository.save(organization);
+  }
+
+  async removeSignatureByUserEmail(email: string | undefined): Promise<Organization> {
+    if (!email) {
+      throw new UnauthorizedException('Missing auth token or email claim');
+    }
+    const user = await this.usersService.findByUserEmail(email);
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+    if (!user.organizationId) {
+      throw new BadRequestException('User is not associated with an organization');
+    }
+    
+    const organization = await this.findOne(user.organizationId);
+    organization.signature = '';
+    return await this.organizationRepository.save(organization);
+  }
+
+  async updateLanguageByUserEmail(email: string | undefined, language: string): Promise<Organization> {
+    if (!email) {
+      throw new UnauthorizedException('Missing auth token or email claim');
+    }
+    
+    if (!language) {
+      throw new BadRequestException('Language is required');
+    }
+
+    // Validate language
+    const allowedLanguages = ['EN', 'FR'];
+    if (!allowedLanguages.includes(language)) {
+      throw new BadRequestException(`Invalid language. Allowed values: ${allowedLanguages.join(', ')}`);
+    }
+
+    const user = await this.usersService.findByUserEmail(email);
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+    if (!user.organizationId) {
+      throw new BadRequestException('User is not associated with an organization');
+    }
+    
+    const organization = await this.findOne(user.organizationId);
+    organization.language = language;
+    return await this.organizationRepository.save(organization);
+  }
+
+  async updateProfileByUserEmail(email: string | undefined, updateData: { name: string; key: string; email: string }): Promise<Organization> {
+    if (!email) {
+      throw new UnauthorizedException('Missing auth token or email claim');
+    }
+
+    const { name, key, email: newEmail } = updateData;
+
+    if (!name || !key || !newEmail) {
+      throw new BadRequestException('Name, key, and email are required');
+    }
+
+    const user = await this.usersService.findByUserEmail(email);
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+    if (!user.organizationId) {
+      throw new BadRequestException('User is not associated with an organization');
+    }
+
+    const organization = await this.findOne(user.organizationId);
+
+    // Check for conflicts if changing key or email
+    if (key !== organization.key) {
+      const existingByKey = await this.organizationRepository.findOne({ where: { key } });
+      if (existingByKey && existingByKey.id !== organization.id) {
+        throw new ConflictException('Organization key is already registered');
+      }
+    }
+
+    if (newEmail !== organization.email) {
+      const existingByEmail = await this.organizationRepository.findOne({ where: { email: newEmail } });
+      if (existingByEmail && existingByEmail.id !== organization.id) {
+        throw new ConflictException('Organization email is already registered');
+      }
+    }
+
+    organization.name = name;
+    organization.key = key;
+    organization.email = newEmail;
+
+    return await this.organizationRepository.save(organization);
   }
 
   async remove(id: string): Promise<void> {

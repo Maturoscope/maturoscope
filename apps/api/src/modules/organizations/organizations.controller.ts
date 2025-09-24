@@ -47,6 +47,48 @@ export class OrganizationsController {
     return this.organizationsService.updateAvatarByUserEmail(user?.email, file);
   }
 
+  @Auth(ValidRoles.user)
+  @Delete('avatar')
+  @HttpCode(HttpStatus.OK)
+  removeAvatarForCurrentUser(
+    @Req() req: { user?: { email?: string } },
+  ) {
+    const user = req.user as { email?: string } | undefined;
+    return this.organizationsService.removeAvatarByUserEmail(user?.email);
+  }
+
+  @Auth(ValidRoles.user)
+  @Patch('signature')
+  @UseInterceptors(FileInterceptor('file'))
+  updateSignatureForCurrentUser(
+    @Req() req: { user?: { email?: string } },
+    @UploadedFile() file: UploadedFileType,
+  ) {
+    const user = req.user as { email?: string } | undefined;
+    return this.organizationsService.updateSignatureByUserEmail(user?.email, file);
+  }
+
+  @Auth(ValidRoles.user)
+  @Delete('signature')
+  @HttpCode(HttpStatus.OK)
+  removeSignatureForCurrentUser(
+    @Req() req: { user?: { email?: string } },
+  ) {
+    const user = req.user as { email?: string } | undefined;
+    return this.organizationsService.removeSignatureByUserEmail(user?.email);
+  }
+
+  @Auth(ValidRoles.user)
+  @Patch('language')
+  @HttpCode(HttpStatus.OK)
+  updateLanguageForCurrentUser(
+    @Req() req: { user?: { email?: string } },
+    @Body() updateLanguageDto: { language: string },
+  ) {
+    const user = req.user as { email?: string } | undefined;
+    return this.organizationsService.updateLanguageByUserEmail(user?.email, updateLanguageDto.language);
+  }
+
   @Get(':key')
   findByKey(@Param('key') key: string) {
     return this.organizationsService.findByKey(key);
@@ -58,6 +100,16 @@ export class OrganizationsController {
     @Body() updateOrganizationDto: UpdateOrganizationDto,
   ) {
     return this.organizationsService.update(id, updateOrganizationDto);
+  }
+
+  @Auth(ValidRoles.user)
+  @Patch('profile')
+  updateProfileForCurrentUser(
+    @Req() req: { user?: { email?: string } },
+    @Body() updateData: { name: string; key: string; email: string },
+  ) {
+    const user = req.user as { email?: string } | undefined;
+    return this.organizationsService.updateProfileByUserEmail(user?.email, updateData);
   }
 
   @Delete(':id')
