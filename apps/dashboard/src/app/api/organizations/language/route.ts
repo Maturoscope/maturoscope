@@ -7,7 +7,7 @@ export async function PATCH(req: NextRequest) {
 
   try {
     // Get the auth token from cookies
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = cookieStore.get('token');
 
     if (!token) {
