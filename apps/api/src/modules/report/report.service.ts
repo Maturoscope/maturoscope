@@ -26,10 +26,7 @@ export class ReportService {
   async getPDF(id: string) {
     // Interpolate the dynamic data into the template
     const templateData = { id };
-    const templatePath = path.resolve(
-      process.cwd(),
-      'src/modules/report/pdf/template.ejs',
-    );
+    const templatePath = path.join(__dirname, 'pdf/template.ejs');
     const template = fs.readFileSync(templatePath, 'utf8');
     const html = ejs.render(template, templateData);
 

@@ -6,10 +6,8 @@
     "deleteOutDir": true,
     "watchAssets": true,
     "assets": [
-      {
-        "include": "**/*.json",
-        "outDir": "dist"
-      }
+      { "include": "**/*.json", "outDir": "dist" },
+      { "include": "**/*.ejs", "outDir": "dist" }
     ]
   }
 }
