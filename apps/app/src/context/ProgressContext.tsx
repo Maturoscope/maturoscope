@@ -8,9 +8,10 @@ import { useFormContext } from "@/context/FormContext"
 // Types
 import { StageId, StageType } from "@/components/custom/FormPage/Form/Form"
 import { QuestionProps } from "@/components/custom/FormPage/Question/Question"
+import { DefaultValues } from "@/components/custom/FormPage/Form/default"
+import { Locale } from "@/dictionaries/dictionaries"
 // Utils
 import { calcCheckpoint } from "@/lib/calcCheckpoint"
-import { Locale } from "@/dictionaries/dictionaries"
 
 interface ProgressContextType {
   currStage: StageType
@@ -105,17 +106,28 @@ export const ProgressProvider = ({
   const handleQuestionClick = () => setIsNextButtonEnabled(true)
 
   useEffect(() => {
-    const savedForm = JSON.parse(localStorage.getItem("form") || "{}")
+    const savedForm = JSON.parse(
+      localStorage.getItem("form") || "{}"
+    ) as DefaultValues
     const checkpoint = calcCheckpoint(savedForm)
 
     if (!checkpoint) return
     const { lastSavedStage, lastSavedQuestion } = checkpoint
 
-    const hasAnswerAllQuestions = Object.keys(savedForm[lastSavedStage]).every(
-      (question) => !!savedForm[lastSavedStage][question]
+    const hasAnswerAllQuestions = Object.values(savedForm).every((stage) =>
+      Object.values(stage).every((question) => !!question)
     )
 
     if (hasAnswerAllQuestions) return router.push(`/${lang}/results`)
+
+    const lastStageQuestionsId = Object.keys(savedForm[lastSavedStage])
+    const isLastQuestionOfStage =
+      lastSavedQuestion ===
+      lastStageQuestionsId[lastStageQuestionsId.length - 1]
+    const isLastQuestionAnswered =
+      !!savedForm[lastSavedStage][lastSavedQuestion]
+
+    if (isLastQuestionOfStage) setIsCheckpoint(isLastQuestionAnswered)
 
     setCurrStageId(lastSavedStage)
     setCurrQuestionId(lastSavedQuestion)
