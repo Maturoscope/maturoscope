@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './modules/users/users.module';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
+import { ReportModule } from './modules/report/report.module';
 import { AuthModule } from './common/auth-module/auth.module';
 import { IntegrationAuth0Module } from './modules/integration-auth0/integration-auth0.module';
 import * as fs from 'fs';
@@ -44,6 +45,7 @@ import { SchemaInitService } from './common/schema-init/schema-init.service';
     }),
     UsersModule,
     OrganizationsModule,
+    ReportModule,
     AuthModule,
     IntegrationAuth0Module,
   ],
