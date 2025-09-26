@@ -8,6 +8,7 @@ import puppeteer from 'puppeteer';
 import { LaunchOptions, PDFOptions } from 'puppeteer';
 
 const PUPPETEER_OPTIONS: LaunchOptions = {
+  executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
   args: [
     '--no-sandbox',
     '--disable-gpu',

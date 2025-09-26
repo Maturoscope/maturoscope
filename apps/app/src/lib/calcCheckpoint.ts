@@ -18,7 +18,7 @@ export const calcCheckpoint = (defaultValues: DefaultValues) => {
   for (let i = 0; i < orderedStages.length; i++) {
     const stage = orderedStages[i]
     const stageId = stagesOrdered[i]
-    const questionsId = Object.keys(stage)
+    const questionsId = Object.keys(stage) || []
 
     for (let j = 0; j < questionsId.length; j++) {
       const question = questionsId[j]
