@@ -8,7 +8,7 @@ import puppeteer from 'puppeteer';
 import { LaunchOptions, PDFOptions } from 'puppeteer';
 
 const PUPPETEER_OPTIONS: LaunchOptions = {
-  executablePath: '/usr/bin/chromium',
+  executablePath: '/usr/bin/chromium-browser',
   args: [
     '--no-sandbox',
     '--disable-gpu',
