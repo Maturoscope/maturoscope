@@ -163,7 +163,15 @@ export function ToolCustomizationSection({
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold">{t('SECTIONS.CUSTOMIZATION')}</h2>
         <Button
-          onClick={() => window.open(process.env.NEXT_PUBLIC_END_USER_URL, '_blank')}
+          onClick={() => {
+            const endUserUrl = process.env.NEXT_PUBLIC_END_USER_URL;
+            if (!endUserUrl) {
+              console.error('NEXT_PUBLIC_END_USER_URL environment variable is not configured');
+              alert('Preview URL is not configured. Please contact your administrator.');
+              return;
+            }
+            window.open(endUserUrl, '_blank');
+          }}
           variant="outline"
           size="sm"
         >
