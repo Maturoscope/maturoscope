@@ -24,8 +24,6 @@ RUN apk add --no-cache \
     qpdf \
     yarn
 
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-
 COPY package*.json ./
 
 RUN yarn
