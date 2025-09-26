@@ -8,12 +8,7 @@ import puppeteer from 'puppeteer';
 import { LaunchOptions, PDFOptions } from 'puppeteer';
 
 const PUPPETEER_OPTIONS: LaunchOptions = {
-  headless: true,
-  args: [
-    '--no-sandbox',
-    '--disable-setuid-sandbox',
-    '--font-render-hinting=none',
-  ],
+  args: ['--no-sandbox', `--disable-gpu`, `--disable-dev-shm-usage`],
 };
 
 const PAGE_PDF_OPTIONS: PDFOptions = {
