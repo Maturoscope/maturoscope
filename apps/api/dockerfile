@@ -1,36 +1,13 @@
 # ---------------------------
 # BASE (common tools)
 # ---------------------------
-FROM node:20-alpine AS base
+FROM zenika/alpine-chrome:with-puppeteer AS base
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 # Enable Yarn Berry (Yarn 3) - only for build
 RUN corepack enable
-
-# --------------------------------------------------------------------------------------------------------------------
-# PUPPETEER
-# --------------------------------------------------------------------------------------------------------------------
-
-RUN apk add --no-cache \
-    chromium \
-    nss \
-    freetype \
-    harfbuzz \
-    ca-certificates \
-    ttf-freefont \
-    nodejs \
-    yarn
-
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-
-RUN yarn add puppeteer@24.22.3
-
-RUN addgroup -S pptruser && adduser -S -G pptruser pptruser \
-    && mkdir -p /home/pptruser/Downloads /app \
-    && chown -R pptruser:pptruser /home/pptruser \
-    && chown -R pptruser:pptruser /app
 
 # ---------------------------
 # PRUNNER (turbo prune)
@@ -85,7 +62,6 @@ RUN yarn turbo run build --filter=api
 FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 # Create non-root user (optional, for security)
 RUN addgroup --system --gid 1001 app \
