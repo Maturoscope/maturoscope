@@ -23,16 +23,14 @@ RUN apk add --no-cache \
     nodejs \
     yarn
 
-# ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
-# RUN yarn add puppeteer@24.22.3
+RUN yarn add puppeteer@24.22.3
 
 RUN addgroup -S pptruser && adduser -S -G pptruser pptruser \
     && mkdir -p /home/pptruser/Downloads /app \
     && chown -R pptruser:pptruser /home/pptruser \
     && chown -R pptruser:pptruser /app
-
-USER pptruser
 
 # ---------------------------
 # PRUNNER (turbo prune)
