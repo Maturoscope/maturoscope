@@ -23,9 +23,9 @@ RUN apk add --no-cache \
     nodejs \
     yarn
 
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+# ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
-RUN yarn add puppeteer@24.22.3
+# RUN yarn add puppeteer@24.22.3
 
 RUN addgroup -S pptruser && adduser -S -G pptruser pptruser \
     && mkdir -p /home/pptruser/Downloads /app \
@@ -43,7 +43,7 @@ COPY package.json yarn.lock turbo.json .yarnrc.yml ./
 COPY apps/api/package.json ./apps/api/
 
 # Use yarn install without --immutable to allow lockfile updates
-RUN yarn install --network-timeout 1000000
+RUN yarn install --network-timeout 300000
 COPY . .
 # Workaround for TypeScript patches in CI/CD
 RUN echo "compressionLevel: mixed" > .yarnrc-temp.yml && \
@@ -52,7 +52,7 @@ RUN echo "compressionLevel: mixed" > .yarnrc-temp.yml && \
     mv .yarnrc.yml .yarnrc.yml.backup && \
     mv .yarnrc-temp.yml .yarnrc.yml && \
     rm -f yarn.lock && \
-    yarn install --network-timeout 1000000 && \
+    yarn install --network-timeout 300000 && \
     yarn turbo prune api --docker
 
 # ---------------------------
