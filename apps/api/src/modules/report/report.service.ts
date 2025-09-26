@@ -8,7 +8,13 @@ import puppeteer from 'puppeteer';
 import { LaunchOptions, PDFOptions } from 'puppeteer';
 
 const PUPPETEER_OPTIONS: LaunchOptions = {
-  args: ['--no-sandbox', `--disable-gpu`, `--disable-dev-shm-usage`],
+  executablePath: '/usr/bin/chromium-browser',
+  args: [
+    '--no-sandbox',
+    '--disable-gpu',
+    '--disable-dev-shm-usage',
+    '--disable-setuid-sandbox',
+  ],
 };
 
 const PAGE_PDF_OPTIONS: PDFOptions = {
