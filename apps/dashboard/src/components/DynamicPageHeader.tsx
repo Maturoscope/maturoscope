@@ -53,7 +53,7 @@ export function DynamicPageHeader({ breadcrumbs, currentPageLabel }: DynamicPage
 
   const organizationName = user?.organization?.name || "Organization"
   const fallbackBreadcrumbs: Breadcrumb[] = [
-    { label: organizationName, href: "/dashboard" },
+    { label: organizationName },
     { label: currentPageLabel || "Page" }
   ]
   

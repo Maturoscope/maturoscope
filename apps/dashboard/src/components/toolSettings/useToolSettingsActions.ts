@@ -15,6 +15,7 @@ interface UseToolSettingsActionsProps {
   setErrors: React.Dispatch<React.SetStateAction<{[key: string]: string}>>
   setSuccessToastType: React.Dispatch<React.SetStateAction<'customization' | 'pdfSignature' | 'language'>>
   setShowSuccessToast: React.Dispatch<React.SetStateAction<boolean>>
+  updateSignatureVersion: () => void
 }
 
 export function useToolSettingsActions({
@@ -30,7 +31,8 @@ export function useToolSettingsActions({
   setIsUpdatingLanguage,
   setErrors,
   setSuccessToastType,
-  setShowSuccessToast
+  setShowSuccessToast,
+  updateSignatureVersion
 }: UseToolSettingsActionsProps) {
   const handleSaveCustomization = async () => {
     setIsUpdatingCustomization(true)
@@ -62,6 +64,7 @@ export function useToolSettingsActions({
         }
         setOriginalPDFSignatureForm(updatedForm)
         setPDFSignatureForm(updatedForm)
+        updateSignatureVersion()
       } else if (pdfSignatureForm.signatureFile) {
         const result = await OrganizationService.uploadSignature(pdfSignatureForm.signatureFile)
         await new Promise(resolve => setTimeout(resolve, 100))
@@ -71,6 +74,7 @@ export function useToolSettingsActions({
         }
         setOriginalPDFSignatureForm(updatedForm)
         setPDFSignatureForm(updatedForm)
+        updateSignatureVersion()
       } else {
         setOriginalPDFSignatureForm({ ...pdfSignatureForm })
       }
@@ -121,6 +125,7 @@ export function useToolSettingsActions({
           }
           setOriginalPDFSignatureForm(updatedForm)
           setPDFSignatureForm(updatedForm)
+          updateSignatureVersion()
         } else if (pdfSignatureForm.signatureFile) {
           const result = await OrganizationService.uploadSignature(pdfSignatureForm.signatureFile)
           // Add a small delay to ensure cache-busting works
@@ -131,6 +136,7 @@ export function useToolSettingsActions({
           }
           setOriginalPDFSignatureForm(updatedForm)
           setPDFSignatureForm(updatedForm)
+          updateSignatureVersion()
         }
       }
 

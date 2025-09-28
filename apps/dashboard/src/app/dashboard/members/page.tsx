@@ -13,7 +13,7 @@ export default function MembersPage() {
   const generateBreadcrumbs = () => {
     const organizationName = user?.organization?.name || "Organization";
     return [
-      { label: organizationName, href: "/dashboard" },
+      { label: organizationName },
       { label: t('MEMBERS') }
     ];
   };

@@ -1,27 +1,27 @@
 import { useState, useEffect, useCallback } from 'react';
+import { IMAGE_VERSION_CONSTANTS } from '@/constants/imageVersion';
+import { ImageVersionConfig, ImageVersionHook } from '@/types/image';
 
-interface UseImageVersionOptions {
-  storageKey: string;
-  eventName?: string;
-}
+const getStoredVersion = (storageKey: string): number => {
+  if (typeof window === 'undefined') return IMAGE_VERSION_CONSTANTS.DEFAULT_VERSION;
+  
+  const stored = localStorage.getItem(storageKey);
+  return stored ? parseInt(stored, 10) : IMAGE_VERSION_CONSTANTS.DEFAULT_VERSION;
+};
 
-interface UseImageVersionReturn {
-  version: number;
-  updateVersion: () => void;
-  getVersionedUrl: (url: string | null | undefined) => string;
-}
+const isValidUrl = (url: string | null | undefined): url is string => {
+  return Boolean(url && url.trim());
+};
+
+const isBlobUrl = (url: string): boolean => {
+  return url.startsWith('blob:');
+};
 
 export const useImageVersion = ({ 
   storageKey, 
   eventName 
-}: UseImageVersionOptions): UseImageVersionReturn => {
-  const [version, setVersion] = useState<number>(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem(storageKey);
-      return stored ? parseInt(stored, 10) : 1;
-    }
-    return 1;
-  });
+}: ImageVersionConfig): ImageVersionHook => {
+  const [version, setVersion] = useState<number>(() => getStoredVersion(storageKey));
 
   const updateVersion = useCallback(() => {
     const newVersion = Date.now();
@@ -48,11 +48,8 @@ export const useImageVersion = ({
   }, [eventName, storageKey]);
 
   const getVersionedUrl = useCallback((url: string | null | undefined): string => {
-    if (!url) return '';
-    
-    if (url.startsWith('blob:')) {
-      return url;
-    }
+    if (!isValidUrl(url)) return '';
+    if (isBlobUrl(url)) return url;
     
     return `${url}?v=${version}`;
   }, [version]);

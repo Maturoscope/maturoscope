@@ -14,6 +14,28 @@ import {
   import { useTranslation } from "react-i18next"
   import Link from "next/link"
   import { useImageVersion } from "@/hooks/useImageVersion"
+  import { IMAGE_VERSION_CONSTANTS, UI_CONSTANTS } from "@/constants/imageVersion"
+  import { UserAvatarData } from "@/types/image"
+
+  const getAvatarSrc = (user: UserAvatarData | null, getVersionedUrl: (url: string | null | undefined) => string): string => {
+    if (user?.picture) return getVersionedUrl(user.picture);
+    if (user?.organization?.avatar) return getVersionedUrl(user.organization.avatar);
+    return IMAGE_VERSION_CONSTANTS.FALLBACK_IMAGES.LOGO;
+  };
+
+  const getAvatarFallback = (user: UserAvatarData | null): string => {
+    return user?.firstName?.charAt(0)?.toUpperCase() || 
+           user?.name?.charAt(0)?.toUpperCase() || 
+           IMAGE_VERSION_CONSTANTS.FALLBACK_IMAGES.USER_PLACEHOLDER;
+  };
+
+  const getUserDisplayName = (user: UserAvatarData | null): string => {
+    return user?.name || "Usuario";
+  };
+
+  const getOrganizationName = (user: UserAvatarData | null): string => {
+    return user?.organization?.name || "Organización";
+  };
   
   export function UserDropdown() {
     const [isOpen, setIsOpen] = useState(false)
@@ -21,10 +43,9 @@ import {
     const { t } = useTranslation("DASHBOARD")
     const router = useRouter()
     
-    // Use the custom hook for avatar versioning
     const { getVersionedUrl } = useImageVersion({
-      storageKey: 'avatarVersion',
-      eventName: 'avatarUpdated'
+      storageKey: IMAGE_VERSION_CONSTANTS.STORAGE_KEYS.AVATAR,
+      eventName: IMAGE_VERSION_CONSTANTS.EVENTS.AVATAR_UPDATED
     })
     
     const handleLogout = async () => {
@@ -60,32 +81,26 @@ import {
     return (
       <DropdownMenu onOpenChange={setIsOpen}>
         <DropdownMenuTrigger className="flex items-center gap-2 rounded-md border px-3 py-2 max-h-12 min-w-[200px]">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={
-              user?.picture ? getVersionedUrl(user.picture) :
-              user?.organization?.avatar ? getVersionedUrl(user.organization.avatar) :
-              "/logo.png"
-            } />
-            <AvatarFallback>
-              {user?.firstName?.charAt(0)?.toUpperCase() || user?.name?.charAt(0)?.toUpperCase() || "U"}
-            </AvatarFallback>
+          <Avatar className={UI_CONSTANTS.AVATAR_SIZE}>
+            <AvatarImage src={getAvatarSrc(user, getVersionedUrl)} />
+            <AvatarFallback>{getAvatarFallback(user)}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col items-start text-left">
             <span className="font-medium text-sm">
-              {user?.name || "Usuario"}
+              {getUserDisplayName(user)}
             </span>
             <span className="text-muted-foreground text-xs">
-              {user?.organization?.name || "Organización"}
+              {getOrganizationName(user)}
             </span>
           </div>
           <ChevronDown 
-            className={`ml-auto h-4 w-4 transition-transform duration-200 ${
+            className={`ml-auto h-4 w-4 transition-transform duration-${UI_CONSTANTS.ANIMATION_DURATION} ${
               isOpen ? 'rotate-180' : ''
             }`} 
           />
         </DropdownMenuTrigger>
   
-        <DropdownMenuContent className="w-[200px]">
+        <DropdownMenuContent className={UI_CONSTANTS.DROPDOWN_WIDTH}>
           <DropdownMenuItem className="flex items-center gap-2" asChild>
             <Link href="/dashboard/settingsUser">
               <Settings className="h-4 w-4" />

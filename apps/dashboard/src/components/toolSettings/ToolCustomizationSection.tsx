@@ -14,6 +14,8 @@ import { LanguageSelector } from '@/components/ui/language-selector'
 import { ToolCustomizationFormData, ToolPDFSignatureFormData, ToolLanguageFormData } from './useToolSettingsState'
 import Image from 'next/image'
 import { useImageVersion } from '@/hooks/useImageVersion'
+import { IMAGE_VERSION_CONSTANTS, UI_CONSTANTS } from '@/constants/imageVersion'
+import { validateFile, createPreviewUrl } from '@/utils/fileValidation'
 import { Separator } from '@/components/ui/separator'
 import {
   AlertDialog,
@@ -58,19 +60,15 @@ export function ToolCustomizationSection({
   const [previewUrl, setPreviewUrl] = useState<string | null>(pdfSignatureForm.signatureUrl || null)
   const [showRemoveSignatureDialog, setShowRemoveSignatureDialog] = useState(false)
   const [signatureToRemove, setSignatureToRemove] = useState(false)
-  // Use the custom hook for signature versioning
-  const { updateVersion: updateSignatureVersion, getVersionedUrl } = useImageVersion({
-    storageKey: 'signatureVersion',
-    eventName: 'signatureUpdated'
+  const { getVersionedUrl } = useImageVersion({
+    storageKey: IMAGE_VERSION_CONSTANTS.STORAGE_KEYS.SIGNATURE,
+    eventName: IMAGE_VERSION_CONSTANTS.EVENTS.SIGNATURE_UPDATED
   });
 
   useEffect(() => {
     setPreviewUrl(pdfSignatureForm.signatureUrl || null)
     setSignatureToRemove(false)
-    if (pdfSignatureForm.signatureUrl) {
-      updateSignatureVersion()
-    }
-  }, [pdfSignatureForm.signatureUrl, updateSignatureVersion])
+  }, [pdfSignatureForm.signatureUrl])
 
   const handleCustomizationChange = (field: keyof ToolCustomizationFormData, value: string) => {
     setCustomizationForm(prev => ({ ...prev, [field]: value }))
@@ -98,20 +96,11 @@ export function ToolCustomizationSection({
     const file = event.target.files?.[0]
     if (!file) return
 
-    const allowedTypes = ['image/svg+xml', 'image/png', 'image/jpeg']
-    if (!allowedTypes.includes(file.type)) {
+    const validation = validateFile(file, 'signature')
+    if (!validation.isValid) {
       setErrors(prev => ({
         ...prev,
-        signature: t('PDF_SIGNATURE.ERRORS.INVALID_TYPE')
-      }))
-      return
-    }
-
-    const maxSize = 4 * 1024 * 1024
-    if (file.size > maxSize) {
-      setErrors(prev => ({
-        ...prev,
-        signature: t('PDF_SIGNATURE.ERRORS.FILE_TOO_LARGE')
+        signature: validation.error!
       }))
       return
     }
@@ -123,7 +112,7 @@ export function ToolCustomizationSection({
     })
     setSignatureToRemove(false)
 
-    const url = URL.createObjectURL(file)
+    const url = createPreviewUrl(file)
     setPreviewUrl(url)
 
     setPDFSignatureForm(prev => ({
@@ -248,14 +237,14 @@ export function ToolCustomizationSection({
           
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className={ `w-[240px] h-[102px] ${!previewUrl || signatureToRemove ? 'border-1' : 'border-0'}  border-dashed border-gray-300 rounded-lg flex items-center justify-center relative`}>
+              <div className={ `w-[${UI_CONSTANTS.SIGNATURE_DIMENSIONS.WIDTH}px] h-[${UI_CONSTANTS.SIGNATURE_DIMENSIONS.HEIGHT}px] ${!previewUrl || signatureToRemove ? 'border-1' : 'border-0'}  border-dashed border-gray-300 rounded-lg flex items-center justify-center relative`}>
                 {previewUrl && !signatureToRemove ? (
                   <Image
                     src={getVersionedUrl(previewUrl)}
                     alt="Signature preview"
-                    className="max-h-[100px] max-w-[240px] rounded-lg"
-                    width={240}
-                    height={100}
+                    className={`max-h-[${UI_CONSTANTS.SIGNATURE_DIMENSIONS.MAX_DISPLAY_HEIGHT}px] max-w-[${UI_CONSTANTS.SIGNATURE_DIMENSIONS.MAX_DISPLAY_WIDTH}px] rounded-lg`}
+                    width={UI_CONSTANTS.SIGNATURE_DIMENSIONS.WIDTH}
+                    height={UI_CONSTANTS.SIGNATURE_DIMENSIONS.MAX_DISPLAY_HEIGHT}
                     objectFit="cover"
                   />
                 ) : (

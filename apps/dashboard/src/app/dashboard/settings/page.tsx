@@ -26,6 +26,9 @@ import { Button } from "@/components/ui/button";
 import { OrganizationService } from "@/services/organization.service";
 import { Input } from "@/components/ui/input";
 import { useImageVersion } from "@/hooks/useImageVersion";
+import { IMAGE_VERSION_CONSTANTS } from "@/constants/imageVersion";
+import { revokePreviewUrl, clearFileInput } from "@/utils/fileValidation";
+import { AvatarUploadSection } from "@/components/profile";
 
 export default function SettingsPage() {
   const { t } = useTranslation("TOOL_SETTINGS");
@@ -46,26 +49,33 @@ export default function SettingsPage() {
   // Use the custom hook for state management
   const settingsState = useToolSettingsState();
 
-  // Use the custom hook for avatar versioning
   const { updateVersion: updateAvatarVersion, getVersionedUrl } = useImageVersion({
-    storageKey: 'avatarVersion',
-    eventName: 'avatarUpdated'
+    storageKey: IMAGE_VERSION_CONSTANTS.STORAGE_KEYS.AVATAR,
+    eventName: IMAGE_VERSION_CONSTANTS.EVENTS.AVATAR_UPDATED
+  });
+
+  const { updateVersion: updateSignatureVersion } = useImageVersion({
+    storageKey: IMAGE_VERSION_CONSTANTS.STORAGE_KEYS.SIGNATURE,
+    eventName: IMAGE_VERSION_CONSTANTS.EVENTS.SIGNATURE_UPDATED
   });
 
   // Generate dynamic breadcrumbs
   const generateBreadcrumbs = () => {
     const organizationName = user?.organization?.name || "Organization";
     const breadcrumbs: Array<{ label: string; href?: string }> = [
-      { label: organizationName, href: "/dashboard" },
-        { label: t("TITLE"), href: "/dashboard/settings" }
+      { label: organizationName }
     ];
 
     if (settingsState.activeSection) {
+      breadcrumbs.push({ label: t("TITLE") });
+      
       const sectionLabel = settingsState.activeSection === 'profile' 
         ? tp("TITLE")
         : t("SECTIONS.CUSTOMIZATION");
       
       breadcrumbs.push({ label: sectionLabel });
+    } else {
+      breadcrumbs.push({ label: t("TITLE") });
     }
 
     return breadcrumbs;
@@ -143,6 +153,7 @@ export default function SettingsPage() {
     setErrors: settingsState.setErrors,
     setSuccessToastType: settingsState.setSuccessToastType,
     setShowSuccessToast: settingsState.setShowSuccessToast,
+    updateSignatureVersion,
   });
 
   // Enhanced section change handler that manages form resets
@@ -159,22 +170,18 @@ export default function SettingsPage() {
     }
   };
 
-  // Enhanced leave anyway handler that resets forms
   const handleLeaveAnyway = () => {
-    // Reset profile changes if we're leaving the profile section
     if (settingsState.activeSection === 'profile') {
       setAvatarFile(null);
       setAvatarToRemove(false);
       setAvatarPreview(null);
       
-      // Clear file input
       const input = document.getElementById("avatar-upload") as HTMLInputElement;
       if (input) {
         input.value = "";
       }
     }
     
-    // Reset customization changes if we're leaving the customization section
     if (settingsState.activeSection === 'customization') {
       settingsState.setCustomizationForm({ ...settingsState.originalCustomizationForm });
       settingsState.setPDFSignatureForm({ 
@@ -196,54 +203,16 @@ export default function SettingsPage() {
   };
 
 
-  // Avatar handling functions
-  const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    // Clear previous errors
-    setAvatarError('');
-
-    // Validate file type
-    const allowedTypes = ["image/svg+xml", "image/png", "image/jpeg"];
-    if (!allowedTypes.includes(file.type)) {
-      setAvatarError("File type not supported. Please use SVG, PNG or JPG.");
-      return;
-    }
-
-    // Validate file size (4MB)
-    const maxSize = 4 * 1024 * 1024;
-    if (file.size > maxSize) {
-      setAvatarError("File is too large. Max size is 4MB.");
-      return;
-    }
-
-    // Store file and create preview URL
-    setAvatarFile(file);
-    const previewUrl = URL.createObjectURL(file);
-    setAvatarPreview(previewUrl);
-    
-    // Clear remove flag if user selects new file
-    setAvatarToRemove(false);
-  };
 
   const removeAvatar = () => {
-    // Clear any preview
-    if (avatarPreview && avatarPreview.startsWith("blob:")) {
-      URL.revokeObjectURL(avatarPreview);
+    if (avatarPreview) {
+      revokePreviewUrl(avatarPreview);
     }
     setAvatarPreview(null);
     setAvatarFile(null);
     setErrorMessage('');
-    
-    // Mark avatar for removal
     setAvatarToRemove(true);
-    
-    // Clear file input
-    const input = document.getElementById("avatar-upload") as HTMLInputElement;
-    if (input) {
-      input.value = "";
-    }
+    clearFileInput("avatar-upload");
   };
 
   // Function to handle remove avatar confirmation
@@ -256,9 +225,7 @@ export default function SettingsPage() {
     setShowRemoveAvatarDialog(false);
   };
 
-  // Handle profile update (including avatar upload/removal)
   const handleUpdateProfile = async () => {
-    // Check if there are any changes to save
     if (!avatarFile && !avatarToRemove) {
       setErrorMessage("No changes to save.");
       setShowErrorToast(true);
@@ -275,36 +242,25 @@ export default function SettingsPage() {
       setAvatarError('');
 
       if (avatarToRemove) {
-        // Remove avatar (set to null in backend)
         await OrganizationService.removeAvatar();
         setAvatarToRemove(false);
-        // Update version to force refresh
         updateAvatarVersion();
       } else if (avatarFile) {
-        // Upload the new avatar
         await OrganizationService.uploadAvatar(avatarFile);
-        
-        // Clean up preview after successful upload
         if (avatarPreview && avatarPreview.startsWith("blob:")) {
           URL.revokeObjectURL(avatarPreview);
         }
         setAvatarPreview(null);
         setAvatarFile(null);
         
-        // Clear file input
         const input = document.getElementById("avatar-upload") as HTMLInputElement;
         if (input) {
           input.value = "";
         }
       }
 
-      // Refresh user data to get updated information
       await refetchUser();
-      
-      // Update version to force refresh of new image
       updateAvatarVersion();
-      
-      // Show success toast
       setShowSuccessToast(true);
       setTimeout(() => setShowSuccessToast(false), 3000);
       
@@ -319,16 +275,6 @@ export default function SettingsPage() {
     }
   };
 
-  // Helper function to get organization initials
-  const getOrganizationInitials = (name: string | undefined) => {
-    if (!name) return 'O';
-    return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  };
 
   const sidebarOptions = [
     { key: "profile", label: tp("TITLE"), active: true },
@@ -360,71 +306,18 @@ export default function SettingsPage() {
               </div>
 
               {/* Avatar */}
-              <div className="space-y-4">
-                <label className="text-sm font-medium text-gray-700">
-                  {tp("AVATAR.LABEL")}
-                </label>
-                <div className="flex items-center  justify-between">
-                <div className="flex items-center space-x-4">
-                  <div
-                    className="relative w-16 h-16 rounded-full border-2 border-gray-200 overflow-hidden  "
-                  >
-                    {avatarPreview && !avatarToRemove ? (
-                      <img
-                        src={avatarPreview}
-                        alt="Avatar preview"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : user?.organization?.avatar && !avatarToRemove ? (
-                      <img
-                        src={getVersionedUrl(user.organization.avatar)}
-                        alt="Organization avatar"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-100 flex items-center justify-center ">
-                        <span className="text-lg font-medium text-gray-600">
-                          {getOrganizationInitials(user?.organization?.name)}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                
-                     <Button
-                       variant="outline"
-                       size="sm"
-                       onClick={() => {
-                         setErrorMessage('');
-                         document.getElementById("avatar-upload")?.click();
-                       }}
-                     >
-                       {tp("AVATAR.UPLOAD_BUTTON")}
-                     </Button>
-                     </div>
-                     <Button
-                       disabled={!user?.organization?.avatar && !avatarPreview}
-                       variant="destructive"
-                       size="sm"
-                       onClick={handleRemoveAvatarClick}
-                     >
-                       {tp("AVATAR.REMOVE_BUTTON")}
-                     </Button>
-                
-                </div>
-                <input
-                  id="avatar-upload"
-                  type="file"
-                  accept=".svg,.png,.jpg,.jpeg"
-                  className="hidden"
-                  onChange={handleAvatarUpload}
-                />
-                <p className="text-xs text-gray-900 font-medium">
-                  {tp("AVATAR.REQUIREMENTS")}
-                </p>
-                {avatarError && (
-                  <p className="text-sm text-red-600">{avatarError}</p>
-                )}
-              </div>
+              <AvatarUploadSection
+                user={user}
+                avatarPreview={avatarPreview}
+                setAvatarPreview={setAvatarPreview}
+                setAvatarFile={setAvatarFile}
+                avatarToRemove={avatarToRemove}
+                setAvatarToRemove={setAvatarToRemove}
+                avatarError={avatarError}
+                setAvatarError={setAvatarError}
+                onRemoveClick={handleRemoveAvatarClick}
+                getVersionedUrl={getVersionedUrl}
+              />
 
               {/* Username */}
               <div className="space-y-2">
