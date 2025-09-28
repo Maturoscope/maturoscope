@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
@@ -186,9 +187,8 @@ export default function LoginForm({
                 {t("PAGE.FORGOT_PASSWORD")}
               </a>
             </div>
-            <Input
+            <PasswordInput
               id="password"
-              type="password"
               placeholder={t("PAGE.PASSWORD_LABEL")}
               value={formData.password}
               onChange={(e) => {
