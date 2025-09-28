@@ -9,7 +9,6 @@ export default function MembersPage() {
   const { t } = useTranslation("DASHBOARD")
   const { user } = useUserContext()
 
-  // Generate dynamic breadcrumbs
   const generateBreadcrumbs = () => {
     const organizationName = user?.organization?.name || "Organization";
     return [

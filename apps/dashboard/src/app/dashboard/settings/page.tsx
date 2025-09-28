@@ -59,7 +59,6 @@ export default function SettingsPage() {
     eventName: IMAGE_VERSION_CONSTANTS.EVENTS.SIGNATURE_UPDATED
   });
 
-  // Generate dynamic breadcrumbs
   const generateBreadcrumbs = () => {
     const organizationName = user?.organization?.name || "Organization";
     const breadcrumbs: Array<{ label: string; href?: string }> = [
