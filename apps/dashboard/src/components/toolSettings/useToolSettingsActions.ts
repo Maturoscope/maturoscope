@@ -114,8 +114,6 @@ export function useToolSettingsActions({
       await new Promise(resolve => setTimeout(resolve, 1000))
       setOriginalCustomizationForm({ ...customizationForm })
 
-      // Note: File validation (size and type) is handled in the UI component
-      // to show inline errors instead of toasts
       if (pdfSignatureForm.signatureFile || signatureToRemove) {
         if (signatureToRemove) {
           await OrganizationService.removeSignature()
@@ -128,7 +126,6 @@ export function useToolSettingsActions({
           updateSignatureVersion()
         } else if (pdfSignatureForm.signatureFile) {
           const result = await OrganizationService.uploadSignature(pdfSignatureForm.signatureFile)
-          // Add a small delay to ensure cache-busting works
           await new Promise(resolve => setTimeout(resolve, 100))
           const updatedForm = {
             signatureFile: null,

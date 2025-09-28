@@ -29,11 +29,8 @@ export default function SettingsUserPage() {
   const { t } = useTranslation("USER_SETTINGS")
   const { t: tl } = useTranslation("LANGUAJES")
   const { loading, user } = useUserContext()
-  
-  // Use the custom hook for state management
   const settingsState = useSettingsState()
 
-  // Generate dynamic breadcrumbs
   const generateBreadcrumbs = () => {
     const userFullName = user?.firstName + " " + user?.lastName || "User";
     const breadcrumbs: Array<{ label: string; href?: string }> = [

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { PasswordInput } from '@/components/ui/password-input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -81,12 +81,11 @@ export function PasswordSection({
         
         <div className="space-y-2">
           <Label htmlFor="currentPassword">{t('PASSWORD.CURRENT_PASSWORD')} *</Label>
-          <Input
+          <PasswordInput
             id="currentPassword"
-            type="password"
             value={form.currentPassword}
             onChange={(e) => handleFieldChange('currentPassword', e.target.value)}
-            className={errors.currentPassword ? "border-red-500" : ""}
+            className={`${errors.currentPassword ? "border-red-500" : ""} max-w-[400px]` }
             disabled={isUpdating}
             placeholder="Current password"
             required
@@ -98,12 +97,11 @@ export function PasswordSection({
         
         <div className="space-y-2">
           <Label htmlFor="newPassword">{t('PASSWORD.NEW_PASSWORD')} *</Label>
-          <Input
+          <PasswordInput
             id="newPassword"
-            type="password"
             value={form.newPassword}
             onChange={(e) => handleFieldChange('newPassword', e.target.value)}
-            className={errors.newPassword ? "border-red-500" : ""}
+            className={`${errors.newPassword ? "border-red-500" : ""} max-w-[400px]` }
             disabled={isUpdating}
             placeholder="New password"
             required
@@ -149,12 +147,11 @@ export function PasswordSection({
         
         <div className="space-y-2">
           <Label htmlFor="confirmPassword">{t('PASSWORD.CONFIRM_PASSWORD')} *</Label>
-          <Input
+          <PasswordInput
             id="confirmPassword"
-            type="password"
             value={form.confirmPassword}
             onChange={(e) => handleFieldChange('confirmPassword', e.target.value)}
-            className={errors.confirmPassword ? "border-red-500" : ""}
+            className={`${errors.confirmPassword ? "border-red-500" : ""} max-w-[400px]` }
             disabled={isUpdating}
             placeholder="Confirm new password"
             required
