@@ -108,6 +108,7 @@
   },
   "TOOL_SETTINGS": {
     "TITLE": "Paramètres",
+    "ORGANIZATION_SETTINGS": "Paramètres de l'organisation",
     "SECTIONS": {
       "CUSTOMIZATION": "Personnalisation",
       "PDF_SIGNATURE": "Signature PDF",
@@ -135,6 +136,9 @@
       "REMOVE_BUTTON": "Supprimer la signature",
       "REQUIREMENTS": "Ratio recommandé 21:9. Types supportés : SVG, PNG ou JPG. Taille max : 4Mo",
       "DESCRIPTION": "Cette signature sera affichée sur vos PDF.",
+      "ERRORS": {
+        "FILE_TOO_LARGE": "Le fichier est trop volumineux. Taille max : 4Mo."
+      },
       "REMOVE_DIALOG": {
         "TITLE": "Supprimer la signature",
         "DESCRIPTION": "Vous êtes sur le point de supprimer la signature de l'organisation. Cette action est irréversible. Une fois supprimée, elle sera définitivement retirée.",
@@ -171,64 +175,6 @@
         "TITLE": "Langue mise à jour",
         "DESCRIPTION": "Votre préférence de langue a été sauvegardée avec succès."
       }
-    },
-    "DIALOGS": {
-      "UNSAVED_CHANGES": {
-        "TITLE": "Modifications non sauvegardées",
-        "DESCRIPTION": "Vous avez des modifications non sauvegardées. Si vous partez maintenant, vos dernières mises à jour seront perdues.",
-        "CANCEL": "Annuler",
-        "LEAVE_ANYWAY": "Partir quand même",
-        "SAVE_AND_CONTINUE": "Sauvegarder et continuer"
-      }
-    }
-  },
-  "ORGANIZATION_SETTINGS": {
-    "TITLE": "Paramètres de l'organisation",
-    "SECTIONS": {
-      "PROFILE": "Profil",
-      "CUSTOMIZATION": "Personnalisation"
-    },
-    "CUSTOMIZATION": {
-      "TITLE": "Personnalisation",
-      "DESCRIPTION": "Les paramètres de personnalisation sont disponibles dans la section Paramètres.",
-      "GO_TO_SETTINGS_BUTTON": "Aller aux Paramètres"
-    },
-    "PROFILE": {
-      "NAME": {
-        "LABEL": "Nom",
-        "PLACEHOLDER": "Nom de l'organisation"
-      },
-      "AVATAR": {
-        "LABEL": "Avatar",
-        "UPLOAD_BUTTON": "Télécharger un avatar",
-        "REMOVE_BUTTON": "Supprimer l'avatar",
-        "REQUIREMENTS": "Ratio recommandé 1:1. Types supportés : SVG, PNG ou JPG. Taille max : 4Mo"
-      },
-      "USERNAME": {
-        "LABEL": "Nom d'utilisateur",
-        "PLACEHOLDER": "Nom d'utilisateur"
-      },
-      "EMAIL": {
-        "LABEL": "E-mail",
-        "PLACEHOLDER": "Adresse e-mail"
-      },
-      "UPDATE_BUTTON": "Mettre à jour le profil",
-      "SAVING": "Enregistrement...",
-      "ERRORS": {
-        "NAME_REQUIRED": "Le nom de l'organisation est requis.",
-        "NAME_MIN_LENGTH": "Le nom de l'organisation doit contenir au moins 2 caractères.",
-        "USERNAME_REQUIRED": "Le nom d'utilisateur est requis.",
-        "USERNAME_MIN_LENGTH": "Le nom d'utilisateur doit contenir au moins 3 caractères.",
-        "USERNAME_INVALID": "Le nom d'utilisateur ne peut contenir que des lettres, chiffres, tirets bas et tirets.",
-        "EMAIL_REQUIRED": "L'e-mail est requis.",
-        "EMAIL_INVALID": "Veuillez entrer une adresse e-mail valide.",
-        "INVALID_AVATAR_TYPE": "Type de fichier d'avatar non supporté. Utilisez SVG, PNG ou JPG.",
-        "AVATAR_TOO_LARGE": "La taille du fichier d'avatar dépasse 4Mo."
-      }
-    },
-    "TOASTS": {
-      "PROFILE_SUCCESS": "Profil de l'organisation mis à jour avec succès.",
-      "GENERAL_SUCCESS": "Paramètres mis à jour avec succès."
     },
     "DIALOGS": {
       "UNSAVED_CHANGES": {

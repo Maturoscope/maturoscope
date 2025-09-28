@@ -15,6 +15,7 @@ interface UseToolSettingsActionsProps {
   setErrors: React.Dispatch<React.SetStateAction<{[key: string]: string}>>
   setSuccessToastType: React.Dispatch<React.SetStateAction<'customization' | 'pdfSignature' | 'language'>>
   setShowSuccessToast: React.Dispatch<React.SetStateAction<boolean>>
+  updateSignatureVersion: () => void
 }
 
 export function useToolSettingsActions({
@@ -30,7 +31,8 @@ export function useToolSettingsActions({
   setIsUpdatingLanguage,
   setErrors,
   setSuccessToastType,
-  setShowSuccessToast
+  setShowSuccessToast,
+  updateSignatureVersion
 }: UseToolSettingsActionsProps) {
   const handleSaveCustomization = async () => {
     setIsUpdatingCustomization(true)
@@ -54,18 +56,6 @@ export function useToolSettingsActions({
     setErrors({})
 
     try {
-      if (pdfSignatureForm.signatureFile) {
-        const maxSize = 4 * 1024 * 1024
-        if (pdfSignatureForm.signatureFile.size > maxSize) {
-          throw new Error('File size exceeds 4MB limit')
-        }
-        
-        const allowedTypes = ['image/svg+xml', 'image/png', 'image/jpeg']
-        if (!allowedTypes.includes(pdfSignatureForm.signatureFile.type)) {
-          throw new Error('File type not supported. Use SVG, PNG or JPG.')
-        }
-      }
-
       if (signatureToRemove) {
         await OrganizationService.removeSignature()
         const updatedForm = {
@@ -74,14 +64,17 @@ export function useToolSettingsActions({
         }
         setOriginalPDFSignatureForm(updatedForm)
         setPDFSignatureForm(updatedForm)
+        updateSignatureVersion()
       } else if (pdfSignatureForm.signatureFile) {
         const result = await OrganizationService.uploadSignature(pdfSignatureForm.signatureFile)
+        await new Promise(resolve => setTimeout(resolve, 100))
         const updatedForm = {
           signatureFile: null,
           signatureUrl: result.signature
         }
         setOriginalPDFSignatureForm(updatedForm)
         setPDFSignatureForm(updatedForm)
+        updateSignatureVersion()
       } else {
         setOriginalPDFSignatureForm({ ...pdfSignatureForm })
       }
@@ -121,6 +114,8 @@ export function useToolSettingsActions({
       await new Promise(resolve => setTimeout(resolve, 1000))
       setOriginalCustomizationForm({ ...customizationForm })
 
+      // Note: File validation (size and type) is handled in the UI component
+      // to show inline errors instead of toasts
       if (pdfSignatureForm.signatureFile || signatureToRemove) {
         if (signatureToRemove) {
           await OrganizationService.removeSignature()
@@ -130,14 +125,18 @@ export function useToolSettingsActions({
           }
           setOriginalPDFSignatureForm(updatedForm)
           setPDFSignatureForm(updatedForm)
+          updateSignatureVersion()
         } else if (pdfSignatureForm.signatureFile) {
           const result = await OrganizationService.uploadSignature(pdfSignatureForm.signatureFile)
+          // Add a small delay to ensure cache-busting works
+          await new Promise(resolve => setTimeout(resolve, 100))
           const updatedForm = {
             signatureFile: null,
             signatureUrl: result.signature
           }
           setOriginalPDFSignatureForm(updatedForm)
           setPDFSignatureForm(updatedForm)
+          updateSignatureVersion()
         }
       }
 

@@ -108,6 +108,7 @@
   },
   "TOOL_SETTINGS": {
     "TITLE": "Settings",
+    "ORGANIZATION_SETTINGS": "Organization Settings",
     "SECTIONS": {
       "CUSTOMIZATION": "Customization",
       "PDF_SIGNATURE": "PDF Signature",
@@ -135,6 +136,9 @@
       "REMOVE_BUTTON": "Remove signature",
       "REQUIREMENTS": "Recommended ratio 21:9. Supported types: SVG, PNG or JPG. Max file size: 4MB",
       "DESCRIPTION": "This is the signature that will be displayed on your PDFs.",
+      "ERRORS": {
+        "FILE_TOO_LARGE": "File is too large. Max size is 4MB."
+      },
       "REMOVE_DIALOG": {
         "TITLE": "Remove signature",
         "DESCRIPTION": "You're about to delete the organization's signature. This action is irreversible. Once deleted, it will be permanently removed.",
@@ -171,64 +175,6 @@
         "TITLE": "Language Updated",
         "DESCRIPTION": "Your language preference has been saved successfully."
       }
-    },
-    "DIALOGS": {
-      "UNSAVED_CHANGES": {
-        "TITLE": "Unsaved Changes",
-        "DESCRIPTION": "You have unsaved changes. If you leave now, your latest updates will be lost.",
-        "CANCEL": "Cancel",
-        "LEAVE_ANYWAY": "Leave Anyway",
-        "SAVE_AND_CONTINUE": "Save and Continue"
-      }
-    }
-  },
-  "ORGANIZATION_SETTINGS": {
-    "TITLE": "Organization Settings",
-    "SECTIONS": {
-      "PROFILE": "Profile",
-      "CUSTOMIZATION": "Customization"
-    },
-    "CUSTOMIZATION": {
-      "TITLE": "Customization",
-      "DESCRIPTION": "Customization settings are available in the Settings section.",
-      "GO_TO_SETTINGS_BUTTON": "Go to Settings"
-    },
-    "PROFILE": {
-      "NAME": {
-        "LABEL": "Name",
-        "PLACEHOLDER": "Organization name"
-      },
-      "AVATAR": {
-        "LABEL": "Avatar",
-        "UPLOAD_BUTTON": "Upload avatar",
-        "REMOVE_BUTTON": "Remove avatar",
-        "REQUIREMENTS": "Recommended ratio 1:1. Supported types: SVG, PNG or JPG. Max file size: 4MB"
-      },
-      "USERNAME": {
-        "LABEL": "Username",
-        "PLACEHOLDER": "Username"
-      },
-      "EMAIL": {
-        "LABEL": "Email",
-        "PLACEHOLDER": "Email address"
-      },
-      "UPDATE_BUTTON": "Update profile",
-      "SAVING": "Saving...",
-      "ERRORS": {
-        "NAME_REQUIRED": "Organization name is required.",
-        "NAME_MIN_LENGTH": "Organization name must be at least 2 characters long.",
-        "USERNAME_REQUIRED": "Username is required.",
-        "USERNAME_MIN_LENGTH": "Username must be at least 3 characters long.",
-        "USERNAME_INVALID": "Username can only contain letters, numbers, underscores and hyphens.",
-        "EMAIL_REQUIRED": "Email is required.",
-        "EMAIL_INVALID": "Please enter a valid email address.",
-        "INVALID_AVATAR_TYPE": "Avatar file type not supported. Use SVG, PNG or JPG.",
-        "AVATAR_TOO_LARGE": "Avatar file size exceeds 4MB limit."
-      }
-    },
-    "TOASTS": {
-      "PROFILE_SUCCESS": "Organization profile updated successfully.",
-      "GENERAL_SUCCESS": "Settings updated successfully."
     },
     "DIALOGS": {
       "UNSAVED_CHANGES": {

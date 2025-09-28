@@ -24,6 +24,11 @@ import {
 } from "@/components/toolSettings";
 import { Button } from "@/components/ui/button";
 import { OrganizationService } from "@/services/organization.service";
+import { Input } from "@/components/ui/input";
+import { useImageVersion } from "@/hooks/useImageVersion";
+import { IMAGE_VERSION_CONSTANTS } from "@/constants/imageVersion";
+import { revokePreviewUrl, clearFileInput } from "@/utils/fileValidation";
+import { AvatarUploadSection } from "@/components/profile";
 
 export default function SettingsPage() {
   const { t } = useTranslation("TOOL_SETTINGS");
@@ -39,9 +44,42 @@ export default function SettingsPage() {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [avatarError, setAvatarError] = useState<string>('');
 
   // Use the custom hook for state management
   const settingsState = useToolSettingsState();
+
+  const { updateVersion: updateAvatarVersion, getVersionedUrl } = useImageVersion({
+    storageKey: IMAGE_VERSION_CONSTANTS.STORAGE_KEYS.AVATAR,
+    eventName: IMAGE_VERSION_CONSTANTS.EVENTS.AVATAR_UPDATED
+  });
+
+  const { updateVersion: updateSignatureVersion } = useImageVersion({
+    storageKey: IMAGE_VERSION_CONSTANTS.STORAGE_KEYS.SIGNATURE,
+    eventName: IMAGE_VERSION_CONSTANTS.EVENTS.SIGNATURE_UPDATED
+  });
+
+  // Generate dynamic breadcrumbs
+  const generateBreadcrumbs = () => {
+    const organizationName = user?.organization?.name || "Organization";
+    const breadcrumbs: Array<{ label: string; href?: string }> = [
+      { label: organizationName }
+    ];
+
+    if (settingsState.activeSection) {
+      breadcrumbs.push({ label: t("TITLE") });
+      
+      const sectionLabel = settingsState.activeSection === 'profile' 
+        ? tp("TITLE")
+        : t("SECTIONS.CUSTOMIZATION");
+      
+      breadcrumbs.push({ label: sectionLabel });
+    } else {
+      breadcrumbs.push({ label: t("TITLE") });
+    }
+
+    return breadcrumbs;
+  };
 
   // Profile changes tracking
   const hasProfileChanges = avatarFile !== null || avatarToRemove;
@@ -115,6 +153,7 @@ export default function SettingsPage() {
     setErrors: settingsState.setErrors,
     setSuccessToastType: settingsState.setSuccessToastType,
     setShowSuccessToast: settingsState.setShowSuccessToast,
+    updateSignatureVersion,
   });
 
   // Enhanced section change handler that manages form resets
@@ -131,22 +170,18 @@ export default function SettingsPage() {
     }
   };
 
-  // Enhanced leave anyway handler that resets forms
   const handleLeaveAnyway = () => {
-    // Reset profile changes if we're leaving the profile section
     if (settingsState.activeSection === 'profile') {
       setAvatarFile(null);
       setAvatarToRemove(false);
       setAvatarPreview(null);
       
-      // Clear file input
       const input = document.getElementById("avatar-upload") as HTMLInputElement;
       if (input) {
         input.value = "";
       }
     }
     
-    // Reset customization changes if we're leaving the customization section
     if (settingsState.activeSection === 'customization') {
       settingsState.setCustomizationForm({ ...settingsState.originalCustomizationForm });
       settingsState.setPDFSignatureForm({ 
@@ -168,58 +203,16 @@ export default function SettingsPage() {
   };
 
 
-  // Avatar handling functions
-  const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    // Clear previous errors
-    setErrorMessage('');
-
-    // Validate file type
-    const allowedTypes = ["image/svg+xml", "image/png", "image/jpeg"];
-    if (!allowedTypes.includes(file.type)) {
-      setErrorMessage("File type not supported. Please use SVG, PNG or JPG.");
-      setShowErrorToast(true);
-      setTimeout(() => setShowErrorToast(false), 3000);
-      return;
-    }
-
-    // Validate file size (4MB)
-    const maxSize = 4 * 1024 * 1024;
-    if (file.size > maxSize) {
-      setErrorMessage("File is too large. Max size is 4MB.");
-      setShowErrorToast(true);
-      setTimeout(() => setShowErrorToast(false), 3000);
-      return;
-    }
-
-    // Store file and create preview URL
-    setAvatarFile(file);
-    const previewUrl = URL.createObjectURL(file);
-    setAvatarPreview(previewUrl);
-    
-    // Clear remove flag if user selects new file
-    setAvatarToRemove(false);
-  };
 
   const removeAvatar = () => {
-    // Clear any preview
-    if (avatarPreview && avatarPreview.startsWith("blob:")) {
-      URL.revokeObjectURL(avatarPreview);
+    if (avatarPreview) {
+      revokePreviewUrl(avatarPreview);
     }
     setAvatarPreview(null);
     setAvatarFile(null);
     setErrorMessage('');
-    
-    // Mark avatar for removal
     setAvatarToRemove(true);
-    
-    // Clear file input
-    const input = document.getElementById("avatar-upload") as HTMLInputElement;
-    if (input) {
-      input.value = "";
-    }
+    clearFileInput("avatar-upload");
   };
 
   // Function to handle remove avatar confirmation
@@ -232,52 +225,49 @@ export default function SettingsPage() {
     setShowRemoveAvatarDialog(false);
   };
 
-  // Handle profile update (including avatar upload/removal)
   const handleUpdateProfile = async () => {
-    // Check if there are any changes to save
     if (!avatarFile && !avatarToRemove) {
       setErrorMessage("No changes to save.");
       setShowErrorToast(true);
       setTimeout(() => setShowErrorToast(false), 3000);
       return;
     }
+    if (avatarError) {
+      return;
+    }
 
     try {
       setIsUploadingAvatar(true);
       setErrorMessage('');
+      setAvatarError('');
 
       if (avatarToRemove) {
-        // Remove avatar (set to null in backend)
         await OrganizationService.removeAvatar();
         setAvatarToRemove(false);
+        updateAvatarVersion();
       } else if (avatarFile) {
-        // Upload the new avatar
         await OrganizationService.uploadAvatar(avatarFile);
-        
-        // Clean up preview after successful upload
         if (avatarPreview && avatarPreview.startsWith("blob:")) {
           URL.revokeObjectURL(avatarPreview);
         }
         setAvatarPreview(null);
         setAvatarFile(null);
         
-        // Clear file input
         const input = document.getElementById("avatar-upload") as HTMLInputElement;
         if (input) {
           input.value = "";
         }
       }
 
-      // Refresh user data to get updated information
       await refetchUser();
-      
-      // Show success toast
+      updateAvatarVersion();
       setShowSuccessToast(true);
       setTimeout(() => setShowSuccessToast(false), 3000);
       
     } catch (error) {
       console.error('Error updating profile:', error);
-      setErrorMessage(error instanceof Error ? error.message : 'Failed to update profile');
+      const errorMsg = error instanceof Error ? error.message : 'Failed to update profile';
+      setErrorMessage(errorMsg);
       setShowErrorToast(true);
       setTimeout(() => setShowErrorToast(false), 3000);
     } finally {
@@ -285,16 +275,6 @@ export default function SettingsPage() {
     }
   };
 
-  // Helper function to get organization initials
-  const getOrganizationInitials = (name: string | undefined) => {
-    if (!name) return 'O';
-    return name
-      .split(' ')
-      .map(word => word.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  };
 
   const sidebarOptions = [
     { key: "profile", label: tp("TITLE"), active: true },
@@ -317,88 +297,38 @@ export default function SettingsPage() {
                 <label className="text-sm font-medium text-gray-700">
                   {tp("NAME.LABEL")}
                 </label>
-                <input
+                <Input
                   type="text"
                   value={user?.organization?.name || tp("NAME.VALUE")}
-                  readOnly
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+                  disabled
+                  className="bg-muted"
                 />
               </div>
 
               {/* Avatar */}
-              <div className="space-y-4">
-                <label className="text-sm font-medium text-gray-700">
-                  {tp("AVATAR.LABEL")}
-                </label>
-                <div className="flex items-center  justify-between">
-                <div className="flex items-center space-x-4">
-                  <div
-                    className="relative w-16 h-16 rounded-full border-2 border-gray-200 overflow-hidden  "
-                  >
-                    {avatarPreview && !avatarToRemove ? (
-                      <img
-                        src={avatarPreview}
-                        alt="Avatar preview"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : user?.organization?.avatar && !avatarToRemove ? (
-                      <img
-                        src={user.organization.avatar}
-                        alt="Organization avatar"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gray-100 flex items-center justify-center ">
-                        <span className="text-lg font-medium text-gray-600">
-                          {getOrganizationInitials(user?.organization?.name)}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                
-                     <Button
-                       variant="outline"
-                       size="sm"
-                       onClick={() => {
-                         setErrorMessage('');
-                         document.getElementById("avatar-upload")?.click();
-                       }}
-                     >
-                       {tp("AVATAR.UPLOAD_BUTTON")}
-                     </Button>
-                     </div>
-                     <Button
-                       disabled={!user?.organization?.avatar && !avatarPreview}
-                       variant="destructive"
-                       size="sm"
-                       onClick={handleRemoveAvatarClick}
-                     >
-                       {tp("AVATAR.REMOVE_BUTTON")}
-                     </Button>
-                
-                </div>
-                <input
-                  id="avatar-upload"
-                  type="file"
-                  accept=".svg,.png,.jpg,.jpeg"
-                  className="hidden"
-                  onChange={handleAvatarUpload}
-                />
-                <p className="text-xs text-gray-900 font-medium">
-                  {tp("AVATAR.REQUIREMENTS")}
-                </p>
-              </div>
+              <AvatarUploadSection
+                user={user}
+                avatarPreview={avatarPreview}
+                setAvatarPreview={setAvatarPreview}
+                setAvatarFile={setAvatarFile}
+                avatarToRemove={avatarToRemove}
+                setAvatarToRemove={setAvatarToRemove}
+                avatarError={avatarError}
+                setAvatarError={setAvatarError}
+                onRemoveClick={handleRemoveAvatarClick}
+                getVersionedUrl={getVersionedUrl}
+              />
 
               {/* Username */}
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">
                   {tp("USERNAME.LABEL")}
                 </label>
-                <input
+                <Input
                   type="text"
                   value={user?.organization?.key || tp("USERNAME.VALUE")}
-                  readOnly
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+                  disabled
+                  className="bg-muted"
                 />
               </div>
 
@@ -407,27 +337,23 @@ export default function SettingsPage() {
                 <label className="text-sm font-medium text-gray-700">
                   {tp("EMAIL.LABEL")}
                 </label>
-                <input
+                <Input
                   type="email"
                   value={user?.organization?.email || tp("EMAIL.VALUE")}
-                  readOnly
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+                  disabled
+                  className="bg-muted"
                 />
               </div>
 
               {/* Save Button */}
-              <div className="flex justify-end">
-                <button
+              <div className="flex justify-start">
+                <Button
                   disabled={isUploadingAvatar || (!avatarFile && !avatarToRemove)}
                   onClick={handleUpdateProfile}
-                  className={`px-6 py-2 text-white rounded-md ${
-                    isUploadingAvatar || (!avatarFile && !avatarToRemove)
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-black hover:bg-gray-800'
-                  }`}
+                  className={'px-6'}
                 >
                   {isUploadingAvatar ? 'Updating...' : tp("UPDATE_BUTTON")}
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -461,8 +387,7 @@ export default function SettingsPage() {
     return (
       <>
         <DynamicPageHeader
-          currentPageLabel={t("TITLE")}
-          activeSection={settingsState.activeSection}
+          breadcrumbs={generateBreadcrumbs()}
         />
         <div className="flex flex-1 flex-col gap-4 p-6">
           <div className="space-y-6 max-w-2xl">
@@ -482,12 +407,11 @@ export default function SettingsPage() {
   return (
     <>
       <DynamicPageHeader
-        currentPageLabel={t("TITLE")}
-        activeSection={settingsState.activeSection}
+        breadcrumbs={generateBreadcrumbs()}
       />
       <div className="flex flex-1 flex-col gap-4 p-6">
         <div className="space-y-6 max-w-2xl">
-          <h2 className="text-xl font-semibold">{t("TITLE")}</h2>
+          <h2 className="text-xl font-semibold">{t("ORGANIZATION_SETTINGS")}</h2>
         </div>
 
         <Separator />
