@@ -24,6 +24,8 @@ import {
 } from "@/components/toolSettings";
 import { Button } from "@/components/ui/button";
 import { OrganizationService } from "@/services/organization.service";
+import { Input } from "@/components/ui/input";
+import { useImageVersion } from "@/hooks/useImageVersion";
 
 export default function SettingsPage() {
   const { t } = useTranslation("TOOL_SETTINGS");
@@ -39,9 +41,35 @@ export default function SettingsPage() {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [avatarError, setAvatarError] = useState<string>('');
 
   // Use the custom hook for state management
   const settingsState = useToolSettingsState();
+
+  // Use the custom hook for avatar versioning
+  const { updateVersion: updateAvatarVersion, getVersionedUrl } = useImageVersion({
+    storageKey: 'avatarVersion',
+    eventName: 'avatarUpdated'
+  });
+
+  // Generate dynamic breadcrumbs
+  const generateBreadcrumbs = () => {
+    const organizationName = user?.organization?.name || "Organization";
+    const breadcrumbs: Array<{ label: string; href?: string }> = [
+      { label: organizationName, href: "/dashboard" },
+        { label: t("TITLE"), href: "/dashboard/settings" }
+    ];
+
+    if (settingsState.activeSection) {
+      const sectionLabel = settingsState.activeSection === 'profile' 
+        ? tp("TITLE")
+        : t("SECTIONS.CUSTOMIZATION");
+      
+      breadcrumbs.push({ label: sectionLabel });
+    }
+
+    return breadcrumbs;
+  };
 
   // Profile changes tracking
   const hasProfileChanges = avatarFile !== null || avatarToRemove;
@@ -174,23 +202,19 @@ export default function SettingsPage() {
     if (!file) return;
 
     // Clear previous errors
-    setErrorMessage('');
+    setAvatarError('');
 
     // Validate file type
     const allowedTypes = ["image/svg+xml", "image/png", "image/jpeg"];
     if (!allowedTypes.includes(file.type)) {
-      setErrorMessage("File type not supported. Please use SVG, PNG or JPG.");
-      setShowErrorToast(true);
-      setTimeout(() => setShowErrorToast(false), 3000);
+      setAvatarError("File type not supported. Please use SVG, PNG or JPG.");
       return;
     }
 
     // Validate file size (4MB)
     const maxSize = 4 * 1024 * 1024;
     if (file.size > maxSize) {
-      setErrorMessage("File is too large. Max size is 4MB.");
-      setShowErrorToast(true);
-      setTimeout(() => setShowErrorToast(false), 3000);
+      setAvatarError("File is too large. Max size is 4MB.");
       return;
     }
 
@@ -241,15 +265,21 @@ export default function SettingsPage() {
       setTimeout(() => setShowErrorToast(false), 3000);
       return;
     }
+    if (avatarError) {
+      return;
+    }
 
     try {
       setIsUploadingAvatar(true);
       setErrorMessage('');
+      setAvatarError('');
 
       if (avatarToRemove) {
         // Remove avatar (set to null in backend)
         await OrganizationService.removeAvatar();
         setAvatarToRemove(false);
+        // Update version to force refresh
+        updateAvatarVersion();
       } else if (avatarFile) {
         // Upload the new avatar
         await OrganizationService.uploadAvatar(avatarFile);
@@ -271,13 +301,17 @@ export default function SettingsPage() {
       // Refresh user data to get updated information
       await refetchUser();
       
+      // Update version to force refresh of new image
+      updateAvatarVersion();
+      
       // Show success toast
       setShowSuccessToast(true);
       setTimeout(() => setShowSuccessToast(false), 3000);
       
     } catch (error) {
       console.error('Error updating profile:', error);
-      setErrorMessage(error instanceof Error ? error.message : 'Failed to update profile');
+      const errorMsg = error instanceof Error ? error.message : 'Failed to update profile';
+      setErrorMessage(errorMsg);
       setShowErrorToast(true);
       setTimeout(() => setShowErrorToast(false), 3000);
     } finally {
@@ -317,11 +351,11 @@ export default function SettingsPage() {
                 <label className="text-sm font-medium text-gray-700">
                   {tp("NAME.LABEL")}
                 </label>
-                <input
+                <Input
                   type="text"
                   value={user?.organization?.name || tp("NAME.VALUE")}
-                  readOnly
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+                  disabled
+                  className="bg-muted"
                 />
               </div>
 
@@ -343,7 +377,7 @@ export default function SettingsPage() {
                       />
                     ) : user?.organization?.avatar && !avatarToRemove ? (
                       <img
-                        src={user.organization.avatar}
+                        src={getVersionedUrl(user.organization.avatar)}
                         alt="Organization avatar"
                         className="w-full h-full object-cover"
                       />
@@ -387,6 +421,9 @@ export default function SettingsPage() {
                 <p className="text-xs text-gray-900 font-medium">
                   {tp("AVATAR.REQUIREMENTS")}
                 </p>
+                {avatarError && (
+                  <p className="text-sm text-red-600">{avatarError}</p>
+                )}
               </div>
 
               {/* Username */}
@@ -394,11 +431,11 @@ export default function SettingsPage() {
                 <label className="text-sm font-medium text-gray-700">
                   {tp("USERNAME.LABEL")}
                 </label>
-                <input
+                <Input
                   type="text"
                   value={user?.organization?.key || tp("USERNAME.VALUE")}
-                  readOnly
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+                  disabled
+                  className="bg-muted"
                 />
               </div>
 
@@ -407,27 +444,23 @@ export default function SettingsPage() {
                 <label className="text-sm font-medium text-gray-700">
                   {tp("EMAIL.LABEL")}
                 </label>
-                <input
+                <Input
                   type="email"
                   value={user?.organization?.email || tp("EMAIL.VALUE")}
-                  readOnly
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+                  disabled
+                  className="bg-muted"
                 />
               </div>
 
               {/* Save Button */}
-              <div className="flex justify-end">
-                <button
+              <div className="flex justify-start">
+                <Button
                   disabled={isUploadingAvatar || (!avatarFile && !avatarToRemove)}
                   onClick={handleUpdateProfile}
-                  className={`px-6 py-2 text-white rounded-md ${
-                    isUploadingAvatar || (!avatarFile && !avatarToRemove)
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-black hover:bg-gray-800'
-                  }`}
+                  className={'px-6'}
                 >
                   {isUploadingAvatar ? 'Updating...' : tp("UPDATE_BUTTON")}
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -461,8 +494,7 @@ export default function SettingsPage() {
     return (
       <>
         <DynamicPageHeader
-          currentPageLabel={t("TITLE")}
-          activeSection={settingsState.activeSection}
+          breadcrumbs={generateBreadcrumbs()}
         />
         <div className="flex flex-1 flex-col gap-4 p-6">
           <div className="space-y-6 max-w-2xl">
@@ -482,12 +514,11 @@ export default function SettingsPage() {
   return (
     <>
       <DynamicPageHeader
-        currentPageLabel={t("TITLE")}
-        activeSection={settingsState.activeSection}
+        breadcrumbs={generateBreadcrumbs()}
       />
       <div className="flex flex-1 flex-col gap-4 p-6">
         <div className="space-y-6 max-w-2xl">
-          <h2 className="text-xl font-semibold">{t("TITLE")}</h2>
+          <h2 className="text-xl font-semibold">{t("ORGANIZATION_SETTINGS")}</h2>
         </div>
 
         <Separator />

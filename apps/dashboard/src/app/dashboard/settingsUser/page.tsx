@@ -28,10 +28,32 @@ import {
 export default function SettingsUserPage() {
   const { t } = useTranslation("USER_SETTINGS")
   const { t: tl } = useTranslation("LANGUAJES")
-  const { loading } = useUserContext()
+  const { loading, user } = useUserContext()
   
   // Use the custom hook for state management
   const settingsState = useSettingsState()
+
+  // Generate dynamic breadcrumbs
+  const generateBreadcrumbs = () => {
+    const userFullName = user?.firstName + " " + user?.lastName || "User";
+    const breadcrumbs: Array<{ label: string; href?: string }> = [
+      { label: userFullName }
+    ];
+
+    if (settingsState.activeSection) {
+      const sectionLabels: Record<string, string> = {
+        'profile': t('PROFILE.TITLE'),
+        'password': t('PASSWORD.TITLE'),
+        'customization': t('CUSTOMIZATION.TITLE')
+      };
+      
+      breadcrumbs.push({ label: sectionLabels[settingsState.activeSection] || settingsState.activeSection });
+    } else {
+      breadcrumbs.push({ label: t('TITLE') });
+    }
+
+    return breadcrumbs;
+  };
   
   // Use the custom hook for actions
   const settingsActions = useSettingsActions({
@@ -107,8 +129,7 @@ export default function SettingsUserPage() {
     return (
       <>
         <DynamicPageHeader 
-          currentPageLabel={t('TITLE')} 
-          activeSection={settingsState.activeSection} 
+          breadcrumbs={generateBreadcrumbs()}
         />
         <div className="flex flex-1 flex-col gap-4 p-6">
           <div className="space-y-6 max-w-2xl">
@@ -128,8 +149,7 @@ export default function SettingsUserPage() {
   return (
     <>
       <DynamicPageHeader 
-        currentPageLabel={t('TITLE')} 
-        activeSection={settingsState.activeSection} 
+        breadcrumbs={generateBreadcrumbs()}
       />
       <div className="flex flex-1 flex-col gap-4 p-6">
         <div className="space-y-6 max-w-2xl">

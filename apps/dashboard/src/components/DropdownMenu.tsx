@@ -13,12 +13,19 @@ import {
   import { useRouter } from "next/navigation"
   import { useTranslation } from "react-i18next"
   import Link from "next/link"
+  import { useImageVersion } from "@/hooks/useImageVersion"
   
   export function UserDropdown() {
     const [isOpen, setIsOpen] = useState(false)
     const { user, loading } = useUserContext()
     const { t } = useTranslation("DASHBOARD")
     const router = useRouter()
+    
+    // Use the custom hook for avatar versioning
+    const { getVersionedUrl } = useImageVersion({
+      storageKey: 'avatarVersion',
+      eventName: 'avatarUpdated'
+    })
     
     const handleLogout = async () => {
       try {
@@ -54,7 +61,11 @@ import {
       <DropdownMenu onOpenChange={setIsOpen}>
         <DropdownMenuTrigger className="flex items-center gap-2 rounded-md border px-3 py-2 max-h-12 min-w-[200px]">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={user?.picture || "/logo.png"} />
+            <AvatarImage src={
+              user?.picture ? getVersionedUrl(user.picture) :
+              user?.organization?.avatar ? getVersionedUrl(user.organization.avatar) :
+              "/logo.png"
+            } />
             <AvatarFallback>
               {user?.firstName?.charAt(0)?.toUpperCase() || user?.name?.charAt(0)?.toUpperCase() || "U"}
             </AvatarFallback>

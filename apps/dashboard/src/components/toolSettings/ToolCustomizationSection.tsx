@@ -13,6 +13,7 @@ import {
 import { LanguageSelector } from '@/components/ui/language-selector'
 import { ToolCustomizationFormData, ToolPDFSignatureFormData, ToolLanguageFormData } from './useToolSettingsState'
 import Image from 'next/image'
+import { useImageVersion } from '@/hooks/useImageVersion'
 import { Separator } from '@/components/ui/separator'
 import {
   AlertDialog,
@@ -57,11 +58,19 @@ export function ToolCustomizationSection({
   const [previewUrl, setPreviewUrl] = useState<string | null>(pdfSignatureForm.signatureUrl || null)
   const [showRemoveSignatureDialog, setShowRemoveSignatureDialog] = useState(false)
   const [signatureToRemove, setSignatureToRemove] = useState(false)
+  // Use the custom hook for signature versioning
+  const { updateVersion: updateSignatureVersion, getVersionedUrl } = useImageVersion({
+    storageKey: 'signatureVersion',
+    eventName: 'signatureUpdated'
+  });
 
   useEffect(() => {
     setPreviewUrl(pdfSignatureForm.signatureUrl || null)
     setSignatureToRemove(false)
-  }, [pdfSignatureForm.signatureUrl])
+    if (pdfSignatureForm.signatureUrl) {
+      updateSignatureVersion()
+    }
+  }, [pdfSignatureForm.signatureUrl, updateSignatureVersion])
 
   const handleCustomizationChange = (field: keyof ToolCustomizationFormData, value: string) => {
     setCustomizationForm(prev => ({ ...prev, [field]: value }))
@@ -242,7 +251,7 @@ export function ToolCustomizationSection({
               <div className={ `w-[240px] h-[102px] ${!previewUrl || signatureToRemove ? 'border-1' : 'border-0'}  border-dashed border-gray-300 rounded-lg flex items-center justify-center relative`}>
                 {previewUrl && !signatureToRemove ? (
                   <Image
-                    src={previewUrl}
+                    src={getVersionedUrl(previewUrl)}
                     alt="Signature preview"
                     className="max-h-[100px] max-w-[240px] rounded-lg"
                     width={240}
@@ -317,7 +326,7 @@ export function ToolCustomizationSection({
         )}
 
         {/* Save Button */}
-        <div className="flex justify-end">
+        <div className="flex justify-start">
           <Button
             onClick={handleSaveAll}
             disabled={!hasChanges || isUpdating}
