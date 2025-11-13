@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
-        const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${decoded.userEmail}`;
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/email/${encodeURIComponent(decoded.userEmail)}`;
   
         const userData = await fetch(apiUrl, {
           method: 'GET',
@@ -95,6 +95,8 @@ export async function GET(req: NextRequest) {
       firstName: userApiData?.firstName,
       lastName: userApiData?.lastName,
       organization: userApiData?.organization,
+      registrationStatus: userApiData?.registrationStatus,
+      isActive: userApiData?.isActive,
       termsAccepted: userApiData?.termsAccepted || false,
     });
 
