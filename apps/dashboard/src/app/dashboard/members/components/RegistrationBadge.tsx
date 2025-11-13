@@ -1,6 +1,7 @@
 import React from "react";
 import { RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 import {
   Tooltip,
   TooltipContent,
@@ -8,7 +9,6 @@ import {
 } from "@/components/ui/tooltip";
 import {
   RegistrationStatus,
-  registrationStatusLabels,
   registrationDotClasses,
 } from "../types/member";
 
@@ -23,6 +23,14 @@ export function RegistrationBadge({
   onResend,
   isResending,
 }: RegistrationBadgeProps) {
+  const { t } = useTranslation("MEMBERS");
+  
+  const statusLabels = {
+    completed: t("REGISTRATION_STATUS.COMPLETED"),
+    pending: t("REGISTRATION_STATUS.PENDING"),
+    expired: t("REGISTRATION_STATUS.EXPIRED"),
+  };
+
   return (
     <span
       className={cn(
@@ -35,7 +43,7 @@ export function RegistrationBadge({
           registrationDotClasses[status]
         )}
       />
-      {registrationStatusLabels[status]}
+      {statusLabels[status]}
       {status === "expired" && onResend && (
         <Tooltip>
           <TooltipTrigger asChild>
@@ -50,7 +58,7 @@ export function RegistrationBadge({
                 "ml-1 rounded-full p-0.5 transition-colors hover:bg-slate-100",
                 isResending && "cursor-not-allowed opacity-50"
               )}
-              aria-label="Resend invitation"
+              aria-label={t("TABLE.RESEND_INVITATION")}
             >
               <RefreshCw
                 className={cn("h-3 w-3", isResending && "animate-spin")}
@@ -58,7 +66,7 @@ export function RegistrationBadge({
             </button>
           </TooltipTrigger>
           <TooltipContent side="top" className="text-xs">
-            Resend invitation
+            {t("TABLE.RESEND_INVITATION")}
           </TooltipContent>
         </Tooltip>
       )}

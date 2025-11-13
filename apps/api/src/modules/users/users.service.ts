@@ -1,6 +1,6 @@
 import { Injectable, ConflictException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Not, FindOperator } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -134,9 +134,17 @@ export class UsersService {
     });
   }
 
-  async findByOrganization(organizationId: string): Promise<UserResponseDto[]> {
+  async findByOrganization(organizationId: string, excludeEmail?: string): Promise<UserResponseDto[]> {
+    const whereCondition: { organizationId: string; email?: FindOperator<string> } = { 
+      organizationId 
+    };
+    
+    if (excludeEmail) {
+      whereCondition.email = Not(excludeEmail);
+    }
+
     const users = await this.userRepository.find({
-      where: { organizationId },
+      where: whereCondition,
       relations: ['organization'],
       order: { createdAt: 'DESC' },
     });

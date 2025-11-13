@@ -22,8 +22,12 @@ const isValidEmail = (email: string): boolean => {
 export default function LoginForm({
   className,
   setBlockedAccount,
+  setInactiveAccount,
   ...props
-}: React.ComponentPropsWithoutRef<"form"> & { setBlockedAccount: (blocked: boolean) => void }) {
+}: React.ComponentPropsWithoutRef<"form"> & { 
+  setBlockedAccount: (blocked: boolean) => void;
+  setInactiveAccount: (inactive: boolean) => void;
+}) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -113,6 +117,14 @@ export default function LoginForm({
       if (!response.ok) {
         if (response.status === 423) {
           setBlockedAccount(true);
+          return;
+        }
+        if (response.status === 403) {
+          const data = await response.json();
+          if (data.code === 'INACTIVE_ACCOUNT') {
+            setInactiveAccount(true);
+            return;
+          }
         }
         setError(t("PAGE.INVALID_CREDENTIALS"));
         return;

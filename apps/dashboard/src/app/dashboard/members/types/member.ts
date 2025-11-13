@@ -15,12 +15,6 @@ export type Member = {
 export type ActiveFilter = "all" | "active" | "inactive";
 export type RegistrationFilter = "all" | RegistrationStatus;
 
-export const registrationStatusLabels: Record<RegistrationStatus, string> = {
-  completed: "Completed",
-  pending: "Pending",
-  expired: "Expired",
-};
-
 export const registrationDotClasses: Record<RegistrationStatus, string> = {
   completed: "bg-[#059669]",
   pending: "bg-[#D97706]",

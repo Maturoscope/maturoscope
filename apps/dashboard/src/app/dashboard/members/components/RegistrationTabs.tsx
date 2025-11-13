@@ -1,9 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 import {
   RegistrationFilter,
-  registrationStatusLabels,
 } from "../types/member";
 
 interface RegistrationTabsProps {
@@ -17,6 +17,16 @@ export function RegistrationTabs({
   selectedFilter,
   onFilterChange,
 }: RegistrationTabsProps) {
+  const { t } = useTranslation("MEMBERS");
+  
+  const getFilterLabel = (filter: RegistrationFilter): string => {
+    if (filter === "all") return t("FILTERS.ALL");
+    if (filter === "completed") return t("FILTERS.COMPLETED");
+    if (filter === "pending") return t("FILTERS.PENDING");
+    if (filter === "expired") return t("FILTERS.EXPIRED");
+    return filter;
+  };
+
   return (
     <div className="flex h-9 items-center gap-2 rounded-[10px] bg-[#F5F5F5] px-1">
       {filters.map((filter) => (
@@ -43,7 +53,7 @@ export function RegistrationTabs({
             />
           )}
           <span className="relative z-10">
-            {filter === "all" ? "All" : registrationStatusLabels[filter]}
+            {getFilterLabel(filter)}
           </span>
         </button>
       ))}

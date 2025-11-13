@@ -1,4 +1,5 @@
 import { useState, useMemo, FormEvent } from "react";
+import { useTranslation } from "react-i18next";
 
 interface FormState {
   firstName: string;
@@ -22,6 +23,8 @@ interface FormTouched {
 }
 
 export function useNewMemberForm() {
+  const { t } = useTranslation("MEMBERS");
+  
   const [formState, setFormState] = useState<FormState>({
     firstName: "",
     lastName: "",
@@ -57,28 +60,28 @@ export function useNewMemberForm() {
     switch (field) {
       case "firstName":
         if (!value.trim()) {
-          error = "This field cannot be left blank.";
+          error = t("NEW_MEMBER.ERRORS.FIELD_REQUIRED");
         }
         break;
       case "lastName":
         if (!value.trim()) {
-          error = "This field cannot be left blank.";
+          error = t("NEW_MEMBER.ERRORS.FIELD_REQUIRED");
         }
         break;
       case "email":
         if (!value.trim()) {
-          error = "This field cannot be left blank.";
+          error = t("NEW_MEMBER.ERRORS.FIELD_REQUIRED");
         } else if (!validateEmail(value)) {
-          error = "Enter a valid email address.";
+          error = t("NEW_MEMBER.ERRORS.INVALID_EMAIL");
         }
         break;
       case "confirmEmail":
         if (!value.trim()) {
-          error = "This field cannot be left blank.";
+          error = t("NEW_MEMBER.ERRORS.FIELD_REQUIRED");
         } else if (
           value.trim().toLowerCase() !== formState.email.trim().toLowerCase()
         ) {
-          error = "The emails do not match.";
+          error = t("NEW_MEMBER.ERRORS.EMAILS_DONT_MATCH");
         }
         break;
     }
@@ -148,7 +151,7 @@ export function useNewMemberForm() {
     event.preventDefault();
 
     if (!organizationId) {
-      setFormFeedback("Organization context is missing.");
+      setFormFeedback(t("NEW_MEMBER.ERRORS.ORGANIZATION_MISSING"));
       return;
     }
 
@@ -171,7 +174,7 @@ export function useNewMemberForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to create member.");
+        throw new Error(data.message || t("NEW_MEMBER.ERRORS.CREATE_FAILED"));
       }
 
       resetForm();
@@ -179,7 +182,7 @@ export function useNewMemberForm() {
     } catch (err) {
       console.error("Error creating member:", err);
       setFormFeedback(
-        err instanceof Error ? err.message : "Unexpected error creating member."
+        err instanceof Error ? err.message : t("NEW_MEMBER.ERRORS.UNEXPECTED_ERROR")
       );
     } finally {
       setFormSubmitting(false);

@@ -1,7 +1,9 @@
 import { useState, useCallback, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Member } from "../types/member";
 
 export function useMembers(organizationId?: string) {
+  const { t } = useTranslation("MEMBERS");
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +25,7 @@ export function useMembers(organizationId?: string) {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || "Failed to load members.");
+        setError(data.message || t("NOTIFICATIONS.LOAD_FAILED"));
         setMembers([]);
         return;
       }
@@ -31,12 +33,12 @@ export function useMembers(organizationId?: string) {
       setMembers(data);
     } catch (err) {
       console.error("Error fetching members:", err);
-      setError("Unexpected error fetching members.");
+      setError(t("NOTIFICATIONS.LOAD_ERROR"));
       setMembers([]);
     } finally {
       setLoading(false);
     }
-  }, [organizationId]);
+  }, [organizationId, t]);
 
   useEffect(() => {
     fetchMembers();
@@ -55,7 +57,7 @@ export function useMembers(organizationId?: string) {
 
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
-        throw new Error(data.error || "Failed to update user.");
+        throw new Error(data.error || t("NOTIFICATIONS.UPDATE_FAILED"));
       }
 
       setMembers((prev) =>
@@ -65,7 +67,7 @@ export function useMembers(organizationId?: string) {
       );
     } catch (err) {
       console.error("Error updating user:", err);
-      setError("Failed to update member status.");
+      setError(t("NOTIFICATIONS.UPDATE_FAILED"));
       setTimeout(() => setError(null), 4000);
     }
   };
@@ -89,18 +91,18 @@ export function useMembers(organizationId?: string) {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to resend invitation.");
+        throw new Error(data.message || t("NOTIFICATIONS.RESEND_FAILED"));
       }
 
       // Refresh the members list to get updated createdAt and registrationStatus
       await fetchMembers();
 
-      setError("Invitation resent successfully!");
+      setError(t("NOTIFICATIONS.INVITATION_RESENT"));
       setTimeout(() => setError(null), 3000);
     } catch (err) {
       console.error("Error resending invitation:", err);
       setError(
-        err instanceof Error ? err.message : "Failed to resend invitation."
+        err instanceof Error ? err.message : t("NOTIFICATIONS.RESEND_FAILED")
       );
       setTimeout(() => setError(null), 4000);
     } finally {

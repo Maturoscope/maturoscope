@@ -6,7 +6,6 @@ export type {
 } from "./member";
 
 export {
-  registrationStatusLabels,
   registrationDotClasses,
 } from "./member";
 

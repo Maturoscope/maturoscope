@@ -1,5 +1,6 @@
 import React from "react";
 import { Info, Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Switch } from "@/components/ui/switch";
 import {
   Tooltip,
@@ -26,18 +27,20 @@ export function MembersTable({
   onToggleActive,
   onResendInvitation,
 }: MembersTableProps) {
+  const { t } = useTranslation("MEMBERS");
+
   return (
     <div className="overflow-hidden rounded-[8px] border border-slate-200">
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-[#E5E5E5] text-[#0A0A0A]">
           <thead className="bg-[#F5F5F5] text-sm text-[#0A0A0A]">
             <tr>
-              <th className="px-6 py-3 text-left font-medium">First Name</th>
-              <th className="px-6 py-3 text-left font-medium">Last Name</th>
-              <th className="px-6 py-3 text-left font-medium">Email</th>
+              <th className="px-6 py-3 text-left font-medium">{t("TABLE.HEADERS.FIRST_NAME")}</th>
+              <th className="px-6 py-3 text-left font-medium">{t("TABLE.HEADERS.LAST_NAME")}</th>
+              <th className="px-6 py-3 text-left font-medium">{t("TABLE.HEADERS.EMAIL")}</th>
               <th className="px-6 py-3 text-left font-medium">
                 <div className="flex items-center gap-2">
-                  Registration
+                  {t("TABLE.HEADERS.REGISTRATION")}
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button
@@ -51,15 +54,14 @@ export function MembersTable({
                       side="top"
                       className="max-w-xs text-xs text-center"
                     >
-                      Shows if the member has completed the email invitation, is
-                      still pending confirmation or has expired.
+                      {t("TABLE.TOOLTIPS.REGISTRATION")}
                     </TooltipContent>
                   </Tooltip>
                 </div>
               </th>
               <th className="px-6 py-3 text-left font-medium">
                 <div className="flex items-center gap-2">
-                  Active
+                  {t("TABLE.HEADERS.ACTIVE")}
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <button
@@ -73,8 +75,7 @@ export function MembersTable({
                       side="bottom"
                       className="max-w-xs text-xs text-center"
                     >
-                      Indicates whether the member's account is currently active
-                      or deactivated without being removed from the database.
+                      {t("TABLE.TOOLTIPS.ACTIVE")}
                     </TooltipContent>
                   </Tooltip>
                 </div>
@@ -90,7 +91,7 @@ export function MembersTable({
                 >
                   <div className="flex items-center justify-center gap-2 text-sm text-[#0A0A0A]/60">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Loading members…
+                    {t("TABLE.LOADING")}
                   </div>
                 </td>
               </tr>
@@ -101,7 +102,7 @@ export function MembersTable({
                   colSpan={5}
                   className="px-6 py-12 text-center text-[#0A0A0A]/60"
                 >
-                  {error ? error : "No members match the current filters."}
+                  {error ? error : t("TABLE.NO_RESULTS")}
                 </td>
               </tr>
             )}

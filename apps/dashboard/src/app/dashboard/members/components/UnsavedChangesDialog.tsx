@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,23 +24,26 @@ export function UnsavedChangesDialog({
   onConfirm,
   onCancel,
 }: UnsavedChangesDialogProps) {
+  const { t } = useTranslation("MEMBERS");
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Unsaved Changes</AlertDialogTitle>
+          <AlertDialogTitle>{t("UNSAVED_CHANGES.TITLE")}</AlertDialogTitle>
           <AlertDialogDescription>
-            You have unsaved changes. If you leave now, your latest updates will
-            be lost.
+            {t("UNSAVED_CHANGES.MESSAGE")}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={onCancel}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel onClick={onCancel}>
+            {t("UNSAVED_CHANGES.CANCEL")}
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
             className="bg-foreground text-background hover:bg-foreground/90"
           >
-            Leave Anyway
+            {t("UNSAVED_CHANGES.LEAVE_ANYWAY")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

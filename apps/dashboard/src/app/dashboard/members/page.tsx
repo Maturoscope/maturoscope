@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { DynamicPageHeader } from "@/components/DynamicPageHeader";
 import { useUserContext } from "@/app/hooks/contexts/UserProvider";
 import { useMembers } from "./hooks/useMembers";
@@ -9,6 +10,7 @@ import { MembersHeader } from "./components/MembersHeader";
 import { MembersTable } from "./components/MembersTable";
 
 export default function MembersPage() {
+  const { t } = useTranslation("DASHBOARD");
   const { user } = useUserContext();
   const organizationId = user?.organization?.id;
 
@@ -34,9 +36,9 @@ export default function MembersPage() {
   } = useFilters(members);
 
   const breadcrumbs = useMemo(() => {
-    const organizationName = user?.organization?.name || "Organization";
-    return [{ label: organizationName }, { label: "Members" }];
-  }, [user?.organization?.name]);
+    const organizationName = user?.organization?.name || t("ORGANIZATION");
+    return [{ label: organizationName }, { label: t("MEMBERS") }];
+  }, [user?.organization?.name, t]);
 
   return (
     <>

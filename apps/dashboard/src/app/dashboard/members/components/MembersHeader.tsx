@@ -1,5 +1,6 @@
 import React from "react";
 import { Search, ChevronDown } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -35,6 +36,8 @@ export function MembersHeader({
   organizationId,
   onMemberCreated,
 }: MembersHeaderProps) {
+  const { t } = useTranslation("MEMBERS");
+
   return (
     <div className="flex flex-wrap gap-3">
       <RegistrationTabs
@@ -49,8 +52,8 @@ export function MembersHeader({
             className="inline-flex h-9 items-center gap-2 rounded-[8px] border-slate-200 px-4"
           >
             {activeFilter === "inactive"
-              ? `Inactive (${activeCounts.inactive})`
-              : `Active (${activeCounts.active})`}
+              ? `${t("FILTERS.INACTIVE")} (${activeCounts.inactive})`
+              : `${t("FILTERS.ACTIVE")} (${activeCounts.active})`}
             <ChevronDown className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
@@ -59,13 +62,13 @@ export function MembersHeader({
             onClick={() => onActiveFilterChange("active")}
             className="cursor-pointer text-[#0A0A0A]"
           >
-            Active
+            {t("FILTERS.ACTIVE")}
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => onActiveFilterChange("inactive")}
             className="cursor-pointer text-[#0A0A0A]"
           >
-            Inactive
+            {t("FILTERS.INACTIVE")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -76,7 +79,7 @@ export function MembersHeader({
           <Input
             value={searchQuery}
             onChange={(event) => onSearchChange(event.target.value)}
-            placeholder="Search by first name, last name or email"
+            placeholder={t("SEARCH.PLACEHOLDER")}
             className="h-9 rounded-[8px] border-slate-200 pl-10"
           />
         </div>

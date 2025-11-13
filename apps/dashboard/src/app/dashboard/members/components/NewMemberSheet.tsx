@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { UserPlus, Loader2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,6 +25,7 @@ export function NewMemberSheet({
   organizationId,
   onSuccess,
 }: NewMemberSheetProps) {
+  const { t } = useTranslation("MEMBERS");
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [showUnsavedAlert, setShowUnsavedAlert] = useState(false);
 
@@ -77,13 +79,13 @@ export function NewMemberSheet({
         <SheetTrigger asChild>
           <Button className="bg-foreground text-background hover:bg-foreground/90">
             <UserPlus className="mr-2 h-4 w-4" />
-            Add Member
+            {t("ADD_MEMBER_BUTTON")}
           </Button>
         </SheetTrigger>
         <SheetContent className="sm:max-w-[580px] text-[#0A0A0A]">
           <SheetHeader className="pb-1">
             <SheetTitle className="text-lg font-semibold">
-              New Member
+              {t("NEW_MEMBER.TITLE")}
             </SheetTitle>
           </SheetHeader>
           <div className="w-[95%] mx-auto border-b border-slate-200 " />
@@ -93,10 +95,10 @@ export function NewMemberSheet({
           >
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="firstName">First Name *</Label>
+                <Label htmlFor="firstName">{t("NEW_MEMBER.FIELDS.FIRST_NAME.LABEL")}{t("NEW_MEMBER.FIELDS.FIRST_NAME.REQUIRED")}</Label>
                 <Input
                   id="firstName"
-                  placeholder="First Name"
+                  placeholder={t("NEW_MEMBER.FIELDS.FIRST_NAME.PLACEHOLDER")}
                   value={formState.firstName}
                   onChange={(event) => {
                     const value = event.target.value;
@@ -127,10 +129,10 @@ export function NewMemberSheet({
                 </div>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="lastName">Last Name *</Label>
+                <Label htmlFor="lastName">{t("NEW_MEMBER.FIELDS.LAST_NAME.LABEL")}{t("NEW_MEMBER.FIELDS.LAST_NAME.REQUIRED")}</Label>
                 <Input
                   id="lastName"
-                  placeholder="Last Name"
+                  placeholder={t("NEW_MEMBER.FIELDS.LAST_NAME.PLACEHOLDER")}
                   value={formState.lastName}
                   onChange={(event) => {
                     const value = event.target.value;
@@ -162,11 +164,11 @@ export function NewMemberSheet({
               </div>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="email">Email *</Label>
+              <Label htmlFor="email">{t("NEW_MEMBER.FIELDS.EMAIL.LABEL")}{t("NEW_MEMBER.FIELDS.EMAIL.REQUIRED")}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="Email"
+                placeholder={t("NEW_MEMBER.FIELDS.EMAIL.PLACEHOLDER")}
                 value={formState.email}
                 onChange={(event) => {
                   const value = event.target.value;
@@ -195,18 +197,17 @@ export function NewMemberSheet({
                   <p className="text-xs text-destructive">{formErrors.email}</p>
                 ) : (
                   <p className="text-xs text-muted-foreground">
-                    This email address cannot be modified once the account is
-                    created.
+                    {t("NEW_MEMBER.FIELDS.EMAIL.HELPER_TEXT")}
                   </p>
                 )}
               </div>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="confirmEmail">Confirm email *</Label>
+              <Label htmlFor="confirmEmail">{t("NEW_MEMBER.FIELDS.CONFIRM_EMAIL.LABEL")}{t("NEW_MEMBER.FIELDS.CONFIRM_EMAIL.REQUIRED")}</Label>
               <Input
                 id="confirmEmail"
                 type="email"
-                placeholder="Confirm email"
+                placeholder={t("NEW_MEMBER.FIELDS.CONFIRM_EMAIL.PLACEHOLDER")}
                 value={formState.confirmEmail}
                 onChange={(event) => {
                   const value = event.target.value;
@@ -252,10 +253,10 @@ export function NewMemberSheet({
                 {formSubmitting ? (
                   <span className="flex items-center gap-2">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Creating…
+                    {t("NEW_MEMBER.BUTTONS.CREATING")}
                   </span>
                 ) : (
-                  "Create member"
+                  t("NEW_MEMBER.BUTTONS.CREATE")
                 )}
               </Button>
             </SheetFooter>

@@ -53,7 +53,7 @@ export class UsersController {
       throw new ForbiddenException('You do not have access to this organization');
     }
 
-    return this.usersService.findByOrganization(organizationId);
+    return this.usersService.findByOrganization(organizationId, requesterEmail);
   }
 
   @Get('email/:email')
