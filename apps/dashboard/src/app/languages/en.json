@@ -7,6 +7,46 @@
     "EN": "English",
     "FR": "French"
   },
+  "COMPLETE_REGISTRATION": {
+    "PAGE": {
+      "TITLE": "Set your password",
+      "SUBTITLE": "Create a password to complete your registration.",
+      "PASSWORD_LABEL": "Password",
+      "CONFIRM_PASSWORD_LABEL": "Confirm Password",
+      "PASSWORD_PLACEHOLDER": "Enter a secure password",
+      "CONFIRM_PASSWORD_PLACEHOLDER": "Confirm Password",
+      "SUBMIT_BUTTON": "Set Password",
+      "SUBMITTING": "Setting password…"
+    },
+    "PASSWORD_REQUIREMENTS": {
+      "TITLE": "Your password must contain at least",
+      "MIN_LENGTH": "10 characters",
+      "ONE_LETTER": "1 letter",
+      "ONE_NUMBER_OR_SPECIAL": "1 number or special character (example: # ? ! &)"
+    },
+    "ERRORS": {
+      "PASSWORDS_DONT_MATCH": "The passwords do not match.",
+      "INVALID_TOKEN": "Invitation token is missing.",
+      "EXPIRED_INVITATION": "Invitation is invalid or expired.",
+      "VERIFY_ERROR": "Unable to verify invitation. Please try again later.",
+      "INVALID_INVITATION": "Invitation is no longer valid.",
+      "REGISTRATION_FAILED": "Failed to complete registration.",
+      "UNEXPECTED_ERROR": "Unexpected error completing registration."
+    },
+    "SUCCESS": {
+      "TITLE": "Registration completed",
+      "MESSAGE": "Registration completed. Redirecting to dashboard..."
+    },
+    "LOADING": {
+      "TITLE": "Completing registration...",
+      "MESSAGE": "We are verifying your invitation token."
+    },
+    "INVALID": {
+      "TITLE": "Invalid invitation",
+      "MESSAGE": "This invitation token is not valid or has expired. Please contact your administrator for a new invitation.",
+      "BUTTON": "Go to Login"
+    }
+  },
   "LOGIN": {
     "PAGE": {
       "TITLE": "Login to your account",

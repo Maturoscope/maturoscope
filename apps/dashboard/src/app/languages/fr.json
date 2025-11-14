@@ -7,6 +7,46 @@
     "EN": "Anglais",
     "FR": "Français"
   },
+  "COMPLETE_REGISTRATION": {
+    "PAGE": {
+      "TITLE": "Définir votre mot de passe",
+      "SUBTITLE": "Créez un mot de passe pour compléter votre inscription.",
+      "PASSWORD_LABEL": "Mot de passe",
+      "CONFIRM_PASSWORD_LABEL": "Confirmer le mot de passe",
+      "PASSWORD_PLACEHOLDER": "Entrez un mot de passe sécurisé",
+      "CONFIRM_PASSWORD_PLACEHOLDER": "Confirmer le mot de passe",
+      "SUBMIT_BUTTON": "Définir le mot de passe",
+      "SUBMITTING": "Définition du mot de passe…"
+    },
+    "PASSWORD_REQUIREMENTS": {
+      "TITLE": "Votre mot de passe doit contenir au moins",
+      "MIN_LENGTH": "10 caractères",
+      "ONE_LETTER": "1 lettre",
+      "ONE_NUMBER_OR_SPECIAL": "1 chiffre ou caractère spécial (exemple : # ? ! &)"
+    },
+    "ERRORS": {
+      "PASSWORDS_DONT_MATCH": "Les mots de passe ne correspondent pas.",
+      "INVALID_TOKEN": "Le jeton d'invitation est manquant.",
+      "EXPIRED_INVITATION": "L'invitation est invalide ou expirée.",
+      "VERIFY_ERROR": "Impossible de vérifier l'invitation. Veuillez réessayer plus tard.",
+      "INVALID_INVITATION": "L'invitation n'est plus valide.",
+      "REGISTRATION_FAILED": "Échec de la finalisation de l'inscription.",
+      "UNEXPECTED_ERROR": "Erreur inattendue lors de la finalisation de l'inscription."
+    },
+    "SUCCESS": {
+      "TITLE": "Inscription terminée",
+      "MESSAGE": "Inscription terminée. Redirection vers le tableau de bord..."
+    },
+    "LOADING": {
+      "TITLE": "Finalisation de l'inscription...",
+      "MESSAGE": "Nous vérifions votre jeton d'invitation."
+    },
+    "INVALID": {
+      "TITLE": "Invitation non valide",
+      "MESSAGE": "Ce jeton d'invitation n'est pas valide ou a expiré. Veuillez contacter votre administrateur pour une nouvelle invitation.",
+      "BUTTON": "Aller à la connexion"
+    }
+  },
   "LOGIN": {
     "PAGE": {
       "TITLE": "Connectez-vous à votre compte",

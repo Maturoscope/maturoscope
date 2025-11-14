@@ -22,11 +22,9 @@ const isValidEmail = (email: string): boolean => {
 export default function LoginForm({
   className,
   setBlockedAccount,
-  setInactiveAccount,
   ...props
 }: React.ComponentPropsWithoutRef<"form"> & { 
   setBlockedAccount: (blocked: boolean) => void;
-  setInactiveAccount: (inactive: boolean) => void;
 }) {
   const [formData, setFormData] = useState({
     email: "",
@@ -38,6 +36,7 @@ export default function LoginForm({
   const [success, setSuccess] = useState("");
 
   const [errorEmail, setErrorEmail] = useState(false);
+  const [inactiveAccountError, setInactiveAccountError] = useState("");
   const router = useRouter();
   const { t } = useTranslation("LOGIN");
 
@@ -67,6 +66,7 @@ export default function LoginForm({
       setFormData((prev) => ({ ...prev, email }));
       setError("");
       setErrorEmail(false);
+      setInactiveAccountError("");
 
       if (formData.rememberMe && email && isValidEmail(email)) {
         localStorage.setItem("rememberedEmail", email);
@@ -93,6 +93,7 @@ export default function LoginForm({
     setIsLoading(true);
     setError("");
     setSuccess("");
+    setInactiveAccountError("");
 
     if (formData.rememberMe) {
       localStorage.setItem("rememberedEmail", formData.email);
@@ -122,7 +123,7 @@ export default function LoginForm({
         if (response.status === 403) {
           const data = await response.json();
           if (data.code === 'INACTIVE_ACCOUNT') {
-            setInactiveAccount(true);
+            setInactiveAccountError(`${t("INACTIVE_ACCOUNT.MESSAGE")} ${t("INACTIVE_ACCOUNT.CONTACT_ADMIN")}`);
             return;
           }
         }
@@ -186,8 +187,10 @@ export default function LoginForm({
               onBlur={handleEmailBlur}
               required
               disabled={isLoading}
-              className={errorEmail || error ? "border-red-500" : ""}
+              className={errorEmail || inactiveAccountError ? "border-red-500" : ""}
             />
+            {errorEmail && <p className="text-sm text-red-600">{t("ERRORS.INVALID_EMAIL")}</p>}
+            {inactiveAccountError && <p className="text-sm text-red-600">{inactiveAccountError}</p>}
           </div>
           <div className="grid gap-2">
             <div className="flex items-center">
@@ -206,14 +209,14 @@ export default function LoginForm({
               onChange={(e) => {
                 setFormData((prev) => ({ ...prev, password: e.target.value }));
                 setError("");
+                setInactiveAccountError("");
               }}
               required
               disabled={isLoading}
-              className={error ? "border-red-500" : ""}
+              className={error || inactiveAccountError ? "border-red-500" : ""}
             />
           </div>
 
-          {errorEmail && <p className="text-sm text-red-600 mt-[-15px]">{t("ERRORS.INVALID_EMAIL")}</p>}
           {error && <p className="text-sm text-red-600 mt-[-15px]">{error}</p>}
 
           <div className="flex items-center space-x-2">
