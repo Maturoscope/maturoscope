@@ -9,12 +9,52 @@ interface InvitationEmailPayload {
   companyName: string;
   companyLogoUrl?: string;
   expirationDays: number;
+  language?: string;
+}
+
+interface EmailContent {
+  subject: string;
+  greeting: string;
+  welcomeMessage: string;
+  instructionMessage: string;
+  buttonText: string;
+  expirationMessage: (days: number) => string;
+  footerMessage: string;
 }
 
 @Injectable()
 export class UserInvitationMailService extends BaseMailService {
   constructor(configService: ConfigService) {
     super(configService);
+  }
+
+  private getEmailContent(language: string, companyName: string): EmailContent {
+    const lang = language?.toUpperCase() === 'FR' ? 'FR' : 'EN';
+
+    const translations = {
+      EN: {
+        subject: `You're invited to ${companyName}`,
+        greeting: 'Hi',
+        welcomeMessage: `Welcome to the ${companyName} Team — we're thrilled to have you on board!`,
+        instructionMessage: `You're just one click away from activating your account. Tap the button below to complete your registration:`,
+        buttonText: 'Complete my Registration',
+        expirationMessage: (days: number) => 
+          `Heads up: this link will expire in <strong>${days} day${days === 1 ? '' : 's'}</strong>.`,
+        footerMessage: `Didn't expect this email? No worries — just ignore it.`,
+      },
+      FR: {
+        subject: `Vous êtes invité à rejoindre ${companyName}`,
+        greeting: 'Bonjour',
+        welcomeMessage: `Bienvenue dans l'équipe ${companyName} — nous sommes ravis de vous accueillir !`,
+        instructionMessage: `Vous n'êtes qu'à un clic d'activer votre compte. Cliquez sur le bouton ci-dessous pour compléter votre inscription :`,
+        buttonText: 'Compléter mon inscription',
+        expirationMessage: (days: number) => 
+          `Attention : ce lien expirera dans <strong>${days} jour${days === 1 ? '' : 's'}</strong>.`,
+        footerMessage: `Vous n'attendiez pas cet e-mail ? Pas de souci — ignorez-le simplement.`,
+      },
+    };
+
+    return translations[lang];
   }
 
   async sendInvitationEmail({
@@ -24,16 +64,21 @@ export class UserInvitationMailService extends BaseMailService {
     companyName,
     companyLogoUrl,
     expirationDays,
+    language = 'EN',
   }: InvitationEmailPayload) {
-    const safeName = inviteeFirstName?.trim() ? inviteeFirstName.trim() : 'there';
     const safeCompanyName = companyName || this.configService.get<string>('APP_NAME') || 'Maturoscope';
+    const content = this.getEmailContent(language, safeCompanyName);
+    
+    const safeName = inviteeFirstName?.trim() ? inviteeFirstName.trim() : (language?.toUpperCase() === 'FR' ? 'cher utilisateur' : 'there');
+    const htmlLang = language?.toUpperCase() === 'FR' ? 'fr' : 'en';
+    
     const logoHtml = companyLogoUrl
       ? `<img src="${companyLogoUrl}" alt="${safeCompanyName}" style="width:40px;height:40px;border-radius:12px;object-fit:cover;" />`
       : `<span style="display:inline-flex;width:40px;height:40px;border-radius:12px;background:#111827;color:#ffffff;align-items:center;justify-content:center;font-weight:600;font-size:16px;">${safeCompanyName.slice(0, 1)}</span>`;
 
     const html = `
       <!DOCTYPE html>
-      <html lang="en">
+      <html lang="${htmlLang}">
         <head>
           <meta charset="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -58,34 +103,34 @@ export class UserInvitationMailService extends BaseMailService {
                   </tr>
                   <tr>
                     <td style="font-size:16px;line-height:26px;color:#111827;padding-bottom:16px;">
-                      <strong style="font-size:18px;">Hi ${safeName},</strong>
+                      <strong style="font-size:18px;">${content.greeting} ${safeName},</strong>
                     </td>
                   </tr>
                   <tr>
                     <td style="font-size:16px;line-height:26px;color:#4B5563;padding-bottom:16px;">
-                      Welcome to the ${safeCompanyName} Team — we're thrilled to have you on board!
+                      ${content.welcomeMessage}
                     </td>
                   </tr>
                   <tr>
                     <td style="font-size:16px;line-height:26px;color:#4B5563;padding-bottom:24px;">
-                      You're just one click away from activating your account. Tap the button below to complete your registration:
+                      ${content.instructionMessage}
                     </td>
                   </tr>
                   <tr>
                     <td style="padding-bottom:24px;">
                       <a href="${magicLink}" style="display:inline-block;padding:14px 28px;background-color:#111827;color:#ffffff;border-radius:14px;font-size:16px;font-weight:600;text-decoration:none;">
-                        Complete my Registration
+                        ${content.buttonText}
                       </a>
                     </td>
                   </tr>
                   <tr>
                     <td style="font-size:16px;line-height:26px;color:#4B5563;padding-bottom:32px;">
-                      Heads up: this link will expire in <strong>${expirationDays} day${expirationDays === 1 ? '' : 's'}</strong>.
+                      ${content.expirationMessage(expirationDays)}
                     </td>
                   </tr>
                   <tr>
                     <td style="font-size:14px;line-height:22px;color:#9CA3AF;border-top:1px solid #E5E7EB;padding-top:24px;">
-                      Didn't expect this email? No worries — just ignore it.
+                      ${content.footerMessage}
                     </td>
                   </tr>
                 </table>
@@ -98,7 +143,7 @@ export class UserInvitationMailService extends BaseMailService {
 
     await this.sendEmail({
       to: inviteeEmail,
-      subject: `You're invited to ${safeCompanyName}`,
+      subject: content.subject,
       html,
     });
   }

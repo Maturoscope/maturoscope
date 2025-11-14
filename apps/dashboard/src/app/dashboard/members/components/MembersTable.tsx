@@ -31,14 +31,14 @@ export function MembersTable({
 
   return (
     <div className="overflow-hidden rounded-[8px] border border-slate-200">
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-200px)]">
         <table className="min-w-full divide-y divide-[#E5E5E5] text-[#0A0A0A]">
-          <thead className="bg-[#F5F5F5] text-sm text-[#0A0A0A]">
+          <thead className="bg-[#F5F5F5] text-sm text-[#0A0A0A] sticky top-0 z-10">
             <tr>
-              <th className="px-6 py-3 text-left font-medium">{t("TABLE.HEADERS.FIRST_NAME")}</th>
-              <th className="px-6 py-3 text-left font-medium">{t("TABLE.HEADERS.LAST_NAME")}</th>
-              <th className="px-6 py-3 text-left font-medium">{t("TABLE.HEADERS.EMAIL")}</th>
-              <th className="px-6 py-3 text-left font-medium">
+              <th className="px-6 py-3 text-left font-medium bg-[#F5F5F5]">{t("TABLE.HEADERS.FIRST_NAME")}</th>
+              <th className="px-6 py-3 text-left font-medium bg-[#F5F5F5]">{t("TABLE.HEADERS.LAST_NAME")}</th>
+              <th className="px-6 py-3 text-left font-medium bg-[#F5F5F5]">{t("TABLE.HEADERS.EMAIL")}</th>
+              <th className="px-6 py-3 text-left font-medium bg-[#F5F5F5]">
                 <div className="flex items-center gap-2">
                   {t("TABLE.HEADERS.REGISTRATION")}
                   <Tooltip>
@@ -59,7 +59,7 @@ export function MembersTable({
                   </Tooltip>
                 </div>
               </th>
-              <th className="px-6 py-3 text-left font-medium">
+              <th className="px-6 py-3 text-left font-medium bg-[#F5F5F5]">
                 <div className="flex items-center gap-2">
                   {t("TABLE.HEADERS.ACTIVE")}
                   <Tooltip>

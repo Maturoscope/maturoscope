@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserInvitationService } from './user-invitation.service';
 import { UserInvitationController } from './user-invitation.controller';
 import { UsersModule } from '../users/users.module';
+import { OrganizationsModule } from '../organizations/organizations.module';
 import { MailModule } from '../../common/mail/mail.module';
 import { UserInvitationMailService } from './mail.service';
 import { IntegrationAuth0Module } from '../integration-auth0/integration-auth0.module';
@@ -12,6 +13,7 @@ import { IntegrationAuth0Module } from '../integration-auth0/integration-auth0.m
   imports: [
     ConfigModule,
     UsersModule,
+    OrganizationsModule,
     IntegrationAuth0Module,
     MailModule,
     JwtModule.registerAsync({

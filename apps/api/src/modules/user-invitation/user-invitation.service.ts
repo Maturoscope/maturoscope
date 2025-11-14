@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, InternalServerErrorException, NotFound
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
+import { OrganizationsService } from '../organizations/organizations.service';
 import { CreateUserInvitationDto } from './dto/create-user-invitation.dto';
 import { CompleteUserInvitationDto } from './dto/complete-user-invitation.dto';
 import { UserInvitationMailService } from './mail.service';
@@ -23,6 +24,7 @@ export class UserInvitationService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly usersService: UsersService,
+    private readonly organizationsService: OrganizationsService,
     private readonly userInvitationMailService: UserInvitationMailService,
   ) {}
 
@@ -98,6 +100,17 @@ export class UserInvitationService {
       this.configService.get<string>('APP_NAME') ||
       'Maturoscope';
     let companyLogoUrl: string | undefined;
+    let organizationLanguage = 'EN'; // Default to English
+
+    // Get organization details to retrieve language preference
+    try {
+      const organization = await this.organizationsService.findOne(organizationId);
+      if (organization) {
+        organizationLanguage = organization.language?.toUpperCase() || 'EN';
+      }
+    } catch (error) {
+      console.error('Error fetching organization for language:', error);
+    }
 
     if (invitedBy?.email) {
       const inviter = await this.usersService.findByUserEmail(invitedBy.email);
@@ -137,6 +150,7 @@ export class UserInvitationService {
       companyName,
       companyLogoUrl,
       expirationDays: expirationDaysDisplay,
+      language: organizationLanguage,
     });
 
     return {
@@ -207,6 +221,17 @@ export class UserInvitationService {
       this.configService.get<string>('APP_NAME') ||
       'Maturoscope';
     let companyLogoUrl: string | undefined;
+    let organizationLanguage = 'EN'; // Default to English
+
+    // Get organization details to retrieve language preference
+    try {
+      const organization = await this.organizationsService.findOne(organizationId);
+      if (organization) {
+        organizationLanguage = organization.language?.toUpperCase() || 'EN';
+      }
+    } catch (error) {
+      console.error('Error fetching organization for language:', error);
+    }
 
     if (invitedBy?.email) {
       const inviter = await this.usersService.findByUserEmail(invitedBy.email);
@@ -246,6 +271,7 @@ export class UserInvitationService {
       companyName,
       companyLogoUrl,
       expirationDays: expirationDaysDisplay,
+      language: organizationLanguage,
     });
 
     return {
