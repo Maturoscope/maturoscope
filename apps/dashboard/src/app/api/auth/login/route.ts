@@ -35,7 +35,7 @@ export const POST = async (req: Request) => {
       return NextResponse.json({ error: data.error_description || 'Error en autenticación' }, { status: 400 });
     }
 
-    // Verificar si el usuario está activo en nuestra base de datos
+    // Check if the user is active in our database
     try {
       const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
       const userResponse = await fetch(`${apiBaseUrl}/users/email/${encodeURIComponent(email)}`, {
@@ -49,7 +49,7 @@ export const POST = async (req: Request) => {
       if (userResponse.ok) {
         const userData = await userResponse.json();
         
-        // Verificar si el usuario está inactivo
+        // Check if the user is inactive
         if (userData.isActive === false) {
           return NextResponse.json(
             { 
@@ -62,7 +62,7 @@ export const POST = async (req: Request) => {
       }
     } catch (error) {
       console.error('Error checking user active status:', error);
-      // Continuar con el login si hay error al verificar el estado
+      // Continue with login if there's an error checking the status
     }
 
     const responseHeaders = new Headers();

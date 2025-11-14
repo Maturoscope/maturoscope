@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import React, { FormEvent, useEffect, useMemo, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { PasswordInput } from '@/components/ui/password-input';
 import { Input } from '@/components/ui/input';
@@ -18,7 +18,7 @@ interface InvitationData {
 
 const passwordRequirement = 'Password must be at least 8 characters long';
 
-export default function CompleteRegistrationPage() {
+function CompleteRegistrationForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -192,6 +192,21 @@ export default function CompleteRegistrationPage() {
         </Button>
       </form>
     </div>
+  );
+}
+
+export default function CompleteRegistrationPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex flex-col gap-4">
+          <h1 className="text-2xl font-semibold">Loading...</h1>
+          <p className="text-muted-foreground">Please wait while we verify your invitation.</p>
+        </div>
+      }
+    >
+      <CompleteRegistrationForm />
+    </Suspense>
   );
 }
 
