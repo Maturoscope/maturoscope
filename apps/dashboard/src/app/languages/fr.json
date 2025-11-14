@@ -26,6 +26,13 @@
       "GO_BACK_TO": "Retour à",
       "SIGN_IN": "Se connecter"
     },
+    "INACTIVE_ACCOUNT": {
+      "TITLE": "Compte inactif",
+      "MESSAGE": "Votre compte est actuellement inactif et vous ne pouvez pas vous connecter pour le moment.",
+      "CONTACT_ADMIN": "Veuillez contacter votre administrateur pour réactiver votre compte.",
+      "GO_BACK_TO": "Retour à",
+      "SIGN_IN": "Se connecter"
+    },
     "RESET_PASSWORD": {
       "TITLE": "Réinitialiser votre mot de passe",
       "SUBTITLE": "Tapez votre adresse e-mail pour envoyer des instructions de réinitialisation de votre mot de passe dans votre boîte de réception.",
@@ -55,6 +62,94 @@
     "REPORTS": "Rapports",
     "ORGANIZATIONS": "Organisations",
     "LOG_OUT": "Se déconnecter"
+  },
+  "MEMBERS": {
+    "PAGE_TITLE": "Membres",
+    "FILTERS": {
+      "ALL": "Tous",
+      "COMPLETED": "Terminé",
+      "PENDING": "En attente",
+      "EXPIRED": "Expiré",
+      "ACTIVE": "Actif",
+      "INACTIVE": "Inactif"
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Rechercher par prénom, nom ou e-mail"
+    },
+    "ADD_MEMBER_BUTTON": "Ajouter un membre",
+    "TABLE": {
+      "HEADERS": {
+        "FIRST_NAME": "Prénom",
+        "LAST_NAME": "Nom",
+        "EMAIL": "E-mail",
+        "REGISTRATION": "Inscription",
+        "ACTIVE": "Actif"
+      },
+      "TOOLTIPS": {
+        "REGISTRATION": "Indique si le membre a complété l'invitation par e-mail, est toujours en attente de confirmation ou a expiré.",
+        "ACTIVE": "Indique si le compte du membre est actuellement actif ou désactivé sans être supprimé de la base de données."
+      },
+      "LOADING": "Chargement des membres…",
+      "NO_RESULTS": "Aucun membre ne correspond aux filtres actuels.",
+      "RESEND_INVITATION": "Renvoyer l'invitation"
+    },
+    "REGISTRATION_STATUS": {
+      "COMPLETED": "Terminé",
+      "PENDING": "En attente",
+      "EXPIRED": "Expiré"
+    },
+    "NEW_MEMBER": {
+      "TITLE": "Nouveau membre",
+      "FIELDS": {
+        "FIRST_NAME": {
+          "LABEL": "Prénom",
+          "PLACEHOLDER": "Prénom",
+          "REQUIRED": "*"
+        },
+        "LAST_NAME": {
+          "LABEL": "Nom",
+          "PLACEHOLDER": "Nom",
+          "REQUIRED": "*"
+        },
+        "EMAIL": {
+          "LABEL": "E-mail",
+          "PLACEHOLDER": "E-mail",
+          "REQUIRED": "*",
+          "HELPER_TEXT": "Cette adresse e-mail ne peut pas être modifiée une fois le compte créé."
+        },
+        "CONFIRM_EMAIL": {
+          "LABEL": "Confirmer l'e-mail",
+          "PLACEHOLDER": "Confirmer l'e-mail",
+          "REQUIRED": "*"
+        }
+      },
+      "BUTTONS": {
+        "CREATE": "Créer un membre",
+        "CREATING": "Création…"
+      },
+      "ERRORS": {
+        "FIELD_REQUIRED": "Ce champ ne peut pas être laissé vide.",
+        "INVALID_EMAIL": "Entrez une adresse e-mail valide.",
+        "EMAILS_DONT_MATCH": "Les e-mails ne correspondent pas.",
+        "ORGANIZATION_MISSING": "Le contexte de l'organisation est manquant.",
+        "CREATE_FAILED": "Échec de la création du membre.",
+        "UNEXPECTED_ERROR": "Erreur inattendue lors de la création du membre."
+      }
+    },
+    "UNSAVED_CHANGES": {
+      "TITLE": "Modifications non enregistrées",
+      "MESSAGE": "Vous avez des modifications non enregistrées. Si vous partez maintenant, vos dernières mises à jour seront perdues.",
+      "CANCEL": "Annuler",
+      "LEAVE_ANYWAY": "Partir quand même"
+    },
+    "NOTIFICATIONS": {
+      "MEMBER_CREATED": "Membre créé avec succès",
+      "INVITATION_RESENT": "Invitation renvoyée avec succès !",
+      "UPDATE_FAILED": "Échec de la mise à jour du statut du membre.",
+      "RESEND_FAILED": "Échec du renvoi de l'invitation.",
+      "LOAD_FAILED": "Échec du chargement des membres.",
+      "LOAD_ERROR": "Erreur inattendue lors de la récupération des membres."
+    }
   },
   "USER_SETTINGS": {
     "TITLE": "Paramètres",

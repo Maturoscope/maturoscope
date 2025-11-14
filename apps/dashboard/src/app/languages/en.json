@@ -26,6 +26,13 @@
       "GO_BACK_TO": "Go back to",
       "SIGN_IN": "Sign in"
     },
+    "INACTIVE_ACCOUNT": {
+      "TITLE": "Account Inactive",
+      "MESSAGE": "Your account is currently inactive and you cannot log in at this time.",
+      "CONTACT_ADMIN": "Please contact your administrator to reactivate your account.",
+      "GO_BACK_TO": "Go back to",
+      "SIGN_IN": "Sign in"
+    },
     "RESET_PASSWORD": {
       "TITLE": "Reset your password",
       "SUBTITLE": "Type your email address to send instructions to reset your password to you inbox.",
@@ -55,6 +62,94 @@
     "REPORTS": "Reports",
     "ORGANIZATIONS": "Organizations",
     "LOG_OUT": "Log Out"
+  },
+  "MEMBERS": {
+    "PAGE_TITLE": "Members",
+    "FILTERS": {
+      "ALL": "All",
+      "COMPLETED": "Completed",
+      "PENDING": "Pending",
+      "EXPIRED": "Expired",
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Search by first name, last name or email"
+    },
+    "ADD_MEMBER_BUTTON": "Add Member",
+    "TABLE": {
+      "HEADERS": {
+        "FIRST_NAME": "First Name",
+        "LAST_NAME": "Last Name",
+        "EMAIL": "Email",
+        "REGISTRATION": "Registration",
+        "ACTIVE": "Active"
+      },
+      "TOOLTIPS": {
+        "REGISTRATION": "Shows if the member has completed the email invitation, is still pending confirmation or has expired.",
+        "ACTIVE": "Indicates whether the member's account is currently active or deactivated without being removed from the database."
+      },
+      "LOADING": "Loading members…",
+      "NO_RESULTS": "No members match the current filters.",
+      "RESEND_INVITATION": "Resend invitation"
+    },
+    "REGISTRATION_STATUS": {
+      "COMPLETED": "Completed",
+      "PENDING": "Pending",
+      "EXPIRED": "Expired"
+    },
+    "NEW_MEMBER": {
+      "TITLE": "New Member",
+      "FIELDS": {
+        "FIRST_NAME": {
+          "LABEL": "First Name",
+          "PLACEHOLDER": "First Name",
+          "REQUIRED": "*"
+        },
+        "LAST_NAME": {
+          "LABEL": "Last Name",
+          "PLACEHOLDER": "Last Name",
+          "REQUIRED": "*"
+        },
+        "EMAIL": {
+          "LABEL": "Email",
+          "PLACEHOLDER": "Email",
+          "REQUIRED": "*",
+          "HELPER_TEXT": "This email address cannot be modified once the account is created."
+        },
+        "CONFIRM_EMAIL": {
+          "LABEL": "Confirm email",
+          "PLACEHOLDER": "Confirm email",
+          "REQUIRED": "*"
+        }
+      },
+      "BUTTONS": {
+        "CREATE": "Create member",
+        "CREATING": "Creating…"
+      },
+      "ERRORS": {
+        "FIELD_REQUIRED": "This field cannot be left blank.",
+        "INVALID_EMAIL": "Enter a valid email address.",
+        "EMAILS_DONT_MATCH": "The emails do not match.",
+        "ORGANIZATION_MISSING": "Organization context is missing.",
+        "CREATE_FAILED": "Failed to create member.",
+        "UNEXPECTED_ERROR": "Unexpected error creating member."
+      }
+    },
+    "UNSAVED_CHANGES": {
+      "TITLE": "Unsaved Changes",
+      "MESSAGE": "You have unsaved changes. If you leave now, your latest updates will be lost.",
+      "CANCEL": "Cancel",
+      "LEAVE_ANYWAY": "Leave Anyway"
+    },
+    "NOTIFICATIONS": {
+      "MEMBER_CREATED": "Member created successfully",
+      "INVITATION_RESENT": "Invitation resent successfully!",
+      "UPDATE_FAILED": "Failed to update member status.",
+      "RESEND_FAILED": "Failed to resend invitation.",
+      "LOAD_FAILED": "Failed to load members.",
+      "LOAD_ERROR": "Unexpected error fetching members."
+    }
   },
   "USER_SETTINGS": {
     "TITLE": "Settings",

@@ -8,6 +8,7 @@ import { OrganizationsModule } from './modules/organizations/organizations.modul
 import { ReportModule } from './modules/report/report.module';
 import { AuthModule } from './common/auth-module/auth.module';
 import { IntegrationAuth0Module } from './modules/integration-auth0/integration-auth0.module';
+import { UserInvitationModule } from './modules/user-invitation/user-invitation.module';
 import * as fs from 'fs';
 import { SchemaInitService } from './common/schema-init/schema-init.service';
 
@@ -48,6 +49,7 @@ import { SchemaInitService } from './common/schema-init/schema-init.service';
     ReportModule,
     AuthModule,
     IntegrationAuth0Module,
+    UserInvitationModule,
   ],
   controllers: [AppController],
   providers: [AppService, SchemaInitService],

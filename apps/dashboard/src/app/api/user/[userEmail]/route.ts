@@ -8,9 +8,9 @@ async function handleUserUpdate(req: NextRequest, userEmail: string) {
   const body = await req.json()
 
   // Validate required fields for profile update
-  if (!body.firstName && !body.lastName && !body.picture) {
+  if (!body.firstName && !body.lastName && !body.picture && body.isActive === undefined) {
     return NextResponse.json({ 
-      error: 'At least one field (firstName, lastName, picture) is required' 
+      error: 'At least one field (firstName, lastName, picture, isActive) is required' 
     }, { status: 400 })
   }
 

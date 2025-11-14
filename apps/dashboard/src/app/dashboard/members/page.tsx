@@ -1,28 +1,70 @@
-"use client"
+"use client";
 
-import React from "react";
-import { DynamicPageHeader } from "@/components/DynamicPageHeader"
-import { useTranslation } from "react-i18next"
-import { useUserContext } from "@/app/hooks/contexts/UserProvider"
+import React, { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { DynamicPageHeader } from "@/components/DynamicPageHeader";
+import { useUserContext } from "@/app/hooks/contexts/UserProvider";
+import { useMembers } from "./hooks/useMembers";
+import { useFilters } from "./hooks/useFilters";
+import { MembersHeader } from "./components/MembersHeader";
+import { MembersTable } from "./components/MembersTable";
 
 export default function MembersPage() {
-  const { t } = useTranslation("DASHBOARD")
-  const { user } = useUserContext()
+  const { t } = useTranslation("DASHBOARD");
+  const { user } = useUserContext();
+  const organizationId = user?.organization?.id;
 
-  const generateBreadcrumbs = () => {
-    const organizationName = user?.organization?.name || "Organization";
-    return [
-      { label: organizationName },
-      { label: t('MEMBERS') }
-    ];
-  };
+  const {
+    members,
+    loading,
+    error,
+    resendingUserId,
+    fetchMembers,
+    handleToggleActive,
+    handleResendInvitation,
+  } = useMembers(organizationId);
+
+  const {
+    searchQuery,
+    setSearchQuery,
+    registrationFilter,
+    setRegistrationFilter,
+    activeFilter,
+    setActiveFilter,
+    filteredMembers,
+    counts,
+  } = useFilters(members);
+
+  const breadcrumbs = useMemo(() => {
+    const organizationName = user?.organization?.name || t("ORGANIZATION");
+    return [{ label: organizationName }, { label: t("MEMBERS") }];
+  }, [user?.organization?.name, t]);
 
   return (
     <>
-      <DynamicPageHeader breadcrumbs={generateBreadcrumbs()} />
-      <div className="flex flex-1 flex-col gap-4 p-6">
-        <h1 className="text-3xl font-bold">{t('MEMBERS')}</h1>
+      <DynamicPageHeader breadcrumbs={breadcrumbs} />
+      <div className="flex flex-1 flex-col gap-6 px-6 pb-6 text-[#0A0A0A] mt-5">
+        <MembersHeader
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          registrationFilter={registrationFilter}
+          onRegistrationFilterChange={setRegistrationFilter}
+          activeFilter={activeFilter}
+          onActiveFilterChange={setActiveFilter}
+          activeCounts={{ active: counts.active, inactive: counts.inactive }}
+          organizationId={organizationId || ""}
+          onMemberCreated={fetchMembers}
+        />
+
+        <MembersTable
+          members={filteredMembers}
+          loading={loading}
+          error={error}
+          resendingUserId={resendingUserId}
+          onToggleActive={handleToggleActive}
+          onResendInvitation={handleResendInvitation}
+        />
       </div>
     </>
-  )
+  );
 }
