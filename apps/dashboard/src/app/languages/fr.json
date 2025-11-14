@@ -182,6 +182,12 @@
       "CANCEL": "Annuler",
       "LEAVE_ANYWAY": "Partir quand même"
     },
+    "DEACTIVATE_USER": {
+      "TITLE": "Vous êtes sur le point de désactiver {{name}}",
+      "MESSAGE": "Une fois désactivé, l'utilisateur n'aura plus accès à la plateforme.",
+      "CANCEL": "Annuler",
+      "CONFIRM": "Oui, désactiver"
+    },
     "NOTIFICATIONS": {
       "MEMBER_CREATED": "Membre créé avec succès",
       "INVITATION_RESENT": "Invitation renvoyée avec succès !",

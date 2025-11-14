@@ -182,6 +182,12 @@
       "CANCEL": "Cancel",
       "LEAVE_ANYWAY": "Leave Anyway"
     },
+    "DEACTIVATE_USER": {
+      "TITLE": "You're about to deactivate {{name}}",
+      "MESSAGE": "Once deactivated, the user will no longer have access to the platform.",
+      "CANCEL": "Cancel",
+      "CONFIRM": "Yes, Deactivate"
+    },
     "NOTIFICATIONS": {
       "MEMBER_CREATED": "Member created successfully",
       "INVITATION_RESENT": "Invitation resent successfully!",

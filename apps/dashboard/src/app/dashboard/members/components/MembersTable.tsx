@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Info, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Switch } from "@/components/ui/switch";
@@ -7,6 +7,16 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Member } from "../types/member";
 import { RegistrationBadge } from "./RegistrationBadge";
 
@@ -28,8 +38,35 @@ export function MembersTable({
   onResendInvitation,
 }: MembersTableProps) {
   const { t } = useTranslation("MEMBERS");
+  const [showDeactivateDialog, setShowDeactivateDialog] = useState(false);
+  const [memberToDeactivate, setMemberToDeactivate] = useState<Member | null>(null);
+
+  const handleSwitchChange = (member: Member, value: boolean) => {
+    if (!value) {
+      // User is trying to deactivate - show confirmation dialog
+      setMemberToDeactivate(member);
+      setShowDeactivateDialog(true);
+    } else {
+      // User is activating - proceed directly
+      onToggleActive(member, value);
+    }
+  };
+
+  const handleConfirmDeactivate = () => {
+    if (memberToDeactivate) {
+      onToggleActive(memberToDeactivate, false);
+      setShowDeactivateDialog(false);
+      setMemberToDeactivate(null);
+    }
+  };
+
+  const handleCancelDeactivate = () => {
+    setShowDeactivateDialog(false);
+    setMemberToDeactivate(null);
+  };
 
   return (
+    <>
     <div className="overflow-hidden rounded-[8px] border border-slate-200">
       <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-200px)]">
         <table className="min-w-full divide-y divide-[#E5E5E5] text-[#0A0A0A]">
@@ -128,7 +165,7 @@ export function MembersTable({
                   <td className="px-6 py-4">
                     <Switch
                       checked={member.isActive}
-                      onCheckedChange={(value) => onToggleActive(member, value)}
+                      onCheckedChange={(value) => handleSwitchChange(member, value)}
                       aria-label={`Toggle active status for ${member.firstName} ${member.lastName}`}
                     />
                   </td>
@@ -138,6 +175,33 @@ export function MembersTable({
         </table>
       </div>
     </div>
+
+    <AlertDialog open={showDeactivateDialog} onOpenChange={setShowDeactivateDialog}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            {t("DEACTIVATE_USER.TITLE", {
+              name: memberToDeactivate ? `${memberToDeactivate.firstName} ${memberToDeactivate.lastName}` : ""
+            })}
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            {t("DEACTIVATE_USER.MESSAGE")}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="mt-4">
+          <AlertDialogCancel onClick={handleCancelDeactivate}>
+            {t("DEACTIVATE_USER.CANCEL")}
+          </AlertDialogCancel>
+          <AlertDialogAction 
+            onClick={handleConfirmDeactivate}
+            className="bg-red-600 text-white hover:bg-red-700"
+          >
+            {t("DEACTIVATE_USER.CONFIRM")}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+    </>
   );
 }
 
