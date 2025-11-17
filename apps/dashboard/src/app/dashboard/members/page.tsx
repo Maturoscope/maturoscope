@@ -1,18 +1,26 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DynamicPageHeader } from "@/components/DynamicPageHeader";
 import { useUserContext } from "@/app/hooks/contexts/UserProvider";
+import { Toast } from "@/components/ui/toast";
 import { useMembers } from "./hooks/useMembers";
 import { useFilters } from "./hooks/useFilters";
 import { MembersHeader } from "./components/MembersHeader";
 import { MembersTable } from "./components/MembersTable";
+import { Member } from "./types/member";
 
 export default function MembersPage() {
-  const { t } = useTranslation("DASHBOARD");
+  const { t } = useTranslation("MEMBERS");
+  const { t: tDashboard } = useTranslation("DASHBOARD");
   const { user } = useUserContext();
   const organizationId = user?.organization?.id;
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [createdMemberName, setCreatedMemberName] = useState("");
+  const [showDeactivateToast, setShowDeactivateToast] = useState(false);
+  const [showReactivateToast, setShowReactivateToast] = useState(false);
+  const [toggledMemberName, setToggledMemberName] = useState("");
 
   const {
     members,
@@ -36,9 +44,26 @@ export default function MembersPage() {
   } = useFilters(members);
 
   const breadcrumbs = useMemo(() => {
-    const organizationName = user?.organization?.name || t("ORGANIZATION");
-    return [{ label: organizationName }, { label: t("MEMBERS") }];
-  }, [user?.organization?.name, t]);
+    const organizationName = user?.organization?.name || tDashboard("ORGANIZATION");
+    return [{ label: organizationName }, { label: tDashboard("MEMBERS") }];
+  }, [user?.organization?.name, tDashboard]);
+
+  const handleMemberCreated = (memberName: string) => {
+    setCreatedMemberName(memberName);
+    setShowSuccessToast(true);
+    fetchMembers();
+  };
+
+  const handleToggleActiveWithToast = (member: Member, value: boolean) => {
+    handleToggleActive(member, value, (memberName: string, wasActivated: boolean) => {
+      setToggledMemberName(memberName);
+      if (wasActivated) {
+        setShowReactivateToast(true);
+      } else {
+        setShowDeactivateToast(true);
+      }
+    });
+  };
 
   return (
     <>
@@ -53,7 +78,7 @@ export default function MembersPage() {
           onActiveFilterChange={setActiveFilter}
           activeCounts={{ active: counts.active, inactive: counts.inactive }}
           organizationId={organizationId || ""}
-          onMemberCreated={fetchMembers}
+          onMemberCreated={handleMemberCreated}
         />
 
         <MembersTable
@@ -61,10 +86,54 @@ export default function MembersPage() {
           loading={loading}
           error={error}
           resendingUserId={resendingUserId}
-          onToggleActive={handleToggleActive}
+          activeFilter={activeFilter}
+          onToggleActive={handleToggleActiveWithToast}
           onResendInvitation={handleResendInvitation}
         />
       </div>
+
+      <Toast
+        showCloseButton={false}
+        title={t("TOASTS.MEMBER_CREATED.TITLE")}
+        description={t("TOASTS.MEMBER_CREATED.DESCRIPTION", { name: createdMemberName })}
+        isVisible={showSuccessToast}
+        onClose={() => setShowSuccessToast(false)}
+        showIcon={false}
+      />
+
+      <Toast
+        title={t("TOASTS.MEMBER_DEACTIVATED.TITLE")}
+        description={t("TOASTS.MEMBER_DEACTIVATED.DESCRIPTION", { name: toggledMemberName })}
+        isVisible={showDeactivateToast}
+        onClose={() => setShowDeactivateToast(false)}
+        onUndo={() => {
+          const member = members.find(m => `${m.firstName} ${m.lastName}` === toggledMemberName);
+          if (member) {
+            handleToggleActive(member, true);
+          }
+          setShowDeactivateToast(false);
+        }}
+        undoText={t("TOASTS.UNDO")}
+        showIcon={false}
+        showCloseButton={false}
+      />
+
+      <Toast
+        title={t("TOASTS.MEMBER_REACTIVATED.TITLE")}
+        description={t("TOASTS.MEMBER_REACTIVATED.DESCRIPTION", { name: toggledMemberName })}
+        isVisible={showReactivateToast}
+        onClose={() => setShowReactivateToast(false)}
+        onUndo={() => {
+          const member = members.find(m => `${m.firstName} ${m.lastName}` === toggledMemberName);
+          if (member) {
+            handleToggleActive(member, false);
+          }
+          setShowReactivateToast(false);
+        }}
+        undoText={t("TOASTS.UNDO")}
+        showIcon={false}
+        showCloseButton={false}
+      />
     </>
   );
 }

@@ -131,7 +131,25 @@
       },
       "LOADING": "Chargement des membres…",
       "NO_RESULTS": "Aucun membre ne correspond aux filtres actuels.",
+      "EMPTY_DESCRIPTION": "Vous n'avez aucun membre correspondant aux filtres sélectionnés.",
+      "NO_INACTIVE_MEMBERS": "Aucun membre inactif",
+      "NO_INACTIVE_MEMBERS_DESCRIPTION": "Vous n'avez aucun membre inactif.",
       "RESEND_INVITATION": "Renvoyer l'invitation"
+    },
+    "TOASTS": {
+      "MEMBER_CREATED": {
+        "TITLE": "Membre créé avec succès !",
+        "DESCRIPTION": "{{name}} a reçu un lien pour accéder à la plateforme."
+      },
+      "MEMBER_DEACTIVATED": {
+        "TITLE": "Membre désactivé avec succès !",
+        "DESCRIPTION": "Le compte de {{name}} a été désactivé. L'utilisateur n'a plus accès à la plateforme."
+      },
+      "MEMBER_REACTIVATED": {
+        "TITLE": "Membre réactivé avec succès !",
+        "DESCRIPTION": "{{name}} a été réactivé. L'utilisateur a maintenant accès à la plateforme."
+      },
+      "UNDO": "Annuler"
     },
     "REGISTRATION_STATUS": {
       "COMPLETED": "Terminé",

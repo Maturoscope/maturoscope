@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Info, Loader2 } from "lucide-react";
+import { Info, Loader2, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -25,6 +25,7 @@ interface MembersTableProps {
   loading: boolean;
   error: string | null;
   resendingUserId: string | null;
+  activeFilter: "all" | "active" | "inactive";
   onToggleActive: (member: Member, value: boolean) => void;
   onResendInvitation: (member: Member) => void;
 }
@@ -34,6 +35,7 @@ export function MembersTable({
   loading,
   error,
   resendingUserId,
+  activeFilter,
   onToggleActive,
   onResendInvitation,
 }: MembersTableProps) {
@@ -119,7 +121,7 @@ export function MembersTable({
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-200 bg-white text-sm text-[#0A0A0A]">
+          <tbody className="bg-white text-sm text-[#0A0A0A] divide-y divide-slate-200">
             {loading && (
               <tr>
                 <td
@@ -130,16 +132,6 @@ export function MembersTable({
                     <Loader2 className="h-4 w-4 animate-spin" />
                     {t("TABLE.LOADING")}
                   </div>
-                </td>
-              </tr>
-            )}
-            {!loading && members.length === 0 && (
-              <tr>
-                <td
-                  colSpan={5}
-                  className="px-6 py-12 text-center text-[#0A0A0A]/60"
-                >
-                  {error ? error : t("TABLE.NO_RESULTS")}
                 </td>
               </tr>
             )}
@@ -175,6 +167,32 @@ export function MembersTable({
         </table>
       </div>
     </div>
+
+    {!loading && members.length === 0 && (
+      <div className="flex w-full flex-col items-center justify-center gap-6 rounded-lg border-1 border-dashed border-[#E5E5E5] bg-white mt-[-15px]" style={{ height: 'calc(100vh - 230px)' }}>
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#E5E5E5] shadow-xs">
+          <User className="h-6 w-6 text-[#0A0A0A]" strokeWidth={1.5} />
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <h3 className="text-lg font-semibold text-[#0A0A0A]">
+            {error 
+              ? "Error loading members" 
+              : activeFilter === "inactive" 
+                ? t("TABLE.NO_INACTIVE_MEMBERS")
+                : t("TABLE.NO_RESULTS")
+            }
+          </h3>
+          <p className="text-sm text-[#737373]">
+            {error 
+              ? error 
+              : activeFilter === "inactive"
+                ? t("TABLE.NO_INACTIVE_MEMBERS_DESCRIPTION")
+                : t("TABLE.EMPTY_DESCRIPTION")
+            }
+          </p>
+        </div>
+      </div>
+    )}
 
     <AlertDialog open={showDeactivateDialog} onOpenChange={setShowDeactivateDialog}>
       <AlertDialogContent>

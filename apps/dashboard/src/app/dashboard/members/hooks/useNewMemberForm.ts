@@ -146,7 +146,7 @@ export function useNewMemberForm() {
   const handleSubmit = async (
     event: FormEvent<HTMLFormElement>,
     organizationId: string,
-    onSuccess: () => void
+    onSuccess: (memberName: string) => void
   ) => {
     event.preventDefault();
 
@@ -159,12 +159,15 @@ export function useNewMemberForm() {
     setFormSubmitting(true);
 
     try {
+      const firstName = formState.firstName.trim();
+      const lastName = formState.lastName.trim();
+      
       const response = await fetch("/api/users/invite", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          firstName: formState.firstName.trim(),
-          lastName: formState.lastName.trim(),
+          firstName,
+          lastName,
           email: formState.email.trim().toLowerCase(),
           organizationId,
           roles: ["user"],
@@ -177,8 +180,9 @@ export function useNewMemberForm() {
         throw new Error(data.message || t("NEW_MEMBER.ERRORS.CREATE_FAILED"));
       }
 
+      const memberName = `${firstName} ${lastName}`;
       resetForm();
-      onSuccess();
+      onSuccess(memberName);
     } catch (err) {
       console.error("Error creating member:", err);
       setFormFeedback(

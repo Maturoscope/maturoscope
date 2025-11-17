@@ -7,6 +7,7 @@ export interface UserResponseDto extends Omit<User, 'organization'> {
     id: string;
     name: string;
     avatar?: string;
+    signature?: string;
   };
 }
 

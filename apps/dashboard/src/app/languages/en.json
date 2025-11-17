@@ -131,7 +131,25 @@
       },
       "LOADING": "Loading members…",
       "NO_RESULTS": "No members match the current filters.",
+      "EMPTY_DESCRIPTION": "You don't have any members matching the selected filters.",
+      "NO_INACTIVE_MEMBERS": "No inactive members",
+      "NO_INACTIVE_MEMBERS_DESCRIPTION": "You don't have any inactive members.",
       "RESEND_INVITATION": "Resend invitation"
+    },
+    "TOASTS": {
+      "MEMBER_CREATED": {
+        "TITLE": "Member created successfully!",
+        "DESCRIPTION": "{{name}} has received a link to access the platform."
+      },
+      "MEMBER_DEACTIVATED": {
+        "TITLE": "Member deactivated successfully!",
+        "DESCRIPTION": "{{name}}'s account has been deactivated. The user no longer has access to the platform."
+      },
+      "MEMBER_REACTIVATED": {
+        "TITLE": "Member reactivated successfully!",
+        "DESCRIPTION": "{{name}} has been reactivated. The user now has access to the platform."
+      },
+      "UNDO": "Undo"
     },
     "REGISTRATION_STATUS": {
       "COMPLETED": "Completed",

@@ -18,7 +18,7 @@ import { UnsavedChangesDialog } from "./UnsavedChangesDialog";
 
 interface NewMemberSheetProps {
   organizationId: string;
-  onSuccess: () => void;
+  onSuccess: (memberName: string) => void;
 }
 
 export function NewMemberSheet({
@@ -67,9 +67,9 @@ export function NewMemberSheet({
   };
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    await handleSubmit(event, organizationId, () => {
+    await handleSubmit(event, organizationId, (memberName: string) => {
       setIsSheetOpen(false);
-      onSuccess();
+      onSuccess(memberName);
     });
   };
 

@@ -44,7 +44,11 @@ export function useMembers(organizationId?: string) {
     fetchMembers();
   }, [fetchMembers]);
 
-  const handleToggleActive = async (member: Member, nextValue: boolean) => {
+  const handleToggleActive = async (
+    member: Member,
+    nextValue: boolean,
+    onSuccess?: (memberName: string, wasActivated: boolean) => void
+  ) => {
     try {
       const response = await fetch(
         `/api/user/${encodeURIComponent(member.email)}`,
@@ -65,6 +69,12 @@ export function useMembers(organizationId?: string) {
           item.email === member.email ? { ...item, isActive: nextValue } : item
         )
       );
+
+      // Call success callback with member name and action
+      if (onSuccess) {
+        const memberName = `${member.firstName} ${member.lastName}`;
+        onSuccess(memberName, nextValue);
+      }
     } catch (err) {
       console.error("Error updating user:", err);
       setError(t("NOTIFICATIONS.UPDATE_FAILED"));

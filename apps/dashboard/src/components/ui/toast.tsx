@@ -12,6 +12,8 @@ interface ToastProps {
   onUndo?: () => void
   undoText?: string
   duration?: number
+  showIcon?: boolean
+  showCloseButton?: boolean
 }
 
 export function Toast({ 
@@ -21,7 +23,9 @@ export function Toast({
   onClose, 
   onUndo, 
   undoText = "Undo",
-  duration = 5000 
+  duration = 5000,
+  showIcon = true,
+  showCloseButton = true
 }: ToastProps) {
   const [show, setShow] = useState(false)
 
@@ -63,10 +67,12 @@ export function Toast({
           ${show ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}
         `}
       >
-        <div className="flex items-start space-x-3">
-          <div className="flex-shrink-0">
-            <CircleCheck className="h-5 w-5 text-gray-900" />
-          </div>
+        <div className="flex items-center space-x-3">
+          {showIcon && (
+            <div className="flex-shrink-0">
+              <CircleCheck className="h-5 w-5 text-gray-900" />
+            </div>
+          )}
           
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-gray-900">
@@ -82,21 +88,23 @@ export function Toast({
           <div className="flex items-center space-x-2">
             {onUndo && (
               <Button
-                variant="ghost"
+                variant="default"
                 size="sm"
                 onClick={handleUndo}
-                className="text-sm text-gray-600 hover:text-gray-900 px-2 py-1 h-auto"
+                className="text-sm font-medium "
               >
                 {undoText}
               </Button>
             )}
             
-            <button
+            {showCloseButton && (
+              <button
               onClick={handleClose}
               className="text-gray-400 hover:text-gray-600 transition-colors"
             >
-              <X className="h-4 w-4" />
-            </button>
+                <X className="h-4 w-4" />
+              </button>
+            )}
           </div>
         </div>
       </div>

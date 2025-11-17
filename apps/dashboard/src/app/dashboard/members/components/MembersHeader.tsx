@@ -22,7 +22,7 @@ interface MembersHeaderProps {
   onActiveFilterChange: (filter: ActiveFilter) => void;
   activeCounts: { active: number; inactive: number };
   organizationId: string;
-  onMemberCreated: () => void;
+  onMemberCreated: (memberName: string) => void;
 }
 
 export function MembersHeader({

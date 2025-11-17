@@ -49,7 +49,9 @@ export class Auth0Strategy extends PassportStrategy(Strategy) {
             aud: this.auth0Config.getAudience(),
           })}`,
         );
-      } catch {}
+      } catch (error) {
+        this.logger.error('Error logging JWT payload:', error);
+      }
     }
 
     return {

@@ -81,15 +81,17 @@ export function PasswordSection({
         
         <div className="space-y-2">
           <Label htmlFor="currentPassword">{t('PASSWORD.CURRENT_PASSWORD')} *</Label>
-          <PasswordInput
-            id="currentPassword"
-            value={form.currentPassword}
-            onChange={(e) => handleFieldChange('currentPassword', e.target.value)}
-            className={`${errors.currentPassword ? "border-red-500" : ""} max-w-[400px]` }
-            disabled={isUpdating}
-            placeholder="Current password"
-            required
-          />
+          <div className="max-w-[400px]">
+            <PasswordInput
+              id="currentPassword"
+              value={form.currentPassword}
+              onChange={(e) => handleFieldChange('currentPassword', e.target.value)}
+              className={errors.currentPassword ? "border-red-500" : ""}
+              disabled={isUpdating}
+              placeholder="Current password"
+              required
+            />
+          </div>
           {errors.currentPassword && (
             <p className="text-sm text-red-600">{errors.currentPassword}</p>
           )}
@@ -97,15 +99,17 @@ export function PasswordSection({
         
         <div className="space-y-2">
           <Label htmlFor="newPassword">{t('PASSWORD.NEW_PASSWORD')} *</Label>
-          <PasswordInput
-            id="newPassword"
-            value={form.newPassword}
-            onChange={(e) => handleFieldChange('newPassword', e.target.value)}
-            className={`${errors.newPassword ? "border-red-500" : ""} max-w-[400px]` }
-            disabled={isUpdating}
-            placeholder="New password"
-            required
-          />
+          <div className="max-w-[400px]">
+            <PasswordInput
+              id="newPassword"
+              value={form.newPassword}
+              onChange={(e) => handleFieldChange('newPassword', e.target.value)}
+              className={errors.newPassword ? "border-red-500" : ""}
+              disabled={isUpdating}
+              placeholder="New password"
+              required
+            />
+          </div>
           {errors.newPassword && (
             <p className="text-sm text-red-600">{errors.newPassword}</p>
           )}
@@ -147,15 +151,17 @@ export function PasswordSection({
         
         <div className="space-y-2">
           <Label htmlFor="confirmPassword">{t('PASSWORD.CONFIRM_PASSWORD')} *</Label>
-          <PasswordInput
-            id="confirmPassword"
-            value={form.confirmPassword}
-            onChange={(e) => handleFieldChange('confirmPassword', e.target.value)}
-            className={`${errors.confirmPassword ? "border-red-500" : ""} max-w-[400px]` }
-            disabled={isUpdating}
-            placeholder="Confirm new password"
-            required
-          />
+          <div className="max-w-[400px]">
+            <PasswordInput
+              id="confirmPassword"
+              value={form.confirmPassword}
+              onChange={(e) => handleFieldChange('confirmPassword', e.target.value)}
+              className={errors.confirmPassword ? "border-red-500" : ""}
+              disabled={isUpdating}
+              placeholder="Confirm new password"
+              required
+            />
+          </div>
           {errors.confirmPassword && (
             <p className="text-sm text-red-600">{errors.confirmPassword}</p>
           )}

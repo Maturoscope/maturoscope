@@ -38,7 +38,7 @@ export class UserInvitationMailService extends BaseMailService {
         welcomeMessage: `Welcome to the ${companyName} Team — we're thrilled to have you on board!`,
         instructionMessage: `You're just one click away from activating your account. Tap the button below to complete your registration:`,
         buttonText: 'Complete my Registration',
-        expirationMessage: (days: number) => 
+        expirationMessage: (days: number) =>
           `Heads up: this link will expire in <strong>${days} day${days === 1 ? '' : 's'}</strong>.`,
         footerMessage: `Didn't expect this email? No worries — just ignore it.`,
       },
@@ -48,7 +48,7 @@ export class UserInvitationMailService extends BaseMailService {
         welcomeMessage: `Bienvenue dans l'équipe ${companyName} — nous sommes ravis de vous accueillir !`,
         instructionMessage: `Vous n'êtes qu'à un clic d'activer votre compte. Cliquez sur le bouton ci-dessous pour compléter votre inscription :`,
         buttonText: 'Compléter mon inscription',
-        expirationMessage: (days: number) => 
+        expirationMessage: (days: number) =>
           `Attention : ce lien expirera dans <strong>${days} jour${days === 1 ? '' : 's'}</strong>.`,
         footerMessage: `Vous n'attendiez pas cet e-mail ? Pas de souci — ignorez-le simplement.`,
       },
@@ -66,15 +66,22 @@ export class UserInvitationMailService extends BaseMailService {
     expirationDays,
     language = 'EN',
   }: InvitationEmailPayload) {
-    const safeCompanyName = companyName || this.configService.get<string>('APP_NAME') || 'Maturoscope';
+    const safeCompanyName =
+      companyName ||
+      this.configService.get<string>('APP_NAME') ||
+      'Maturoscope';
     const content = this.getEmailContent(language, safeCompanyName);
-    
-    const safeName = inviteeFirstName?.trim() ? inviteeFirstName.trim() : (language?.toUpperCase() === 'FR' ? 'cher utilisateur' : 'there');
+
+    const safeName = inviteeFirstName?.trim()
+      ? inviteeFirstName.trim()
+      : language?.toUpperCase() === 'FR'
+        ? 'cher utilisateur'
+        : 'there';
     const htmlLang = language?.toUpperCase() === 'FR' ? 'fr' : 'en';
-    
+
     const logoHtml = companyLogoUrl
-      ? `<img src="${companyLogoUrl}" alt="${safeCompanyName}" style="width:40px;height:40px;border-radius:12px;object-fit:cover;" />`
-      : `<span style="display:inline-flex;width:40px;height:40px;border-radius:12px;background:#111827;color:#ffffff;align-items:center;justify-content:center;font-weight:600;font-size:16px;">${safeCompanyName.slice(0, 1)}</span>`;
+      ? `<img src="${companyLogoUrl}" alt="${safeCompanyName}" style="width:40px;height:40px;border-radius:500px;object-fit:cover;" />`
+      : `<span style="display:inline-flex;width:40px;height:40px;border-radius:12px;background:#01070D;color:#ffffff;align-items:center;justify-content:center;font-weight:600;font-size:16px;">${safeCompanyName.slice(0, 1)}</span>`;
 
     const html = `
       <!DOCTYPE html>
@@ -84,11 +91,11 @@ export class UserInvitationMailService extends BaseMailService {
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <title>${safeCompanyName} Invitation</title>
         </head>
-        <body style="margin:0;padding:32px 0;background-color:#F3F4F6;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;color:#111827;">
+        <body style="margin:0;padding:32px 0;background-color:#F3F4F6;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;color:#01070D;">
           <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
             <tr>
               <td align="center">
-                <table role="presentation" cellpadding="0" cellspacing="0" width="560" style="max-width:560px;margin:0 16px;background:#ffffff;border-radius:16px;padding:32px;box-shadow:0 16px 40px rgba(17,24,39,0.08);">
+                <table role="presentation" cellpadding="0" cellspacing="0" width="560" style="max-width:560px;margin:0 16px;background:#ffffff;border-radius:4px;padding:32px;box-shadow:0 16px 40px rgba(17,24,39,0.08);">
                   <tr>
                     <td style="text-align:left;padding-bottom:24px;">
                       <table role="presentation" cellpadding="0" cellspacing="0">
@@ -96,44 +103,43 @@ export class UserInvitationMailService extends BaseMailService {
                           <td style="vertical-align:middle;padding-right:12px;">
                             ${logoHtml}
                           </td>
-                          <td style="vertical-align:middle;font-size:20px;font-weight:600;color:#111827;">${safeCompanyName}</td>
+                          <td style="vertical-align:middle;font-size:20px;font-weight:600;color:#01070D;">${safeCompanyName}</td>
                         </tr>
                       </table>
                     </td>
                   </tr>
                   <tr>
-                    <td style="font-size:16px;line-height:26px;color:#111827;padding-bottom:16px;">
+                    <td style="font-size:16px;line-height:26px;color:#01070D;padding-bottom:16px;">
                       <strong style="font-size:18px;">${content.greeting} ${safeName},</strong>
                     </td>
                   </tr>
                   <tr>
-                    <td style="font-size:16px;line-height:26px;color:#4B5563;padding-bottom:16px;">
+                    <td style="font-size:16px;line-height:26px;color:#01070D;padding-bottom:16px;">
                       ${content.welcomeMessage}
                     </td>
                   </tr>
                   <tr>
-                    <td style="font-size:16px;line-height:26px;color:#4B5563;padding-bottom:24px;">
+                    <td style="font-size:16px;line-height:26px;color:#01070D;padding-bottom:24px;">
                       ${content.instructionMessage}
                     </td>
                   </tr>
                   <tr>
                     <td style="padding-bottom:24px;">
-                      <a href="${magicLink}" style="display:inline-block;padding:14px 28px;background-color:#111827;color:#ffffff;border-radius:14px;font-size:16px;font-weight:600;text-decoration:none;">
+                      <a href="${magicLink}" style="display:inline-block;padding:14px 28px;background-color:#171717;color:#ffffff;border-radius:8px;font-size:16px;font-weight:600;text-decoration:none;">
                         ${content.buttonText}
                       </a>
                     </td>
                   </tr>
                   <tr>
-                    <td style="font-size:16px;line-height:26px;color:#4B5563;padding-bottom:32px;">
+                    <td style="font-size:16px;line-height:26px;color:#01070D;padding-bottom:32px;">
                       ${content.expirationMessage(expirationDays)}
                     </td>
                   </tr>
-                  <tr>
-                    <td style="font-size:14px;line-height:22px;color:#9CA3AF;border-top:1px solid #E5E7EB;padding-top:24px;">
-                      ${content.footerMessage}
-                    </td>
-                  </tr>
                 </table>
+              </td>
+            </tr>
+             <td style="font-size:14px;line-height:22px;color:#9CA3AF;padding-top:24px; text-align: center">
+                ${content.footerMessage} 
               </td>
             </tr>
           </table>
@@ -148,4 +154,3 @@ export class UserInvitationMailService extends BaseMailService {
     });
   }
 }
-

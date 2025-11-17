@@ -52,6 +52,7 @@ export class UsersService {
         id: user.organization.id,
         name: user.organization.name,
         avatar: user.organization.avatar,
+        signature: user.organization.signature,
       } : undefined,
     };
   }

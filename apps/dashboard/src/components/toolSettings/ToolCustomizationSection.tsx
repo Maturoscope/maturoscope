@@ -237,15 +237,26 @@ export function ToolCustomizationSection({
           
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <div className={ `w-[${UI_CONSTANTS.SIGNATURE_DIMENSIONS.WIDTH}px] h-[${UI_CONSTANTS.SIGNATURE_DIMENSIONS.HEIGHT}px] ${!previewUrl || signatureToRemove ? 'border-1' : 'border-0'}  border-dashed border-gray-300 rounded-lg flex items-center justify-center relative`}>
+              <div 
+                className={`${!previewUrl || signatureToRemove ? 'border' : 'border-0'} border-dashed border-gray-300 rounded-lg flex items-center justify-center relative`}
+                style={{ 
+                  width: `${UI_CONSTANTS.SIGNATURE_DIMENSIONS.WIDTH}px`, 
+                  height: `${UI_CONSTANTS.SIGNATURE_DIMENSIONS.HEIGHT}px` 
+                }}
+              >
                 {previewUrl && !signatureToRemove ? (
                   <Image
                     src={getVersionedUrl(previewUrl)}
                     alt="Signature preview"
-                    className={`max-h-[${UI_CONSTANTS.SIGNATURE_DIMENSIONS.MAX_DISPLAY_HEIGHT}px] max-w-[${UI_CONSTANTS.SIGNATURE_DIMENSIONS.MAX_DISPLAY_WIDTH}px] rounded-lg`}
+                    className="rounded-lg"
+                    style={{
+                      maxHeight: `${UI_CONSTANTS.SIGNATURE_DIMENSIONS.MAX_DISPLAY_HEIGHT}px`,
+                      maxWidth: `${UI_CONSTANTS.SIGNATURE_DIMENSIONS.MAX_DISPLAY_WIDTH}px`,
+                      objectFit: 'contain'
+                    }}
                     width={UI_CONSTANTS.SIGNATURE_DIMENSIONS.WIDTH}
                     height={UI_CONSTANTS.SIGNATURE_DIMENSIONS.MAX_DISPLAY_HEIGHT}
-                    objectFit="cover"
+                    unoptimized
                   />
                 ) : (
                   <Upload className="h-4 w-4 text-gray-900" />
