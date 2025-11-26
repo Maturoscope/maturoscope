@@ -2,13 +2,7 @@
 import type { Metadata } from "next"
 import { Geist } from "next/font/google"
 // Dictionaries
-import {
-  DEFAULT_LANGUAGE,
-  getDictionary,
-  Locale,
-} from "@/dictionaries/dictionaries"
-// Components
-import Header from "@/components/common/Header/Header"
+import { DEFAULT_LANGUAGE, Locale } from "@/dictionaries/dictionaries"
 // Styles
 import "../globals.css"
 
@@ -31,16 +25,10 @@ export default async function RootLayout({
   params,
 }: RootLayoutProps) {
   const { lang = DEFAULT_LANGUAGE } = await params
-  const dictionary = await getDictionary(lang)
-
-  const {
-    header: { stringConnector },
-  } = dictionary
 
   return (
     <html lang={lang} className={`${geist.className} antialiased`}>
-      <body className="flex flex-col items-center justify-start w-full lg:h-svh">
-        <Header stringConnector={stringConnector} />
+      <body className="flex flex-col items-center justify-start w-full lg:h-svh bg-background">
         {children}
       </body>
     </html>

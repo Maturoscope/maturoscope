@@ -1,6 +1,7 @@
 // Actions
 import { getOrganizationByKey } from "@/actions/organization"
 // Components
+import Header from "@/components/common/Header/Header"
 import Hero from "@/components/custom/Homepage/Hero/Hero"
 import PrivacyPolicy from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
 // Dictionaries
@@ -20,11 +21,13 @@ const HomePage = async ({ searchParams, params }: HomePageProps) => {
   console.log({ organization })
 
   const {
+    header: { stringConnector },
     homepage: { hero, policy },
   } = dictionary
 
   return (
-    <main className="w-full flex flex-col items-center justify-between mt-14 h-full pb-16">
+    <main className="w-full flex flex-col items-center justify-between h-full">
+      <Header stringConnector={stringConnector} />
       <Hero {...hero} />
       <PrivacyPolicy {...policy} />
     </main>

@@ -26,7 +26,7 @@ const LanguageSelect = () => {
   return (
     <div className="w-full max-w-[100px]">
       <Select>
-        <SelectTrigger className="justify-center gap-2">
+        <SelectTrigger className="justify-center gap-2 cursor-pointer">
           <div className="flex items-center gap-2 text-sm text-foreground font-medium">
             <Image
               src={`/icons/flag-${lang}.svg`}
