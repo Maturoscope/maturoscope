@@ -7,13 +7,13 @@
     "hero": {
       "heading": {
         "title": "Connaissez exactement où se situe votre innovation",
-        "description": "Que ce soit un produit, un process ou un service, le Maturoscope vous permet d'évaluer sa maturité en quelques clics et vous guide à travers les étapes suivantes vers la commercialisation.",
-        "buttonLabel": "Commencer",
-        "estimatedTime": "5 minutes"
+        "description": "Que ce soit un produit, un process ou un service, le Maturoscope vous permet d'évaluer sa maturité en quelques clics et vous guide à travers les étapes suivantes vers la commercialisation."
       },
       "information": {
         "noAccount": "Aucun compte requis",
-        "noStored": "Nous ne stockons pas vos informations"
+        "noStored": "Nous ne stockons pas vos informations",
+        "buttonLabel": "Commencer",
+        "estimatedTime": "5 minutes"
       },
       "criteria": {
         "title": "Il évalue 3 dimensions clés",
