@@ -19,28 +19,29 @@ const Header = ({ stringConnector }: HeaderProps) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="w-full px-6 h-9 flex items-center justify-between mt-16 2xl:mt-24 max-w-[1280px]"
+      className="w-full pl-0.5 pr-4 lg:pl-2 lg:pr-6 h-14 flex items-center justify-between bg-white border border-b border-border shadow-sm"
     >
       <div className="flex items-center gap-2 text-foreground">
-        <div className="flex items-center gap-2">
+        <div className="ml-4">
           <Image
-            src="/icons/maturoscope.svg"
+            src="/icons/maturoscope-desktop.svg"
             alt="Maturoscope"
-            width={24}
-            height={24}
+            width={121}
+            height={20}
+            className="hidden lg:block"
           />
-          <span className="text-sm font-semibold">Maturoscope</span>
-        </div>
-        <span className="text-sm font-medium">{stringConnector}</span>
-        <div className="flex items-center gap-2">
           <Image
-            src="/icons/nobatek.svg"
-            alt="Nobatek"
-            width={24}
-            height={24}
+            src="/icons/maturoscope-mobile.svg"
+            alt="Maturoscope"
+            width={20}
+            height={14}
+            className="block lg:hidden"
           />
         </div>
-        <span className="text-sm font-medium hidden lg:block">Nobatek</span>
+
+        <span className="text-sm font-medium">{stringConnector}</span>
+
+        <Image src="/icons/nobatek.svg" alt="Nobatek" width={64} height={20} />
       </div>
       <LanguageSelect />
     </motion.header>
