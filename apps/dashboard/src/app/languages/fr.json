@@ -92,6 +92,15 @@
       "EDIT_EMAIL": "Modifier l'e-mail"
     }
   },
+  "BREADCRUMB": {
+    "DASHBOARD": "Tableau de bord",
+    "SERVICES": "Services",
+    "MEMBERS": "Membres",
+    "SETTINGS": "Paramètres",
+    "REPORTS": "Rapports",
+    "ORGANIZATIONS": "Organisations",
+    "ORGANIZATION": "Organisation"
+  },
   "DASHBOARD": {
     "BRAND": "Nobatek",
     "DASHBOARD": "Tableau de bord",
@@ -376,6 +385,146 @@
       "SUCCESS_TITLE": "Informations du profil mises à jour",
       "SUCCESS_DESCRIPTION": "Vos modifications ont été enregistrées avec succès.",
       "ERROR_TITLE": "Erreur lors de la mise à jour du profil"
+    }
+  },
+  "SERVICES": {
+    "PAGE_TITLE": "Services",
+    "PAGE_SUBTITLE": "Gérer les services disponibles pour votre organisation",
+    "ADD_SERVICE_BUTTON": "Ajouter un service",
+    "FILTERS": {
+      "ALL": "Tous",
+      "TRL": "TRL",
+      "MkRL": "MkRL",
+      "MfRL": "MfRL",
+      "SCALE": "Échelle"
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Rechercher des services..."
+    },
+    "TABLE": {
+      "HEADERS": {
+        "SERVICE": "Service",
+        "CATEGORY_SCALE": "Catégorie et échelle",
+        "MAIN_CONTACT": "Contact principal",
+        "SECONDARY_CONTACT": "Contact secondaire",
+        "ACTIONS": "Actions"
+      },
+      "LOADING": "Chargement des services...",
+      "NO_RESULTS": "Aucun service trouvé",
+      "EMPTY_DESCRIPTION": "Commencez par créer votre premier service pour aider à combler les lacunes de votre organisation.",
+      "ACTIONS_MENU": {
+        "EDIT": "Modifier",
+        "DELETE": "Supprimer"
+      },
+      "FOOTER": {
+        "SHOWING": "Affichage de {{count}} lignes",
+        "ROWS_PER_PAGE": "Lignes par page"
+      }
+    },
+    "MODAL": {
+      "CREATE_TITLE": "Ajouter un service",
+      "EDIT_TITLE": "Modifier le service",
+      "STEPS": {
+        "SERVICE_INFO": "Informations sur le service",
+        "CATEGORY_SCALE": "Catégorie et échelle",
+        "CONTACTS": "Informations de contact"
+      },
+      "STEP_1": {
+        "NAME": {
+          "LABEL": "Nom du service",
+          "PLACEHOLDER": "Entrez le nom du service",
+          "REQUIRED": "*"
+        },
+        "DESCRIPTION": {
+          "LABEL": "Description",
+          "PLACEHOLDER": "Décrivez ce que ce service offre"
+        },
+        "URL": {
+          "LABEL": "URL du service",
+          "PLACEHOLDER": "https://example.com"
+        }
+      },
+      "STEP_2": {
+        "TITLE": "Sélectionner les catégories et les niveaux de satisfaction",
+        "DESCRIPTION": "Activez les catégories que ce service aborde et sélectionnez les niveaux de satisfaction pour chaque question.",
+        "NO_CATEGORIES": "Veuillez activer au moins une catégorie pour continuer.",
+        "SCALE_LABELS": {
+          "TRL": "Niveau de maturité technologique",
+          "MkRL": "Niveau de maturité du marché",
+          "MfRL": "Niveau de maturité de fabrication"
+        }
+      },
+      "STEP_3": {
+        "MAIN_CONTACT": {
+          "TITLE": "Contact principal",
+          "FIRST_NAME": {
+            "LABEL": "Prénom",
+            "PLACEHOLDER": "Entrez le prénom"
+          },
+          "LAST_NAME": {
+            "LABEL": "Nom",
+            "PLACEHOLDER": "Entrez le nom"
+          },
+          "EMAIL": {
+            "LABEL": "Email",
+            "PLACEHOLDER": "contact@example.com"
+          }
+        },
+        "SECONDARY_CONTACT": {
+          "TITLE": "Contact secondaire (Optionnel)",
+          "FIRST_NAME": {
+            "LABEL": "Prénom",
+            "PLACEHOLDER": "Entrez le prénom"
+          },
+          "LAST_NAME": {
+            "LABEL": "Nom",
+            "PLACEHOLDER": "Entrez le nom"
+          },
+          "EMAIL": {
+            "LABEL": "Email",
+            "PLACEHOLDER": "contact@example.com"
+          }
+        }
+      },
+      "BUTTONS": {
+        "CANCEL": "Annuler",
+        "NEXT": "Suivant",
+        "BACK": "Retour",
+        "CREATE": "Créer le service",
+        "UPDATE": "Mettre à jour le service",
+        "CREATING": "Création...",
+        "UPDATING": "Mise à jour..."
+      },
+      "ERRORS": {
+        "NAME_REQUIRED": "Le nom du service est requis.",
+        "DUPLICATE_NAME": "Un service avec ce nom existe déjà.",
+        "NO_CATEGORIES": "Au moins une catégorie doit être active.",
+        "INVALID_EMAIL": "Veuillez entrer une adresse email valide.",
+        "CREATE_FAILED": "Échec de la création du service.",
+        "UPDATE_FAILED": "Échec de la mise à jour du service.",
+        "DELETE_FAILED": "Échec de la suppression du service."
+      }
+    },
+    "DELETE_DIALOG": {
+      "TITLE": "Supprimer le service",
+      "DESCRIPTION": "Êtes-vous sûr de vouloir supprimer \"{{serviceName}}\" ? Cette action ne peut pas être annulée.",
+      "CANCEL": "Annuler",
+      "CONFIRM": "Oui, supprimer"
+    },
+    "TOASTS": {
+      "SERVICE_CREATED": {
+        "TITLE": "Service créé avec succès !",
+        "DESCRIPTION": "{{name}} a été ajouté aux services de votre organisation."
+      },
+      "SERVICE_UPDATED": {
+        "TITLE": "Service mis à jour avec succès !",
+        "DESCRIPTION": "{{name}} a été mis à jour."
+      },
+      "SERVICE_DELETED": {
+        "TITLE": "Service supprimé avec succès !",
+        "DESCRIPTION": "{{name}} a été retiré de votre organisation."
+      },
+      "UNDO": "Annuler"
     }
   }
 }

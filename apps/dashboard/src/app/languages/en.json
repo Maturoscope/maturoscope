@@ -92,6 +92,15 @@
       "EDIT_EMAIL": "Edit Email"
     }
   },
+  "BREADCRUMB": {
+    "DASHBOARD": "Dashboard",
+    "SERVICES": "Services",
+    "MEMBERS": "Members",
+    "SETTINGS": "Settings",
+    "REPORTS": "Reports",
+    "ORGANIZATIONS": "Organizations",
+    "ORGANIZATION": "Organization"
+  },
   "DASHBOARD": {
     "BRAND": "Nobatek",
     "DASHBOARD": "Dashboard",
@@ -376,6 +385,146 @@
       "SUCCESS_TITLE": "Profile Information Updated",
       "SUCCESS_DESCRIPTION": "Your updates have been saved successfully.",
       "ERROR_TITLE": "Error updating profile"
+    }
+  },
+  "SERVICES": {
+    "PAGE_TITLE": "Services",
+    "PAGE_SUBTITLE": "Manage services available for your organization",
+    "ADD_SERVICE_BUTTON": "Add Service",
+    "FILTERS": {
+      "ALL": "All",
+      "TRL": "TRL",
+      "MkRL": "MkRL",
+      "MfRL": "MfRL",
+      "SCALE": "Scale"
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Search services..."
+    },
+    "TABLE": {
+      "HEADERS": {
+        "SERVICE": "Service",
+        "CATEGORY_SCALE": "Category & Scale",
+        "MAIN_CONTACT": "Main Contact",
+        "SECONDARY_CONTACT": "Secondary Contact",
+        "ACTIONS": "Actions"
+      },
+      "LOADING": "Loading services...",
+      "NO_RESULTS": "No services found",
+      "EMPTY_DESCRIPTION": "Get started by creating your first service to help address gaps in your organization.",
+      "ACTIONS_MENU": {
+        "EDIT": "Edit",
+        "DELETE": "Delete"
+      },
+      "FOOTER": {
+        "SHOWING": "Showing {{count}} rows",
+        "ROWS_PER_PAGE": "Rows per page"
+      }
+    },
+    "MODAL": {
+      "CREATE_TITLE": "Add Service",
+      "EDIT_TITLE": "Edit Service",
+      "STEPS": {
+        "SERVICE_INFO": "Service Information",
+        "CATEGORY_SCALE": "Category & Scale",
+        "CONTACTS": "Contact Information"
+      },
+      "STEP_1": {
+        "NAME": {
+          "LABEL": "Service Name",
+          "PLACEHOLDER": "Enter service name",
+          "REQUIRED": "*"
+        },
+        "DESCRIPTION": {
+          "LABEL": "Description",
+          "PLACEHOLDER": "Describe what this service offers"
+        },
+        "URL": {
+          "LABEL": "Service URL",
+          "PLACEHOLDER": "https://example.com"
+        }
+      },
+      "STEP_2": {
+        "TITLE": "Select Categories and Satisfaction Levels",
+        "DESCRIPTION": "Activate the categories this service addresses and select the satisfaction levels for each question.",
+        "NO_CATEGORIES": "Please activate at least one category to continue.",
+        "SCALE_LABELS": {
+          "TRL": "Technology Readiness Level",
+          "MkRL": "Market Readiness Level",
+          "MfRL": "Manufacturing Readiness Level"
+        }
+      },
+      "STEP_3": {
+        "MAIN_CONTACT": {
+          "TITLE": "Main Contact",
+          "FIRST_NAME": {
+            "LABEL": "First Name",
+            "PLACEHOLDER": "Enter first name"
+          },
+          "LAST_NAME": {
+            "LABEL": "Last Name",
+            "PLACEHOLDER": "Enter last name"
+          },
+          "EMAIL": {
+            "LABEL": "Email",
+            "PLACEHOLDER": "contact@example.com"
+          }
+        },
+        "SECONDARY_CONTACT": {
+          "TITLE": "Secondary Contact (Optional)",
+          "FIRST_NAME": {
+            "LABEL": "First Name",
+            "PLACEHOLDER": "Enter first name"
+          },
+          "LAST_NAME": {
+            "LABEL": "Last Name",
+            "PLACEHOLDER": "Enter last name"
+          },
+          "EMAIL": {
+            "LABEL": "Email",
+            "PLACEHOLDER": "contact@example.com"
+          }
+        }
+      },
+      "BUTTONS": {
+        "CANCEL": "Cancel",
+        "NEXT": "Next",
+        "BACK": "Back",
+        "CREATE": "Create Service",
+        "UPDATE": "Update Service",
+        "CREATING": "Creating...",
+        "UPDATING": "Updating..."
+      },
+      "ERRORS": {
+        "NAME_REQUIRED": "Service name is required.",
+        "DUPLICATE_NAME": "A service with this name already exists.",
+        "NO_CATEGORIES": "At least one category must be active.",
+        "INVALID_EMAIL": "Please enter a valid email address.",
+        "CREATE_FAILED": "Failed to create service.",
+        "UPDATE_FAILED": "Failed to update service.",
+        "DELETE_FAILED": "Failed to delete service."
+      }
+    },
+    "DELETE_DIALOG": {
+      "TITLE": "Delete Service",
+      "DESCRIPTION": "Are you sure you want to delete \"{{serviceName}}\"? This action cannot be undone.",
+      "CANCEL": "Cancel",
+      "CONFIRM": "Yes, Delete"
+    },
+    "TOASTS": {
+      "SERVICE_CREATED": {
+        "TITLE": "Service created successfully!",
+        "DESCRIPTION": "{{name}} has been added to your organization's services."
+      },
+      "SERVICE_UPDATED": {
+        "TITLE": "Service updated successfully!",
+        "DESCRIPTION": "{{name}} has been updated."
+      },
+      "SERVICE_DELETED": {
+        "TITLE": "Service deleted successfully!",
+        "DESCRIPTION": "{{name}} has been removed from your organization."
+      },
+      "UNDO": "Undo"
     }
   }
 }
