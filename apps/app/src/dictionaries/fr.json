@@ -41,6 +41,13 @@
       "copyright": "Conçu et développé par"
     }
   },
+  "begin": {
+    "title": "Pour commencer...",
+    "label": "Nommez votre projet",
+    "placeholder": "Nom du projet",
+    "backButtonLabel": "Retour",
+    "nextButtonLabel": "Continuer"
+  },
   "why": {
     "hero": {
       "heading": {

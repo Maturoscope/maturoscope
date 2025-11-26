@@ -41,6 +41,13 @@
       "copyright": "Designed and developed by"
     }
   },
+  "begin": {
+    "title": "To begin with...",
+    "label": "Name your project",
+    "placeholder": "Project's name",
+    "backButtonLabel": "Back",
+    "nextButtonLabel": "Continue"
+  },
   "why": {
     "hero": {
       "heading": {

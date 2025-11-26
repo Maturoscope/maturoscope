@@ -22,7 +22,6 @@ const Header = ({
   showBackButton = false,
 }: HeaderProps & ExtraProps) => {
   const router = useRouter()
-
   const handleBack = () => router.back()
 
   return (
