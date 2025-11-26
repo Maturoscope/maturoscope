@@ -20,7 +20,7 @@ const PrivacyPolicy = ({ description, copyright }: PrivacyPolicyProps) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="flex flex-col lg:flex-row gap-8 lg:gap-4 w-full p-6 bg-white border border-border justify-between lg:items-end items-start"
+      className="flex flex-col lg:flex-row gap-8 lg:gap-4 w-full p-6 bg-white border border-border justify-between lg:items-end items-start shrink-0"
     >
       <div className="flex lg:flex-row flex-col items-start lg:items-center gap-4">
         <Image
