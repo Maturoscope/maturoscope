@@ -20,9 +20,9 @@ const PrivacyPolicy = ({ description, copyright }: PrivacyPolicyProps) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="flex gap-4 w-full p-6 bg-white border border-border justify-between items-end"
+      className="flex flex-col lg:flex-row gap-8 lg:gap-4 w-full p-6 bg-white border border-border justify-between lg:items-end items-start"
     >
-      <div className="flex lg:flex-row flex-col items-center gap-4">
+      <div className="flex lg:flex-row flex-col items-start lg:items-center gap-4">
         <Image
           src="/icons/homepage/flag-europe.svg"
           alt="Europe Flag"
@@ -33,7 +33,7 @@ const PrivacyPolicy = ({ description, copyright }: PrivacyPolicyProps) => {
           {description}
         </p>
       </div>
-      <p className="text-sm text-muted-foreground">
+      <p className="text-sm text-muted-foreground w-max">
         {copyright}{" "}
         <a
           href={SYNOPP_URL}
