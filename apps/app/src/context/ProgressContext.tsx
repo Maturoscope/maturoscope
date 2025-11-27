@@ -18,6 +18,7 @@ import { Locale } from "@/dictionaries/dictionaries"
 import { calcCheckpoint } from "@/lib/calcCheckpoint"
 
 interface ProgressContextType {
+  stages: StageType[]
   currStage: StageType
   currQuestionIndex: number
   currQuestion: QuestionProps
@@ -148,6 +149,7 @@ export const ProgressProvider = ({
   return (
     <ProgressContext.Provider
       value={{
+        stages,
         currStage,
         currQuestionIndex,
         currQuestion,
