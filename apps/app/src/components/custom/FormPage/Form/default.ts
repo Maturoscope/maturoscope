@@ -27,9 +27,6 @@ export const DEFAULT_VALUES: DefaultValues = {
       MkRL_Q2: "",
       MkRL_Q3: "",
       MkRL_Q4: "",
-      MkRL_Q5: "",
-      MkRL_Q6: "",
-      MkRL_Q7: "",
     },
   },
   mfrl: {
@@ -39,9 +36,6 @@ export const DEFAULT_VALUES: DefaultValues = {
       MfRL_Q2: "",
       MfRL_Q3: "",
       MfRL_Q4: "",
-      MfRL_Q5: "",
-      MfRL_Q6: "",
-      MfRL_Q7: "",
     },
   },
 }

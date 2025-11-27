@@ -67,8 +67,8 @@ const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {
   }
 
   return (
-    <div className="w-full max-w-[750px] px-6 flex flex-col items-start justify-start mt-7">
-      <div className="w-full flex flex-col items-start justify-start gap-2 mb-7">
+    <div className="w-full max-w-[750px] px-4 flex flex-col items-start justify-start mt-7">
+      <div className="w-full flex flex-col items-start justify-start gap-2 mb-4 lg:mb-6">
         <h1 className="text-xl lg:text-3xl font-semibold">
           {currQuestion.title}
         </h1>
