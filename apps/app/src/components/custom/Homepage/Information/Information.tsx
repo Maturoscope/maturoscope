@@ -22,6 +22,7 @@ const Information = ({
   estimatedTime,
 }: InformationProps) => {
   const { lang } = useParams<{ lang: Locale }>()
+  const nextPage = `/${lang}/begin`
 
   return (
     <>
@@ -51,7 +52,7 @@ const Information = ({
       </div>
 
       <div className="w-full flex items-center justify-start gap-5 mt-7">
-        <Link href={`/${lang}/why`} className="w-max h-9">
+        <Link href={nextPage} className="w-max h-9">
           <Button
             variant="default"
             size="lg"
