@@ -110,7 +110,6 @@ export const ProgressProvider = ({
       localStorage.getItem("form") || "{}"
     ) as DefaultValues
     const checkpoint = calcCheckpoint(savedForm)
-    console.log({ checkpoint })
 
     if (!checkpoint) return
     const { lastSavedStage, lastSavedQuestion } = checkpoint

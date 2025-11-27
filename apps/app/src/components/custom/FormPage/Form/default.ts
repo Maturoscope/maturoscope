@@ -1,33 +1,47 @@
 import { StageId } from "@/components/custom/FormPage/Form/Form"
 
-export type DefaultValues = Record<StageId, Record<string, string>>
+interface Scale {
+  scale: "TRL" | "MkRL" | "MfRL"
+  questions: Record<string, string>
+}
+
+export type DefaultValues = Record<StageId, Scale>
 
 export const DEFAULT_VALUES: DefaultValues = {
   trl: {
-    trl1: "",
-    trl2: "",
-    trl3: "",
-    trl4: "",
-    trl5: "",
-    trl6: "",
-    trl7: "",
+    scale: "TRL",
+    questions: {
+      TRL_Q1: "",
+      TRL_Q2: "",
+      TRL_Q3: "",
+      TRL_Q4: "",
+      TRL_Q5: "",
+      TRL_Q6: "",
+      TRL_Q7: "",
+    },
   },
   mkrl: {
-    mkrl1: "",
-    mkrl2: "",
-    mkrl3: "",
-    mkrl4: "",
-    mkrl5: "",
-    mkrl6: "",
-    mkrl7: "",
+    scale: "MkRL",
+    questions: {
+      MkRL_Q1: "",
+      MkRL_Q2: "",
+      MkRL_Q3: "",
+      MkRL_Q4: "",
+      MkRL_Q5: "",
+      MkRL_Q6: "",
+      MkRL_Q7: "",
+    },
   },
   mfrl: {
-    mfrl1: "",
-    mfrl2: "",
-    mfrl3: "",
-    mfrl4: "",
-    mfrl5: "",
-    mfrl6: "",
-    mfrl7: "",
+    scale: "MfRL",
+    questions: {
+      MfRL_Q1: "",
+      MfRL_Q2: "",
+      MfRL_Q3: "",
+      MfRL_Q4: "",
+      MfRL_Q5: "",
+      MfRL_Q6: "",
+      MfRL_Q7: "",
+    },
   },
 }
