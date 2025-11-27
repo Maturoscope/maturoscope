@@ -84,7 +84,7 @@ export const ProgressProvider = ({
     const nextQuestionIndex = currQuestionIndex + 1
     const nextQuestionId = currStage.questions[nextQuestionIndex]?.id
     const nextQuestionHasValue = !!getValues(
-      `${currStage.id}.${nextQuestionId}`
+      `${currStage.id}.questions.${nextQuestionId}` as `${StageId}.questions.${string}`
     )
 
     if (isLastQuestion) setIsCheckpoint(true)
@@ -115,17 +115,19 @@ export const ProgressProvider = ({
     const { lastSavedStage, lastSavedQuestion } = checkpoint
 
     const hasAnswerAllQuestions = Object.values(savedForm).every((stage) =>
-      Object.values(stage).every((question) => !!question)
+      Object.values(stage.questions).every((question) => !!question)
     )
 
     if (hasAnswerAllQuestions) return router.push(`/${lang}/results`)
 
-    const lastStageQuestionsId = Object.keys(savedForm[lastSavedStage])
+    const lastStageQuestionsId = Object.keys(
+      savedForm[lastSavedStage].questions
+    )
     const isLastQuestionOfStage =
       lastSavedQuestion ===
       lastStageQuestionsId[lastStageQuestionsId.length - 1]
     const isLastQuestionAnswered =
-      !!savedForm[lastSavedStage][lastSavedQuestion]
+      !!savedForm[lastSavedStage].questions[lastSavedQuestion]
 
     if (isLastQuestionOfStage) setIsCheckpoint(isLastQuestionAnswered)
 

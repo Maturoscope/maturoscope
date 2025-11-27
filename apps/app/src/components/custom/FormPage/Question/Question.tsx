@@ -22,7 +22,7 @@ const Question = ({
   options: initOptions,
   onQuestionClick,
 }: QuestionProps) => {
-  const radioGroupName = `${name}.${id}` as `${StageId}.${string}`
+  const radioGroupName = `${name}.questions.${id}` as `${StageId}.questions.${string}`
   const options = initOptions.map((option) => ({
     ...option,
     name: radioGroupName,

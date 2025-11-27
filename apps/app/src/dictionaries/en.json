@@ -104,7 +104,7 @@
         "buttonLabel": "Continue to MkRL",
         "questions": [
           {
-            "id": "trl1",
+            "id": "TRL_Q1",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -119,7 +119,7 @@
             ]
           },
           {
-            "id": "trl2",
+            "id": "TRL_Q2",
             "title": "Have you conducted feasibility studies and proof-of-concept experiments? *",
             "options": [
               { "id": "1", "title": "No feasibility studies have been conducted yet." },
@@ -134,7 +134,7 @@
             ]
           },
           {
-            "id": "trl3",
+            "id": "TRL_Q3",
             "title": "What is the current status of your prototype development? *",
             "options": [
               { "id": "1", "title": "No prototype has been developed yet." },
@@ -149,7 +149,7 @@
             ]
           },
           {
-            "id": "trl4",
+            "id": "TRL_Q4",
             "title": "How extensively have you tested your technology's performance? *",
             "options": [
               { "id": "1", "title": "No performance testing has been conducted." },
@@ -164,7 +164,7 @@
             ]
           },
           {
-            "id": "trl5",
+            "id": "TRL_Q5",
             "title": "What level of integration testing have you completed? *",
             "options": [
               { "id": "1", "title": "No integration testing has been performed." },
@@ -179,7 +179,7 @@
             ]
           },
           {
-            "id": "trl6",
+            "id": "TRL_Q6",
             "title": "How advanced is your pilot project implementation? *",
             "options": [
               { "id": "1", "title": "No pilot projects have been initiated." },
@@ -194,7 +194,7 @@
             ]
           },
           {
-            "id": "trl7",
+            "id": "TRL_Q7",
             "title": "What is the status of regulatory compliance and certifications? *",
             "options": [
               { "id": "1", "title": "No regulatory requirements have been identified." },
@@ -219,7 +219,7 @@
         "buttonLabel": "Continue to MfRL",
         "questions": [
           {
-            "id": "mkrl1",
+            "id": "MkRL_Q1",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -234,7 +234,7 @@
             ]
           },
           {
-            "id": "mkrl2",
+            "id": "MkRL_Q2",
             "title": "How well-defined is your target market and customer segments? *",
             "options": [
               { "id": "1", "title": "Target market has not been identified yet." },
@@ -249,7 +249,7 @@
             ]
           },
           {
-            "id": "mkrl3",
+            "id": "MkRL_Q3",
             "title": "What is your current competitive analysis and market positioning? *",
             "options": [
               { "id": "1", "title": "No competitive analysis has been conducted." },
@@ -264,7 +264,7 @@
             ]
           },
           {
-            "id": "mkrl4",
+            "id": "MkRL_Q4",
             "title": "How developed is your pricing strategy and business model? *",
             "options": [
               { "id": "1", "title": "No pricing strategy has been developed." },
@@ -279,7 +279,7 @@
             ]
           },
           {
-            "id": "mkrl5",
+            "id": "MkRL_Q5",
             "title": "What is the status of your marketing and sales strategy? *",
             "options": [
               { "id": "1", "title": "No marketing or sales strategy has been developed." },
@@ -294,7 +294,7 @@
             ]
           },
           {
-            "id": "mkrl6",
+            "id": "MkRL_Q6",
             "title": "How established are your customer relationships and partnerships? *",
             "options": [
               { "id": "1", "title": "No customer relationships or partnerships established." },
@@ -309,7 +309,7 @@
             ]
           },
           {
-            "id": "mkrl7",
+            "id": "MkRL_Q7",
             "title": "What is your current market traction and growth trajectory? *",
             "options": [
               { "id": "1", "title": "No market traction or growth metrics available." },
@@ -334,7 +334,7 @@
         "buttonLabel": "See report",
         "questions": [
           {
-            "id": "mfrl1",
+            "id": "MfRL_Q1",
             "title": "Is the technical concept formalized and positioned relative to existing solutions? *",
             "options": [
               { "id": "1", "title": "The concept is only described informally." },
@@ -349,7 +349,7 @@
             ]
           },
           {
-            "id": "mfrl2",
+            "id": "MfRL_Q2",
             "title": "How developed is your manufacturing process design? *",
             "options": [
               { "id": "1", "title": "No manufacturing process has been designed." },
@@ -364,7 +364,7 @@
             ]
           },
           {
-            "id": "mfrl3",
+            "id": "MfRL_Q3",
             "title": "What is the status of your supply chain and material sourcing? *",
             "options": [
               { "id": "1", "title": "No supply chain analysis has been conducted." },
@@ -379,7 +379,7 @@
             ]
           },
           {
-            "id": "mfrl4",
+            "id": "MfRL_Q4",
             "title": "How advanced is your production facility and equipment setup? *",
             "options": [
               { "id": "1", "title": "No production facility or equipment requirements defined." },
@@ -394,7 +394,7 @@
             ]
           },
           {
-            "id": "mfrl5",
+            "id": "MfRL_Q5",
             "title": "What is the status of your quality control and testing systems? *",
             "options": [
               { "id": "1", "title": "No quality control systems have been established." },
@@ -409,7 +409,7 @@
             ]
           },
           {
-            "id": "mfrl6",
+            "id": "MfRL_Q6",
             "title": "How developed is your workforce and manufacturing expertise? *",
             "options": [
               { "id": "1", "title": "No manufacturing workforce or expertise available." },
@@ -424,7 +424,7 @@
             ]
           },
           {
-            "id": "mfrl7",
+            "id": "MfRL_Q7",
             "title": "What is your current production scalability and cost optimization status? *",
             "options": [
               { "id": "1", "title": "No scalability analysis or cost optimization conducted." },

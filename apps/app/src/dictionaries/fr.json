@@ -104,7 +104,7 @@
         "buttonLabel": "Continuer à MkRL",
         "questions": [
           {
-            "id": "trl1",
+            "id": "TRL_Q1",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -119,7 +119,7 @@
             ]
           },
           {
-            "id": "trl2",
+            "id": "TRL_Q2",
             "title": "Avez-vous mené des études de faisabilité et des expériences de preuve de concept ? *",
             "options": [
               { "id": "1", "title": "Aucune étude de faisabilité n'a encore été menée." },
@@ -134,7 +134,7 @@
             ]
           },
           {
-            "id": "trl3",
+            "id": "TRL_Q3",
             "title": "Quel est le statut actuel du développement de votre prototype ? *",
             "options": [
               { "id": "1", "title": "Aucun prototype n'a encore été développé." },
@@ -149,7 +149,7 @@
             ]
           },
           {
-            "id": "trl4",
+            "id": "TRL_Q4",
             "title": "À quel point avez-vous testé les performances de votre technologie ? *",
             "options": [
               { "id": "1", "title": "Aucun test de performance n'a été effectué." },
@@ -164,7 +164,7 @@
             ]
           },
           {
-            "id": "trl5",
+            "id": "TRL_Q5",
             "title": "Quel niveau de tests d'intégration avez-vous terminé ? *",
             "options": [
               { "id": "1", "title": "Aucun test d'intégration n'a été effectué." },
@@ -179,7 +179,7 @@
             ]
           },
           {
-            "id": "trl6",
+            "id": "TRL_Q6",
             "title": "À quel point votre implémentation de projet pilote est-elle avancée ? *",
             "options": [
               { "id": "1", "title": "Aucun projet pilote n'a été initié." },
@@ -194,7 +194,7 @@
             ]
           },
           {
-            "id": "trl7",
+            "id": "TRL_Q7",
             "title": "Quel est le statut de la conformité réglementaire et des certifications ? *",
             "options": [
               { "id": "1", "title": "Aucune exigence réglementaire n'a été identifiée." },
@@ -219,7 +219,7 @@
         "buttonLabel": "Continuer à MfRL",
         "questions": [
           {
-            "id": "mkrl1",
+            "id": "MkRL_Q1",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -234,7 +234,7 @@
             ]
           },
           {
-            "id": "mkrl2",
+            "id": "MkRL_Q2",
             "title": "À quel point votre marché cible et vos segments de clients sont-ils bien définis ? *",
             "options": [
               { "id": "1", "title": "Le marché cible n'a pas encore été identifié." },
@@ -249,7 +249,7 @@
             ]
           },
           {
-            "id": "mkrl3",
+            "id": "MkRL_Q3",
             "title": "Quelle est votre analyse concurrentielle actuelle et positionnement marché ? *",
             "options": [
               { "id": "1", "title": "Aucune analyse concurrentielle n'a été menée." },
@@ -264,7 +264,7 @@
             ]
           },
           {
-            "id": "mkrl4",
+            "id": "MkRL_Q4",
             "title": "À quel point votre stratégie de prix et modèle d'affaires sont-ils développés ? *",
             "options": [
               { "id": "1", "title": "Aucune stratégie de prix n'a été développée." },
@@ -279,7 +279,7 @@
             ]
           },
           {
-            "id": "mkrl5",
+            "id": "MkRL_Q5",
             "title": "Quel est le statut de votre stratégie marketing et ventes ? *",
             "options": [
               { "id": "1", "title": "Aucune stratégie marketing ou ventes n'a été développée." },
@@ -294,7 +294,7 @@
             ]
           },
           {
-            "id": "mkrl6",
+            "id": "MkRL_Q6",
             "title": "À quel point vos relations clients et partenariats sont-ils établis ? *",
             "options": [
               { "id": "1", "title": "Aucune relation client ou partenariat établi." },
@@ -309,7 +309,7 @@
             ]
           },
           {
-            "id": "mkrl7",
+            "id": "MkRL_Q7",
             "title": "Quelle est votre traction marché actuelle et trajectoire de croissance ? *",
             "options": [
               { "id": "1", "title": "Aucune traction marché ou métriques de croissance disponibles." },
@@ -334,7 +334,7 @@
         "buttonLabel": "Voir le rapport",
         "questions": [
           {
-            "id": "mfrl1",
+            "id": "MfRL_Q1",
             "title": "Est-ce que le concept technique est formalisé et positionné relativement aux solutions existantes ? *",
             "options": [
               { "id": "1", "title": "Le concept est uniquement décrit de manière informelle." },
@@ -349,7 +349,7 @@
             ]
           },
           {
-            "id": "mfrl2",
+            "id": "MfRL_Q2",
             "title": "À quel point la conception de votre processus de fabrication est-elle développée ? *",
             "options": [
               { "id": "1", "title": "Aucun processus de fabrication n'a été conçu." },
@@ -364,7 +364,7 @@
             ]
           },
           {
-            "id": "mfrl3",
+            "id": "MfRL_Q3",
             "title": "Quel est le statut de votre chaîne d'approvisionnement et sourcing matériaux ? *",
             "options": [
               { "id": "1", "title": "Aucune analyse de chaîne d'approvisionnement n'a été menée." },
@@ -379,7 +379,7 @@
             ]
           },
           {
-            "id": "mfrl4",
+            "id": "MfRL_Q4",
             "title": "À quel point votre installation de production et configuration équipement sont-elles avancées ? *",
             "options": [
               { "id": "1", "title": "Aucune installation de production ou exigences équipement définies." },
@@ -394,7 +394,7 @@
             ]
           },
           {
-            "id": "mfrl5",
+            "id": "MfRL_Q5",
             "title": "Quel est le statut de vos systèmes de contrôle qualité et de test ? *",
             "options": [
               { "id": "1", "title": "Aucun système de contrôle qualité n'a été établi." },
@@ -409,7 +409,7 @@
             ]
           },
           {
-            "id": "mfrl6",
+            "id": "MfRL_Q6",
             "title": "À quel point votre main-d'œuvre et expertise de fabrication sont-elles développées ? *",
             "options": [
               { "id": "1", "title": "Aucune main-d'œuvre ou expertise de fabrication disponible." },
@@ -424,7 +424,7 @@
             ]
           },
           {
-            "id": "mfrl7",
+            "id": "MfRL_Q7",
             "title": "Quel est votre statut actuel d'évolutivité production et optimisation coûts ? *",
             "options": [
               { "id": "1", "title": "Aucune analyse d'évolutivité ou optimisation coûts menée." },
