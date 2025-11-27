@@ -6,7 +6,11 @@ import { useRouter } from "next/navigation"
 // Context
 import { useFormContext } from "@/context/FormContext"
 // Types
-import { StageId, StageType } from "@/components/custom/FormPage/Form/Form"
+import {
+  StageId,
+  StageType,
+  QuestionData,
+} from "@/components/custom/FormPage/Form/Form"
 import { QuestionProps } from "@/components/custom/FormPage/Question/Question"
 import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 import { Locale } from "@/dictionaries/dictionaries"
@@ -59,9 +63,9 @@ export const ProgressProvider = ({
 
   const currStageIndex = stages.findIndex((stage) => stage.id === currStageId)
   const currStage = stages[currStageIndex]
-  const currQuestion = currStage.questions.find(
+  const currQuestionData = currStage.questions.find(
     (question) => question.id === currQuestionId
-  ) as QuestionProps
+  ) as QuestionData
   const currQuestionIndex = currStage.questions.findIndex(
     (question) => question.id === currQuestionId
   )
@@ -104,6 +108,12 @@ export const ProgressProvider = ({
   }
 
   const handleQuestionClick = () => setIsNextButtonEnabled(true)
+
+  const currQuestion: QuestionProps = {
+    ...currQuestionData,
+    name: currStage.id,
+    onQuestionClick: handleQuestionClick,
+  }
 
   useEffect(() => {
     const savedForm = JSON.parse(

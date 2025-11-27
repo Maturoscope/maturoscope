@@ -9,6 +9,8 @@ import { ProgressProvider } from "@/context/ProgressContext"
 import { getDictionary } from "@/dictionaries/dictionaries"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
+// Actions
+import { getQuestions } from "@/actions/questions"
 
 interface FormPageProps {
   params: Promise<{ lang: Locale }>
@@ -22,13 +24,29 @@ const FormPage = async ({ params }: FormPageProps) => {
     header: { stringConnector },
   } = dictionary
 
+  const questionsStages = await getQuestions(lang)
+
+  const stages = form.stages.map((stage) => {
+    const questionsStage = questionsStages.find((qs) => qs.id === stage.id)
+    if (!questionsStage) {
+      throw new Error(`Failed to load questions for stage: ${stage.id}`)
+    }
+    return {
+      ...stage,
+      questions: questionsStage.questions,
+    }
+  })
+
   return (
     <main className="w-full h-full flex flex-col items-center justify-start pb-16">
       <Header stringConnector={stringConnector} showBackButton />
       <FormProvider>
-        <ProgressProvider lang={lang} stages={form.stages}>
+        <ProgressProvider lang={lang} stages={stages}>
           <ProgressTopBar />
-          <Form {...form} />
+          <Form
+            buttonNextLabel={form.buttonNextLabel}
+            buttonPrevLabel={form.buttonPrevLabel}
+          />
         </ProgressProvider>
       </FormProvider>
     </main>

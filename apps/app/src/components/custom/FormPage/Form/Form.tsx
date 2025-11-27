@@ -8,10 +8,14 @@ import Question from "@/components/custom/FormPage/Question/Question"
 import { Button } from "@/components/ui/button"
 // Context
 import { useProgressContext } from "@/context/ProgressContext"
-// Types
-import { QuestionProps } from "@/components/custom/FormPage/Question/Question"
 
 export type StageId = "trl" | "mkrl" | "mfrl"
+
+export interface QuestionData {
+  id: string
+  title: string
+  options: Array<{ id: string; title: string }>
+}
 
 export interface StageType {
   id: StageId
@@ -20,7 +24,7 @@ export interface StageType {
   title: string
   description: string
   buttonLabel: string
-  questions: QuestionProps[]
+  questions: QuestionData[]
 }
 
 export interface StageProps {
@@ -34,7 +38,7 @@ export interface StageProps {
 export interface FormProps {
   buttonNextLabel: string
   buttonPrevLabel: string
-  stages: StageType[]
+  // stages are not needed here - Form gets them from ProgressContext
 }
 
 const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {

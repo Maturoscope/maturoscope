@@ -5,7 +5,10 @@ import { HeroProps as HomepageHeroProps } from "@/components/custom/Homepage/Her
 import { PrivacyPolicyProps } from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
 import { SimpleFormProps } from "@/components/custom/BeginPage/SimpleForm/SimpleForm"
 import { HeroProps as WhyHeroProps } from "@/components/custom/WhyPage/Hero/Hero"
-import { FormProps } from "@/components/custom/FormPage/Form/Form"
+import { StageType } from "@/components/custom/FormPage/Form/Form"
+
+// Dictionary form stages don't include questions (they come from API)
+type DictionaryStage = Omit<StageType, "questions">
 
 export type Dictionary = {
   lang: Locale
@@ -18,5 +21,9 @@ export type Dictionary = {
   why: {
     hero: WhyHeroProps
   }
-  form: FormProps
+  form: {
+    buttonNextLabel: string
+    buttonPrevLabel: string
+    stages: DictionaryStage[]
+  }
 }
