@@ -69,7 +69,6 @@ export type UpdateServicePayload = Partial<CreateServicePayload>;
 // Helper function to get badge color based on levels
 export function getBadgeColor(levels: number[]): 'red' | 'yellow' | 'green' {
   const minLevel = Math.min(...levels);
-  const maxLevel = Math.max(...levels);
   
   // If contains 1-3, show red
   if (minLevel >= 1 && minLevel <= 3) {

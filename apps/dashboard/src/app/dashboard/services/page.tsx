@@ -26,7 +26,6 @@ export default function ServicesPage() {
     levelRangeFilter,
     setLevelRangeFilter,
     filteredServices,
-    scaleCounts,
   } = useServiceFilters(services);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
