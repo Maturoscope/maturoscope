@@ -1,50 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ServiceSummary, Service, ServiceScale, ScaleType } from '../types/service';
-
-/**
- * Transform Service from backend to ServiceSummary for frontend
- */
-function transformToServiceSummary(service: Service): ServiceSummary {
-  // Group gap coverages by scale type
-  const scalesMap = new Map<ScaleType, Set<number>>();
-
-  const gapCoverages = Array.isArray(service.gapCoverages)
-    ? service.gapCoverages
-    : [];
-
-  gapCoverages.forEach((coverage) => {
-    if (!scalesMap.has(coverage.scaleType)) {
-      scalesMap.set(coverage.scaleType, new Set());
-    }
-    scalesMap.get(coverage.scaleType)!.add(coverage.level);
-  });
-
-  // Convert to array of ServiceScale
-  const scales: ServiceScale[] = Array.from(scalesMap.entries()).map(
-    ([type, levelsSet]) => ({
-      type,
-      levels: Array.from(levelsSet).sort((a, b) => a - b),
-    }),
-  );
-
-  return {
-    id: service.id,
-    name: service.name,
-    description: service.description,
-    url: service.url,
-    mainContact: {
-      firstName: service.mainContactFirstName || '',
-      lastName: service.mainContactLastName || '',
-      email: service.mainContactEmail || '',
-    },
-    secondaryContact: {
-      firstName: service.secondaryContactFirstName || '',
-      lastName: service.secondaryContactLastName || '',
-      email: service.secondaryContactEmail || '',
-    },
-    scales,
-  };
-}
+import { ServiceSummary } from '../types/service';
 
 export function useServices() {
   const [services, setServices] = useState<ServiceSummary[]>([]);
@@ -65,8 +20,34 @@ export function useServices() {
         return;
       }
 
-      const transformedData = data.map(transformToServiceSummary);
-      setServices(transformedData);
+      const servicesData: ServiceSummary[] = Array.isArray(data) ? data : [];
+      
+      const normalizedServices = servicesData.map((service) => ({
+        id: service.id,
+        name: service.name || '',
+        description: service.description || '',
+        url: service.url || '',
+        mainContact: {
+          firstName: service.mainContact?.firstName || '',
+          lastName: service.mainContact?.lastName || '',
+          email: service.mainContact?.email || '',
+        },
+        secondaryContact: {
+          firstName: service.secondaryContact?.firstName || '',
+          lastName: service.secondaryContact?.lastName || '',
+          email: service.secondaryContact?.email || '',
+        },
+        scales: Array.isArray(service.scales) 
+          ? service.scales.map((scale) => ({
+              type: scale.type,
+              levels: Array.isArray(scale.levels) 
+                ? [...new Set(scale.levels)].sort((a, b) => a - b)
+                : [],
+            }))
+          : [],
+      }));
+
+      setServices(normalizedServices);
     } catch (err) {
       console.error("Error fetching services:", err);
       setServices([]);

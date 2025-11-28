@@ -8,9 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UserPlus, Search, ChevronDown } from "lucide-react";
+import { UserPlus, Search, ChevronDown, BarChart } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { ScaleType } from "../types/service";
+import { LevelRangeKey, ScaleType } from "../types/service";
 import { ScaleTabs } from "./ScaleTabs";
 
 interface ServicesHeaderProps {
@@ -18,6 +18,8 @@ interface ServicesHeaderProps {
   onSearchChange: (query: string) => void;
   scaleFilter: ScaleType | "All";
   onScaleFilterChange: (filter: ScaleType | "All") => void;
+  levelRangeFilter: LevelRangeKey | null;
+  onLevelRangeChange: (range: LevelRangeKey | null) => void;
   onAddService: () => void;
 }
 
@@ -26,16 +28,22 @@ export function ServicesHeader({
   onSearchChange,
   scaleFilter,
   onScaleFilterChange,
+  levelRangeFilter,
+  onLevelRangeChange,
   onAddService,
 }: ServicesHeaderProps) {
   const { t } = useTranslation("SERVICES");
 
-  // Dropdown options for scale
-  const SCALE_OPTIONS: Array<{ value: ScaleType; label: string }> = [
-    { value: "TRL", label: "TRL" },
-    { value: "MkRL", label: "MkRL" },
-    { value: "MfRL", label: "MfRL" },
+  const LEVEL_RANGE_OPTIONS: Array<{ value: LevelRangeKey; label: string }> = [
+    { value: "1-3", label: t("FILTERS.LEVEL_RANGES.1_3") },
+    { value: "4-6", label: t("FILTERS.LEVEL_RANGES.4_6") },
+    { value: "7-8", label: t("FILTERS.LEVEL_RANGES.7_8") },
   ];
+
+  const selectedLevelLabel =
+    levelRangeFilter
+      ? LEVEL_RANGE_OPTIONS.find((option) => option.value === levelRangeFilter)?.label
+      : null;
 
   return (
     <div className="flex flex-wrap gap-3">
@@ -45,28 +53,34 @@ export function ServicesHeader({
         onFilterChange={onScaleFilterChange}
       />
 
-      {/* Scale Dropdown (optional filter) */}
+      {/* Level Range Dropdown */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"
             className="inline-flex h-9 items-center gap-2 rounded-[8px] border-slate-200 px-4"
           >
-            {t("FILTERS.SCALE")}
+            <BarChart className="h-4 w-4 text-[#0A0A0A]" />
+            <span>{t("FILTERS.SCALE")}</span>
+            {selectedLevelLabel && (
+              <span className="text-xs text-[#0A0A0A]/60">
+                {selectedLevelLabel}
+              </span>
+            )}
             <ChevronDown className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-40">
           <DropdownMenuItem
-            onClick={() => onScaleFilterChange("All")}
+            onClick={() => onLevelRangeChange(null)}
             className="cursor-pointer text-[#0A0A0A]"
           >
-            {t("FILTERS.ALL")}
+            {t("FILTERS.LEVEL_RANGES.ALL")}
           </DropdownMenuItem>
-          {SCALE_OPTIONS.map((option) => (
+          {LEVEL_RANGE_OPTIONS.map((option) => (
             <DropdownMenuItem
               key={option.value}
-              onClick={() => onScaleFilterChange(option.value)}
+              onClick={() => onLevelRangeChange(option.value)}
               className="cursor-pointer text-[#0A0A0A]"
             >
               {option.label}

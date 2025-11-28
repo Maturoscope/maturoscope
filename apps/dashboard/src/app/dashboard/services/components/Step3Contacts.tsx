@@ -10,18 +10,19 @@ interface Step3ContactsProps {
   formData: ServiceFormData;
   errors: Record<string, string>;
   onUpdateField: (field: keyof ServiceFormData, value: string) => void;
+  viewOnly?: boolean;
 }
 
 export function Step3Contacts({
   formData,
   errors,
   onUpdateField,
+  viewOnly = false,
 }: Step3ContactsProps) {
   const { t } = useTranslation("SERVICES");
 
   return (
     <div className="space-y-6">
-      {/* Main Contact */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-gray-900">
           {t("MODAL.STEP_3.MAIN_CONTACT.TITLE")}
@@ -30,7 +31,7 @@ export function Step3Contacts({
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="main-first-name">
-              {t("MODAL.STEP_3.MAIN_CONTACT.FIRST_NAME.LABEL")}
+              {t("MODAL.STEP_3.MAIN_CONTACT.FIRST_NAME.LABEL")} *
             </Label>
             <Input
               id="main-first-name"
@@ -41,12 +42,18 @@ export function Step3Contacts({
               placeholder={t(
                 "MODAL.STEP_3.MAIN_CONTACT.FIRST_NAME.PLACEHOLDER"
               )}
+              className={errors.mainContactFirstName ? "border-red-500" : ""}
+              disabled={viewOnly}
+              readOnly={viewOnly}
             />
+            {errors.mainContactFirstName && (
+              <p className="text-sm text-red-500">{errors.mainContactFirstName}</p>
+            )}
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="main-last-name">
-              {t("MODAL.STEP_3.MAIN_CONTACT.LAST_NAME.LABEL")}
+              {t("MODAL.STEP_3.MAIN_CONTACT.LAST_NAME.LABEL")} *
             </Label>
             <Input
               id="main-last-name"
@@ -57,13 +64,19 @@ export function Step3Contacts({
               placeholder={t(
                 "MODAL.STEP_3.MAIN_CONTACT.LAST_NAME.PLACEHOLDER"
               )}
+              className={errors.mainContactLastName ? "border-red-500" : ""}
+              disabled={viewOnly}
+              readOnly={viewOnly}
             />
+            {errors.mainContactLastName && (
+              <p className="text-sm text-red-500">{errors.mainContactLastName}</p>
+            )}
           </div>
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="main-email">
-            {t("MODAL.STEP_3.MAIN_CONTACT.EMAIL.LABEL")}
+            {t("MODAL.STEP_3.MAIN_CONTACT.EMAIL.LABEL")} *
           </Label>
           <Input
             id="main-email"
@@ -74,6 +87,8 @@ export function Step3Contacts({
               "MODAL.STEP_3.MAIN_CONTACT.EMAIL.PLACEHOLDER"
             )}
             className={errors.mainContactEmail ? "border-red-500" : ""}
+            disabled={viewOnly}
+            readOnly={viewOnly}
           />
           {errors.mainContactEmail && (
             <p className="text-sm text-red-500">{errors.mainContactEmail}</p>
@@ -81,7 +96,6 @@ export function Step3Contacts({
         </div>
       </div>
 
-      {/* Secondary Contact */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-gray-900">
           {t("MODAL.STEP_3.SECONDARY_CONTACT.TITLE")}
@@ -90,7 +104,7 @@ export function Step3Contacts({
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="secondary-first-name">
-              {t("MODAL.STEP_3.SECONDARY_CONTACT.FIRST_NAME.LABEL")}
+              {t("MODAL.STEP_3.SECONDARY_CONTACT.FIRST_NAME.LABEL")} *
             </Label>
             <Input
               id="secondary-first-name"
@@ -101,12 +115,18 @@ export function Step3Contacts({
               placeholder={t(
                 "MODAL.STEP_3.SECONDARY_CONTACT.FIRST_NAME.PLACEHOLDER"
               )}
+              className={errors.secondaryContactFirstName ? "border-red-500" : ""}
+              disabled={viewOnly}
+              readOnly={viewOnly}
             />
+            {errors.secondaryContactFirstName && (
+              <p className="text-sm text-red-500">{errors.secondaryContactFirstName}</p>
+            )}
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="secondary-last-name">
-              {t("MODAL.STEP_3.SECONDARY_CONTACT.LAST_NAME.LABEL")}
+              {t("MODAL.STEP_3.SECONDARY_CONTACT.LAST_NAME.LABEL")} *
             </Label>
             <Input
               id="secondary-last-name"
@@ -117,13 +137,19 @@ export function Step3Contacts({
               placeholder={t(
                 "MODAL.STEP_3.SECONDARY_CONTACT.LAST_NAME.PLACEHOLDER"
               )}
+              className={errors.secondaryContactLastName ? "border-red-500" : ""}
+              disabled={viewOnly}
+              readOnly={viewOnly}
             />
+            {errors.secondaryContactLastName && (
+              <p className="text-sm text-red-500">{errors.secondaryContactLastName}</p>
+            )}
           </div>
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="secondary-email">
-            {t("MODAL.STEP_3.SECONDARY_CONTACT.EMAIL.LABEL")}
+            {t("MODAL.STEP_3.SECONDARY_CONTACT.EMAIL.LABEL")} *
           </Label>
           <Input
             id="secondary-email"
@@ -136,6 +162,8 @@ export function Step3Contacts({
               "MODAL.STEP_3.SECONDARY_CONTACT.EMAIL.PLACEHOLDER"
             )}
             className={errors.secondaryContactEmail ? "border-red-500" : ""}
+            disabled={viewOnly}
+            readOnly={viewOnly}
           />
           {errors.secondaryContactEmail && (
             <p className="text-sm text-red-500">{errors.secondaryContactEmail}</p>

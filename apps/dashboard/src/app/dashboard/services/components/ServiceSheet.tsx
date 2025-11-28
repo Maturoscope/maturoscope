@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Sheet,
@@ -10,17 +10,19 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { ChevronRight, Loader2 } from "lucide-react";
 import { useServiceForm } from "../hooks/useServiceForm";
 import { Step1ServiceInfo } from "./Step1ServiceInfo";
 import { Step2CategoryScale } from "./Step2CategoryScale";
 import { Step3Contacts } from "./Step3Contacts";
+import { UnsavedChangesDialog } from "./UnsavedChangesDialog";
 
 interface ServiceSheetProps {
   isOpen: boolean;
   onClose: () => void;
   serviceId?: string;
   onSuccess: (serviceName: string) => void;
+  viewOnly?: boolean;
 }
 
 export function ServiceSheet({
@@ -28,8 +30,10 @@ export function ServiceSheet({
   onClose,
   serviceId,
   onSuccess,
+  viewOnly = false,
 }: ServiceSheetProps) {
   const { t } = useTranslation("SERVICES");
+  const [showUnsavedAlert, setShowUnsavedAlert] = useState(false);
   const {
     formData,
     currentStep,
@@ -41,14 +45,90 @@ export function ServiceSheet({
     handleSubmit,
     canProceedToNextStep,
     reset,
+    hasUnsavedChanges,
+    setFormData,
   } = useServiceForm(serviceId);
 
-  // Reset form when sheet closes
+  useEffect(() => {
+    if (isOpen && serviceId) {
+      let isMounted = true;
+      
+      const loadData = async () => {
+        try {
+          const response = await fetch(`/api/services/${serviceId}`);
+          
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: 'Failed to load service' }));
+            throw new Error(errorData.message || 'Failed to load service');
+          }
+          
+          const service = await response.json();
+          
+          if (!isMounted) return;
+          
+          const activeCategories = new Set<string>();
+          if (service.gapCoverages && Array.isArray(service.gapCoverages)) {
+            service.gapCoverages.forEach((coverage: { scaleType: string }) => {
+              activeCategories.add(coverage.scaleType);
+            });
+          }
+          
+          setFormData((prev) => ({
+            ...prev,
+            name: service.name || '',
+            description: service.description || '',
+            url: service.url || '',
+            gapCoverages: service.gapCoverages || [],
+            activeCategories: activeCategories as Set<'TRL' | 'MkRL' | 'MfRL'>,
+            mainContactFirstName: service.mainContactFirstName || '',
+            mainContactLastName: service.mainContactLastName || '',
+            mainContactEmail: service.mainContactEmail || '',
+            secondaryContactFirstName: service.secondaryContactFirstName || '',
+            secondaryContactLastName: service.secondaryContactLastName || '',
+            secondaryContactEmail: service.secondaryContactEmail || '',
+          }));
+        } catch (error) {
+          console.error('Error loading service:', error);
+        }
+      };
+      
+      loadData();
+      
+      return () => {
+        isMounted = false;
+      };
+    }
+  }, [isOpen, serviceId, setFormData]);
+
   useEffect(() => {
     if (!isOpen) {
       reset();
+      setShowUnsavedAlert(false);
     }
   }, [isOpen, reset]);
+
+  const handleSheetOpenChange = (open: boolean) => {
+    if (!open) {
+      if (!viewOnly && hasUnsavedChanges()) {
+        setShowUnsavedAlert(true);
+      } else {
+        onClose();
+        reset();
+      }
+    } else {
+      onClose();
+    }
+  };
+
+  const handleConfirmClose = () => {
+    setShowUnsavedAlert(false);
+    onClose();
+    reset();
+  };
+
+  const handleCancelClose = () => {
+    setShowUnsavedAlert(false);
+  };
 
   const handleFinalSubmit = async () => {
     const success = await handleSubmit();
@@ -64,63 +144,63 @@ export function ServiceSheet({
     { number: 3, label: t("MODAL.STEPS.CONTACTS") },
   ];
 
+  const progressValue = useMemo(() => {
+    return (currentStep / STEPS.length) * 100;
+  }, [currentStep, STEPS.length]);
+
   return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
+    <>
+    <Sheet open={isOpen} onOpenChange={handleSheetOpenChange}>
       <SheetContent className="sm:max-w-[680px] text-[#0A0A0A] overflow-y-auto">
-        <SheetHeader className="pb-4">
+        <SheetHeader className="pb-1">
           <SheetTitle className="text-lg font-semibold">
-            {serviceId ? t("MODAL.EDIT_TITLE") : t("MODAL.CREATE_TITLE")}
+            {viewOnly 
+              ? t("MODAL.VIEW_TITLE") 
+              : serviceId 
+                ? t("MODAL.EDIT_TITLE") 
+                : t("MODAL.CREATE_TITLE")}
           </SheetTitle>
         </SheetHeader>
 
         <div className="w-[95%] mx-auto border-b border-slate-200 mb-4" />
 
-        {/* Step Indicator */}
-        <div className="flex items-center justify-between mb-6 px-4">
-          {STEPS.map((step, index) => (
-            <div key={step.number} className="flex items-center flex-1">
-              <div className="flex items-center">
-                <div
-                  className={`
-                    flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium
-                    ${
-                      currentStep >= step.number
-                        ? "bg-foreground text-background"
-                        : "bg-gray-200 text-gray-600"
-                    }
-                  `}
-                >
-                  {step.number}
-                </div>
+        <div className="mb-4 px-4">
+          <div className="flex items-center gap-2 mb-3">
+            {STEPS.map((step, index) => (
+              <React.Fragment key={step.number}>
                 <span
                   className={`
-                    ml-2 text-sm font-medium hidden md:inline
+                    text-sm font-medium
                     ${
                       currentStep >= step.number
                         ? "text-[#0A0A0A]"
-                        : "text-gray-500"
+                        : "text-[#8C8C8C]"
                     }
                   `}
                 >
-                  {step.label}
+                  {step.number}. {step.label}
                 </span>
-              </div>
-
-              {/* Connector Line */}
-              {index < STEPS.length - 1 && (
-                <div className="flex-1 h-0.5 bg-gray-200 mx-2 md:mx-4" />
-              )}
-            </div>
-          ))}
+                {index < STEPS.length - 1 && (
+                  <ChevronRight className="h-4 w-4 text-[#8C8C8C]" />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+          <div className="relative h-2 w-full bg-[#E5E5E5] rounded-full overflow-hidden">
+            <div
+              className="absolute top-0 left-0 h-full bg-[#0A0A0A] transition-all duration-300 ease-in-out rounded-full"
+              style={{ width: `${progressValue}%` }}
+            />
+          </div>
         </div>
 
-        {/* Step Content */}
         <div className="flex-1 overflow-y-auto px-4 pb-4">
           {currentStep === 1 && (
             <Step1ServiceInfo
               formData={formData}
               errors={errors}
               onUpdateField={updateField}
+              viewOnly={viewOnly}
             />
           )}
           {currentStep === 2 && (
@@ -128,6 +208,7 @@ export function ServiceSheet({
               formData={formData}
               errors={errors}
               onUpdateField={updateField}
+              viewOnly={viewOnly}
             />
           )}
           {currentStep === 3 && (
@@ -135,29 +216,19 @@ export function ServiceSheet({
               formData={formData}
               errors={errors}
               onUpdateField={updateField}
+              viewOnly={viewOnly}
             />
           )}
         </div>
 
-        {/* Submit Error */}
         {errors.submit && (
           <div className="mx-4 mb-4 p-4 bg-red-50 border border-red-200 rounded-md">
             <p className="text-sm text-red-600">{errors.submit}</p>
           </div>
         )}
 
-        {/* Navigation Buttons */}
-        <SheetFooter className="px-4 pt-4 border-t flex-row justify-between sm:justify-between">
-          <Button
-            variant="outline"
-            onClick={onClose}
-            disabled={isSubmitting}
-            className="order-1"
-          >
-            {t("MODAL.BUTTONS.CANCEL")}
-          </Button>
-
-          <div className="flex items-center gap-2 order-2">
+        <SheetFooter className="px-4 pt-4 sm:justify-end">
+          <div className="flex items-center gap-2 ml-auto">
             {currentStep > 1 && (
               <Button
                 variant="outline"
@@ -168,38 +239,57 @@ export function ServiceSheet({
               </Button>
             )}
 
-            {currentStep < 3 ? (
-              <Button
-                onClick={handleNext}
-                disabled={!canProceedToNextStep() || isSubmitting}
-                className="bg-foreground text-background hover:bg-foreground/90"
-              >
-                {t("MODAL.BUTTONS.NEXT")}
-              </Button>
+            {viewOnly ? (
+              currentStep < 3 && (
+                <Button
+                  onClick={handleNext}
+                  className="bg-foreground text-background hover:bg-foreground/90"
+                >
+                  {t("MODAL.BUTTONS.NEXT")}
+                </Button>
+              )
             ) : (
-              <Button
-                onClick={handleFinalSubmit}
-                disabled={isSubmitting}
-                className="bg-foreground text-background hover:bg-foreground/90"
-              >
-                {isSubmitting ? (
-                  <span className="flex items-center gap-2">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    {serviceId
-                      ? t("MODAL.BUTTONS.UPDATING")
-                      : t("MODAL.BUTTONS.CREATING")}
-                  </span>
-                ) : serviceId ? (
-                  t("MODAL.BUTTONS.UPDATE")
-                ) : (
-                  t("MODAL.BUTTONS.CREATE")
-                )}
-              </Button>
+              currentStep < 3 ? (
+                <Button
+                  onClick={handleNext}
+                  disabled={!canProceedToNextStep() || isSubmitting}
+                  className="bg-foreground text-background hover:bg-foreground/90"
+                >
+                  {t("MODAL.BUTTONS.NEXT")}
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleFinalSubmit}
+                  disabled={!canProceedToNextStep() || isSubmitting}
+                  className="bg-foreground text-background hover:bg-foreground/90"
+                >
+                  {isSubmitting ? (
+                    <span className="flex items-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      {serviceId
+                        ? t("MODAL.BUTTONS.UPDATING")
+                        : t("MODAL.BUTTONS.CREATING")}
+                    </span>
+                  ) : serviceId ? (
+                    t("MODAL.BUTTONS.UPDATE")
+                  ) : (
+                    t("MODAL.BUTTONS.CREATE")
+                  )}
+                </Button>
+              )
             )}
           </div>
         </SheetFooter>
       </SheetContent>
     </Sheet>
+
+    <UnsavedChangesDialog
+      open={showUnsavedAlert}
+      onOpenChange={setShowUnsavedAlert}
+      onConfirm={handleConfirmClose}
+      onCancel={handleCancelClose}
+    />
+    </>
   );
 }
 

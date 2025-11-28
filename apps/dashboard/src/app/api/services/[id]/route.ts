@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const token = request.cookies.get('token');
 
@@ -17,10 +17,11 @@ export async function GET(
   }
 
   try {
+    const { id } = await params;
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 10000);
 
-    const response = await fetch(`${apiBaseUrl}/services/${params.id}`, {
+    const response = await fetch(`${apiBaseUrl}/services/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token.value}`,
@@ -67,12 +68,13 @@ export async function PATCH(
   }
 
   try {
+    const { id } = await params;
     const body = await request.json();
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 10000);
 
-    const response = await fetch(`${apiBaseUrl}/services/${params.id}`, {
+    const response = await fetch(`${apiBaseUrl}/services/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -121,10 +123,11 @@ export async function DELETE(
   }
 
   try {
+    const { id } = await params;
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 10000);
 
-    const response = await fetch(`${apiBaseUrl}/services/${params.id}`, {
+    const response = await fetch(`${apiBaseUrl}/services/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

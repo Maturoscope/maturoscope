@@ -396,7 +396,14 @@
       "TRL": "TRL",
       "MkRL": "MkRL",
       "MfRL": "MfRL",
-      "SCALE": "Scale"
+      "SCALE": "Scale",
+      "LEVELS": "Levels",
+      "LEVEL_RANGES": {
+        "ALL": "All levels",
+        "1_3": "Levels 1-3",
+        "4_6": "Levels 4-6",
+        "7_8": "Levels 7-8"
+      }
     },
     "SEARCH": {
       "PLACEHOLDER": "Search services..."
@@ -424,6 +431,7 @@
     "MODAL": {
       "CREATE_TITLE": "Add Service",
       "EDIT_TITLE": "Edit Service",
+      "VIEW_TITLE": "View Service",
       "STEPS": {
         "SERVICE_INFO": "Service Information",
         "CATEGORY_SCALE": "Category & Scale",
@@ -448,6 +456,10 @@
         "TITLE": "Select Categories and Satisfaction Levels",
         "DESCRIPTION": "Activate the categories this service addresses and select the satisfaction levels for each question.",
         "NO_CATEGORIES": "Please activate at least one category to continue.",
+        "SELECT_ALL_THAT_APPLY": "(select all that apply)",
+        "LOADING": "Loading...",
+        "NO_QUESTIONS": "No questions available for this category.",
+        "GAP": "Gap",
         "SCALE_LABELS": {
           "TRL": "Technology Readiness Level",
           "MkRL": "Market Readiness Level",
@@ -500,9 +512,18 @@
         "DUPLICATE_NAME": "A service with this name already exists.",
         "NO_CATEGORIES": "At least one category must be active.",
         "INVALID_EMAIL": "Please enter a valid email address.",
+        "EMAIL_REQUIRED": "Email is required.",
+        "FIRST_NAME_REQUIRED": "First name is required.",
+        "LAST_NAME_REQUIRED": "Last name is required.",
         "CREATE_FAILED": "Failed to create service.",
         "UPDATE_FAILED": "Failed to update service.",
         "DELETE_FAILED": "Failed to delete service."
+      },
+      "UNSAVED_CHANGES": {
+        "TITLE": "Unsaved Changes",
+        "MESSAGE": "You have unsaved changes. If you leave now, your latest updates will be lost.",
+        "CANCEL": "Cancel",
+        "LEAVE_ANYWAY": "Leave Anyway"
       }
     },
     "DELETE_DIALOG": {

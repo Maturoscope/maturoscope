@@ -6,18 +6,31 @@ export interface SatisfactionOption {
   text: { en: string; fr: string };
 }
 
+export interface QuestionInfo {
+  id: string;
+  question: { en: string; fr: string };
+}
+
 export function useSatisfactionOptions() {
   const [options, setOptions] = useState<SatisfactionOption[]>([]);
+  const [questions, setQuestions] = useState<Record<string, QuestionInfo>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchOptions();
+    const loadData = async () => {
+      setLoading(true);
+      try {
+        await Promise.all([fetchOptions(), fetchQuestions()]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
   }, []);
 
   const fetchOptions = async () => {
     try {
-      setLoading(true);
       const response = await fetch('/api/services/satisfaction-options', {
         cache: 'no-store',
       });
@@ -48,8 +61,48 @@ export function useSatisfactionOptions() {
       setError(
         err instanceof Error ? err.message : 'Failed to load satisfaction options',
       );
-    } finally {
-      setLoading(false);
+      throw err;
+    }
+  };
+
+  const fetchQuestions = async () => {
+    try {
+      const response = await fetch('/api/readiness-assessment/questions', {
+        cache: 'no-store',
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to load questions');
+      }
+
+      // Transform the data to a map of questionId -> QuestionInfo
+      const questionsMap: Record<string, QuestionInfo> = {};
+
+      Object.keys(data).forEach((scaleType) => {
+        const scale = data[scaleType] as {
+          questions?: Array<{
+            id: string;
+            question: { en: string; fr: string };
+          }>;
+        };
+        if (scale.questions && Array.isArray(scale.questions)) {
+          scale.questions.forEach((question) => {
+            if (question.id && question.question) {
+              questionsMap[question.id] = {
+                id: question.id,
+                question: question.question,
+              };
+            }
+          });
+        }
+      });
+
+          setQuestions(questionsMap);
+    } catch (err) {
+      console.error('Error fetching questions:', err);
+      // Don't set error here, as satisfaction options might still work
     }
   };
 
@@ -69,11 +122,22 @@ export function useSatisfactionOptions() {
       .sort((a, b) => a.level - b.level);
   };
 
+  const getQuestionText = (questionId: string, language: 'en' | 'fr'): string => {
+    const question = questions[questionId];
+    if (!question || !question.question) {
+      return questionId;
+    }
+    const text = question.question[language];
+    return text || questionId;
+  };
+
   return {
     options,
+    questions,
     loading,
     error,
     getQuestionsByScale,
     getLevelsForQuestion,
+    getQuestionText,
   };
 }

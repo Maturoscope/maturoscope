@@ -11,22 +11,23 @@ interface Step1ServiceInfoProps {
   formData: ServiceFormData;
   errors: Record<string, string>;
   onUpdateField: (field: keyof ServiceFormData, value: string) => void;
+  viewOnly?: boolean;
 }
 
 export function Step1ServiceInfo({
   formData,
   errors,
   onUpdateField,
+  viewOnly = false,
 }: Step1ServiceInfoProps) {
   const { t } = useTranslation("SERVICES");
 
   return (
     <div className="space-y-4">
-      {/* Service Name */}
       <div className="space-y-2">
         <Label htmlFor="service-name">
           {t("MODAL.STEP_1.NAME.LABEL")}
-          <span className="text-red-500 ml-1">
+          <span className="text-black ml-1">
             {t("MODAL.STEP_1.NAME.REQUIRED")}
           </span>
         </Label>
@@ -36,13 +37,14 @@ export function Step1ServiceInfo({
           onChange={(e) => onUpdateField("name", e.target.value)}
           placeholder={t("MODAL.STEP_1.NAME.PLACEHOLDER")}
           className={errors.name ? "border-red-500" : ""}
+          disabled={viewOnly}
+          readOnly={viewOnly}
         />
         {errors.name && (
           <p className="text-sm text-red-500">{errors.name}</p>
         )}
       </div>
 
-      {/* Description */}
       <div className="space-y-2">
         <Label htmlFor="service-description">
           {t("MODAL.STEP_1.DESCRIPTION.LABEL")}
@@ -53,10 +55,11 @@ export function Step1ServiceInfo({
           onChange={(e) => onUpdateField("description", e.target.value)}
           placeholder={t("MODAL.STEP_1.DESCRIPTION.PLACEHOLDER")}
           rows={4}
+          disabled={viewOnly}
+          readOnly={viewOnly}
         />
       </div>
 
-      {/* URL */}
       <div className="space-y-2">
         <Label htmlFor="service-url">
           {t("MODAL.STEP_1.URL.LABEL")}
@@ -67,6 +70,8 @@ export function Step1ServiceInfo({
           value={formData.url}
           onChange={(e) => onUpdateField("url", e.target.value)}
           placeholder={t("MODAL.STEP_1.URL.PLACEHOLDER")}
+          disabled={viewOnly}
+          readOnly={viewOnly}
         />
       </div>
     </div>

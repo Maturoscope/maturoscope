@@ -23,12 +23,15 @@ export default function ServicesPage() {
     setSearchQuery,
     scaleFilter,
     setScaleFilter,
+    levelRangeFilter,
+    setLevelRangeFilter,
     filteredServices,
     scaleCounts,
   } = useServiceFilters(services);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedServiceId, setSelectedServiceId] = useState<string | undefined>(undefined);
+  const [isViewMode, setIsViewMode] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [serviceToDelete, setServiceToDelete] = useState<ServiceSummary | null>(null);
   
@@ -50,6 +53,13 @@ export default function ServicesPage() {
 
   const handleEditService = (service: ServiceSummary) => {
     setSelectedServiceId(service.id);
+    setIsViewMode(false);
+    setIsModalOpen(true);
+  };
+
+  const handleViewService = (service: ServiceSummary) => {
+    setSelectedServiceId(service.id);
+    setIsViewMode(true);
     setIsModalOpen(true);
   };
 
@@ -69,18 +79,12 @@ export default function ServicesPage() {
       setServiceToDelete(null);
     } catch (error) {
       console.error("Error deleting service:", error);
-      // TODO: Show error toast
     }
   };
 
   const handleServiceSuccess = async (serviceName: string) => {
-    // Determine if it was a create or update operation
     const isUpdate = !!selectedServiceId;
-    
-    // Refresh services list
     await fetchServices();
-    
-    // Show appropriate toast
     setToastServiceName(serviceName);
     if (isUpdate) {
       setShowUpdatedToast(true);
@@ -98,6 +102,8 @@ export default function ServicesPage() {
           onSearchChange={setSearchQuery}
           scaleFilter={scaleFilter}
           onScaleFilterChange={setScaleFilter}
+          levelRangeFilter={levelRangeFilter}
+          onLevelRangeChange={setLevelRangeFilter}
           onAddService={handleAddService}
         />
 
@@ -107,14 +113,19 @@ export default function ServicesPage() {
         loading={loading}
         onEdit={handleEditService}
         onDelete={handleDeleteService}
+        onView={handleViewService}
       />
 
       {/* Service Sheet */}
       <ServiceSheet
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setIsViewMode(false);
+        }}
         serviceId={selectedServiceId}
         onSuccess={handleServiceSuccess}
+        viewOnly={isViewMode}
       />
 
       {/* Delete Confirmation Dialog */}
