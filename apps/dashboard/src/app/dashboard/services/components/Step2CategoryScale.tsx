@@ -34,7 +34,7 @@ export function Step2CategoryScale({
   const { getQuestionsByScale, getLevelsForQuestion, getQuestionText, loading } =
     useSatisfactionOptions();
 
-  const currentLanguage = i18n.language === "fr" ? "fr" : "en";
+  const currentLanguage = i18n.language?.toLowerCase().startsWith("fr") ? "fr" : "en";
   const [expandedCategories, setExpandedCategories] = useState<Set<ScaleType>>(new Set());
 
   const handleToggleExpand = (scaleType: ScaleType) => {
