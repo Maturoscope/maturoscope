@@ -28,6 +28,7 @@ interface ProgressContextType {
   isNextButtonEnabled: boolean
   handlePrevButtonClick: () => void
   handleNextButtonClick: () => void
+  handleReviewClick: () => void
   handleCheckpointButtonClick: () => void
   handleQuestionClick: () => void
 }
@@ -97,6 +98,10 @@ export const ProgressProvider = ({
     setIsNextButtonEnabled(nextQuestionHasValue)
   }
 
+  const handleReviewClick = () => {
+    router.push(`/${lang}/form/${currStage.id}/review`)
+  }
+
   const handleCheckpointButtonClick = () => {
     const nextStage = stages[currStageIndex + 1]
     const isLastCheckpoint = !nextStage?.id
@@ -159,6 +164,7 @@ export const ProgressProvider = ({
         isNextButtonEnabled,
         handlePrevButtonClick,
         handleNextButtonClick,
+        handleReviewClick,
         handleCheckpointButtonClick,
         handleQuestionClick,
       }}

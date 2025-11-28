@@ -48,49 +48,6 @@
     "backButtonLabel": "Back",
     "nextButtonLabel": "Continue"
   },
-  "why": {
-    "hero": {
-      "heading": {
-        "title": "Why use Maturoscope?",
-        "description": "Are you developing an innovative solution in the construction sector?\nWhether it's a product, a process, or a service, Maturoscope allows you to assess its maturity level in just a few clicks and guides you through the next steps towards commercialization.",
-        "list": [
-          {
-            "icon": "/icons/why/less-than-five-minutes.svg",
-            "title": "Less than 5 minutes",
-            "description": "Complete a quick assessment so you can get back to building faster."
-          },
-          {
-            "icon": "/icons/why/no-account-required.svg",
-            "title": "No account required",
-            "description": "Start instantly—no sign-ups or passwords—so there's zero friction."
-          },
-          {
-            "icon": "/icons/why/not-store-information.svg",
-            "title": "We don't store your information",
-            "description": "Your responses are not stored or shared; all data is deleted when the session ends."
-          }
-        ],
-        "buttonLabel": "Start the questionnaire"
-      },
-      "checks": [
-        {
-          "icon": "/icons/black-check.svg",
-          "title": "Clear understanding of your innovation's maturity",
-          "description": "Quickly discover where your solution stands in terms of technical, industrial, and market readiness, helping you identify the right next steps."
-        },
-        {
-          "icon": "/icons/black-check.svg",
-          "title": "Instant personalized report",
-          "description": "Receive a detailed summary of your results in a PDF format, making it easy to share and keep track of your progress."
-        },
-        {
-          "icon": "/icons/black-check.svg",
-          "title": "Tailored guidance for faster growth",
-          "description": "Get access to a personalized selection of services designed to accelerate the development and success of your innovation."
-        }
-      ]
-    }
-  },
   "form": {
     "buttonNextLabel": "Continue",
     "buttonPrevLabel": "Back",
@@ -101,6 +58,7 @@
         "name": "TRL",
         "title": "We've evaluated where your innovation stands technically.",
         "description": "Time to see how it fits in the marketplace.",
+        "reviewLabel": "Review answers",
         "buttonLabel": "Continue to MkRL"
       },
       {
@@ -109,6 +67,7 @@
         "name": "MKRL",
         "title": "We've looked at the technical and market aspects.",
         "description": "Now let's assess your production capabilities.",
+        "reviewLabel": "Review answers",
         "buttonLabel": "Continue to MfRL"
       },
       {
@@ -117,6 +76,7 @@
         "name": "MfRL",
         "title": "Your innovation maturity report is ready.",
         "description": "Your innovation has just been evaluated according to three maturity scales. Discover its maturity profile as well as specialized service recommendations.",
+        "reviewLabel": "Review answers",
         "buttonLabel": "See report"
       }
     ]

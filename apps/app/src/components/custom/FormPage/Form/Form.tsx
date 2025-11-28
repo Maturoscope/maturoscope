@@ -24,6 +24,7 @@ export interface StageType {
   title: string
   description: string
   buttonLabel: string
+  reviewLabel: string
   questions: QuestionData[]
 }
 
@@ -48,6 +49,7 @@ const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {
     isCheckpoint,
     isPrevButtonEnabled,
     isNextButtonEnabled,
+    handleReviewClick,
     handleCheckpointButtonClick,
     handleQuestionClick,
     handlePrevButtonClick,
@@ -60,7 +62,9 @@ const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {
         icon={currStage.icon}
         title={currStage.title}
         description={currStage.description}
+        reviewLabel={currStage.reviewLabel}
         buttonLabel={currStage.buttonLabel}
+        onReviewClick={handleReviewClick}
         onButtonClick={handleCheckpointButtonClick}
       />
     )
