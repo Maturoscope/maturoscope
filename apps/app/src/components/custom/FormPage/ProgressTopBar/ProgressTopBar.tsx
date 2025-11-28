@@ -23,8 +23,10 @@ const STAGES_ICONS = {
 } as const
 
 const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
-  const { stages, currStage } = useProgressContext()
+  const { stages, currStage, isCheckpoint } = useProgressContext()
   const { getValues } = useFormContext()
+
+  if (isCheckpoint) return
 
   const calculateStageProgress = (stageId: StageId) => {
     const stage = stages.find((s) => s.id === stageId)
@@ -67,7 +69,7 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
   return (
     <div
       className={cn(
-        "w-full flex items-center justify-center bg-white py-4 border-b border-border",
+        "w-full flex items-center justify-center bg-white py-4 border-b border-border h-[60px]",
         className
       )}
     >

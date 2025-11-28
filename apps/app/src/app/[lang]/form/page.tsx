@@ -2,6 +2,7 @@
 import Header from "@/components/common/Header/Header"
 import Form from "@/components/custom/FormPage/Form/Form"
 import ProgressTopBar from "@/components/custom/FormPage/ProgressTopBar/ProgressTopBar"
+import CheckpointTopBar from "@/components/custom/FormPage/CheckpointTopBar/CheckpointTopBar"
 // Context
 import { FormProvider } from "@/context/FormContext"
 import { ProgressProvider } from "@/context/ProgressContext"
@@ -43,6 +44,7 @@ const FormPage = async ({ params }: FormPageProps) => {
       <FormProvider>
         <ProgressProvider lang={lang} stages={stages}>
           <ProgressTopBar />
+          <CheckpointTopBar buttonLabel={form.checkpoint.buttonLabel} />
           <Form
             buttonNextLabel={form.buttonNextLabel}
             buttonPrevLabel={form.buttonPrevLabel}

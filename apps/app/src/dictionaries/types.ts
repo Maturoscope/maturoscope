@@ -25,5 +25,8 @@ export type Dictionary = {
     buttonNextLabel: string
     buttonPrevLabel: string
     stages: DictionaryStage[]
+    checkpoint: {
+      buttonLabel: string
+    }
   }
 }

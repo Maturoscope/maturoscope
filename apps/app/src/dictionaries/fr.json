@@ -51,6 +51,9 @@
   "form": {
     "buttonNextLabel": "Continuer",
     "buttonPrevLabel": "Retour",
+    "checkpoint": {
+      "buttonLabel": "Retour à"
+    },
     "stages": [
       {
         "id": "trl",
