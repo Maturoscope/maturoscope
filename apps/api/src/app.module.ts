@@ -9,6 +9,8 @@ import { ReportModule } from './modules/report/report.module';
 import { AuthModule } from './common/auth-module/auth.module';
 import { IntegrationAuth0Module } from './modules/integration-auth0/integration-auth0.module';
 import { UserInvitationModule } from './modules/user-invitation/user-invitation.module';
+import { ReadinessAssessmentModule } from './modules/readiness-assessment/readiness-assessment.module';
+import { ServicesModule } from './modules/services/services.module';
 import * as fs from 'fs';
 import { SchemaInitService } from './common/schema-init/schema-init.service';
 
@@ -50,6 +52,8 @@ import { SchemaInitService } from './common/schema-init/schema-init.service';
     AuthModule,
     IntegrationAuth0Module,
     UserInvitationModule,
+    ReadinessAssessmentModule,
+    ServicesModule,
   ],
   controllers: [AppController],
   providers: [AppService, SchemaInitService],
