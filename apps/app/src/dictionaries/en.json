@@ -6,35 +6,47 @@
   "homepage": {
     "hero": {
       "heading": {
-        "title": "Welcome 👋 to Maturoscope",
-        "secondTitle": "The tool that guides your innovation to the market",
-        "description": "Designed by experts from the building and construction sector.\nThis tool is meant to guide you throughout the entire maturation process of your innovation.",
-        "buttonLabel": "Continue"
+        "title": "Know exactly where your innovation stands",
+        "description": "Whether it's a product, a process, or a service, the Maturoscope allows you to assess its maturity level in just a few clicks."
+      },
+      "information": {
+        "noAccount": "No account required",
+        "noStored": "We don't store your information",
+        "buttonLabel": "Let's begin",
+        "estimatedTime": "5 minutes"
       },
       "criteria": {
-        "title": "It evaluates 3 key criteria:",
+        "title": "It evaluates 3 key dimensions",
         "keys": [
           {
             "icon": "/icons/homepage/criteria-trl.svg",
             "title": "TRL - Technology Readiness Level",
-            "description": "A standardized measurement system, developed by NASA, used to assess the maturity and readiness of a technology."
+            "description": "7 questions"
           },
           {
             "icon": "/icons/homepage/criteria-mkrl.svg",
             "title": "MKRL - Market Readiness Level",
-            "description": "A scale that evaluates how ready an innovation is for the market, looking at business potential, customer validation, and competitive positioning."
+            "description": "4 questions"
           },
           {
             "icon": "/icons/homepage/criteria-mfrl.svg",
             "title": "MFRL - Manufacturing Readiness Level",
-            "description": "A scale that assesses the maturity of manufacturing capabilities needed to produce the innovation at scale."
+            "description": "4 questions"
           }
         ]
       }
     },
     "policy": {
-      "description": "METABUILDING LABS Project has received funding from the European Union's Horizon 2020 Research and Innovation Programme under Grant Agreement No. 953193. The sole responsibility for the content of this document lies entirely with the author's view. The European Commission is not responsible for any use that may be made of the information it contains."
+      "description": "METABUILDING LABS Project has received funding from the European Union's Horizon 2020 Research and Innovation Programme under Grant Agreement No. 953193. The sole responsibility for the content of this document lies entirely with the author's view. The European Commission is not responsible for any use that may be made of the information it contains.",
+      "copyright": "Designed and developed by"
     }
+  },
+  "begin": {
+    "title": "To begin with...",
+    "label": "Name your project",
+    "placeholder": "Project's name",
+    "backButtonLabel": "Back",
+    "nextButtonLabel": "Continue"
   },
   "why": {
     "hero": {

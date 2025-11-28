@@ -26,7 +26,7 @@ const RadioItem = ({ id, title, name, onClick }: RadioItemProps) => {
   }
 
   return (
-    <label className="w-full flex items-center justify-start rounded-lg border border-input relative cursor-pointer">
+    <label className="w-full flex items-center justify-start rounded-lg border border-input relative cursor-pointer bg-white">
       <div className="flex items-start justify-start gap-3 w-full relative z-20 -mt-px p-3">
         <input
           type="radio"

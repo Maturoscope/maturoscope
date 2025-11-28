@@ -2,17 +2,16 @@
 import { getOrganizationByKey } from "@/actions/organization"
 // Components
 import Header from "@/components/common/Header/Header"
-import Hero from "@/components/custom/Homepage/Hero/Hero"
-import PrivacyPolicy from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
+import SimpleForm from "@/components/custom/BeginPage/SimpleForm/SimpleForm"
 // Dictionaries
 import { getDictionary, Locale } from "@/dictionaries/dictionaries"
 
-type HomePageProps = {
+type BeginPageProps = {
   searchParams: Promise<{ key?: string }>
   params: Promise<{ lang: Locale }>
 }
 
-const HomePage = async ({ searchParams, params }: HomePageProps) => {
+const BeginPage = async ({ searchParams, params }: BeginPageProps) => {
   const { key } = await searchParams
   const { lang } = await params
   const dictionary = await getDictionary(lang)
@@ -22,16 +21,15 @@ const HomePage = async ({ searchParams, params }: HomePageProps) => {
 
   const {
     header: { stringConnector },
-    homepage: { hero, policy },
+    begin,
   } = dictionary
 
   return (
     <main className="w-full flex flex-col items-center justify-between h-full">
-      <Header stringConnector={stringConnector} />
-      <Hero {...hero} />
-      <PrivacyPolicy {...policy} />
+      <Header stringConnector={stringConnector} showBackButton />
+      <SimpleForm {...begin} />
     </main>
   )
 }
 
-export default HomePage
+export default BeginPage

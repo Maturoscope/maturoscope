@@ -3,6 +3,7 @@ import { Locale } from "@/dictionaries/dictionaries"
 import { HeaderProps } from "@/components/common/Header/Header"
 import { HeroProps as HomepageHeroProps } from "@/components/custom/Homepage/Hero/Hero"
 import { PrivacyPolicyProps } from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
+import { SimpleFormProps } from "@/components/custom/BeginPage/SimpleForm/SimpleForm"
 import { HeroProps as WhyHeroProps } from "@/components/custom/WhyPage/Hero/Hero"
 import { FormProps } from "@/components/custom/FormPage/Form/Form"
 
@@ -13,6 +14,7 @@ export type Dictionary = {
     hero: HomepageHeroProps
     policy: PrivacyPolicyProps
   }
+  begin: SimpleFormProps
   why: {
     hero: WhyHeroProps
   }

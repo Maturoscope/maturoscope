@@ -5,7 +5,6 @@ import Image from "next/image"
 // Components
 import CheckpointScreen from "@/components/custom/FormPage/CheckpointScreen/CheckpointScreen"
 import Question from "@/components/custom/FormPage/Question/Question"
-import ProgressBar from "@/components/custom/FormPage/ProgressBar/ProgressBar"
 import { Button } from "@/components/ui/button"
 // Context
 import { useProgressContext } from "@/context/ProgressContext"
@@ -41,10 +40,8 @@ export interface FormProps {
 const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {
   const {
     currStage,
-    currQuestionIndex,
     currQuestion,
     isCheckpoint,
-    stageStepNumber,
     isPrevButtonEnabled,
     isNextButtonEnabled,
     handleCheckpointButtonClick,
@@ -66,17 +63,14 @@ const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {
   }
 
   return (
-    <div className="w-full max-w-[1280px] px-6 flex flex-col items-start justify-start mt-7">
+    <div className="w-full max-w-[750px] px-6 flex flex-col items-start justify-start mt-7">
       <div className="w-full flex flex-col items-start justify-start gap-2 mb-7">
-        <span className="text-sm lg:text-base text-muted-foreground uppercase leading-none font-semibold">
-          {currStage.name} level | stage {stageStepNumber} of 3
-        </span>
         <h1 className="text-xl lg:text-3xl font-semibold">
           {currQuestion.title}
         </h1>
       </div>
       <div className="w-full flex items-end justify-between gap-8 flex-wrap">
-        <div className="w-full flex flex-col gap-7 lg:gap-[70px] lg:max-w-[600px]">
+        <div className="w-full flex flex-col gap-7 lg:gap-[70px]">
           <Question
             {...currQuestion}
             name={currStage.id}
@@ -111,12 +105,6 @@ const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {
             </Button>
           </div>
         </div>
-
-        <ProgressBar
-          min={currQuestionIndex + 1}
-          max={currStage.questions.length}
-          className="w-full lg:max-w-[224px]"
-        />
       </div>
     </div>
   )

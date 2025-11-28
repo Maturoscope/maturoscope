@@ -31,7 +31,7 @@ const Hero = ({ heading, checks }: HeroProps) => {
   const { lang } = useParams<{ lang: Locale }>()
 
   return (
-    <div className="flex lg:items-start justify-between w-full max-w-[1280px] gap-12 lg:gap-16 px-6 lg:flex-row flex-col items-center">
+    <div className="flex lg:items-start justify-between w-full max-w-[1280px] gap-12 lg:gap-16 px-6 lg:flex-row flex-col items-center h-full py-14">
       <motion.div
         variants={SIMPLE_FADE_VARIANT}
         initial="hidden"
