@@ -1,7 +1,6 @@
 "use client"
 
 // Packages
-import { useEffect, useState } from "react"
 import { useController } from "react-hook-form"
 // Components
 import { CheckedIcon, UncheckedIcon } from "@/components/icons"
@@ -18,11 +17,16 @@ export interface RadioItemProps {
 }
 
 const RadioItem = ({ id, title, name, onClick }: RadioItemProps) => {
-  const [comment, setComment] = useState("")
-  const charCount = comment.length
   const { control } = useFormContext()
   const { field } = useController({ control, name })
   const isChecked = field.value === id
+
+  // Extract stage ID and question ID from name (e.g., "trl.questions.TRL_Q1")
+  const [stageId, , questionId] = name.split(".") as [StageId, string, string]
+  const commentName =
+    `${stageId}.comments.${questionId}` as `${StageId}.comments.${string}`
+  const { field: commentField } = useController({ control, name: commentName })
+  const charCount = commentField.value?.length || 0
 
   const handleChange = () => {
     field.onChange(id)
@@ -30,12 +34,8 @@ const RadioItem = ({ id, title, name, onClick }: RadioItemProps) => {
   }
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(e.target.value)
+    commentField.onChange(e.target.value)
   }
-
-  useEffect(() => {
-    if (!isChecked) setComment("")
-  }, [isChecked])
 
   return (
     <label className="relative w-full flex flex-col items-center justify-start rounded-lg border border-input cursor-pointer bg-white">
@@ -62,6 +62,7 @@ const RadioItem = ({ id, title, name, onClick }: RadioItemProps) => {
           <textarea
             maxLength={120}
             onChange={handleCommentChange}
+            value={commentField.value || ""}
             placeholder="Comments or additional details (Optional)"
             className="bg-white w-full h-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none"
           />
