@@ -102,6 +102,7 @@ const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {
               onClick={handleNextButtonClick}
               disabled={!isNextButtonEnabled}
               className="w-full lg:w-auto"
+              accent
             >
               <span>{buttonNextLabel}</span>
               <Image

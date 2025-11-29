@@ -1,8 +1,9 @@
 "use client"
 
 // Packages
-import Image from "next/image"
 import { useController } from "react-hook-form"
+// Components
+import { CheckedIcon, UncheckedIcon } from "@/components/icons"
 // Context
 import { useFormContext } from "@/context/FormContext"
 // Types
@@ -37,21 +38,12 @@ const RadioItem = ({ id, title, name, onClick }: RadioItemProps) => {
           checked={isChecked}
           className="peer appearance-none absolute outline-none"
         />
-        <div className="absolute top-0 left-0 w-full h-full rounded-[10px] bg-primary/10 border border-primary hidden peer-checked:block" />
-        <Image
-          src="/icons/form/checked.svg"
-          alt="Radio checked"
-          width={16}
-          height={16}
-          className="peer-checked:block hidden relative"
+        <div className="absolute top-0 left-0 w-full h-full rounded-[10px] bg-accent/10 border border-accent hidden peer-checked:block" />
+        <CheckedIcon
+          accent
+          className="peer-checked:block hidden relative w-4 h-4"
         />
-        <Image
-          src="/icons/form/unchecked.svg"
-          alt="Radio unchecked"
-          width={16}
-          height={16}
-          className="peer-checked:hidden block relative"
-        />
+        <UncheckedIcon className="peer-checked:hidden block relative w-4 h-4" />
         <span className="text-sm font-medium leading-none">{title}</span>
       </div>
     </label>
