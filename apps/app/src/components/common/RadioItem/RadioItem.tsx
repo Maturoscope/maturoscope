@@ -12,7 +12,7 @@ import { StageId } from "@/components/custom/FormPage/Form/Form"
 export interface RadioItemProps {
   id: string
   title: string
-  name: `${StageId}.${string}`
+  name: `${StageId}.questions.${string}`
   onClick: () => void
 }
 
