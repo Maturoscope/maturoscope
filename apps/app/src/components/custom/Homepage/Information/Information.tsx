@@ -2,9 +2,14 @@
 
 import { useParams } from "next/navigation"
 import Link from "next/link"
-import Image from "next/image"
 // Components
 import { Button } from "@/components/ui/button"
+import {
+  NoAccountIcon,
+  NoStoredIcon,
+  ArrowNextIcon,
+  ClockIcon,
+} from "@/components/icons"
 // Dictionaries
 import { Locale } from "@/dictionaries/dictionaries"
 
@@ -29,23 +34,13 @@ const Information = ({
       <div className="flex flex-col gap-2">
         <div className="flex gap-2.5 items-center justify-start">
           <div className="p-2.5 rounded-md border border-border bg-[#FAFAF9] flex items-center justify-center">
-            <Image
-              src="/icons/homepage/no-account.svg"
-              alt="No account"
-              width={20}
-              height={20}
-            />
+            <NoAccountIcon accent className="w-5 h-5" />
           </div>
           <span className="text-base text-foreground">{noAccount}</span>
         </div>
         <div className="flex gap-2.5 items-center justify-start">
           <div className="p-2.5 rounded-md border border-border bg-[#FAFAF9] flex items-center justify-center">
-            <Image
-              src="/icons/homepage/no-stored.svg"
-              alt="No account"
-              width={20}
-              height={20}
-            />
+            <NoStoredIcon accent className="w-5 h-5" />
           </div>
           <span className="text-base text-foreground">{noStored}</span>
         </div>
@@ -57,24 +52,15 @@ const Information = ({
             variant="default"
             size="lg"
             className="w-max px-4 rounded-md flex items-center justify-center gap-2 h-full"
+            accent
           >
             {buttonLabel}
-            <Image
-              src="/icons/form/arrow-next.svg"
-              alt="Arrow right"
-              width={16}
-              height={16}
-            />
+            <ArrowNextIcon className="w-4 h-4" />
           </Button>
         </Link>
 
         <div className="flex items-center justify-start gap-1.5">
-          <Image
-            src="/icons/homepage/clock.svg"
-            alt="Clock"
-            width={20}
-            height={20}
-          />
+          <ClockIcon className="w-5 h-5 text-muted-foreground" />
           <span className="text-base text-muted-foreground font-semibold">
             {estimatedTime}
           </span>

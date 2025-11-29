@@ -1,6 +1,7 @@
 "use server"
 
 import { cookies } from "next/headers"
+import { DEFAULT_ACCENT_THEME } from "@/context/ThemeContext"
 
 export type AccentTheme =
   | "default"
@@ -38,14 +39,16 @@ export const getOrganizationAccentColor = async (
     const organization = await getOrganizationByKey(key)
     const accentColor = organization?.accentColor || organization?.theme || null
 
+    console.log({ accentColor })
+
     if (accentColor && VALID_ACCENT_THEMES.includes(accentColor)) {
       return accentColor as AccentTheme
     }
 
-    return "default"
+    return DEFAULT_ACCENT_THEME
   } catch (error) {
     console.error("Error fetching accent color:", error)
-    return "default"
+    return DEFAULT_ACCENT_THEME
   }
 }
 

@@ -33,7 +33,6 @@ export default async function RootLayout({
 }: RootLayoutProps) {
   const { lang = DEFAULT_LANGUAGE } = await params
 
-  // Fetch accent color from organization key stored in cookies
   const organizationKey = await getOrganizationKeyFromCookies()
   const accentTheme =
     organizationKey ?
