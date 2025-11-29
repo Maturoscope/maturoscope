@@ -38,10 +38,10 @@ const CheckpointScreen = ({
           onClick={onReviewClick}
           className="bg-white border border-border text-foreground hover:bg-foreground/5"
         >
-          <span className="hidden lg:block">{reviewLabel}</span>
+          <span>{reviewLabel}</span>
         </Button>
         <Button onClick={onButtonClick} accent>
-          <span className="hidden lg:block">{buttonLabel}</span>
+          <span>{buttonLabel}</span>
           <ArrowNextIcon className="w-4 h-4" />
         </Button>
       </div>

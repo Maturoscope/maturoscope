@@ -7,7 +7,7 @@ import { getDictionary } from "@/dictionaries/dictionaries"
 import Header from "@/components/common/Header/Header"
 import Hero from "@/components/custom/ReviewPage/Hero/Hero"
 import AnswersGroup from "@/components/custom/ReviewPage/AnswersGroup/AnswersGroup"
-import BackToHomeBar from "@/components/common/BackToHomeBar/BackToHomeBar"
+import BackBar from "@/components/common/BackBar/BackBar"
 
 interface ReviewPageProps {
   params: Promise<{ lang: Locale; stage: StageId }>
@@ -25,7 +25,7 @@ const ReviewPage = async ({ params }: ReviewPageProps) => {
   return (
     <main className="w-full flex flex-col items-center justify-start h-full">
       <Header showBackButton stringConnector={stringConnector} />
-      <BackToHomeBar buttonLabel={backBar.buttonLabel} />
+      <BackBar buttonLabel={backBar.buttonLabel} />
       <Hero {...review} stageName={stage} />
       <AnswersGroup stageName={stage} lang={lang} />
     </main>

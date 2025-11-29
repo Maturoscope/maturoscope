@@ -1,7 +1,7 @@
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
 import { HeaderProps } from "@/components/common/Header/Header"
-import { BackToHomeBarProps } from "@/components/common/BackToHomeBar/BackToHomeBar"
+import { BackToHomeBarProps } from "@/components/common/BackBar/BackBar"
 import { HeroProps as HomepageHeroProps } from "@/components/custom/Homepage/Hero/Hero"
 import { PrivacyPolicyProps } from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
 import { SimpleFormProps } from "@/components/custom/BeginPage/SimpleForm/SimpleForm"

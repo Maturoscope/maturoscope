@@ -39,7 +39,7 @@ const CheckpointTopBar = ({
             width={16}
             height={16}
           />
-          <span className="hidden lg:block">
+          <span>
             {buttonLabel} {currStage.name}
           </span>
         </Button>
