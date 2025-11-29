@@ -83,5 +83,10 @@
         "buttonLabel": "See report"
       }
     ]
+  },
+  "review": {
+    "title": "Review [STAGE_NAME] answers",
+    "cancelButtonLabel": "Cancel",
+    "saveButtonLabel": "Save"
   }
 }
