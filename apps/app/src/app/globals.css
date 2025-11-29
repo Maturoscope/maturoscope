@@ -16,8 +16,6 @@
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: #E5E5E5;
@@ -39,6 +37,34 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   --neutral-50: #FAFAFA;
+
+  /* Default accent color (amber/orange - fallback) */
+  --accent: #171717;
+}
+
+/* Theme 1: Blue */
+[data-accent-theme="orange"] {
+  --accent: #C2410C;
+}
+
+/* Theme 2: Green */
+[data-accent-theme="blue"] {
+  --accent: #1E40AF;
+}
+
+/* Theme 3: Purple */
+[data-accent-theme="green"] {
+  --accent: #166534;
+}
+
+/* Theme 4: Red */
+[data-accent-theme="pink"] {
+  --accent: #9D174D;
+}
+
+/* Theme 5: Teal */
+[data-accent-theme="purple"] {
+  --accent: #5B21B6;
 }
 
 .dark {}
@@ -56,8 +82,12 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-primary-foreground: var(--accent-primary-foreground);
+
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
