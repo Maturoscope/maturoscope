@@ -40,7 +40,7 @@ const LanguageSelect = () => {
         <SelectContent className="w-full min-w-[100px] max-w-[100px] flex flex-col gap-2">
           <Link
             href={getLocaleUrl("en")}
-            className="w-full h-8 flex items-center justify-start px-2 py-1.5 hover:bg-accent rounded-sm"
+            className="w-full h-8 flex items-center justify-start px-2 py-1.5 hover:bg-foreground/5 rounded-sm"
           >
             <div className="flex items-center gap-2 text-sm text-foreground font-medium">
               <Image
@@ -54,7 +54,7 @@ const LanguageSelect = () => {
           </Link>
           <Link
             href={getLocaleUrl("fr")}
-            className="w-full h-8 flex items-center justify-start px-2 py-1.5 hover:bg-accent rounded-sm"
+            className="w-full h-8 flex items-center justify-start px-2 py-1.5 hover:bg-foreground/5 rounded-sm"
           >
             <div className="flex items-center gap-2 text-sm text-foreground font-medium">
               <Image
