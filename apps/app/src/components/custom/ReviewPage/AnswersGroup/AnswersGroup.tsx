@@ -19,7 +19,12 @@ const AnswersGroup = ({ stageName, lang }: AnswersGroupProps) => {
   return (
     <div className="w-full flex flex-col items-center justify-start gap-3 px-4 lg:p-6 !pt-0">
       {questionsAndAnswers.map((questionAndAnswer) => (
-        <Answer key={questionAndAnswer.question} {...questionAndAnswer} />
+        <Answer
+          key={questionAndAnswer.questionId}
+          stageName={stageName}
+          lang={lang}
+          {...questionAndAnswer}
+        />
       ))}
     </div>
   )

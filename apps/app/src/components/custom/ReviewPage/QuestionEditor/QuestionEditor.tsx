@@ -1,0 +1,142 @@
+"use client"
+
+// Packages
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+// Components
+import { Button } from "@/components/ui/button"
+import { CheckedIcon, UncheckedIcon } from "@/components/icons"
+// Types
+import { StageId, QuestionData } from "@/components/custom/FormPage/Form/Form"
+import { Locale } from "@/dictionaries/dictionaries"
+import { DefaultValues } from "@/components/custom/FormPage/Form/default"
+// Utils
+import { cn } from "@/lib/utils"
+
+interface QuestionEditorProps {
+  stageName: StageId
+  lang: Locale
+  question: QuestionData
+}
+
+const QuestionEditor = ({ stageName, lang, question }: QuestionEditorProps) => {
+  const router = useRouter()
+  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null)
+
+  useEffect(() => {
+    // Read selected answer from localStorage
+    const savedForm = JSON.parse(
+      localStorage.getItem("form") || "{}"
+    ) as DefaultValues
+
+    const answerId = savedForm[stageName]?.questions?.[question.id] || null
+    setSelectedOptionId(answerId)
+  }, [stageName, question.id])
+
+  const handleOptionChange = (optionId: string) => {
+    setSelectedOptionId(optionId)
+  }
+
+  const handleSaveClick = () => {
+    if (!selectedOptionId) return
+
+    // Read current form data from localStorage
+    const savedForm = JSON.parse(
+      localStorage.getItem("form") || "{}"
+    ) as DefaultValues
+
+    // Update the answer for this question
+    const updatedForm = {
+      ...savedForm,
+      [stageName]: {
+        ...savedForm[stageName],
+        questions: {
+          ...savedForm[stageName]?.questions,
+          [question.id]: selectedOptionId,
+        },
+      },
+    }
+
+    // Save back to localStorage
+    localStorage.setItem("form", JSON.stringify(updatedForm))
+
+    // Navigate back to review page
+    router.push(`/${lang}/review/${stageName}`)
+  }
+
+  const handleCancelClick = () => {
+    router.push(`/${lang}/review/${stageName}`)
+  }
+
+  const radioGroupName = `${stageName}.questions.${question.id}`
+
+  return (
+    <div className="w-full max-w-[750px] px-4 flex flex-col items-start justify-start mt-7">
+      <div className="w-full flex flex-col items-start justify-start gap-2 mb-4 lg:mb-6">
+        <h1 className="text-xl lg:text-3xl font-semibold">{question.title}</h1>
+      </div>
+      <div className="w-full flex items-end justify-between gap-8 flex-wrap">
+        <div className="w-full flex flex-col gap-7 lg:gap-[70px]">
+          <div
+            className={cn(
+              "w-full flex flex-col items-start justify-start gap-1.5 min-h-[480px]"
+            )}
+          >
+            {question.options.map((option) => {
+              const isChecked = selectedOptionId === option.id
+              return (
+                <label
+                  key={option.id}
+                  className="w-full flex items-center justify-start rounded-lg border border-input relative cursor-pointer bg-white"
+                >
+                  <div className="flex items-start justify-start gap-3 w-full relative z-20 -mt-px p-3">
+                    <input
+                      type="radio"
+                      name={radioGroupName}
+                      value={option.id}
+                      checked={isChecked}
+                      onChange={() => handleOptionChange(option.id)}
+                      className="peer appearance-none absolute outline-none"
+                    />
+                    <div className="absolute top-0 left-0 w-full h-full rounded-[10px] bg-accent/10 border border-accent hidden peer-checked:block" />
+                    <CheckedIcon
+                      accent
+                      className={cn(
+                        "relative w-4 h-4",
+                        isChecked ? "block" : "hidden"
+                      )}
+                    />
+                    <UncheckedIcon
+                      className={cn(
+                        "relative w-4 h-4",
+                        isChecked ? "hidden" : "block"
+                      )}
+                    />
+                    <span className="text-sm font-medium leading-none">
+                      {option.title}
+                    </span>
+                  </div>
+                </label>
+              )
+            })}
+          </div>
+          <div className="w-full flex items-center justify-end gap-3">
+            <Button variant="outline" onClick={handleCancelClick}>
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSaveClick}
+              disabled={!selectedOptionId}
+              className="w-full lg:w-auto"
+              accent
+            >
+              Save
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default QuestionEditor

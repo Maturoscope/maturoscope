@@ -10,7 +10,9 @@ import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 import { getQuestions } from "@/actions/questions"
 
 export interface QuestionAnswer {
+  questionId: string
   question: string
+  answerId: string
   answer: string
 }
 
@@ -58,7 +60,9 @@ const useStageAnswers = (stageName: StageId, lang: Locale) => {
             }
 
             return {
+              questionId: question.id,
               question: question.title,
+              answerId: answerId,
               answer: selectedOption.title,
             }
           })
