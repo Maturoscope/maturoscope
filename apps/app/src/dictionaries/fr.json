@@ -3,6 +3,9 @@
   "header": {
     "stringConnector": "par"
   },
+  "backBar": {
+    "buttonLabel": "Retour"
+  },
   "homepage": {
     "hero": {
       "heading": {

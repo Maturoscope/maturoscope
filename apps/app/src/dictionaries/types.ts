@@ -1,6 +1,7 @@
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
 import { HeaderProps } from "@/components/common/Header/Header"
+import { BackToHomeBarProps } from "@/components/common/BackToHomeBar/BackToHomeBar"
 import { HeroProps as HomepageHeroProps } from "@/components/custom/Homepage/Hero/Hero"
 import { PrivacyPolicyProps } from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
 import { SimpleFormProps } from "@/components/custom/BeginPage/SimpleForm/SimpleForm"
@@ -14,6 +15,7 @@ type DictionaryStage = Omit<StageType, "questions">
 export type Dictionary = {
   lang: Locale
   header: HeaderProps
+  backBar: BackToHomeBarProps
   homepage: {
     hero: HomepageHeroProps
     policy: PrivacyPolicyProps
