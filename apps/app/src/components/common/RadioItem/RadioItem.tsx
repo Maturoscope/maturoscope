@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { useEffect, useState } from "react"
 import { useController } from "react-hook-form"
 // Components
 import { CheckedIcon, UncheckedIcon } from "@/components/icons"
@@ -17,6 +18,8 @@ export interface RadioItemProps {
 }
 
 const RadioItem = ({ id, title, name, onClick }: RadioItemProps) => {
+  const [comment, setComment] = useState("")
+  const charCount = comment.length
   const { control } = useFormContext()
   const { field } = useController({ control, name })
   const isChecked = field.value === id
@@ -26,9 +29,17 @@ const RadioItem = ({ id, title, name, onClick }: RadioItemProps) => {
     onClick()
   }
 
+  const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value)
+  }
+
+  useEffect(() => {
+    if (!isChecked) setComment("")
+  }, [isChecked])
+
   return (
-    <label className="w-full flex items-center justify-start rounded-lg border border-input relative cursor-pointer bg-white">
-      <div className="flex items-start justify-start gap-3 w-full relative z-20 -mt-px p-3">
+    <label className="relative w-full flex flex-col items-center justify-start rounded-lg border border-input cursor-pointer bg-white">
+      <div className="flex items-start justify-start gap-3 w-full z-20 -mt-px p-3">
         <input
           type="radio"
           {...field}
@@ -46,6 +57,19 @@ const RadioItem = ({ id, title, name, onClick }: RadioItemProps) => {
         <UncheckedIcon className="peer-checked:hidden block relative w-4 h-4" />
         <span className="text-sm font-medium leading-none">{title}</span>
       </div>
+      {isChecked && (
+        <div className="w-[calc(100%-56px)] p-3 pt-0 flex flex-col items-end gap-2 relative z-20">
+          <textarea
+            maxLength={120}
+            onChange={handleCommentChange}
+            placeholder="Comments or additional details (Optional)"
+            className="bg-white w-full h-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none"
+          />
+          <span className="text-xs text-muted-foreground">
+            <span className="text-foreground">{charCount}</span>/120
+          </span>
+        </div>
+      )}
     </label>
   )
 }
