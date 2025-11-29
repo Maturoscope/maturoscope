@@ -32,7 +32,7 @@ const Answer = ({
   return (
     <div className="w-full flex flex-col items-start justify-start gap-3 bg-white p-5 lg:p-6 rounded-lg border border-border">
       <p className="text-base font-semibold">{question}</p>
-      <div className="w-full flex gap-2 justify-between items-center">
+      <div className="w-full flex flex-col lg:flex-row gap-2 justify-between items-start lg:items-center">
         <p className="text-sm text-muted-foreground w-full px-3 py-2 rounded-md border border-border">
           {answer}
         </p>

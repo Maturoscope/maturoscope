@@ -22,7 +22,7 @@ const ReviewPage = async ({ params }: ReviewPageProps) => {
 
   return (
     <main className="w-full flex flex-col items-center justify-start h-full">
-      <Header stringConnector={stringConnector} />
+      <Header showBackButton stringConnector={stringConnector} />
       <Hero {...review} stageName={stage} />
       <AnswersGroup stageName={stage} lang={lang} />
     </main>

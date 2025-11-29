@@ -8,7 +8,7 @@ interface ThemeContextType {
   setAccentTheme: (theme: AccentTheme) => void
 }
 
-export const DEFAULT_ACCENT_THEME: AccentTheme = "orange"
+export const DEFAULT_ACCENT_THEME: AccentTheme = "default"
 const ThemeContext = createContext<ThemeContextType | null>(null)
 
 interface ThemeProviderProps {
