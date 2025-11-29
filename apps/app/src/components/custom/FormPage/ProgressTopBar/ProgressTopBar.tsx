@@ -1,11 +1,11 @@
 "use client"
 
-// Packages
-import Image from "next/image"
 // Utils
 import { cn } from "@/lib/utils"
 // Components
 import { Progress } from "@/components/ui/progress"
+import { CheckIcon } from "@/components/icons"
+import { getIconComponent } from "@/components/icons/iconMap"
 // Context
 import { useProgressContext } from "@/context/ProgressContext"
 import { useFormContext } from "@/context/FormContext"
@@ -87,13 +87,15 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
               <div
                 className={`w-7 h-7 flex items-center justify-center shrink-0  rounded-sm border ${isCurrentStage ? "bg-accent/10" : "bg-white"} ${isCurrentStage ? "border-accent" : "border-border"} ${progress.isCompleted && "!bg-accent !border-accent"}`}
               >
-                <Image
-                  src={stageIcon}
-                  alt={stage.name}
-                  width={15}
-                  height={15}
-                  className="shrink-0"
-                />
+                {(() => {
+                  const StageIconComponent = getIconComponent(stageIcon)
+                  return StageIconComponent ?
+                      <StageIconComponent
+                        accent={isCurrentStage}
+                        className={`w-[15px] h-[15px] ${progress.isCompleted && "text-white"}`}
+                      />
+                    : null
+                })()}
               </div>
 
               <div className="flex flex-col w-full">
@@ -116,13 +118,8 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
 
                   {progress.isCompleted && !isCurrentStage && (
                     <span className="flex items-center gap-1">
-                      <Image
-                        src="/icons/form/check.svg"
-                        alt="Check"
-                        width={12}
-                        height={12}
-                      />
-                      <span className="text-xs font-semibold text-accent-primary">
+                      <CheckIcon accent className="w-3 h-3" />
+                      <span className="text-xs font-semibold text-accent">
                         Level {progress.minLevel}
                       </span>
                     </span>
@@ -131,13 +128,13 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
                 <Progress
                   value={progress.percentage}
                   className={`h-[3px] ${
-                    progress.isCompleted ? "!bg-accent-primary"
-                    : isCurrentStage ? "!bg-accent-primary/20"
+                    progress.isCompleted ? "!bg-accent"
+                    : isCurrentStage ? "!bg-accent/20"
                     : "bg-primary/20"
                   }`}
                   progressClassName={`${
-                    progress.isCompleted ? "!bg-accent-primary"
-                    : isCurrentStage ? "!bg-accent-primary"
+                    progress.isCompleted ? "!bg-accent"
+                    : isCurrentStage ? "!bg-accent"
                     : "!bg-primary"
                   }`}
                 />

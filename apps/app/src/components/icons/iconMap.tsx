@@ -12,6 +12,9 @@ const iconMap: Record<
   "/icons/homepage/criteria-trl.svg": CriteriaTrlIcon,
   "/icons/homepage/criteria-mkrl.svg": CriteriaMkrlIcon,
   "/icons/homepage/criteria-mfrl.svg": CriteriaMfrlIcon,
+  "/icons/form/trl.svg": CriteriaTrlIcon,
+  "/icons/form/mkrl.svg": CriteriaMkrlIcon,
+  "/icons/form/mfrl.svg": CriteriaMfrlIcon,
 }
 
 export const getIconComponent = (
