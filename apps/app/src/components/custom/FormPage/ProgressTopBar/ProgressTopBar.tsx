@@ -85,7 +85,7 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
               className="w-full flex items-center justify-between gap-2"
             >
               <div
-                className={`w-7 h-7 flex items-center justify-center shrink-0  rounded-sm border ${isCurrentStage ? "bg-accent/10" : "bg-white"} ${isCurrentStage ? "border-accent" : "border-border"} ${progress.isCompleted && "!bg-accent !border-accent"}`}
+                className={`w-7 h-7 hidden md:flex items-center justify-center shrink-0  rounded-sm border ${isCurrentStage ? "bg-accent/10" : "bg-white"} ${isCurrentStage ? "border-accent" : "border-border"} ${progress.isCompleted && "!bg-accent !border-accent"}`}
               >
                 {(() => {
                   const StageIconComponent = getIconComponent(stageIcon)
@@ -118,7 +118,7 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
 
                   {progress.isCompleted && !isCurrentStage && (
                     <span className="flex items-center gap-1">
-                      <CheckIcon accent className="w-3 h-3" />
+                      <CheckIcon accent className="w-3 h-3 hidden md:block" />
                       <span className="text-xs font-semibold text-accent">
                         Level {progress.minLevel}
                       </span>

@@ -78,13 +78,13 @@ const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {
         </h1>
       </div>
       <div className="w-full flex items-end justify-between gap-8 flex-wrap">
-        <div className="w-full flex flex-col gap-7 lg:gap-[70px]">
+        <div className="w-full flex flex-col gap-6">
           <Question
             {...currQuestion}
             name={currStage.id}
             onQuestionClick={handleQuestionClick}
           />
-          <div className="w-full flex items-center justify-between gap-3">
+          <div className="w-full flex items-center justify-between gap-3 fixed bottom-0 left-0 lg:relative z-20 bg-background lg:bg-none p-4 lg:p-0">
             <Button
               variant="outline"
               onClick={handlePrevButtonClick}
