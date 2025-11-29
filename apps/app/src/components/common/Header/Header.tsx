@@ -2,8 +2,8 @@
 
 // Packages
 import Image from "next/image"
+import Link from "next/link"
 import { motion } from "motion/react"
-import { useRouter } from "next/navigation"
 // Components
 import LanguageSelect from "@/components/common/LanguageSelect/LanguageSelect"
 // Animations
@@ -21,9 +21,6 @@ const Header = ({
   stringConnector,
   showBackButton = false,
 }: HeaderProps & ExtraProps) => {
-  const router = useRouter()
-  const handleHomeClick = () => router.push("/")
-
   return (
     <motion.header
       variants={SIMPLE_FADE_VARIANT}
@@ -35,8 +32,8 @@ const Header = ({
       <div className="flex items-center gap-2">
         {showBackButton && (
           <>
-            <button
-              onClick={handleHomeClick}
+            <Link
+              href="/"
               className="w-9 h-9 cursor-pointer flex items-center justify-center"
             >
               <Image
@@ -46,7 +43,7 @@ const Header = ({
                 height={16}
                 className="rotate-90"
               />
-            </button>
+            </Link>
             <div className="w-px h-9 bg-border" />
           </>
         )}
