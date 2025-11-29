@@ -22,7 +22,7 @@ const Header = ({
   showBackButton = false,
 }: HeaderProps & ExtraProps) => {
   const router = useRouter()
-  const handleBack = () => router.back()
+  const handleHomeClick = () => router.push("/")
 
   return (
     <motion.header
@@ -36,7 +36,7 @@ const Header = ({
         {showBackButton && (
           <>
             <button
-              onClick={handleBack}
+              onClick={handleHomeClick}
               className="w-9 h-9 cursor-pointer flex items-center justify-center"
             >
               <Image
