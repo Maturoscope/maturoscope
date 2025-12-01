@@ -5,7 +5,6 @@ import { ChevronDown, LayoutDashboard, Users, Settings, File, SquareUser, LineCh
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
-import logo from "./../../public/icons/logo.svg"
 import { useUserContext } from "@/app/hooks/contexts/UserProvider"
 import { User } from "@/app/hooks/useUser"
 import { useTranslation } from "react-i18next"
@@ -90,13 +89,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   if (loading) {
     return (
       <Sidebar {...props} className="w-[var(--sidebar-width)]">
-        <SidebarHeader className="border-b border-sidebar-border h-16 flex justify-center px-4">
-          <div className="flex items-center gap-3">
-            <Image src={logo} alt="Logo" width={32} height={32} />
-            <div>
-              <h2 className="font-semibold text-sidebar-foreground text-sm">Maturoscope</h2>
-              <p className="text-xs text-muted-foreground">v1.01</p>
-            </div>
+        <SidebarHeader className="px-4 py-4">
+          <div className="flex flex-col gap-4">
+            <Image 
+              src="/icons/maturoscope-desktop.svg" 
+              alt="Maturoscope" 
+              width={121} 
+              height={20}
+            />
           </div>
         </SidebarHeader>
         <SidebarContent className="gap-0">
@@ -114,13 +114,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   
   return (
     <Sidebar {...props} className="w-[var(--sidebar-width)]">
-      <SidebarHeader className="border-b border-sidebar-border h-16 flex justify-center px-4">
-        <div className="flex items-center gap-3">
-          <Image src={logo} alt="Logo" width={32} height={32} />
-          <div>
-            <h2 className="font-semibold text-sidebar-foreground text-sm">Maturoscope</h2>
-            <p className="text-xs text-muted-foreground">v1.01</p>
-          </div>
+      <SidebarHeader className="h-16 flex  justify-center px-5">
+        <div className="flex flex-col gap-4">
+          <Image 
+            src="/icons/maturoscope-desktop.svg" 
+            alt="Maturoscope" 
+            width={121} 
+            height={20}
+          />
         </div>
       </SidebarHeader>
       <SidebarContent className="gap-0">

@@ -207,14 +207,17 @@ export function MembersTable({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="mt-4">
-          <AlertDialogCancel onClick={handleCancelDeactivate}>
-            {t("DEACTIVATE_USER.CANCEL")}
-          </AlertDialogCancel>
-          <AlertDialogAction 
+          <AlertDialogCancel 
             onClick={handleConfirmDeactivate}
-            className="bg-red-600 text-white hover:bg-red-700"
+            className="text-red-600 hover:text-red-700 border-gray-300"
           >
             {t("DEACTIVATE_USER.CONFIRM")}
+          </AlertDialogCancel>
+          <AlertDialogAction 
+            onClick={handleCancelDeactivate}
+            className="bg-gray-900 hover:bg-gray-800 text-white"
+          >
+            {t("DEACTIVATE_USER.CANCEL")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

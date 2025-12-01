@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { UserPlus, Search, ChevronDown, BarChart } from "lucide-react";
+import { Plus, Search, ChevronDown, BarChart } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LevelRangeKey, ScaleType } from "../types/service";
 import { ScaleTabs } from "./ScaleTabs";
@@ -104,7 +104,7 @@ export function ServicesHeader({
           onClick={onAddService}
           className="bg-foreground text-background hover:bg-foreground/90"
         >
-          <UserPlus className="mr-2 h-4 w-4" />
+          <Plus className="mr-2 h-4 w-4" />
           {t("ADD_SERVICE_BUTTON")}
         </Button>
       </div>
