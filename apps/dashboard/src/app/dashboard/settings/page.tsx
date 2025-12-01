@@ -460,15 +460,15 @@ export default function SettingsPage() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel
-              onClick={() => settingsState.setShowUnsavedChangesDialog(false)}
-            >
-              {t("DIALOGS.UNSAVED_CHANGES.CANCEL")}
-            </AlertDialogCancel>
-            <AlertDialogAction
               onClick={handleLeaveAnyway}
-              className="bg-gray-900 hover:bg-gray-1000"
             >
               {t("DIALOGS.UNSAVED_CHANGES.LEAVE_ANYWAY")}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => settingsState.setShowUnsavedChangesDialog(false)}
+              className="bg-gray-900 hover:bg-gray-800 text-white"
+            >
+              {t("DIALOGS.UNSAVED_CHANGES.CANCEL")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -483,15 +483,18 @@ export default function SettingsPage() {
               {tp("AVATAR.REMOVE_DIALOG.DESCRIPTION")}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setShowRemoveAvatarDialog(false)}>
-              {tp("AVATAR.REMOVE_DIALOG.CANCEL")}
-            </AlertDialogCancel>
-            <AlertDialogAction 
+          <AlertDialogFooter className="mt-4">
+            <AlertDialogCancel 
               onClick={confirmRemoveAvatar}
-              className="bg-red-600 hover:bg-red-700"
+              className="text-red-600 hover:text-red-700 border-gray-300"
             >
               {tp("AVATAR.REMOVE_DIALOG.CONFIRM")}
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={() => setShowRemoveAvatarDialog(false)}
+              className="bg-gray-900 hover:bg-gray-800 text-white"
+            >
+              {tp("AVATAR.REMOVE_DIALOG.CANCEL")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

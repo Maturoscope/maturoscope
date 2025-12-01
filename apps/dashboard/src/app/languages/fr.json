@@ -22,6 +22,7 @@
       "TITLE": "Votre mot de passe doit contenir au moins",
       "MIN_LENGTH": "10 caractères",
       "ONE_LETTER": "1 lettre",
+      "ONE_UPPERCASE": "1 lettre majuscule",
       "ONE_NUMBER_OR_SPECIAL": "1 chiffre ou caractère spécial (exemple : # ? ! &)"
     },
     "ERRORS": {
@@ -50,7 +51,7 @@
   "LOGIN": {
     "PAGE": {
       "TITLE": "Connectez-vous à votre compte",
-      "SUBTITLE": "Entrez votre e-mail ci-dessous pour vous connecter à votre compte.",
+      "SUBTITLE": "Entrez votre e-mail et votre mot de passe pour accéder à votre compte.",
       "EMAIL_LABEL": "E-mail",
       "PASSWORD_LABEL": "Mot de passe",
       "FORGOT_PASSWORD": "Mot de passe oublié?",
@@ -61,9 +62,9 @@
     },
     "BLOCKED_ACCOUNT": {
       "TITLE": "Votre connexion a été bloquée",
-      "MESSAGE": "Votre compte a été bloqué après plusieurs tentatives de connexion consécutives.",
-      "EMAIL_SENT": "Nous vous avons envoyé une notification par e-mail avec des instructions sur la façon de le débloquer.",
-      "GO_BACK_TO": "Retour à",
+      "MESSAGE": "Pour des raisons de sécurité, votre compte a été verrouillé après plusieurs tentatives de connexion échouées.",
+      "EMAIL_SENT": "Nous vous avons envoyé un e-mail avec des instructions pour déverrouiller votre compte et réinitialiser votre mot de passe.",
+      "GO_BACK_TO": "Aller à",
       "SIGN_IN": "Se connecter"
     },
     "INACTIVE_ACCOUNT": {

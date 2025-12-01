@@ -148,11 +148,12 @@ export function ToolCustomizationSection({
   ]
 
   const themeOptions = [
-    { value: 'Default', label: 'Default' },
-    { value: 'Dark', label: 'Dark' },
-    { value: 'Light', label: 'Light' },
-    { value: 'Blue', label: 'Blue' },
-    { value: 'Green', label: 'Green' },
+    { value: 'default', label: 'Default', color: '#000000' },
+    { value: 'orange', label: 'Orange', color: '#C2410C' },
+    { value: 'blue', label: 'Blue', color: '#1E40AF' },
+    { value: 'green', label: 'Green', color: '#166534' },
+    { value: 'pink', label: 'Pink', color: '#9D174D' },
+    { value: 'violet', label: 'Violet', color: '#5B21B6' },
   ]
 
 
@@ -212,13 +213,34 @@ export function ToolCustomizationSection({
             value={customizationForm.theme}
             onValueChange={(value: string) => handleCustomizationChange('theme', value)}
           >
-            <SelectTrigger className="max-w-[228px]" disabled={true}>
-              <SelectValue placeholder={t('CUSTOMIZATION.THEME.PLACEHOLDER')} />
+            <SelectTrigger className="max-w-[228px]">
+              <div className="flex items-center gap-2">
+                {(() => {
+                  const selectedTheme = themeOptions.find(opt => opt.value === customizationForm.theme)
+                  return selectedTheme ? (
+                    <>
+                      <div 
+                        className="w-4 h-4 rounded-full border border-gray-300"
+                        style={{ backgroundColor: selectedTheme.color }}
+                      />
+                      <SelectValue placeholder={t('CUSTOMIZATION.THEME.PLACEHOLDER')} />
+                    </>
+                  ) : (
+                    <SelectValue placeholder={t('CUSTOMIZATION.THEME.PLACEHOLDER')} />
+                  )
+                })()}
+              </div>
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="w-[228px]">
               {themeOptions.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
-                  {option.label}
+                  <div className="flex items-center gap-2">
+                    <div 
+                      className="w-4 h-4 rounded-full border border-gray-300"
+                      style={{ backgroundColor: option.color }}
+                    />
+                    <span>{option.label}</span>
+                  </div>
                 </SelectItem>
               ))}
             </SelectContent>
@@ -346,15 +368,18 @@ export function ToolCustomizationSection({
               {t('PDF_SIGNATURE.REMOVE_DIALOG.DESCRIPTION')}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setShowRemoveSignatureDialog(false)}>
-              {t('PDF_SIGNATURE.REMOVE_DIALOG.CANCEL')}
-            </AlertDialogCancel>
-            <AlertDialogAction 
+          <AlertDialogFooter className="mt-4">
+            <AlertDialogCancel 
               onClick={confirmRemoveSignature}
-              className="bg-red-600 hover:bg-red-700"
+              className="text-red-600 hover:text-red-700 border-gray-300"
             >
               {t('PDF_SIGNATURE.REMOVE_DIALOG.CONFIRM')}
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={() => setShowRemoveSignatureDialog(false)}
+              className="bg-gray-900 hover:bg-gray-800 text-white"
+            >
+              {t('PDF_SIGNATURE.REMOVE_DIALOG.CANCEL')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
