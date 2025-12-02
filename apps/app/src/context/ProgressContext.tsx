@@ -99,7 +99,7 @@ export const ProgressProvider = ({
   }
 
   const handleReviewClick = () => {
-    router.push(`/${lang}/form/${currStage.id}/review`)
+    router.push(`/${lang}/review/${currStage.id}`)
   }
 
   const handleCheckpointButtonClick = () => {
