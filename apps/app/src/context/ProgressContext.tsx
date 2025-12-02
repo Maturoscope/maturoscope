@@ -80,7 +80,9 @@ export const ProgressProvider = ({
     (question) => question.id === currQuestionId
   )
   const stageStepNumber = STAGES_STEP_NUMBER[currStage.id]
-  const isPrevButtonEnabled = currQuestionIndex !== 0
+  const isFirstStage = currStageIndex === 0
+  const isFirstQuestionOfStage = currQuestionIndex === 0
+  const isPrevButtonEnabled = !(isFirstStage && isFirstQuestionOfStage)
 
   const saveProgress = () =>
     localStorage.setItem("form", JSON.stringify(getValues()))
@@ -88,7 +90,18 @@ export const ProgressProvider = ({
   const handlePrevButtonClick = () => {
     if (!isPrevButtonEnabled) return
     setIsNextButtonEnabled(true)
-    setCurrQuestionId(currStage.questions[currQuestionIndex - 1].id)
+
+    if (isFirstQuestionOfStage) {
+      // Go to the last question of the previous stage
+      const prevStage = stages[currStageIndex - 1]
+      const lastQuestionOfPrevStage =
+        prevStage.questions[prevStage.questions.length - 1]
+      setCurrStageId(prevStage.id)
+      setCurrQuestionId(lastQuestionOfPrevStage.id)
+      setIsCheckpoint(true)
+    } else {
+      setCurrQuestionId(currStage.questions[currQuestionIndex - 1].id)
+    }
   }
 
   const handleNextButtonClick = () => {

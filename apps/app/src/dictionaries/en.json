@@ -88,7 +88,9 @@
     ]
   },
   "review": {
-    "title": "Review [STAGE_NAME] answers",
+    "title": "Review [STAGE_NAME] answers"
+  },
+  "singleReview": {
     "cancelButtonLabel": "Cancel",
     "saveButtonLabel": "Save"
   }

@@ -88,7 +88,9 @@
     ]
   },
   "review": {
-    "title": "Voir [STAGE_NAME] réponses",
+    "title": "Voir [STAGE_NAME] réponses"
+  },
+  "singleReview": {
     "cancelButtonLabel": "Annuler",
     "saveButtonLabel": "Enregistrer"
   }
