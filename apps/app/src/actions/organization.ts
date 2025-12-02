@@ -20,10 +20,10 @@ const VALID_ACCENT_THEMES: AccentTheme[] = [
   "violet",
 ]
 
-const getOrganizationByKey = async (key: string) => {
+const getOrganizationByKey = async (key: string | undefined) => {
   if (!key) return false
 
-  const endpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/organizations/key/${key}`
+  const endpoint = `${process.env.API_BASE_URL}/organizations/${key}`
   const response = await fetch(endpoint)
   const organization = await response.json()
 
@@ -55,6 +55,53 @@ export const getOrganizationKeyFromCookies = async (): Promise<
 > => {
   const cookieStore = await cookies()
   return cookieStore.get("organization-key")?.value || null
+}
+
+export type ScaleType = "TRL" | "MkRL" | "MfRL"
+
+interface SubmitAssessmentParams {
+  scale: ScaleType
+  answers: Record<string, string>
+}
+
+interface SubmitAssessmentResult {
+  success: boolean
+  error?: string
+}
+
+export const submitAssessment = async ({
+  scale,
+  answers,
+}: SubmitAssessmentParams): Promise<SubmitAssessmentResult> => {
+  const organizationKey = await getOrganizationKeyFromCookies()
+
+  if (!organizationKey) {
+    return { success: false, error: "Organization key not found" }
+  }
+
+  const endpoint = `${process.env.API_BASE_URL}/readiness-assessment/assess?organizationKey=${organizationKey}`
+
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ scale, answers }),
+    })
+
+    if (!response.ok) {
+      return { success: false, error: `API error: ${response.statusText}` }
+    }
+
+    return { success: true }
+  } catch (error) {
+    console.error("Error submitting assessment:", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    }
+  }
 }
 
 export { getOrganizationByKey }

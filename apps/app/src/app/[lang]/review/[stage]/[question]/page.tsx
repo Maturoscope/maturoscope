@@ -18,6 +18,7 @@ const QuestionPage = async ({ params }: QuestionPageProps) => {
   const dictionary = await getDictionary(lang)
   const {
     header: { stringConnector },
+    singleReview,
   } = dictionary
 
   // Fetch questions for the stage
@@ -41,7 +42,12 @@ const QuestionPage = async ({ params }: QuestionPageProps) => {
   return (
     <main className="w-full h-full flex flex-col items-center justify-start pb-16">
       <Header stringConnector={stringConnector} showBackButton />
-      <QuestionEditor stageName={stage} lang={lang} question={question} />
+      <QuestionEditor
+        stageName={stage}
+        lang={lang}
+        question={question}
+        {...singleReview}
+      />
     </main>
   )
 }

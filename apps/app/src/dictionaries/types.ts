@@ -8,6 +8,7 @@ import { SimpleFormProps } from "@/components/custom/BeginPage/SimpleForm/Simple
 import { HeroProps as WhyHeroProps } from "@/components/custom/WhyPage/Hero/Hero"
 import { StageType } from "@/components/custom/FormPage/Form/Form"
 import { HeroProps as ReviewHeroProps } from "@/components/custom/ReviewPage/Hero/Hero"
+import { QuestionEditorProps } from "@/components/custom/ReviewPage/QuestionEditor/QuestionEditor"
 
 // Dictionary form stages don't include questions (they come from API)
 type DictionaryStage = Omit<StageType, "questions">
@@ -33,4 +34,8 @@ export type Dictionary = {
     }
   }
   review: ReviewHeroProps
+  singleReview: Pick<
+    QuestionEditorProps,
+    "saveButtonLabel" | "cancelButtonLabel"
+  >
 }

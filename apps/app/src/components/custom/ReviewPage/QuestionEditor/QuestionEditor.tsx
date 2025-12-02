@@ -12,14 +12,30 @@ import { Locale } from "@/dictionaries/dictionaries"
 import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 // Utils
 import { cn } from "@/lib/utils"
+// Actions
+import { submitAssessment, ScaleType } from "@/actions/organization"
 
-interface QuestionEditorProps {
+const STAGE_TO_SCALE: Record<StageId, ScaleType> = {
+  trl: "TRL",
+  mkrl: "MkRL",
+  mfrl: "MfRL",
+}
+
+export interface QuestionEditorProps {
+  saveButtonLabel: string
+  cancelButtonLabel: string
   stageName: StageId
   lang: Locale
   question: QuestionData
 }
 
-const QuestionEditor = ({ stageName, lang, question }: QuestionEditorProps) => {
+const QuestionEditor = ({
+  saveButtonLabel,
+  cancelButtonLabel,
+  stageName,
+  lang,
+  question,
+}: QuestionEditorProps) => {
   const router = useRouter()
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null)
 
@@ -37,7 +53,7 @@ const QuestionEditor = ({ stageName, lang, question }: QuestionEditorProps) => {
     setSelectedOptionId(optionId)
   }
 
-  const handleSaveClick = () => {
+  const handleSaveClick = async () => {
     if (!selectedOptionId) return
 
     // Read current form data from localStorage
@@ -59,6 +75,11 @@ const QuestionEditor = ({ stageName, lang, question }: QuestionEditorProps) => {
 
     // Save back to localStorage
     localStorage.setItem("form", JSON.stringify(updatedForm))
+
+    // Submit assessment to the backend
+    const scale = STAGE_TO_SCALE[stageName]
+    const answers = updatedForm[stageName].questions
+    await submitAssessment({ scale, answers })
 
     // Navigate back to review page
     router.push(`/${lang}/review/${stageName}`)
@@ -122,7 +143,7 @@ const QuestionEditor = ({ stageName, lang, question }: QuestionEditorProps) => {
           </div>
           <div className="w-full flex items-center justify-end gap-3">
             <Button variant="outline" onClick={handleCancelClick}>
-              Cancel
+              {cancelButtonLabel}
             </Button>
             <Button
               onClick={handleSaveClick}
@@ -130,7 +151,7 @@ const QuestionEditor = ({ stageName, lang, question }: QuestionEditorProps) => {
               className="w-full lg:w-auto"
               accent
             >
-              Save
+              {saveButtonLabel}
             </Button>
           </div>
         </div>

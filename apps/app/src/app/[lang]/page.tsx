@@ -17,7 +17,7 @@ const HomePage = async ({ searchParams, params }: HomePageProps) => {
   const { key } = await searchParams
   const { lang } = await params
   const dictionary = await getDictionary(lang)
-  const organization = key ? await getOrganizationByKey(key) : null
+  const organization = await getOrganizationByKey(key)
 
   console.log({ organization })
 

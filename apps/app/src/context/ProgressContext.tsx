@@ -16,6 +16,8 @@ import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 import { Locale } from "@/dictionaries/dictionaries"
 // Utils
 import { calcCheckpoint } from "@/lib/calcCheckpoint"
+// Actions
+import { submitAssessment, ScaleType } from "@/actions/organization"
 
 interface ProgressContextType {
   stages: StageType[]
@@ -45,6 +47,12 @@ const STAGES_STEP_NUMBER: Record<StageId, number> = {
   trl: 1,
   mkrl: 2,
   mfrl: 3,
+}
+
+const STAGE_TO_SCALE: Record<StageId, ScaleType> = {
+  trl: "TRL",
+  mkrl: "MkRL",
+  mfrl: "MfRL",
 }
 
 const ProgressContext = createContext<ProgressContextType | null>(null)
@@ -102,7 +110,12 @@ export const ProgressProvider = ({
     router.push(`/${lang}/review/${currStage.id}`)
   }
 
-  const handleCheckpointButtonClick = () => {
+  const handleCheckpointButtonClick = async () => {
+    // Submit current stage assessment to the backend
+    const scale = STAGE_TO_SCALE[currStageId]
+    const stageData = getValues()[currStageId]
+    await submitAssessment({ scale, answers: stageData.questions })
+
     const nextStage = stages[currStageIndex + 1]
     const isLastCheckpoint = !nextStage?.id
 
