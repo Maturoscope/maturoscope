@@ -25,7 +25,7 @@ import {
   MoreVertical,
   Pencil,
   Trash2,
-  User,
+  FileText,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { ServiceSummary } from "../types/service";
@@ -140,8 +140,8 @@ export function ServicesTable({
         className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg"
         style={{ height: 'calc(100vh - 230px)' }}
       >
-        <div className="flex items-center justify-center w-12 h-12 rounded-lg border border-[#E5E5E5] shadow-xs mb-4">
-          <User className="h-6 w-6 text-[#0A0A0A]" />
+        <div className="flex items-center justify-center w-12 h-12 rounded-lg border border-[#E5E5E5] shadow-xs mb-4 bg-gray-50">
+          <FileText className="h-6 w-6 text-[#0A0A0A]" />
         </div>
         <h3 className="text-lg font-semibold text-gray-900 mb-2">
           {t("TABLE.NO_RESULTS")}

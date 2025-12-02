@@ -213,11 +213,14 @@ export default function SettingsUserPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={settingsActions.handleCancelLeave}>
-              {t('UNSAVED_CHANGES.CANCEL')}
-            </AlertDialogCancel>
-            <AlertDialogAction onClick={handleLeaveAnyway}>
+            <AlertDialogCancel onClick={handleLeaveAnyway}>
               {t('UNSAVED_CHANGES.LEAVE_ANYWAY')}
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={settingsActions.handleCancelLeave}
+              className="bg-gray-900 hover:bg-gray-800 text-white"
+            >
+              {t('UNSAVED_CHANGES.CANCEL')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

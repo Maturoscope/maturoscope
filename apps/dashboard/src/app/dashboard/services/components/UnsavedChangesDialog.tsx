@@ -35,15 +35,15 @@ export function UnsavedChangesDialog({
             {t("MODAL.UNSAVED_CHANGES.MESSAGE")}
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={onCancel}>
-            {t("MODAL.UNSAVED_CHANGES.CANCEL")}
+        <AlertDialogFooter className="mt-4">
+          <AlertDialogCancel onClick={onConfirm}>
+            {t("MODAL.UNSAVED_CHANGES.LEAVE_ANYWAY")}
           </AlertDialogCancel>
           <AlertDialogAction
-            onClick={onConfirm}
-            className="bg-foreground text-background hover:bg-foreground/90"
+            onClick={onCancel}
+            className="bg-gray-900 hover:bg-gray-800 text-white"
           >
-            {t("MODAL.UNSAVED_CHANGES.LEAVE_ANYWAY")}
+            {t("MODAL.UNSAVED_CHANGES.CANCEL")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

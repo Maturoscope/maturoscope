@@ -22,6 +22,7 @@
       "TITLE": "Your password must contain at least",
       "MIN_LENGTH": "10 characters",
       "ONE_LETTER": "1 letter",
+      "ONE_UPPERCASE": "1 uppercase letter",
       "ONE_NUMBER_OR_SPECIAL": "1 number or special character (example: # ? ! &)"
     },
     "ERRORS": {
@@ -49,21 +50,21 @@
   },
   "LOGIN": {
     "PAGE": {
-      "TITLE": "Login to your account",
-      "SUBTITLE": "Enter your email below to login to your account.",
+      "TITLE": "Sign in to your account",
+      "SUBTITLE": "Enter your email and password to access your account.",
       "EMAIL_LABEL": "Email",
       "PASSWORD_LABEL": "Password",
       "FORGOT_PASSWORD": "Forgot your password?",
       "REMEMBER_ME": "Remember me",
-      "LOGIN_BUTTON": "Login",
+      "LOGIN_BUTTON": "Sign in",
       "LOGIN_SUCCESS": "Login successful!",
       "INVALID_CREDENTIALS": "Invalid email or password."
     },
     "BLOCKED_ACCOUNT": {
       "TITLE": "Your sign-in was blocked",
-      "MESSAGE": "Your account has been blocked after multiple consecutive login attempts.",
-      "EMAIL_SENT": "We've sent you a notification via email with instructions on how to unblock it.",
-      "GO_BACK_TO": "Go back to",
+      "MESSAGE": "For security reasons, your account was locked after multiple failed sign-in attempts.",
+      "EMAIL_SENT": "We've sent you an email with instructions to unlock your account and reset your password.",
+      "GO_BACK_TO": "Go to",
       "SIGN_IN": "Sign in"
     },
     "INACTIVE_ACCOUNT": {

@@ -59,19 +59,13 @@ const transformQuestionsToStages = (
  * For now, returns dummyQuestions data
  */
 export const getQuestions = async (lang: Locale) => {
-  // TODO: Replace with actual API call
-  // const endpoint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/questions?lang=${lang}`
-  // const response = await fetch(endpoint)
-  // if (!response.ok) {
-  //   // Fallback to dummy data on error
-  //   return transformQuestionsToStages(DUMMY_QUESTIONS, lang)
-  // }
-  // const questionsData = await response.json()
-  // return transformQuestionsToStages(questionsData, lang)
+  const endpoint = `${process.env.API_BASE_URL}/readiness-assessment/questions`
+  const response = await fetch(endpoint)
 
-  // For now, use dummy data
-  const questionsData = DUMMY_QUESTIONS
+  if (!response.ok) {
+    return transformQuestionsToStages(DUMMY_QUESTIONS, lang)
+  }
 
+  const questionsData = await response.json()
   return transformQuestionsToStages(questionsData, lang)
 }
-

@@ -39,8 +39,6 @@ export const getOrganizationAccentColor = async (
     const organization = await getOrganizationByKey(key)
     const accentColor = organization?.accentColor || organization?.theme || null
 
-    console.log({ accentColor })
-
     if (accentColor && VALID_ACCENT_THEMES.includes(accentColor)) {
       return accentColor as AccentTheme
     }

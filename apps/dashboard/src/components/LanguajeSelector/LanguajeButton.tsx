@@ -23,30 +23,27 @@ export function LanguageButton() {
     LANGUAGES.find((lang) => lang.key === browserLanguage) || LANGUAGES[0];
 
   return (
-    <div className="relative rounded-md border border-[#e5e5e5] bg-white">
+    <div className="relative">
       <motion.button
         onClick={() => setOpenDialog(!isOpenDialog)}
-        className="flex items-center rounded px-4 py-2 h-9 w-[100px] gap-1 text-black "
+        className="flex items-center justify-center rounded-md border border-[#e5e5e5] bg-white px-4 py-2 h-9 gap-2 text-black hover:bg-gray-50 transition-colors"
         whileTap={{ scale: 0.98 }}
         aria-haspopup="dialog"
         aria-expanded={isOpenDialog}
       >
-        <div className="h-[24px] w-[100px] flex flex-row items-center">
-          <Image
-            src={currentLanguage.src || "/placeholder.svg"}
-            alt={`${t(currentLanguage.key)} flag`}
-            width={24}
-            height={24}
-            className="object-cover w-full h-full"
-          />
-          
-        </div>
-        <p className="text-sm md:text-base text-black font-medium">{currentLanguage.key}</p>
+        <Image
+          src={currentLanguage.src || "/placeholder.svg"}
+          alt={`${t(currentLanguage.key)} flag`}
+          width={16}
+          height={16}
+          className="object-cover"
+        />
+        <span className="text-sm text-gray-700 font-medium">{currentLanguage.key}</span>
         <motion.div
           animate={{ rotate: isOpenDialog ? 180 : 0 }}
           transition={{ duration: 0.3 }}
         >
-          <ChevronDown className="h-4 w-4" />
+          <ChevronDown className="h-4 w-4 text-gray-600" />
         </motion.div>
       </motion.button>
 

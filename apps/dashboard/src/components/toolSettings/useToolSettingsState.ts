@@ -25,12 +25,12 @@ export function useToolSettingsState() {
   // Customization Form
   const [customizationForm, setCustomizationForm] = useState<ToolCustomizationFormData>({
     font: user?.organization?.font || 'Geist',
-    theme: user?.organization?.theme || 'Default'
+    theme: user?.organization?.theme === 'Default' ? 'default' : (user?.organization?.theme || 'default')
   })
   
   const [originalCustomizationForm, setOriginalCustomizationForm] = useState<ToolCustomizationFormData>({
     font: user?.organization?.font || 'Geist',
-    theme: user?.organization?.theme || 'Default'
+    theme: user?.organization?.theme === 'Default' ? 'default' : (user?.organization?.theme || 'default')
   })
   
   // PDF Signature Form
@@ -56,9 +56,10 @@ export function useToolSettingsState() {
   // Update forms when user data changes
   useEffect(() => {
     if (user?.organization) {
+      const themeValue = user.organization.theme === 'Default' ? 'default' : (user.organization.theme || 'default')
       const newCustomizationForm = {
         font: user.organization.font || 'Geist',
-        theme: user.organization.theme || 'Default'
+        theme: themeValue
       }
       const newPDFSignatureForm = {
         signatureFile: null,
