@@ -100,6 +100,15 @@
       "subtitle": "Completed on ",
       "downloadButtonLabel": "Download report",
       "talkButtonLabel": "Talk to an expert"
+    },
+    "unlockNextLevel": {
+      "title": "Unlock your next level",
+      "steps": [
+        "Review your detailed results below.",
+        "Connect with the recommended experts to accelerate your success.",
+        "Download your report and keep it for future milestones."
+      ],
+      "clarification": "After reviewing your results, save them and reach out to the recommended services. They'll help you close the gaps needed to improve your readiness level."
     }
   }
 }

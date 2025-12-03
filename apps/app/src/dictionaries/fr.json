@@ -100,6 +100,15 @@
       "subtitle": "Complété le ",
       "downloadButtonLabel": "Télécharger le rapport",
       "talkButtonLabel": "Parler à un expert"
+    },
+    "unlockNextLevel": {  
+      "title": "Débloquez votre prochain niveau",
+      "steps": [
+        "Voir les résultats détaillés ci-dessous.",
+        "Connectez-vous avec les experts recommandés pour accélérer votre succès.",
+        "Téléchargez votre rapport et conservez-le pour vos futurs jalons."
+      ],
+      "clarification": "Après avoir examiné vos résultats, enregistrez-les et contactez les services recommandés. Ils vous aideront à combler les lacunes nécessaires pour améliorer votre niveau de maturité."
     }
   }
 }

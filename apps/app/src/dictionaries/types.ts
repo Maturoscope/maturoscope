@@ -10,6 +10,7 @@ import { StageType } from "@/components/custom/FormPage/Form/Form"
 import { HeroProps as ReviewHeroProps } from "@/components/custom/ReviewPage/Hero/Hero"
 import { QuestionEditorProps } from "@/components/custom/ReviewPage/QuestionEditor/QuestionEditor"
 import { ResultsTopBarProps } from "@/components/custom/ResultsPage/ResultsTopBar/ResultsTopBar"
+import { UnlockNextLevelProps } from "@/components/custom/ResultsPage/UnlockNextLevel/UnlockNextLevel"
 
 // Dictionary form stages don't include questions (they come from API)
 type DictionaryStage = Omit<StageType, "questions">
@@ -41,5 +42,6 @@ export type Dictionary = {
   >
   results: {
     topBar: ResultsTopBarProps
+    unlockNextLevel: UnlockNextLevelProps
   }
 }
