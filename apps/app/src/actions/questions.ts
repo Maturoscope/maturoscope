@@ -84,7 +84,7 @@ const transformQuestionsToStages = (
  * Fetches questions from API and transforms them to the expected format
  */
 export const getQuestions = async (lang: Locale) => {
-  const endpoint = `${process.env.API_BASE_URL}/readiness-assessment/questions`
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/readiness-assessment/questions`
   const response = await fetch(endpoint)
 
   if (!response.ok) {

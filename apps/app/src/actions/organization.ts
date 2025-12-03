@@ -23,7 +23,7 @@ const VALID_ACCENT_THEMES: AccentTheme[] = [
 const getOrganizationByKey = async (key: string | undefined) => {
   if (!key) return false
 
-  const endpoint = `${process.env.API_BASE_URL}/organizations/${key}`
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/organizations/${key}`
   const response = await fetch(endpoint)
   const organization = await response.json()
 
@@ -79,7 +79,7 @@ export const submitAssessment = async ({
     return { success: false, error: "Organization key not found" }
   }
 
-  const endpoint = `${process.env.API_BASE_URL}/readiness-assessment/assess?organizationKey=${organizationKey}`
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/readiness-assessment/assess?organizationKey=${organizationKey}`
 
   try {
     const response = await fetch(endpoint, {
