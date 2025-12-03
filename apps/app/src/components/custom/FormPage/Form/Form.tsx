@@ -39,10 +39,15 @@ export interface StageProps {
 export interface FormProps {
   buttonNextLabel: string
   buttonPrevLabel: string
+  commentPlaceholder: string
   // stages are not needed here - Form gets them from ProgressContext
 }
 
-const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {
+const Form = ({
+  buttonNextLabel,
+  buttonPrevLabel,
+  commentPlaceholder,
+}: FormProps) => {
   const {
     currStage,
     currQuestion,
@@ -80,6 +85,7 @@ const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {
         {...currQuestion}
         name={currStage.id}
         onQuestionClick={handleQuestionClick}
+        commentPlaceholder={commentPlaceholder}
       />
 
       <div className="w-full flex items-center justify-between gap-3 bg-background lg:bg-none py-4 lg:pt-6 lg:pb-8">

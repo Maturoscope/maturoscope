@@ -9,13 +9,13 @@
   "homepage": {
     "hero": {
       "heading": {
-        "title": "Connaissez exactement où se situe votre innovation",
-        "description": "Que ce soit un produit, un process ou un service, le Maturoscope vous permet d'évaluer sa maturité en quelques clics et vous guide à travers les étapes suivantes vers la commercialisation."
+        "title": "Évaluez la maturité de votre innovation en quelques minutes.",
+        "description": "Obtenez une lecture instantanée de vos niveaux de maturité technologique, marché et fabrication, ainsi que des actions ciblées pour vous améliorer."
       },
       "information": {
         "noAccount": "Aucun compte requis",
         "noStored": "Nous ne stockons pas vos informations",
-        "buttonLabel": "Commencer",
+        "buttonLabel": "Commençons",
         "estimatedTime": "5 minutes"
       },
       "criteria": {
@@ -24,17 +24,17 @@
           {
             "icon": "/icons/homepage/criteria-trl.svg",
             "title": "TRL - Niveau de maturité de la technologie",
-            "description": "7 questions"
+            "description": "La technologie est-elle fonctionnelle ? (7 questions)"
           },
           {
             "icon": "/icons/homepage/criteria-mkrl.svg",
             "title": "MkRL - Niveau de maturité du marché",
-            "description": "4 questions"
+            "description": "Y a-t-il un besoin client ? (4 questions)"
           },
           {
             "icon": "/icons/homepage/criteria-mfrl.svg",
             "title": "MfRL - Niveau de maturité de la fabrication",
-            "description": "4 questions"
+            "description": "La production est-elle scalable ? (4 questions)"
           }
         ]
       }
@@ -45,15 +45,16 @@
     }
   },
   "begin": {
-    "title": "Pour commencer...",
+    "title": "Qu'évaluons-nous aujourd'hui ?",
     "label": "Nommez votre projet",
-    "placeholder": "Nom du projet",
+    "placeholder": "Prototype de panneau solaire v2",
     "backButtonLabel": "Retour",
     "nextButtonLabel": "Continuer"
   },
   "form": {
     "buttonNextLabel": "Continuer",
     "buttonPrevLabel": "Retour",
+    "commentPlaceholder": "Ajoutez des notes spécifiques pour votre rapport final (Optionnel)",
     "checkpoint": {
       "buttonLabel": "Retour à"
     },
@@ -62,8 +63,8 @@
         "id": "trl",
         "icon": "/icons/form/trl.svg",
         "name": "TRL",
-        "title": "Nous avons évalué où se situe votre innovation techniquement.",
-        "description": "Il est temps de voir comment elle s'intègre dans le marché.",
+        "title": "Analyse technologique terminée",
+        "description": "Une étape de franchie. Voyons maintenant si le marché est prêt.",
         "reviewLabel": "Voir les réponses",
         "buttonLabel": "Continuer à MkRL"
       },
@@ -71,8 +72,8 @@
         "id": "mkrl",
         "icon": "/icons/form/mkrl.svg",
         "name": "MkRL",
-        "title": "Nous avons évalué les aspects techniques et du marché.",
-        "description": "Il est temps d'évaluer les capacités de production.",
+        "title": "Contexte de marché validé",
+        "description": "Vous avez couvert le « Quoi » et le « Qui ». Passons maintenant à la dernière pièce : le « Comment ».",
         "reviewLabel": "Voir les réponses",
         "buttonLabel": "Continuer à MfRL"
       },
@@ -80,15 +81,15 @@
         "id": "mfrl",
         "icon": "/icons/form/mfrl.svg",
         "name": "MfRL",
-        "title": "Votre rapport de maturité de l'innovation est prêt.",
-        "description": "Votre innovation a été évaluée selon trois échelles de maturité. Découvrez son profil de maturité ainsi que des recommandations de services spécialisés.",
+        "title": "Évaluation terminée",
+        "description": "Votre rapport est prêt à être généré. (Dernière chance de réviser, les réponses ne pourront plus être modifiées après cette étape).",
         "reviewLabel": "Voir les réponses",
         "buttonLabel": "Voir le rapport"
       }
     ]
   },
   "review": {
-    "title": "Voir [STAGE_NAME] réponses"
+    "title": "Réviser les réponses [STAGE_NAME]"
   },
   "singleReview": {
     "cancelButtonLabel": "Annuler",

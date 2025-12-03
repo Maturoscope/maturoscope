@@ -48,6 +48,7 @@ const FormPage = async ({ params }: FormPageProps) => {
           <Form
             buttonNextLabel={form.buttonNextLabel}
             buttonPrevLabel={form.buttonPrevLabel}
+            commentPlaceholder={form.commentPlaceholder}
           />
         </main>
       </ProgressProvider>
