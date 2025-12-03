@@ -26,8 +26,23 @@ export const FormProvider = ({ children }: FormProviderProps) => {
 
   useEffect(() => {
     const savedForm = JSON.parse(localStorage.getItem("form") || "{}")
-    if (!savedForm) return
-    reset(savedForm)
+    if (!savedForm || Object.keys(savedForm).length === 0) return
+
+    // Ensure backward compatibility: add comments if they don't exist
+    const formWithComments = (
+      Object.keys(DEFAULT_VALUES) as Array<keyof typeof DEFAULT_VALUES>
+    ).reduce((acc, stageId) => {
+      const stage = savedForm[stageId] || DEFAULT_VALUES[stageId]
+      const defaultStage = DEFAULT_VALUES[stageId]
+
+      acc[stageId] = {
+        ...stage,
+        comments: stage?.comments || defaultStage.comments,
+      }
+      return acc
+    }, {} as DefaultValues)
+
+    reset(formWithComments)
   }, [reset])
 
   return (

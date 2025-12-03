@@ -3,6 +3,13 @@ import type { Metadata } from "next"
 import { Geist } from "next/font/google"
 // Dictionaries
 import { DEFAULT_LANGUAGE, Locale } from "@/dictionaries/dictionaries"
+// Actions
+import {
+  getOrganizationKeyFromCookies,
+  getOrganizationAccentColor,
+} from "@/actions/organization"
+// Context
+import { DEFAULT_ACCENT_THEME, ThemeProvider } from "@/context/ThemeContext"
 // Styles
 import "../globals.css"
 
@@ -26,10 +33,20 @@ export default async function RootLayout({
 }: RootLayoutProps) {
   const { lang = DEFAULT_LANGUAGE } = await params
 
+  const organizationKey = await getOrganizationKeyFromCookies()
+  const accentTheme =
+    organizationKey ?
+      await getOrganizationAccentColor(organizationKey)
+    : DEFAULT_ACCENT_THEME
+
   return (
-    <html lang={lang} className={`${geist.className} antialiased`}>
+    <html
+      lang={lang}
+      className={`${geist.className} antialiased`}
+      data-accent-theme={accentTheme || undefined}
+    >
       <body className="flex flex-col items-center justify-start w-full lg:h-svh bg-background">
-        {children}
+        <ThemeProvider initialTheme={accentTheme}>{children}</ThemeProvider>
       </body>
     </html>
   )

@@ -22,7 +22,8 @@ const Question = ({
   options: initOptions,
   onQuestionClick,
 }: QuestionProps) => {
-  const radioGroupName = `${name}.${id}` as `${StageId}.${string}`
+  const radioGroupName =
+    `${name}.questions.${id}` as `${StageId}.questions.${string}`
   const options = initOptions.map((option) => ({
     ...option,
     name: radioGroupName,
@@ -30,7 +31,11 @@ const Question = ({
   }))
 
   return (
-    <RadioGroup options={options} name={radioGroupName} className="w-full" />
+    <RadioGroup
+      options={options}
+      name={radioGroupName}
+      className="w-full flex-1 min-h-0 overflow-y-auto"
+    />
   )
 }
 

@@ -63,6 +63,7 @@ const SimpleForm = ({
           className="w-full lg:w-max"
           disabled={isNextButtonDisabled}
           onClick={handleNextButtonClick}
+          accent
         >
           <span>{nextButtonLabel}</span>
           <Image

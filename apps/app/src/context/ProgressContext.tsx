@@ -6,14 +6,21 @@ import { useRouter } from "next/navigation"
 // Context
 import { useFormContext } from "@/context/FormContext"
 // Types
-import { StageId, StageType } from "@/components/custom/FormPage/Form/Form"
+import {
+  StageId,
+  StageType,
+  QuestionData,
+} from "@/components/custom/FormPage/Form/Form"
 import { QuestionProps } from "@/components/custom/FormPage/Question/Question"
 import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 import { Locale } from "@/dictionaries/dictionaries"
 // Utils
 import { calcCheckpoint } from "@/lib/calcCheckpoint"
+// Actions
+import { submitAssessment, ScaleType } from "@/actions/organization"
 
 interface ProgressContextType {
+  stages: StageType[]
   currStage: StageType
   currQuestionIndex: number
   currQuestion: QuestionProps
@@ -23,6 +30,7 @@ interface ProgressContextType {
   isNextButtonEnabled: boolean
   handlePrevButtonClick: () => void
   handleNextButtonClick: () => void
+  handleReviewClick: () => void
   handleCheckpointButtonClick: () => void
   handleQuestionClick: () => void
 }
@@ -39,6 +47,12 @@ const STAGES_STEP_NUMBER: Record<StageId, number> = {
   trl: 1,
   mkrl: 2,
   mfrl: 3,
+}
+
+const STAGE_TO_SCALE: Record<StageId, ScaleType> = {
+  trl: "TRL",
+  mkrl: "MkRL",
+  mfrl: "MfRL",
 }
 
 const ProgressContext = createContext<ProgressContextType | null>(null)
@@ -59,14 +73,16 @@ export const ProgressProvider = ({
 
   const currStageIndex = stages.findIndex((stage) => stage.id === currStageId)
   const currStage = stages[currStageIndex]
-  const currQuestion = currStage.questions.find(
+  const currQuestionData = currStage.questions.find(
     (question) => question.id === currQuestionId
-  ) as QuestionProps
+  ) as QuestionData
   const currQuestionIndex = currStage.questions.findIndex(
     (question) => question.id === currQuestionId
   )
   const stageStepNumber = STAGES_STEP_NUMBER[currStage.id]
-  const isPrevButtonEnabled = currQuestionIndex !== 0
+  const isFirstStage = currStageIndex === 0
+  const isFirstQuestionOfStage = currQuestionIndex === 0
+  const isPrevButtonEnabled = !(isFirstStage && isFirstQuestionOfStage)
 
   const saveProgress = () =>
     localStorage.setItem("form", JSON.stringify(getValues()))
@@ -74,7 +90,18 @@ export const ProgressProvider = ({
   const handlePrevButtonClick = () => {
     if (!isPrevButtonEnabled) return
     setIsNextButtonEnabled(true)
-    setCurrQuestionId(currStage.questions[currQuestionIndex - 1].id)
+
+    if (isFirstQuestionOfStage) {
+      // Go to the last question of the previous stage
+      const prevStage = stages[currStageIndex - 1]
+      const lastQuestionOfPrevStage =
+        prevStage.questions[prevStage.questions.length - 1]
+      setCurrStageId(prevStage.id)
+      setCurrQuestionId(lastQuestionOfPrevStage.id)
+      setIsCheckpoint(true)
+    } else {
+      setCurrQuestionId(currStage.questions[currQuestionIndex - 1].id)
+    }
   }
 
   const handleNextButtonClick = () => {
@@ -84,7 +111,7 @@ export const ProgressProvider = ({
     const nextQuestionIndex = currQuestionIndex + 1
     const nextQuestionId = currStage.questions[nextQuestionIndex]?.id
     const nextQuestionHasValue = !!getValues(
-      `${currStage.id}.${nextQuestionId}`
+      `${currStage.id}.questions.${nextQuestionId}` as `${StageId}.questions.${string}`
     )
 
     if (isLastQuestion) setIsCheckpoint(true)
@@ -92,7 +119,16 @@ export const ProgressProvider = ({
     setIsNextButtonEnabled(nextQuestionHasValue)
   }
 
-  const handleCheckpointButtonClick = () => {
+  const handleReviewClick = () => {
+    router.push(`/${lang}/review/${currStage.id}`)
+  }
+
+  const handleCheckpointButtonClick = async () => {
+    // Submit current stage assessment to the backend
+    const scale = STAGE_TO_SCALE[currStageId]
+    const stageData = getValues()[currStageId]
+    await submitAssessment({ scale, answers: stageData.questions })
+
     const nextStage = stages[currStageIndex + 1]
     const isLastCheckpoint = !nextStage?.id
 
@@ -105,28 +141,35 @@ export const ProgressProvider = ({
 
   const handleQuestionClick = () => setIsNextButtonEnabled(true)
 
+  const currQuestion: QuestionProps = {
+    ...currQuestionData,
+    name: currStage.id,
+    onQuestionClick: handleQuestionClick,
+  }
+
   useEffect(() => {
     const savedForm = JSON.parse(
       localStorage.getItem("form") || "{}"
     ) as DefaultValues
     const checkpoint = calcCheckpoint(savedForm)
-    console.log({ checkpoint })
 
     if (!checkpoint) return
     const { lastSavedStage, lastSavedQuestion } = checkpoint
 
     const hasAnswerAllQuestions = Object.values(savedForm).every((stage) =>
-      Object.values(stage).every((question) => !!question)
+      Object.values(stage.questions).every((question) => !!question)
     )
 
     if (hasAnswerAllQuestions) return router.push(`/${lang}/results`)
 
-    const lastStageQuestionsId = Object.keys(savedForm[lastSavedStage])
+    const lastStageQuestionsId = Object.keys(
+      savedForm[lastSavedStage].questions
+    )
     const isLastQuestionOfStage =
       lastSavedQuestion ===
       lastStageQuestionsId[lastStageQuestionsId.length - 1]
     const isLastQuestionAnswered =
-      !!savedForm[lastSavedStage][lastSavedQuestion]
+      !!savedForm[lastSavedStage].questions[lastSavedQuestion]
 
     if (isLastQuestionOfStage) setIsCheckpoint(isLastQuestionAnswered)
 
@@ -137,6 +180,7 @@ export const ProgressProvider = ({
   return (
     <ProgressContext.Provider
       value={{
+        stages,
         currStage,
         currQuestionIndex,
         currQuestion,
@@ -146,6 +190,7 @@ export const ProgressProvider = ({
         isNextButtonEnabled,
         handlePrevButtonClick,
         handleNextButtonClick,
+        handleReviewClick,
         handleCheckpointButtonClick,
         handleQuestionClick,
       }}

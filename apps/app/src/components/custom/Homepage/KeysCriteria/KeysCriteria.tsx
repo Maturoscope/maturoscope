@@ -1,10 +1,10 @@
 "use client"
 
 // Packages
-import Image from "next/image"
 import { motion } from "motion/react"
 // Components
 import Box from "@/components/common/Box/Box"
+import { getIconComponent } from "@/components/icons/iconMap"
 // Animations
 import {
   SIMPLE_FADE_VARIANT,
@@ -38,26 +38,32 @@ const KeysCriteria = ({ title, keys }: KeysCriteriaProps) => {
         viewport={{ once: true }}
         className="flex flex-col items-start justify-start w-full gap-3"
       >
-        {keys.map((key) => (
-          <Box key={key.icon}>
-            <motion.li
-              variants={STAGGERED_LIST_ITEM_VARIANT}
-              className="flex items-start justify-start w-full gap-4 lg:flex-row flex-col"
-            >
-              <div className="flex items-center justify-center aspect-square w-10 h-10 rounded-md bg-neutral-50 border border-border">
-                <Image src={key.icon} alt={key.title} width={20} height={20} />
-              </div>
-              <div className="flex flex-col items-start justify-start gap-1">
-                <span className="text-lg lg:text-xl font-semibold text-foreground">
-                  {key.title}
-                </span>
-                <span className="text-base text-muted-foreground">
-                  {key.description}
-                </span>
-              </div>
-            </motion.li>
-          </Box>
-        ))}
+        {keys.map((key) => {
+          const IconComponent = getIconComponent(key.icon)
+
+          return (
+            <Box key={key.icon}>
+              <motion.li
+                variants={STAGGERED_LIST_ITEM_VARIANT}
+                className="flex items-start justify-start w-full gap-4 lg:flex-row flex-col"
+              >
+                <div className="flex items-center justify-center aspect-square w-10 h-10 rounded-md bg-neutral-50 border border-border">
+                  {IconComponent ?
+                    <IconComponent accent className="w-5 h-5" />
+                  : <span className="text-xs text-muted-foreground">?</span>}
+                </div>
+                <div className="flex flex-col items-start justify-start gap-1">
+                  <span className="text-lg lg:text-xl font-semibold text-foreground">
+                    {key.title}
+                  </span>
+                  <span className="text-base text-muted-foreground">
+                    {key.description}
+                  </span>
+                </div>
+              </motion.li>
+            </Box>
+          )
+        })}
       </motion.ul>
     </div>
   )
