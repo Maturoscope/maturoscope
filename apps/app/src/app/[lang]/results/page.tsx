@@ -6,6 +6,8 @@ import { Locale } from "@/dictionaries/dictionaries"
 import Header from "@/components/common/Header/Header"
 import ResultsTopBar from "@/components/custom/ResultsPage/ResultsTopBar/ResultsTopBar"
 import UnlockNextLevel from "@/components/custom/ResultsPage/UnlockNextLevel/UnlockNextLevel"
+import CTABanner from "@/components/custom/ResultsPage/CTABanner/CTABanner"
+import PrivacyPolicy from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
 
 type ResultsPageProps = {
   params: Promise<{ lang: Locale }>
@@ -16,7 +18,8 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
   const dictionary = await getDictionary(lang)
   const {
     header: { stringConnector },
-    results: { topBar, unlockNextLevel },
+    homepage: { policy },
+    results: { topBar, unlockNextLevel, ctaBanner },
   } = dictionary
 
   return (
@@ -24,6 +27,8 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
       <Header stringConnector={stringConnector} showBackButton />
       <ResultsTopBar {...topBar} />
       <UnlockNextLevel {...unlockNextLevel} />
+      <CTABanner {...ctaBanner} />
+      <PrivacyPolicy {...policy} />
     </main>
   )
 }

@@ -19,7 +19,7 @@ const UnlockNextLevel = ({
 }: UnlockNextLevelProps & ExtraProps) => {
   return (
     <div className={cn("w-full flex items-center justify-center", className)}>
-      <div className="w-full mx-6 lg:mx-4 px-5 py-6 lg:p-8 bg-[#E7E6E4]/50 rounded-xl mt-11 flex flex-col gap-6">
+      <div className="w-full mx-4 lg:mx-6 px-5 py-6 lg:p-8 bg-[#E7E6E4]/50 rounded-xl mt-11 flex flex-col gap-6">
         <h2 className="text-2xl font-medium">{title}</h2>
 
         <ol className="flex flex-col items-start justify-start list-decimal list-outside ml-4">

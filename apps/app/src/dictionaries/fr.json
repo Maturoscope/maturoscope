@@ -110,6 +110,13 @@
         "Téléchargez votre rapport et conservez-le pour vos futurs jalons."
       ],
       "clarification": "Après avoir examiné vos résultats, enregistrez-les et contactez les services recommandés. Ils vous aideront à combler les lacunes nécessaires pour améliorer votre niveau de maturité."
+    },
+    "ctaBanner": {
+      "title": "Transformez ce plan en réalité.",
+      "description": "Ne vous engagez pas seuls. Nos experts sont prêts à vous aider à atteindre le prochain niveau de maturité.",
+      "or": "ou",
+      "talkButtonLabel": "Parler à un expert",
+      "resetButtonLabel": "Réinitialiser le questionnaire"
     }
   }
 }

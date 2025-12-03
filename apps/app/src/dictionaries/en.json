@@ -110,6 +110,13 @@
         "Download your report and keep it for future milestones."
       ],
       "clarification": "After reviewing your results, save them and reach out to the recommended services. They'll help you close the gaps needed to improve your readiness level."
+    },
+    "ctaBanner": {
+      "title": "Turn this plan into reality.",
+      "description": "Don't tackle these gaps alone. Our experts are ready to help you reach the next maturity level.",
+      "or": "or",
+      "talkButtonLabel": "Talk to an Expert",
+      "resetButtonLabel": "Reset questionnaire"
     }
   }
 }
