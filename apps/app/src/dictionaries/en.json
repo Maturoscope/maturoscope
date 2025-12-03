@@ -93,5 +93,13 @@
   "singleReview": {
     "cancelButtonLabel": "Cancel",
     "saveButtonLabel": "Save"
+  },
+  "results": {
+    "topBar": {
+      "title": "Your Innovation Maturity Profile",
+      "subtitle": "Completed on ",
+      "downloadButtonLabel": "Download report",
+      "talkButtonLabel": "Talk to an expert"
+    }
   }
 }

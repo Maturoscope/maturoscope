@@ -93,5 +93,13 @@
   "singleReview": {
     "cancelButtonLabel": "Annuler",
     "saveButtonLabel": "Enregistrer"
+  },
+  "results": {
+    "topBar": {
+      "title": "Votre profil de maturité de l'innovation",
+      "subtitle": "Complété le ",
+      "downloadButtonLabel": "Télécharger le rapport",
+      "talkButtonLabel": "Parler à un expert"
+    }
   }
 }

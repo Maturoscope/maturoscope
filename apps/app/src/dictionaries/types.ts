@@ -9,6 +9,7 @@ import { HeroProps as WhyHeroProps } from "@/components/custom/WhyPage/Hero/Hero
 import { StageType } from "@/components/custom/FormPage/Form/Form"
 import { HeroProps as ReviewHeroProps } from "@/components/custom/ReviewPage/Hero/Hero"
 import { QuestionEditorProps } from "@/components/custom/ReviewPage/QuestionEditor/QuestionEditor"
+import { ResultsTopBarProps } from "@/components/custom/ResultsPage/ResultsTopBar/ResultsTopBar"
 
 // Dictionary form stages don't include questions (they come from API)
 type DictionaryStage = Omit<StageType, "questions">
@@ -38,4 +39,7 @@ export type Dictionary = {
     QuestionEditorProps,
     "saveButtonLabel" | "cancelButtonLabel"
   >
+  results: {
+    topBar: ResultsTopBarProps
+  }
 }
