@@ -28,12 +28,12 @@
           },
           {
             "icon": "/icons/homepage/criteria-mkrl.svg",
-            "title": "MKRL - Market Readiness Level",
+            "title": "MkRL - Market Readiness Level",
             "description": "4 questions"
           },
           {
             "icon": "/icons/homepage/criteria-mfrl.svg",
-            "title": "MFRL - Manufacturing Readiness Level",
+            "title": "MfRL - Manufacturing Readiness Level",
             "description": "4 questions"
           }
         ]
@@ -70,7 +70,7 @@
       {
         "id": "mkrl",
         "icon": "/icons/form/mkrl.svg",
-        "name": "MKRL",
+        "name": "MkRL",
         "title": "We've looked at the technical and market aspects.",
         "description": "Now let's assess your production capabilities.",
         "reviewLabel": "Review answers",

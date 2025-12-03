@@ -28,12 +28,12 @@
           },
           {
             "icon": "/icons/homepage/criteria-mkrl.svg",
-            "title": "MKRL - Niveau de maturité du marché",
+            "title": "MkRL - Niveau de maturité du marché",
             "description": "4 questions"
           },
           {
             "icon": "/icons/homepage/criteria-mfrl.svg",
-            "title": "MFRL - Niveau de maturité de la fabrication",
+            "title": "MfRL - Niveau de maturité de la fabrication",
             "description": "4 questions"
           }
         ]
@@ -70,7 +70,7 @@
       {
         "id": "mkrl",
         "icon": "/icons/form/mkrl.svg",
-        "name": "MKRL",
+        "name": "MkRL",
         "title": "Nous avons évalué les aspects techniques et du marché.",
         "description": "Il est temps d'évaluer les capacités de production.",
         "reviewLabel": "Voir les réponses",
