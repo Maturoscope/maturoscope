@@ -39,19 +39,19 @@ const FormPage = async ({ params }: FormPageProps) => {
   })
 
   return (
-    <main className="w-full h-full flex flex-col items-center justify-start pb-16">
-      <Header stringConnector={stringConnector} showBackButton />
-      <FormProvider>
-        <ProgressProvider lang={lang} stages={stages}>
+    <FormProvider>
+      <ProgressProvider lang={lang} stages={stages}>
+        <main className="w-full h-full flex flex-col items-center justify-start">
+          <Header stringConnector={stringConnector} showBackButton />
           <ProgressTopBar />
           <CheckpointTopBar buttonLabel={form.checkpoint.buttonLabel} />
           <Form
             buttonNextLabel={form.buttonNextLabel}
             buttonPrevLabel={form.buttonPrevLabel}
           />
-        </ProgressProvider>
-      </FormProvider>
-    </main>
+        </main>
+      </ProgressProvider>
+    </FormProvider>
   )
 }
 

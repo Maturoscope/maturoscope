@@ -71,49 +71,45 @@ const Form = ({ buttonNextLabel, buttonPrevLabel }: FormProps) => {
   }
 
   return (
-    <div className="w-full max-w-[750px] px-4 flex flex-col items-start justify-start mt-7">
-      <div className="w-full flex flex-col items-start justify-start gap-2 mb-4 lg:mb-6">
-        <h1 className="text-xl lg:text-3xl font-semibold">
-          {currQuestion.title}
-        </h1>
-      </div>
-      <div className="w-full flex items-end justify-between gap-8 flex-wrap">
-        <div className="w-full flex flex-col gap-6">
-          <Question
-            {...currQuestion}
-            name={currStage.id}
-            onQuestionClick={handleQuestionClick}
+    <div className="w-full max-w-[750px] flex-1 min-h-0 px-4 flex flex-col items-start mt-7">
+      <h1 className="text-xl lg:text-3xl font-semibold mb-4">
+        {currQuestion.title}
+      </h1>
+
+      <Question
+        {...currQuestion}
+        name={currStage.id}
+        onQuestionClick={handleQuestionClick}
+      />
+
+      <div className="w-full flex items-center justify-between gap-3 bg-background lg:bg-none py-4 lg:pt-6 lg:pb-8">
+        <Button
+          variant="outline"
+          onClick={handlePrevButtonClick}
+          disabled={!isPrevButtonEnabled}
+        >
+          <Image
+            src="/icons/form/arrow-prev.svg"
+            alt="Arrow Prev"
+            width={16}
+            height={16}
           />
-          <div className="w-full flex items-center justify-between gap-3 fixed bottom-0 left-0 lg:relative z-20 bg-background lg:bg-none p-4 lg:p-0">
-            <Button
-              variant="outline"
-              onClick={handlePrevButtonClick}
-              disabled={!isPrevButtonEnabled}
-            >
-              <Image
-                src="/icons/form/arrow-prev.svg"
-                alt="Arrow Prev"
-                width={16}
-                height={16}
-              />
-              <span className="hidden lg:block">{buttonPrevLabel}</span>
-            </Button>
-            <Button
-              onClick={handleNextButtonClick}
-              disabled={!isNextButtonEnabled}
-              className="w-full lg:w-auto"
-              accent
-            >
-              <span>{buttonNextLabel}</span>
-              <Image
-                src="/icons/form/arrow-next.svg"
-                alt="Arrow Next"
-                width={16}
-                height={16}
-              />
-            </Button>
-          </div>
-        </div>
+          <span className="hidden lg:block">{buttonPrevLabel}</span>
+        </Button>
+        <Button
+          onClick={handleNextButtonClick}
+          disabled={!isNextButtonEnabled}
+          className="w-full lg:w-auto"
+          accent
+        >
+          <span>{buttonNextLabel}</span>
+          <Image
+            src="/icons/form/arrow-next.svg"
+            alt="Arrow Next"
+            width={16}
+            height={16}
+          />
+        </Button>
       </div>
     </div>
   )

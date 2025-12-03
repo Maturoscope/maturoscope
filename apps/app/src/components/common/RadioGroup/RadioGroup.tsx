@@ -15,7 +15,7 @@ const RadioGroup = ({ options, name, className }: RadioGroupProps) => {
   return (
     <div
       className={cn(
-        "w-full flex flex-col items-start justify-start gap-1.5 lg:max-h-[60vh] overflow-y-auto pb-18 lg:pb-0",
+        "w-full flex flex-col items-start justify-start gap-1.5",
         className
       )}
     >
