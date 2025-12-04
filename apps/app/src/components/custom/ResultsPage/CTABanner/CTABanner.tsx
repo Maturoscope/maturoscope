@@ -4,6 +4,8 @@
 import { cn } from "@/lib/utils"
 // Components
 import { Button } from "@/components/ui/button"
+// Icons
+import { ResetIcon } from "@/components/icons"
 
 export interface CTABannerProps {
   title: string
@@ -60,7 +62,11 @@ const CTABanner = ({
           <span className="text-sm text-foreground/80">{or}</span>
           <div className="w-full h-px bg-border max-w-[340px]" />
         </div>
-        <Button onClick={handleResetButtonClick} variant="outline">
+        <Button
+          onClick={handleResetButtonClick}
+          variant="outline"
+          icon={<ResetIcon />}
+        >
           {resetButtonLabel}
         </Button>
       </div>
