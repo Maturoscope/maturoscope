@@ -68,8 +68,6 @@ const STORAGE_KEYS = {
   phases: "phases",
 } as const
 
-type StorageScaleKey = "trl" | "mkrl" | "mfrl"
-
 interface GapsStorage {
   trl?: Gap[]
   mkrl?: Gap[]
@@ -92,7 +90,7 @@ const saveAssessmentToLocalStorage = (
   stageId: StageId,
   data: AssessmentResponse
 ) => {
-  const scaleKey = stageId.toLowerCase() as StorageScaleKey
+  const scaleKey = stageId.toLowerCase() as StageId
 
   // Save gaps
   const existingGaps: GapsStorage = JSON.parse(

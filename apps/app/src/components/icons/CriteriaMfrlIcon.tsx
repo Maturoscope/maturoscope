@@ -2,19 +2,23 @@ import { Icon } from "@/components/common/Icon/Icon"
 import { cn } from "@/lib/utils"
 
 interface CriteriaMfrlIconProps extends React.SVGProps<SVGSVGElement> {
+  width?: number
+  height?: number
   className?: string
   accent?: boolean
 }
 
 export const CriteriaMfrlIcon = ({
+  width = 20,
+  height = 20,
   className,
   accent = false,
   ...props
 }: CriteriaMfrlIconProps) => {
   return (
     <Icon
-      width={20}
-      height={20}
+      width={width}
+      height={height}
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg"
       className={cn(accent && "text-accent", className)}
@@ -27,4 +31,3 @@ export const CriteriaMfrlIcon = ({
     </Icon>
   )
 }
-

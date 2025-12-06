@@ -102,6 +102,25 @@
       "downloadButtonLabel": "Télécharger le rapport",
       "talkButtonLabel": "Parler à un expert"
     },
+    "overview": {
+      "title": "Aperçu",
+      "learnMoreButtonLabel": "En savoir plus",
+      "resultsSufixLabel": "Résultats",
+      "stages": [
+        {
+          "label": "TRL",
+          "description": "Niveau de maturité de la technologie"
+        },
+        {
+          "label": "MkRL",
+          "description": "Niveau de maturité du marché"
+        },
+        {
+          "label": "MfRL",
+          "description": "Niveau de maturité de la fabrication"
+        }
+      ]
+    },
     "unlockNextLevel": {  
       "title": "Débloquez votre prochain niveau",
       "steps": [

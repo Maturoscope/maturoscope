@@ -102,6 +102,25 @@
       "downloadButtonLabel": "Download report",
       "talkButtonLabel": "Talk to an expert"
     },
+    "overview": {
+      "title": "Overview",
+      "learnMoreButtonLabel": "Learn more",
+      "resultsSufixLabel": "Results",
+      "stages": [
+        {
+          "label": "TRL",
+          "description": "Technology Readiness Level"
+        },
+        {
+          "label": "MkRL",
+          "description": "Market Readiness Level"
+        },
+        {
+          "label": "MfRL",
+          "description": "Manufacturing Readiness Level"
+        }
+      ]
+    },
     "unlockNextLevel": {
       "title": "Unlock your next level",
       "steps": [
