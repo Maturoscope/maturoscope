@@ -1,5 +1,9 @@
 "use client"
 
+// Styles
+import "react-circular-progressbar/dist/styles.css"
+// Packages
+import { CircularProgressbarWithChildren } from "react-circular-progressbar"
 // Types
 import { DevelopmentPhase } from "@/actions/organization"
 // Packages
@@ -18,6 +22,12 @@ interface OverviewCardProps {
   icon: React.ReactNode
 }
 
+const COLOR_TO_KEY: Record<string, string> = {
+  TRL: "#EA580C",
+  MkRL: "#0D9488",
+  MfRL: "#2563EB",
+}
+
 const OverviewCard = ({
   label,
   description,
@@ -33,7 +43,7 @@ const OverviewCard = ({
   const focusGoal = phase?.focusGoal?.[lang]
 
   return (
-    <div className="w-full flex flex-col bg-white rounded-2xl">
+    <div className="w-full flex flex-col bg-white rounded-2xl shadow-xs">
       <div className="w-full flex justify-between items-center px-3 h-11 border-b border-border">
         <div className="flex items-center gap-1.5">
           {icon}
@@ -51,10 +61,26 @@ const OverviewCard = ({
             {description}
           </span>
         </div>
-        <div>
-          <span>{value}</span>
-          <span>/</span>
-          <span>{maxValue}</span>
+        <div className="aspect-square w-[140px] h-auto md:w-[155px] lg:w-[170px]">
+          <CircularProgressbarWithChildren
+            value={value}
+            maxValue={maxValue}
+            styles={{
+              path: {
+                stroke: COLOR_TO_KEY[label],
+              },
+              trail: {
+                stroke: "#F5F5F5",
+              },
+            }}
+          >
+            <div className="flex items-end">
+              <span className="text-5xl font-medium text-center leading-[0.88]">
+                {value}
+              </span>
+              <span className="text-sm text-muted-foreground">/{maxValue}</span>
+            </div>
+          </CircularProgressbarWithChildren>
         </div>
         <div className="flex flex-col gap-1.5">
           <span className="text-sm font-medium text-center">{phaseName}</span>

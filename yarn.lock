@@ -5854,6 +5854,7 @@ __metadata:
     motion: "npm:^12.23.15"
     next: "npm:15.4.6"
     react: "npm:19.1.0"
+    react-circular-progressbar: "npm:^2.2.0"
     react-dom: "npm:19.1.0"
     react-hook-form: "npm:^7.63.0"
     shadcn: "npm:^3.3.1"
@@ -12317,6 +12318,15 @@ __metadata:
     iconv-lite: "npm:~0.7.0"
     unpipe: "npm:~1.0.0"
   checksum: 10/4168c82157bd69175d5bd960e59b74e253e237b358213694946a427a6f750a18b8e150f036fed3421b3e83294b071a4e2bb01037a79ccacdac05360c63d3ebba
+  languageName: node
+  linkType: hard
+
+"react-circular-progressbar@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "react-circular-progressbar@npm:2.2.0"
+  peerDependencies:
+    react: ">=0.14.0"
+  checksum: 10/3b117f58745745dcbfe8b326945343f50761cd434ae241ae8d9ce7ba5a7ee662038e34e341a209cb05141d2ca654c57120a1940b32a0f0c2890edb54b4316bf4
   languageName: node
   linkType: hard
 
