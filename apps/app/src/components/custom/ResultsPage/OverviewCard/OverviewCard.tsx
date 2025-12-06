@@ -29,8 +29,8 @@ const OverviewCard = ({
   icon,
 }: OverviewCardProps) => {
   const { lang } = useParams<{ lang: Locale }>()
-  const phaseName = phase.phaseName[lang]
-  const focusGoal = phase.focusGoal[lang]
+  const phaseName = phase?.phaseName?.[lang]
+  const focusGoal = phase?.focusGoal?.[lang]
 
   return (
     <div className="w-full flex flex-col bg-white rounded-2xl">
