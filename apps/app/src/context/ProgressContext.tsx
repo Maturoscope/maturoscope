@@ -145,6 +145,7 @@ export const ProgressProvider = ({
     ...currQuestionData,
     name: currStage.id,
     onQuestionClick: handleQuestionClick,
+    commentPlaceholder: "",
   }
 
   useEffect(() => {

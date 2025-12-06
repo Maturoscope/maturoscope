@@ -10,6 +10,7 @@ import { StageType } from "@/components/custom/FormPage/Form/Form"
 import { HeroProps as ReviewHeroProps } from "@/components/custom/ReviewPage/Hero/Hero"
 import { QuestionEditorProps } from "@/components/custom/ReviewPage/QuestionEditor/QuestionEditor"
 import { ResultsTopBarProps } from "@/components/custom/ResultsPage/ResultsTopBar/ResultsTopBar"
+import { OverviewProps } from "@/components/custom/ResultsPage/Overview/Overview"
 import { UnlockNextLevelProps } from "@/components/custom/ResultsPage/UnlockNextLevel/UnlockNextLevel"
 import { CTABannerProps } from "@/components/custom/ResultsPage/CTABanner/CTABanner"
 
@@ -31,6 +32,7 @@ export type Dictionary = {
   form: {
     buttonNextLabel: string
     buttonPrevLabel: string
+    commentPlaceholder: string
     stages: DictionaryStage[]
     checkpoint: {
       buttonLabel: string
@@ -43,6 +45,7 @@ export type Dictionary = {
   >
   results: {
     topBar: ResultsTopBarProps
+    overview: OverviewProps
     unlockNextLevel: UnlockNextLevelProps
     ctaBanner: CTABannerProps
   }
