@@ -547,6 +547,43 @@
         "DESCRIPTION": "{{name}} a été retiré de votre organisation."
       },
       "UNDO": "Annuler"
+    },
+    "CONTACT": {
+      "TITLE": "Contacter les services",
+      "COMPANY": {
+        "LABEL": "Entreprise",
+        "PLACEHOLDER": "Entrez le nom de l'entreprise"
+      },
+      "FIRST_NAME": {
+        "LABEL": "Prénom",
+        "PLACEHOLDER": "Entrez le prénom"
+      },
+      "LAST_NAME": {
+        "LABEL": "Nom",
+        "PLACEHOLDER": "Entrez le nom"
+      },
+      "EMAIL": {
+        "LABEL": "E-mail",
+        "PLACEHOLDER": "Entrez l'adresse e-mail"
+      },
+      "PHONE": {
+        "LABEL": "Numéro de téléphone",
+        "PLACEHOLDER": "Entrez le numéro de téléphone"
+      },
+      "ADDITIONAL_INFO": {
+        "LABEL": "Informations supplémentaires",
+        "PLACEHOLDER": "Entrez des informations supplémentaires"
+      },
+      "CANCEL": "Annuler",
+      "SEND": "Envoyer",
+      "SENDING": "Envoi en cours...",
+      "FIRST_NAME_REQUIRED": "Le prénom est requis.",
+      "LAST_NAME_REQUIRED": "Le nom est requis.",
+      "EMAIL_REQUIRED": "L'e-mail est requis.",
+      "INVALID_EMAIL": "Veuillez entrer une adresse e-mail valide.",
+      "PHONE_REQUIRED": "Le numéro de téléphone est requis.",
+      "ORGANIZATION_KEY_MISSING": "La clé d'organisation est manquante.",
+      "SEND_FAILED": "Échec de l'envoi de la demande de contact."
     }
   }
 }

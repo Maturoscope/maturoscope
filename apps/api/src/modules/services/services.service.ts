@@ -15,9 +15,12 @@ import {
   ServiceResponseDto,
   ServiceSummaryDto,
   RecommendedServiceDto,
+  ContactServicesDto,
 } from './dto';
 import { ReadinessAssessmentService } from '../readiness-assessment/readiness-assessment.service';
 import { ScaleType } from '../readiness-assessment/dto/readiness-assessment.dto';
+import { ServiceContactMailService } from './mail.service';
+import { OrganizationsService } from '../organizations/organizations.service';
 
 @Injectable()
 export class ServicesService {
@@ -30,6 +33,8 @@ export class ServicesService {
     private readonly coverageRepository: Repository<ServiceGapCoverage>,
     @Inject(forwardRef(() => ReadinessAssessmentService))
     readinessAssessmentService: ReadinessAssessmentService,
+    private readonly serviceContactMailService: ServiceContactMailService,
+    private readonly organizationsService: OrganizationsService,
   ) {
     this.readinessAssessmentService = readinessAssessmentService;
   }
@@ -368,6 +373,135 @@ export class ServicesService {
   > {
     return this.readinessAssessmentService['assessmentData']
       .serviceSatisfactionOptions;
+  }
+
+  /**
+   * Get scale type from question ID (e.g., "TRL_Q1" -> "TRL")
+   */
+  private getScaleTypeFromQuestionId(questionId: string): ScaleType {
+    const prefix = questionId.split('_')[0];
+    if (prefix === 'TRL') return ScaleType.TRL;
+    if (prefix === 'MkRL') return ScaleType.MkRL;
+    if (prefix === 'MfRL') return ScaleType.MfRL;
+    throw new BadRequestException(`Invalid questionId format: ${questionId}`);
+  }
+
+  /**
+   * Contact services - send emails to all contacts of specified services
+   */
+  async contactServices(
+    organizationKey: string,
+    contactServicesDto: ContactServicesDto,
+  ): Promise<{ message: string; emailsSent: number }> {
+    // Get organization by key
+    const organization = await this.organizationsService.findByKey(organizationKey);
+    const companyName = organization.name || 'Maturoscope';
+    const companyLogoUrl = organization.avatar || undefined;
+    const organizationLanguage = organization.language || 'EN';
+    const supportEmail = organization.email || undefined;
+
+    // Collect all unique service IDs from all gaps
+    const allServiceIds = new Set<string>();
+    contactServicesDto.gaps.forEach((gap) => {
+      gap.recommendedServices.forEach((serviceId) => {
+        allServiceIds.add(serviceId);
+      });
+    });
+
+    // Get all services by IDs
+    const services = await this.serviceRepository.find({
+      where: Array.from(allServiceIds).map((id) => ({ id })),
+    });
+
+    if (services.length === 0) {
+      throw new NotFoundException('No services found with the provided IDs');
+    }
+
+    // Create a map of service ID to service for quick lookup
+    const serviceMap = new Map<string, Service>();
+    services.forEach((service) => {
+      serviceMap.set(service.id, service);
+    });
+
+    // Process each gap and send emails
+    const emailPromises: Promise<void>[] = [];
+
+    for (const gap of contactServicesDto.gaps) {
+      // Get scale type from question ID
+      const scaleType = this.getScaleTypeFromQuestionId(gap.questionId);
+
+      // Get gap description from assessment data
+      const gapTitle = this.readinessAssessmentService.getGapDescription(
+        gap.questionId,
+        gap.level,
+        scaleType,
+        organizationLanguage,
+      );
+
+      // For each recommended service in this gap
+      for (const serviceId of gap.recommendedServices) {
+        const service = serviceMap.get(serviceId);
+        if (!service) {
+          continue; // Skip if service not found
+        }
+
+        // Collect contacts for this service
+        const contacts: Array<{ email: string; firstName: string; lastName: string }> = [];
+
+        if (service.mainContactEmail) {
+          contacts.push({
+            email: service.mainContactEmail,
+            firstName: service.mainContactFirstName,
+            lastName: service.mainContactLastName,
+          });
+        }
+
+        if (service.secondaryContactEmail) {
+          contacts.push({
+            email: service.secondaryContactEmail,
+            firstName: service.secondaryContactFirstName,
+            lastName: service.secondaryContactLastName,
+          });
+        }
+
+        // Send email to each contact
+        for (const contact of contacts) {
+          emailPromises.push(
+            this.serviceContactMailService.sendServiceContactEmail({
+              expertEmail: contact.email,
+              expertFirstName: contact.firstName,
+              expertLastName: contact.lastName,
+              companyName,
+              companyLogoUrl,
+              supportEmail,
+              language: organizationLanguage,
+              clientData: {
+                company: contactServicesDto.company,
+                firstName: contactServicesDto.firstName,
+                lastName: contactServicesDto.lastName,
+                email: contactServicesDto.email,
+                phoneNumber: contactServicesDto.phoneNumber,
+                additionalInformation: contactServicesDto.additionalInformation,
+              },
+              projectData: {
+                projectName: contactServicesDto.projectName,
+                serviceTitle: service.name,
+                gapTitle: gapTitle,
+                category: scaleType,
+                currentLevel: gap.level.toString(),
+              },
+            }),
+          );
+        }
+      }
+    }
+
+    await Promise.all(emailPromises);
+
+    return {
+      message: 'Emails sent successfully',
+      emailsSent: emailPromises.length,
+    };
   }
 }
 

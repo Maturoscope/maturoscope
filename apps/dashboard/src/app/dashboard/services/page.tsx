@@ -62,6 +62,10 @@ export default function ServicesPage() {
     setIsModalOpen(true);
   };
 
+  const handleEditFromView = () => {
+    setIsViewMode(false);
+  };
+
   const handleDeleteService = (service: ServiceSummary) => {
     setServiceToDelete(service);
     setIsDeleteDialogOpen(true);
@@ -125,6 +129,7 @@ export default function ServicesPage() {
         serviceId={selectedServiceId}
         onSuccess={handleServiceSuccess}
         viewOnly={isViewMode}
+        onEdit={handleEditFromView}
       />
 
       {/* Delete Confirmation Dialog */}
