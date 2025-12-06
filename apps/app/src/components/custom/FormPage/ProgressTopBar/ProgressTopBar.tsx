@@ -85,7 +85,7 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
               className="w-full flex items-center justify-between gap-2"
             >
               <div
-                className={`w-7 h-7 hidden md:flex items-center justify-center shrink-0  rounded-sm border ${isCurrentStage ? "bg-accent/10" : "bg-white"} ${isCurrentStage ? "border-accent" : "border-border"} ${progress.isCompleted && "!bg-accent !border-accent"}`}
+                className={`w-7 h-7 hidden md:flex items-center justify-center shrink-0 rounded-sm border ${isCurrentStage ? "bg-accent/10" : "bg-white"} ${isCurrentStage ? "border-accent" : "border-border"} ${progress.isCompleted && "bg-accent! border-accent!"}`}
               >
                 {(() => {
                   const StageIconComponent = getIconComponent(stageIcon)
@@ -128,8 +128,8 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
                 <Progress
                   value={progress.percentage}
                   className={`h-[3px] ${
-                    progress.isCompleted ? "!bg-accent"
-                    : isCurrentStage ? "!bg-accent/20"
+                    progress.isCompleted ? "bg-accent!"
+                    : isCurrentStage ? "bg-accent/20!"
                     : "bg-primary/20"
                   }`}
                   progressClassName={`${

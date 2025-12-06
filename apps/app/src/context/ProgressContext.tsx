@@ -17,7 +17,13 @@ import { Locale } from "@/dictionaries/dictionaries"
 // Utils
 import { calcCheckpoint } from "@/lib/calcCheckpoint"
 // Actions
-import { submitAssessment, ScaleType } from "@/actions/organization"
+import {
+  submitAssessment,
+  ScaleType,
+  AssessmentResponse,
+  Gap,
+  DevelopmentPhase,
+} from "@/actions/organization"
 
 interface ProgressContextType {
   stages: StageType[]
@@ -53,6 +59,59 @@ const STAGE_TO_SCALE: Record<StageId, ScaleType> = {
   trl: "TRL",
   mkrl: "MkRL",
   mfrl: "MfRL",
+}
+
+// localStorage keys for assessment results
+const STORAGE_KEYS = {
+  gaps: "gaps",
+  level: "level",
+  phases: "phases",
+} as const
+
+interface GapsStorage {
+  trl?: Gap[]
+  mkrl?: Gap[]
+  mfrl?: Gap[]
+}
+
+interface LevelStorage {
+  trl?: number
+  mkrl?: number
+  mfrl?: number
+}
+
+interface PhasesStorage {
+  trl?: DevelopmentPhase
+  mkrl?: DevelopmentPhase
+  mfrl?: DevelopmentPhase
+}
+
+const saveAssessmentToLocalStorage = (
+  stageId: StageId,
+  data: AssessmentResponse
+) => {
+  const scaleKey = stageId.toLowerCase() as StageId
+
+  // Save gaps
+  const existingGaps: GapsStorage = JSON.parse(
+    localStorage.getItem(STORAGE_KEYS.gaps) || "{}"
+  )
+  existingGaps[scaleKey] = data.gaps
+  localStorage.setItem(STORAGE_KEYS.gaps, JSON.stringify(existingGaps))
+
+  // Save level
+  const existingLevel: LevelStorage = JSON.parse(
+    localStorage.getItem(STORAGE_KEYS.level) || "{}"
+  )
+  existingLevel[scaleKey] = data.readinessLevel
+  localStorage.setItem(STORAGE_KEYS.level, JSON.stringify(existingLevel))
+
+  // Save phases
+  const existingPhases: PhasesStorage = JSON.parse(
+    localStorage.getItem(STORAGE_KEYS.phases) || "{}"
+  )
+  existingPhases[scaleKey] = data.developmentPhase
+  localStorage.setItem(STORAGE_KEYS.phases, JSON.stringify(existingPhases))
 }
 
 const ProgressContext = createContext<ProgressContextType | null>(null)
@@ -127,7 +186,15 @@ export const ProgressProvider = ({
     // Submit current stage assessment to the backend
     const scale = STAGE_TO_SCALE[currStageId]
     const stageData = getValues()[currStageId]
-    await submitAssessment({ scale, answers: stageData.questions })
+    const result = await submitAssessment({
+      scale,
+      answers: stageData.questions,
+    })
+
+    // Save assessment response to localStorage
+    if (result.success && result.data) {
+      saveAssessmentToLocalStorage(currStageId, result.data)
+    }
 
     const nextStage = stages[currStageIndex + 1]
     const isLastCheckpoint = !nextStage?.id
@@ -145,6 +212,7 @@ export const ProgressProvider = ({
     ...currQuestionData,
     name: currStage.id,
     onQuestionClick: handleQuestionClick,
+    commentPlaceholder: "",
   }
 
   useEffect(() => {

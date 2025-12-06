@@ -8,4 +8,5 @@ export { UncheckedIcon } from "./UncheckedIcon"
 export { CriteriaTrlIcon } from "./CriteriaTrlIcon"
 export { CriteriaMkrlIcon } from "./CriteriaMkrlIcon"
 export { CriteriaMfrlIcon } from "./CriteriaMfrlIcon"
+export { ResetIcon } from "./ResetIcon"
 

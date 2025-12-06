@@ -14,9 +14,16 @@ export interface RadioItemProps {
   title: string
   name: `${StageId}.questions.${string}`
   onClick: () => void
+  commentPlaceholder?: string
 }
 
-const RadioItem = ({ id, title, name, onClick }: RadioItemProps) => {
+const RadioItem = ({
+  id,
+  title,
+  name,
+  onClick,
+  commentPlaceholder,
+}: RadioItemProps) => {
   const { control } = useFormContext()
   const { field } = useController({ control, name })
   const isChecked = field.value === id
@@ -60,14 +67,14 @@ const RadioItem = ({ id, title, name, onClick }: RadioItemProps) => {
       {isChecked && (
         <div className="w-[calc(100%-56px)] p-3 pt-0 flex flex-col items-end gap-2 relative z-20">
           <textarea
-            maxLength={120}
+            maxLength={150}
             onChange={handleCommentChange}
             value={commentField.value || ""}
-            placeholder="Comments or additional details (Optional)"
+            placeholder={commentPlaceholder}
             className="bg-white w-full h-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none"
           />
           <span className="text-xs text-muted-foreground">
-            <span className="text-foreground">{charCount}</span>/120
+            <span className="text-foreground">{charCount}</span>/150
           </span>
         </div>
       )}

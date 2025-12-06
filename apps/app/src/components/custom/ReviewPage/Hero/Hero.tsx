@@ -4,7 +4,7 @@ export interface HeroProps {
 
 const STAGE_NAME_MAP = {
   trl: "TRL",
-  mkrl: "MKRL",
+  mkrl: "MkRL",
   mfrl: "MfRL",
 }
 
