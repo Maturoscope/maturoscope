@@ -12,6 +12,7 @@ import { QuestionEditorProps } from "@/components/custom/ReviewPage/QuestionEdit
 import { ResultsTopBarProps } from "@/components/custom/ResultsPage/ResultsTopBar/ResultsTopBar"
 import { OverviewProps } from "@/components/custom/ResultsPage/Overview/Overview"
 import { UnlockNextLevelProps } from "@/components/custom/ResultsPage/UnlockNextLevel/UnlockNextLevel"
+import { DetailedReportProps } from "@/components/custom/ResultsPage/DetailedReport/DetailedReport"
 import { CTABannerProps } from "@/components/custom/ResultsPage/CTABanner/CTABanner"
 
 // Dictionary form stages don't include questions (they come from API)
@@ -47,6 +48,7 @@ export type Dictionary = {
     topBar: ResultsTopBarProps
     overview: OverviewProps
     unlockNextLevel: UnlockNextLevelProps
+    detailedReport: DetailedReportProps
     ctaBanner: CTABannerProps
   }
 }

@@ -130,6 +130,14 @@
       ],
       "clarification": "Après avoir examiné vos résultats, enregistrez-les et contactez les services recommandés. Ils vous aideront à combler les lacunes nécessaires pour améliorer votre niveau de maturité."
     },
+    "detailedReport": {
+      "title": "Rapport détaillé",
+      "description": "Recherchez les étiquettes \"Service disponible\" ci-dessous pour voir où nos experts peuvent accélérer votre progression.",
+      "copyPreLevel": "Pour atteindre le niveau ",
+      "copyPostLevel": "Complétez les lacunes ci-dessous",
+      "serviceLabel": "Service disponible",
+      "comingSoonLabel": "Bientôt disponible"
+    },
     "ctaBanner": {
       "title": "Transformez ce plan en réalité.",
       "description": "Ne vous engagez pas seuls. Nos experts sont prêts à vous aider à atteindre le prochain niveau de maturité.",

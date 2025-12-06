@@ -65,6 +65,7 @@ const OverviewCard = ({
           <CircularProgressbarWithChildren
             value={value}
             maxValue={maxValue}
+            strokeWidth={6}
             styles={{
               path: {
                 stroke: COLOR_TO_KEY[label],
