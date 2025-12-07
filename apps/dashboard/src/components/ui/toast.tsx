@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import { CircleCheck, X } from 'lucide-react'
+import { CircleCheck } from 'lucide-react'
 import { Button } from './button'
 
 interface ToastProps {
@@ -13,7 +13,6 @@ interface ToastProps {
   undoText?: string
   duration?: number
   showIcon?: boolean
-  showCloseButton?: boolean
 }
 
 export function Toast({ 
@@ -24,8 +23,7 @@ export function Toast({
   onUndo, 
   undoText = "Undo",
   duration = 5000,
-  showIcon = true,
-  showCloseButton = true
+  showIcon = true
 }: ToastProps) {
   const [show, setShow] = useState(false)
 
@@ -62,20 +60,20 @@ export function Toast({
     <div className="fixed bottom-4 left-4 z-50">
       <div 
         className={`
-          max-w-md bg-white border border-gray-200 rounded-lg shadow-lg p-4
+          min-w-[440px] max-w-md bg-white border border-gray-200 rounded-lg shadow-lg p-4
           transform transition-all duration-300 ease-in-out
           ${show ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}
         `}
       >
-        <div className="flex items-center space-x-3">
+        <div className="flex items-start gap-3">
           {showIcon && (
-            <div className="flex-shrink-0">
-              <CircleCheck className="h-5 w-5 text-gray-900" />
+            <div className="shrink-0">
+              <CircleCheck className="h-6 w-6 text-[#0A0A0A]" />
             </div>
           )}
           
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900">
+            <p className="text-sm font-semibold text-[#0A0A0A]">
               {title}
             </p>
             {description && (
@@ -85,27 +83,16 @@ export function Toast({
             )}
           </div>
           
-          <div className="flex items-center space-x-2">
-            {onUndo && (
-              <Button
-                variant="default"
-                size="sm"
-                onClick={handleUndo}
-                className="text-sm font-medium "
-              >
-                {undoText}
-              </Button>
-            )}
-            
-            {showCloseButton && (
-              <button
-              onClick={handleClose}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+          {onUndo && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleUndo}
+              className="text-sm font-medium bg-gray-100 hover:bg-gray-200 text-[#0A0A0A] border-gray-300 rounded-md shrink-0"
             >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
+              {undoText}
+            </Button>
+          )}
         </div>
       </div>
     </div>

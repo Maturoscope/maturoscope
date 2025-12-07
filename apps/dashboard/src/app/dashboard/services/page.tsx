@@ -39,6 +39,7 @@ export default function ServicesPage() {
   const [showUpdatedToast, setShowUpdatedToast] = useState(false);
   const [showDeletedToast, setShowDeletedToast] = useState(false);
   const [toastServiceName, setToastServiceName] = useState("");
+  const [createdServiceId, setCreatedServiceId] = useState<string | null>(null);
 
   const breadcrumbs = useMemo(() => {
     const organizationName = user?.organization?.name || tDashboard("ORGANIZATION");
@@ -62,6 +63,10 @@ export default function ServicesPage() {
     setIsModalOpen(true);
   };
 
+  const handleEditFromView = () => {
+    setIsViewMode(false);
+  };
+
   const handleDeleteService = (service: ServiceSummary) => {
     setServiceToDelete(service);
     setIsDeleteDialogOpen(true);
@@ -81,14 +86,30 @@ export default function ServicesPage() {
     }
   };
 
-  const handleServiceSuccess = async (serviceName: string) => {
+  const handleServiceSuccess = async (serviceName: string, newServiceId?: string) => {
     const isUpdate = !!selectedServiceId;
     await fetchServices();
     setToastServiceName(serviceName);
     if (isUpdate) {
       setShowUpdatedToast(true);
     } else {
+      if (newServiceId) {
+        setCreatedServiceId(newServiceId);
+      }
       setShowCreatedToast(true);
+    }
+  };
+
+  const handleUndoCreate = async () => {
+    if (createdServiceId) {
+      try {
+        await deleteService(createdServiceId);
+        await fetchServices();
+        setCreatedServiceId(null);
+        setShowCreatedToast(false);
+      } catch (error) {
+        console.error("Error undoing service creation:", error);
+      }
     }
   };
 
@@ -125,6 +146,7 @@ export default function ServicesPage() {
         serviceId={selectedServiceId}
         onSuccess={handleServiceSuccess}
         viewOnly={isViewMode}
+        onEdit={handleEditFromView}
       />
 
       {/* Delete Confirmation Dialog */}
@@ -145,9 +167,13 @@ export default function ServicesPage() {
           name: toastServiceName,
         })}
         isVisible={showCreatedToast}
-        onClose={() => setShowCreatedToast(false)}
-        showIcon={false}
-        showCloseButton={false}
+        onClose={() => {
+          setShowCreatedToast(false);
+          setCreatedServiceId(null);
+        }}
+        onUndo={handleUndoCreate}
+        undoText={t("TOASTS.UNDO")}
+        showIcon={true}
       />
 
       <Toast
@@ -157,8 +183,7 @@ export default function ServicesPage() {
         })}
         isVisible={showUpdatedToast}
         onClose={() => setShowUpdatedToast(false)}
-        showIcon={false}
-        showCloseButton={false}
+        showIcon={true}
       />
 
       <Toast
@@ -168,8 +193,7 @@ export default function ServicesPage() {
         })}
         isVisible={showDeletedToast}
         onClose={() => setShowDeletedToast(false)}
-        showIcon={false}
-        showCloseButton={false}
+        showIcon={true}
       />
       </div>
     </>

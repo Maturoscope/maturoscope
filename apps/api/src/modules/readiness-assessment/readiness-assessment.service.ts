@@ -10,6 +10,7 @@ import {
   ScaleQuestionsI18nDto,
   ScaleResultI18nDto,
   RiskAnalysisResultI18nDto,
+  RecommendedServiceDto,
 } from './dto/readiness-assessment.dto';
 import { ServicesService } from '../services/services.service';
 
@@ -200,14 +201,14 @@ export class ReadinessAssessmentService {
     level: number;
     gapDescription: I18nText;
     hasServices: boolean;
-    recommendedServices: any[];
+    recommendedServices: RecommendedServiceDto[];
   }>> {
     const gaps: Array<{ 
       questionId: string; 
       level: number;
       gapDescription: I18nText;
       hasServices: boolean;
-      recommendedServices: any[];
+      recommendedServices: RecommendedServiceDto[];
     }> = [];
     const allGaps = this.assessmentData.gaps;
 
@@ -333,6 +334,34 @@ export class ReadinessAssessmentService {
       risks,
       recommendations,
     };
+  }
+
+  /**
+   * Get gap description for a specific question and level from the gaps object
+   */
+  getGapDescription(
+    questionId: string,
+    level: number,
+    scaleType: ScaleType,
+    language: string = 'EN',
+  ): string | undefined {
+    try {
+      if (!this.assessmentData.gaps || !this.assessmentData.gaps[questionId]) {
+        return undefined;
+      }
+
+      const levelKey = level.toString();
+      const levelData = this.assessmentData.gaps[questionId][levelKey];
+      if (!levelData) {
+        return undefined;
+      }
+
+      const lang = language?.toUpperCase() === 'FR' ? 'fr' : 'en';
+      return levelData[lang];
+    } catch (error) {
+      console.error('Error getting gap description:', error);
+      return undefined;
+    }
   }
 }
 

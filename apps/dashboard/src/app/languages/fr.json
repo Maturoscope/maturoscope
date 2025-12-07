@@ -430,7 +430,7 @@
       }
     },
     "MODAL": {
-      "CREATE_TITLE": "Ajouter un service",
+      "CREATE_TITLE": "Nouveau service",
       "EDIT_TITLE": "Modifier le service",
       "VIEW_TITLE": "Voir le service",
       "STEPS": {
@@ -501,21 +501,24 @@
       },
       "BUTTONS": {
         "CANCEL": "Annuler",
-        "NEXT": "Suivant",
+        "NEXT": "Continuer",
         "BACK": "Retour",
-        "CREATE": "Créer le service",
+        "CREATE": "Enregistrer",
         "UPDATE": "Mettre à jour le service",
         "CREATING": "Création...",
         "UPDATING": "Mise à jour..."
       },
       "ERRORS": {
-        "NAME_REQUIRED": "Le nom du service est requis.",
+        "NAME_REQUIRED": "Ce champ ne peut pas être laissé vide.",
+        "DESCRIPTION_REQUIRED": "Ce champ ne peut pas être laissé vide.",
+        "URL_REQUIRED": "Ce champ ne peut pas être laissé vide.",
+        "URL_INVALID": "Entrez une URL valide.",
         "DUPLICATE_NAME": "Un service avec ce nom existe déjà.",
         "NO_CATEGORIES": "Au moins une catégorie doit être active.",
-        "INVALID_EMAIL": "Veuillez entrer une adresse email valide.",
-        "EMAIL_REQUIRED": "L'email est requis.",
-        "FIRST_NAME_REQUIRED": "Le prénom est requis.",
-        "LAST_NAME_REQUIRED": "Le nom de famille est requis.",
+        "INVALID_EMAIL": "Entrez une adresse e-mail valide.",
+        "EMAIL_REQUIRED": "Ce champ ne peut pas être laissé vide.",
+        "FIRST_NAME_REQUIRED": "Ce champ ne peut pas être laissé vide.",
+        "LAST_NAME_REQUIRED": "Ce champ ne peut pas être laissé vide.",
         "CREATE_FAILED": "Échec de la création du service.",
         "UPDATE_FAILED": "Échec de la mise à jour du service.",
         "DELETE_FAILED": "Échec de la suppression du service."
@@ -528,15 +531,15 @@
       }
     },
     "DELETE_DIALOG": {
-      "TITLE": "Supprimer le service",
-      "DESCRIPTION": "Êtes-vous sûr de vouloir supprimer \"{{serviceName}}\" ? Cette action ne peut pas être annulée.",
+      "TITLE": "Vous êtes sur le point de supprimer {{serviceName}}",
+      "DESCRIPTION": "Cette action est irréversible. Une fois supprimé, leurs informations seront définitivement supprimées.",
       "CANCEL": "Annuler",
       "CONFIRM": "Oui, supprimer"
     },
     "TOASTS": {
       "SERVICE_CREATED": {
         "TITLE": "Service créé avec succès !",
-        "DESCRIPTION": "{{name}} a été ajouté aux services de votre organisation."
+        "DESCRIPTION": "{{name}} a été créé."
       },
       "SERVICE_UPDATED": {
         "TITLE": "Service mis à jour avec succès !",
@@ -547,6 +550,43 @@
         "DESCRIPTION": "{{name}} a été retiré de votre organisation."
       },
       "UNDO": "Annuler"
+    },
+    "CONTACT": {
+      "TITLE": "Contacter les services",
+      "COMPANY": {
+        "LABEL": "Entreprise",
+        "PLACEHOLDER": "Entrez le nom de l'entreprise"
+      },
+      "FIRST_NAME": {
+        "LABEL": "Prénom",
+        "PLACEHOLDER": "Entrez le prénom"
+      },
+      "LAST_NAME": {
+        "LABEL": "Nom",
+        "PLACEHOLDER": "Entrez le nom"
+      },
+      "EMAIL": {
+        "LABEL": "E-mail",
+        "PLACEHOLDER": "Entrez l'adresse e-mail"
+      },
+      "PHONE": {
+        "LABEL": "Numéro de téléphone",
+        "PLACEHOLDER": "Entrez le numéro de téléphone"
+      },
+      "ADDITIONAL_INFO": {
+        "LABEL": "Informations supplémentaires",
+        "PLACEHOLDER": "Entrez des informations supplémentaires"
+      },
+      "CANCEL": "Annuler",
+      "SEND": "Envoyer",
+      "SENDING": "Envoi en cours...",
+      "FIRST_NAME_REQUIRED": "Le prénom est requis.",
+      "LAST_NAME_REQUIRED": "Le nom est requis.",
+      "EMAIL_REQUIRED": "L'e-mail est requis.",
+      "INVALID_EMAIL": "Veuillez entrer une adresse e-mail valide.",
+      "PHONE_REQUIRED": "Le numéro de téléphone est requis.",
+      "ORGANIZATION_KEY_MISSING": "La clé d'organisation est manquante.",
+      "SEND_FAILED": "Échec de l'envoi de la demande de contact."
     }
   }
 }

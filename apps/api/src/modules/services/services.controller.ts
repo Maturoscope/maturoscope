@@ -8,9 +8,11 @@ import {
   Delete,
   Req,
   ForbiddenException,
+  Query,
+  BadRequestException,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
-import { CreateServiceDto, UpdateServiceDto } from './dto';
+import { CreateServiceDto, UpdateServiceDto, ContactServicesDto } from './dto';
 import { Auth } from '../../common/decorators/auth.decorator';
 import { Request } from 'express';
 import { AuthenticatedUser } from '../../common/auth-module/interfaces/authenticated-user.interface';
@@ -90,6 +92,18 @@ export class ServicesController {
   ) {
     const organizationId = await this.getOrganizationId(req);
     return this.servicesService.remove(organizationId, id);
+  }
+
+  @Post('contact')
+  async contactServices(
+    @Query('organizationKey') organizationKey: string,
+    @Body() contactServicesDto: ContactServicesDto,
+  ) {
+    if (!organizationKey) {
+      throw new BadRequestException('organizationKey query parameter is required');
+    }
+
+    return this.servicesService.contactServices(organizationKey, contactServicesDto);
   }
 }
 

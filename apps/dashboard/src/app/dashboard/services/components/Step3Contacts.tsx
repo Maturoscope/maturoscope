@@ -10,6 +10,8 @@ interface Step3ContactsProps {
   formData: ServiceFormData;
   errors: Record<string, string>;
   onUpdateField: (field: keyof ServiceFormData, value: string) => void;
+  onValidateField: (field: keyof ServiceFormData) => void;
+  onClearFieldError: (field: keyof ServiceFormData) => void;
   viewOnly?: boolean;
 }
 
@@ -17,6 +19,8 @@ export function Step3Contacts({
   formData,
   errors,
   onUpdateField,
+  onValidateField,
+  onClearFieldError,
   viewOnly = false,
 }: Step3ContactsProps) {
   const { t } = useTranslation("SERVICES");
@@ -39,6 +43,8 @@ export function Step3Contacts({
               onChange={(e) =>
                 onUpdateField("mainContactFirstName", e.target.value)
               }
+              onFocus={() => onClearFieldError("mainContactFirstName")}
+              onBlur={() => onValidateField("mainContactFirstName")}
               placeholder={t(
                 "MODAL.STEP_3.MAIN_CONTACT.FIRST_NAME.PLACEHOLDER"
               )}
@@ -61,6 +67,8 @@ export function Step3Contacts({
               onChange={(e) =>
                 onUpdateField("mainContactLastName", e.target.value)
               }
+              onFocus={() => onClearFieldError("mainContactLastName")}
+              onBlur={() => onValidateField("mainContactLastName")}
               placeholder={t(
                 "MODAL.STEP_3.MAIN_CONTACT.LAST_NAME.PLACEHOLDER"
               )}
@@ -83,6 +91,8 @@ export function Step3Contacts({
             type="email"
             value={formData.mainContactEmail}
             onChange={(e) => onUpdateField("mainContactEmail", e.target.value)}
+            onFocus={() => onClearFieldError("mainContactEmail")}
+            onBlur={() => onValidateField("mainContactEmail")}
             placeholder={t(
               "MODAL.STEP_3.MAIN_CONTACT.EMAIL.PLACEHOLDER"
             )}
@@ -112,6 +122,8 @@ export function Step3Contacts({
               onChange={(e) =>
                 onUpdateField("secondaryContactFirstName", e.target.value)
               }
+              onFocus={() => onClearFieldError("secondaryContactFirstName")}
+              onBlur={() => onValidateField("secondaryContactFirstName")}
               placeholder={t(
                 "MODAL.STEP_3.SECONDARY_CONTACT.FIRST_NAME.PLACEHOLDER"
               )}
@@ -134,6 +146,8 @@ export function Step3Contacts({
               onChange={(e) =>
                 onUpdateField("secondaryContactLastName", e.target.value)
               }
+              onFocus={() => onClearFieldError("secondaryContactLastName")}
+              onBlur={() => onValidateField("secondaryContactLastName")}
               placeholder={t(
                 "MODAL.STEP_3.SECONDARY_CONTACT.LAST_NAME.PLACEHOLDER"
               )}
@@ -158,6 +172,8 @@ export function Step3Contacts({
             onChange={(e) =>
               onUpdateField("secondaryContactEmail", e.target.value)
             }
+            onFocus={() => onClearFieldError("secondaryContactEmail")}
+            onBlur={() => onValidateField("secondaryContactEmail")}
             placeholder={t(
               "MODAL.STEP_3.SECONDARY_CONTACT.EMAIL.PLACEHOLDER"
             )}

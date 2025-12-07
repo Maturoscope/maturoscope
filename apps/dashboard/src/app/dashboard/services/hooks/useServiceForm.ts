@@ -47,7 +47,7 @@ interface ServiceFormDataSnapshot {
 let initialFormDataSnapshot: ServiceFormDataSnapshot | null = null;
 
 export function useServiceForm(serviceId?: string) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("SERVICES");
   const [formData, setFormData] = useState<ServiceFormData>(getInitialFormData);
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -115,6 +115,76 @@ export function useServiceForm(serviceId?: string) {
 
   const updateField = (field: keyof ServiceFormData, value: unknown) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    
+    if (errors[field]) {
+      const stringValue = String(value).trim();
+      
+      if (field === 'url') {
+        if (stringValue && isValidUrl(stringValue)) {
+          setErrors((prev) => {
+            const newErrors = { ...prev };
+            delete newErrors[field];
+            return newErrors;
+          });
+        }
+      } else if (field === 'mainContactEmail' || field === 'secondaryContactEmail') {
+        if (stringValue && isValidEmail(stringValue)) {
+          setErrors((prev) => {
+            const newErrors = { ...prev };
+            delete newErrors[field];
+            return newErrors;
+          });
+        }
+      } else {
+        if (stringValue) {
+          setErrors((prev) => {
+            const newErrors = { ...prev };
+            delete newErrors[field];
+            return newErrors;
+          });
+        }
+      }
+    }
+  };
+
+  const isValidUrl = (url: string): boolean => {
+    if (!url.trim()) return false;
+    
+    try {
+      let urlToValidate = url.trim();
+      
+      if (!urlToValidate.startsWith('http://') && !urlToValidate.startsWith('https://')) {
+        urlToValidate = `https://${urlToValidate}`;
+      }
+      
+      const urlObj = new URL(urlToValidate);
+      
+      if (urlObj.protocol !== 'http:' && urlObj.protocol !== 'https:') {
+        return false;
+      }
+      
+      if (!urlObj.hostname || urlObj.hostname.length < 1) {
+        return false;
+      }
+      
+      const isLocalhost = urlObj.hostname === 'localhost';
+      const isIpAddress = /^(\d{1,3}\.){3}\d{1,3}$/.test(urlObj.hostname);
+      
+      if (!isLocalhost && !isIpAddress && !urlObj.hostname.includes('.')) {
+        return false;
+      }
+      
+      if (urlObj.hostname.replace(/\./g, '').length === 0) {
+        return false;
+      }
+      
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const clearFieldError = (field: keyof ServiceFormData): void => {
     if (errors[field]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -124,11 +194,107 @@ export function useServiceForm(serviceId?: string) {
     }
   };
 
+  const validateField = (field: keyof ServiceFormData): void => {
+    const newErrors: Record<string, string> = { ...errors };
+
+    if (field === 'name') {
+      if (!formData.name.trim()) {
+        newErrors.name = t('MODAL.ERRORS.NAME_REQUIRED');
+      } else {
+        delete newErrors.name;
+      }
+    }
+
+    if (field === 'description') {
+      if (!formData.description.trim()) {
+        newErrors.description = t('MODAL.ERRORS.DESCRIPTION_REQUIRED');
+      } else {
+        delete newErrors.description;
+      }
+    }
+
+    if (field === 'url') {
+      if (!formData.url.trim()) {
+        newErrors.url = t('MODAL.ERRORS.URL_REQUIRED');
+      } else if (!isValidUrl(formData.url)) {
+        newErrors.url = t('MODAL.ERRORS.URL_INVALID');
+      } else {
+        delete newErrors.url;
+      }
+    }
+
+    // Main Contact fields
+    if (field === 'mainContactFirstName') {
+      if (!formData.mainContactFirstName.trim()) {
+        newErrors.mainContactFirstName = t('MODAL.ERRORS.FIRST_NAME_REQUIRED');
+      } else {
+        delete newErrors.mainContactFirstName;
+      }
+    }
+
+    if (field === 'mainContactLastName') {
+      if (!formData.mainContactLastName.trim()) {
+        newErrors.mainContactLastName = t('MODAL.ERRORS.LAST_NAME_REQUIRED');
+      } else {
+        delete newErrors.mainContactLastName;
+      }
+    }
+
+    if (field === 'mainContactEmail') {
+      if (!formData.mainContactEmail.trim()) {
+        newErrors.mainContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
+      } else if (!isValidEmail(formData.mainContactEmail)) {
+        newErrors.mainContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
+      } else {
+        delete newErrors.mainContactEmail;
+      }
+    }
+
+    // Secondary Contact fields
+    if (field === 'secondaryContactFirstName') {
+      if (!formData.secondaryContactFirstName.trim()) {
+        newErrors.secondaryContactFirstName = t('MODAL.ERRORS.FIRST_NAME_REQUIRED');
+      } else {
+        delete newErrors.secondaryContactFirstName;
+      }
+    }
+
+    if (field === 'secondaryContactLastName') {
+      if (!formData.secondaryContactLastName.trim()) {
+        newErrors.secondaryContactLastName = t('MODAL.ERRORS.LAST_NAME_REQUIRED');
+      } else {
+        delete newErrors.secondaryContactLastName;
+      }
+    }
+
+    if (field === 'secondaryContactEmail') {
+      if (!formData.secondaryContactEmail.trim()) {
+        newErrors.secondaryContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
+      } else if (!isValidEmail(formData.secondaryContactEmail)) {
+        newErrors.secondaryContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
+      } else {
+        delete newErrors.secondaryContactEmail;
+      }
+    }
+
+    setErrors(newErrors);
+  };
+
   const validateStep1 = (): boolean => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = t('SERVICES.MODAL.ERRORS.NAME_REQUIRED');
+      newErrors.name = t('MODAL.ERRORS.NAME_REQUIRED');
+    }
+
+    if (!formData.description.trim()) {
+      newErrors.description = t('MODAL.ERRORS.DESCRIPTION_REQUIRED');
+    }
+
+    if (!formData.url.trim()) {
+      newErrors.url = t('MODAL.ERRORS.URL_REQUIRED');
+    } else if (!isValidUrl(formData.url)) {
+      newErrors.url = t('MODAL.ERRORS.URL_INVALID');
     }
 
     setErrors(newErrors);
@@ -140,7 +306,7 @@ export function useServiceForm(serviceId?: string) {
     const hasActiveCategories = formData.gapCoverages.length > 0;
 
     if (!hasActiveCategories) {
-      newErrors.categories = t('SERVICES.MODAL.ERRORS.NO_CATEGORIES');
+      newErrors.categories = t('MODAL.ERRORS.NO_CATEGORIES');
     }
 
     setErrors(newErrors);
@@ -151,27 +317,27 @@ export function useServiceForm(serviceId?: string) {
     const newErrors: Record<string, string> = {};
 
     if (!formData.mainContactFirstName.trim()) {
-      newErrors.mainContactFirstName = t('SERVICES.MODAL.ERRORS.FIRST_NAME_REQUIRED');
+      newErrors.mainContactFirstName = t('MODAL.ERRORS.FIRST_NAME_REQUIRED');
     }
     if (!formData.mainContactLastName.trim()) {
-      newErrors.mainContactLastName = t('SERVICES.MODAL.ERRORS.LAST_NAME_REQUIRED');
+      newErrors.mainContactLastName = t('MODAL.ERRORS.LAST_NAME_REQUIRED');
     }
     if (!formData.mainContactEmail.trim()) {
-      newErrors.mainContactEmail = t('SERVICES.MODAL.ERRORS.EMAIL_REQUIRED');
+      newErrors.mainContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
     } else if (!isValidEmail(formData.mainContactEmail)) {
-      newErrors.mainContactEmail = t('SERVICES.MODAL.ERRORS.INVALID_EMAIL');
+      newErrors.mainContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
     }
 
     if (!formData.secondaryContactFirstName.trim()) {
-      newErrors.secondaryContactFirstName = t('SERVICES.MODAL.ERRORS.FIRST_NAME_REQUIRED');
+      newErrors.secondaryContactFirstName = t('MODAL.ERRORS.FIRST_NAME_REQUIRED');
     }
     if (!formData.secondaryContactLastName.trim()) {
-      newErrors.secondaryContactLastName = t('SERVICES.MODAL.ERRORS.LAST_NAME_REQUIRED');
+      newErrors.secondaryContactLastName = t('MODAL.ERRORS.LAST_NAME_REQUIRED');
     }
     if (!formData.secondaryContactEmail.trim()) {
-      newErrors.secondaryContactEmail = t('SERVICES.MODAL.ERRORS.EMAIL_REQUIRED');
+      newErrors.secondaryContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
     } else if (!isValidEmail(formData.secondaryContactEmail)) {
-      newErrors.secondaryContactEmail = t('SERVICES.MODAL.ERRORS.INVALID_EMAIL');
+      newErrors.secondaryContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
     }
 
     setErrors(newErrors);
@@ -186,7 +352,12 @@ export function useServiceForm(serviceId?: string) {
   const canProceedToNextStep = (): boolean => {
     switch (currentStep) {
       case 1:
-        return !!formData.name.trim();
+        return !!(
+          formData.name.trim() &&
+          formData.description.trim() &&
+          formData.url.trim() &&
+          isValidUrl(formData.url)
+        );
       case 2:
         return formData.gapCoverages.length > 0;
       case 3:
@@ -231,7 +402,7 @@ export function useServiceForm(serviceId?: string) {
     setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
-  const handleSubmit = async (): Promise<boolean> => {
+  const handleSubmit = async (): Promise<string | boolean> => {
     if (!validateStep3()) {
       return false;
     }
@@ -268,12 +439,13 @@ export function useServiceForm(serviceId?: string) {
         throw new Error(data.message || 'Failed to save service');
       }
 
-      return true;
+      // Return the service ID if it was created (not updated), or true if updated
+      return serviceId ? true : (data.id || null);
     } catch (error) {
       console.error('Error saving service:', error);
       const errorMessage = serviceId
-        ? t('SERVICES.MODAL.ERRORS.UPDATE_FAILED')
-        : t('SERVICES.MODAL.ERRORS.CREATE_FAILED');
+        ? t('MODAL.ERRORS.UPDATE_FAILED')
+        : t('MODAL.ERRORS.CREATE_FAILED');
       const errorMsg = error instanceof Error ? error.message : errorMessage;
       setErrors({ submit: errorMsg });
       return false;
@@ -352,6 +524,8 @@ export function useServiceForm(serviceId?: string) {
     isSubmitting,
     errors,
     updateField,
+    validateField,
+    clearFieldError,
     handleNext,
     handleBack,
     handleSubmit,

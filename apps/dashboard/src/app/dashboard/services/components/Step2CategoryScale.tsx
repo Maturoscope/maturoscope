@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Minus, Plus } from "lucide-react";
 import { ServiceFormData } from "../hooks/useServiceForm";
 import { useSatisfactionOptions } from "../hooks/useSatisfactionOptions";
 import { ScaleType, GapCoverage } from "../types/service";
@@ -36,6 +36,7 @@ export function Step2CategoryScale({
 
   const currentLanguage = i18n.language?.toLowerCase().startsWith("fr") ? "fr" : "en";
   const [expandedCategories, setExpandedCategories] = useState<Set<ScaleType>>(new Set());
+  const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(new Set());
 
   const handleToggleExpand = (scaleType: ScaleType) => {
     setExpandedCategories((prev) => {
@@ -44,6 +45,18 @@ export function Step2CategoryScale({
         next.delete(scaleType);
       } else {
         next.add(scaleType);
+      }
+      return next;
+    });
+  };
+
+  const handleToggleQuestion = (questionId: string) => {
+    setExpandedQuestions((prev) => {
+      const next = new Set(prev);
+      if (next.has(questionId)) {
+        next.delete(questionId);
+      } else {
+        next.add(questionId);
       }
       return next;
     });
@@ -112,9 +125,9 @@ export function Step2CategoryScale({
                 <div className="border-t border-[#E5E5E5] my-0" />
               )}
               <div className="space-y-4 py-6">
-                <div className="flex items-center justify-between px-0">
-                  <div>
-                    <Label className="text-sm font-semibold text-[#0A0A0A]">
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 min-w-0">
+                    <Label className="text-base font-semibold text-[#0A0A0A]">
                       {scale.type}{" "}
                       <span className="font-normal text-[#8C8C8C]">
                         {t("MODAL.STEP_2.SELECT_ALL_THAT_APPLY")}
@@ -125,11 +138,11 @@ export function Step2CategoryScale({
                     variant="ghost"
                     size="icon"
                     onClick={() => handleToggleExpand(scale.type)}
-                    className="h-8 w-8"
+                    className="h-6 w-6 shrink-0"
                   >
                     <ChevronDown
                       className={cn(
-                        "h-4 w-4 text-[#8C8C8C] transition-transform duration-200",
+                        "h-4 w-4 text-[#0A0A0A] transition-transform duration-200",
                         isExpanded && "rotate-180"
                       )}
                     />
@@ -143,57 +156,86 @@ export function Step2CategoryScale({
                         {t("MODAL.STEP_2.NO_QUESTIONS")}
                       </p>
                     ) : (
-                      questions.map((questionId) => {
+                      <>
+                        <div className="border-t border-gray-200 pb-4" />
+                        {questions.map((questionId, questionIndex) => {
                         const levels = getLevelsForQuestion(questionId);
+                        const isQuestionExpanded = expandedQuestions.has(questionId);
 
                         return (
-                          <div key={questionId} className="space-y-2">
-                            <h4 className="text-base font-medium text-[#0A0A0A] mb-2">
-                              {getQuestionText(questionId, currentLanguage)}
-                            </h4>
-
+                          <div key={questionId}>
+                            {questionIndex > 0 && (
+                              <div className="border-t border-gray-200 my-4" />
+                            )}
                             <div className="space-y-2">
-                              {levels.map((option) => {
-                                const isChecked = isLevelSelected(
-                                  questionId,
-                                  option.level,
-                                  scale.type
-                                );
+                              <div className="flex items-center gap-2">
+                                <h4 className="text-sm font-medium text-[#0A0A0A] flex-1 min-w-0">
+                                  {getQuestionText(questionId, currentLanguage)}
+                                </h4>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => handleToggleQuestion(questionId)}
+                                  className="h-6 w-6 shrink-0"
+                                  disabled={viewOnly}
+                                >
+                                  {isQuestionExpanded ? (
+                                    <Minus className="h-4 w-4 text-[#0A0A0A]" />
+                                  ) : (
+                                    <Plus className="h-4 w-4 text-[#0A0A0A]" />
+                                  )}
+                                </Button>
+                              </div>
 
-                                return (
-                                  <div
-                                    key={`${questionId}-${option.level}`}
-                                    className="flex items-start space-x-3"
-                                  >
-                                    <Checkbox
-                                      id={`${questionId}-${option.level}`}
-                                      checked={isChecked}
-                                      onCheckedChange={() =>
-                                        handleToggleLevel(
-                                          questionId,
-                                          option.level,
-                                          scale.type
-                                        )
-                                      }
-                                      className="mt-0.5"
-                                      disabled={viewOnly}
-                                    />
-                                    <label
-                                      htmlFor={`${questionId}-${option.level}`}
-                                      className="text-sm text-[#0A0A0A] cursor-pointer flex-1"
+                            {isQuestionExpanded && (
+                              <div className="space-y-2">
+                                {levels.map((option) => {
+                                  const isChecked = isLevelSelected(
+                                    questionId,
+                                    option.level,
+                                    scale.type
+                                  );
+
+                                  return (
+                                    <div
+                                      key={`${questionId}-${option.level}`}
+                                      className="flex items-start space-x-3"
                                     >
-                                      <span className="font-medium">
-                                        {t("MODAL.STEP_2.GAP")}: {option.level}
-                                      </span>{" "}
-                                      {option.text[currentLanguage]}
-                                    </label>
-                                  </div>
-                                );
-                              })}
+                                      <Checkbox
+                                        id={`${questionId}-${option.level}`}
+                                        checked={isChecked}
+                                        onCheckedChange={() =>
+                                          handleToggleLevel(
+                                            questionId,
+                                            option.level,
+                                            scale.type
+                                          )
+                                        }
+                                        className={cn(
+                                          "mt-0.5",
+                                          !isChecked && "border-gray-300"
+                                        )}
+                                        disabled={viewOnly}
+                                      />
+                                      <label
+                                        htmlFor={`${questionId}-${option.level}`}
+                                        className="text-sm text-[#0A0A0A] cursor-pointer flex-1"
+                                      >
+                                        <span className="font-medium">
+                                          {t("MODAL.STEP_2.GAP")} {option.level}:
+                                        </span>{" "}
+                                        {option.text[currentLanguage]}
+                                      </label>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
                             </div>
                           </div>
                         );
-                      })
+                        })}
+                      </>
                     )}
                   </div>
                 )}
