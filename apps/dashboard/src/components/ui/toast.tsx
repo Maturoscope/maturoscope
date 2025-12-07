@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { CircleCheck } from 'lucide-react'
 import { Button } from './button'
 
@@ -27,6 +27,13 @@ export function Toast({
 }: ToastProps) {
   const [show, setShow] = useState(false)
 
+  const handleClose = useCallback(() => {
+    setShow(false)
+    setTimeout(() => {
+      onClose()
+    }, 300)
+  }, [onClose])
+
   useEffect(() => {
     if (isVisible) {
       setShow(true)
@@ -38,14 +45,7 @@ export function Toast({
     } else {
       setShow(false)
     }
-  }, [isVisible, duration])
-
-  const handleClose = () => {
-    setShow(false)
-    setTimeout(() => {
-      onClose()
-    }, 300)
-  }
+  }, [isVisible, duration, handleClose])
 
   const handleUndo = () => {
     if (onUndo) {

@@ -93,7 +93,6 @@ export default function MembersPage() {
       </div>
 
       <Toast
-        showCloseButton={false}
         title={t("TOASTS.MEMBER_CREATED.TITLE")}
         description={t("TOASTS.MEMBER_CREATED.DESCRIPTION", { name: createdMemberName })}
         isVisible={showSuccessToast}
@@ -115,7 +114,6 @@ export default function MembersPage() {
         }}
         undoText={t("TOASTS.UNDO")}
         showIcon={false}
-        showCloseButton={false}
       />
 
       <Toast
@@ -132,7 +130,6 @@ export default function MembersPage() {
         }}
         undoText={t("TOASTS.UNDO")}
         showIcon={false}
-        showCloseButton={false}
       />
     </>
   );
