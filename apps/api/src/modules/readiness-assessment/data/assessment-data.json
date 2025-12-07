@@ -318,8 +318,8 @@
             }
           },
           "question": {
-            "en": "Have you structured your product development? (planning, resources, roles)",
-            "fr": "Avez-vous structuré le développement de votre produit ? (planning, ressources, rôles)"
+            "en": "Have you structured your product development? (planning, resources, roles).",
+            "fr": "Avez-vous structuré le développement de votre produit ? (planning, ressources, rôles)."
           }
         }
       ]
@@ -332,7 +332,7 @@
       "abbreviation": "MkRL",
       "questions": [
         {
-          "id": "MKRL_Q1",
+          "id": "MkRL_Q1",
           "question": {
             "en": "Does your solution meet a need clearly identified and validated by the market?",
             "fr": "Votre solution répond-elle à un besoin clairement identifié et validé par le marché ?"
@@ -377,7 +377,7 @@
           }
         },
         {
-          "id": "MKRL_Q2",
+          "id": "MkRL_Q2",
           "question": {
             "en": "Does your solution meet the specific mandatory and strategic (voluntary) market requirements that facilitate the sale?",
             "fr": "Votre solution répond-elle aux exigences spécifiques du marché obligatoires et stratégiques (volontaires) qui facilitent la vente ?"
@@ -422,7 +422,7 @@
           }
         },
         {
-          "id": "MKRL_Q3",
+          "id": "MkRL_Q3",
           "question": {
             "en": "Do you have a structured business model and marketing plan?",
             "fr": "Disposez-vous d’un business model et d’un plan de commercialisation structurés ?"
@@ -467,7 +467,7 @@
           }
         },
         {
-          "id": "MKRL_Q4",
+          "id": "MkRL_Q4",
           "question": {
             "en": "Have you assessed the costs (production, life cycle) and defined a market price?",
             "fr": "Avez-vous évalué les coûts (production, cycle de vie) et défini un prix de marché ?"
@@ -522,182 +522,182 @@
       "questions": [
         {
           "id": "MfRL_Q1",
+          "question": {
+            "en": "Where are you in the structuring and control of your manufacturing process? (Design, feasibility, organization and tooling).",
+            "fr": "Où en est la structuration et la maîtrise de votre processus de fabrication ? (Conception, faisabilité, organisation et outillage)."
+          },
           "levels": {
             "1": {
-              "en": "Only exploratory research has been conducted on existing manufacturing practices.",
+              "en": "Only exploratory research was conducted on existing manufacturing practices.",
               "fr": "Seules des recherches exploratoires ont été menées sur les pratiques de fabrication existantes."
             },
             "2": {
-              "en": "The first manufacturing scenario (equipment, organization) was implemented.",
-              "fr": "Le premier scénario de fabrication (équipement, organisation) a été mis en œuvre."
+              "en": "The first manufacturing scenarios (equipment, organization) have been outlined.",
+              "fr": "Les premiers scénarios de fabrication (équipements, organisation) ont été esquissés."
             },
             "3": {
-              "en": "A factory concept is drawn up, and the feasibility of key components has been calculated (manufacturing value chain scenario).",
-              "fr": "Un concept d'usine est élaboré et la faisabilité des composants clés a été calculée (scénario de chaîne de valeur de fabrication)."
+              "en": "A factory concept is drawn up, and the feasibility of key components has been validated analytically or in the lab.",
+              "fr": "Un concept d’usine est rédigé, et la faisabilité des composants clés a été validée analytiquement ou en labo."
             },
             "4": {
-              "en": "A full-scale prototype of the complete system (production organization) is built and demonstrated.",
-              "fr": "Un prototype à échelle réelle du système complet (organisation de production) est construit et démontré."
+              "en": "The production organization and several scenarios are documented and compared with models.",
+              "fr": "L’organisation de production et plusieurs scénarios sont documentés et confrontés à des maquettes."
             },
             "5": {
-              "en": "Small-scale prototypes have allowed the selection of a realistic manufacturing scenario.",
+              "en": "Small-scale prototypes were used to select a realistic manufacturing scenario.",
               "fr": "Des prototypes à petite échelle ont permis de sélectionner un scénario de fabrication réaliste."
             },
             "6": {
-              "en": "Complete small-scale prototypes are tested in a realistic environment.",
-              "fr": "Des prototypes complets à petite échelle sont testés dans un environnement réaliste."
+              "en": "A full-scale prototype was produced and implemented in a relevant environment.",
+              "fr": "Un prototype à l’échelle réelle a été produit et mis en œuvre dans un environnement pertinent."
             },
             "7": {
-              "en": "Full-scale prototypes are implemented on a test environment.",
-              "fr": "Des prototypes à échelle réelle sont mis en œuvre dans un environnement de test."
+              "en": "A reduced-rate production is operational; the resources are installed and validated.",
+              "fr": "Une production à cadence réduite est opérationnelle ; les moyens sont installés et validés."
             },
             "8": {
-              "en": "A full-scale prototype is operational; the manufacturing has a qualified for external, the industrialized and commercial pilot (SME).",
-              "fr": "Un prototype à échelle réelle est opérationnel; la fabrication a une qualification pour l'externe, le pilote industrialisé et commercial (PME)."
+              "en": "The production line is qualified by an external body; operations are repeatable.",
+              "fr": "La ligne de production est qualifiée par un organisme externe ; les opérations sont répétables."
             },
             "9": {
-              "en": "Series production is in place, conforming to the industrial and commercial plan (S&OP).",
+              "en": "Serial production is in place, in accordance with the industrial and commercial plan (S&OP).",
               "fr": "La production en série est en place, conforme au plan industriel et commercial (S&OP)."
             }
-          },
-          "question": {
-            "en": "What is the status of the structuring and mastery of your manufacturing process? (Design, feasibility, organization, and tooling)",
-            "fr": "Où en est la structuration et la maîtrise de votre processus de fabrication ? (Conception, faisabilité, organisation et outillage)"
           }
         },
         {
           "id": "MfRL_Q2",
+          "question": {
+            "en": "What is the progress of prototyping and field validations?",
+            "fr": "Quel est le niveau d’avancement du prototypage et des validations terrain ?"
+          },
           "levels": {
             "1": {
-              "en": "No prototypes was made.",
-              "fr": "Aucun prototype n'a été réalisé."
+              "en": "No prototype was made.",
+              "fr": "Aucun prototype n’a été réalisé."
             },
             "2": {
-              "en": "Production process and materials are identified.",
-              "fr": "Le processus de production et les matériaux sont identifiés."
+              "en": "Industrial capabilities are analyzed with regard to the concept.",
+              "fr": "Les capacités industriels sont analysées au regad du concept."
             },
             "3": {
-              "en": "Models or partial elements are made for proof-of-concept testing in a lab-scale setting.",
-              "fr": "Des modèles ou éléments partiels sont réalisés pour des tests de preuve de concept à l'échelle du laboratoire."
+              "en": "Models or partial elements are made for exploratory purposes.",
+              "fr": "Des maquettes ou éléments partiels sont fabriqués à des fins exploratoires."
             },
             "4": {
-              "en": "Working prototypes of components are ready for demonstration (proof-of-concept).",
-              "fr": "Des prototypes fonctionnels de composants sont prêts pour la démonstration (preuve de concept)."
+              "en": "Working prototypes of components are available.",
+              "fr": "Des prototypes fonctionnels de composants sont disponibles."
             },
             "5": {
-              "en": "The logistics plan is integrated (transport, storage), but partners have not yet been identified or confirmed.",
-              "fr": "Le plan logistique est intégré (transport, stockage), mais les partenaires n'ont pas encore été identifiés ou confirmés."
+              "en": "Complete small-scale prototypes are tested in the laboratory.",
+              "fr": "Des prototypes complets à petite échelle sont testés en laboratoire."
             },
             "6": {
-              "en": "Sites and building organizations, are ready to integrate a first pilot site. Complete system is manufactured and implemented, but the test environment differs from the actual lab or a real environment, and test has not yet been carried out.",
-              "fr": "Les sites et organisations de construction sont prêts à intégrer un premier site pilote. Le système complet est fabriqué et mis en œuvre, mais l'environnement de test diffère du laboratoire réel ou d'un environnement réel, et le test n'a pas encore été effectué."
+              "en": "Full-scale prototypes are implemented on a test bench.",
+              "fr": "Des prototypes à l’échelle 1 sont mis en œuvre sur banc d’essai."
             },
             "7": {
-              "en": "A first version of ISO14025 is published; validated by the first pilot sites (or data bases).",
-              "fr": "Une première version d'ISO14025 est publiée; validée par les premiers sites pilotes (ou bases de données)."
+              "en": "A complete system is manufactured and implemented in a relevant building environment.",
+              "fr": "Un système complet est fabriqué et mis en œuvre dans un environnement bâtiment pertinent."
             },
             "8": {
-              "en": "Indicators are being tracked for a first pilot site.",
-              "fr": "Les indicateurs sont suivis pour un premier site pilote."
+              "en": "Several systems are produced via industrial infrastructure and implemented in real situations.",
+              "fr": "Plusieurs systèmes sont produits via l’infrastructure industrielle et mis en œuvre en situation réelle."
             },
             "9": {
-              "en": "Production at stabilized scale (launch); the actual results (final site) are available for follow up, guarantee for the marketplace.",
-              "fr": "Production à l'échelle stabilisée (lancement); les résultats réels (site final) sont disponibles pour le suivi, garantie pour le marché."
+              "en": "Production continues with operational feedback. Manufacturing and implementation are controlled on a large scale, with performance indicators.",
+              "fr": "La production se poursuit avec retour d’expérience opérationnel. La fabrication et l’implémentation sont maîtrisées à grande échelle, avec indicateurs de performance."
             }
-          },
-          "question": {
-            "en": "What is the level of advancement of prototyping and field validations?",
-            "fr": "Quel est le niveau d'avancement du prototypage et des validations terrain ?"
           }
         },
         {
           "id": "MfRL_Q3",
+          "question": {
+            "en": "How well structured is your supply chain? (Procurement, transport, storage, implementation).",
+            "fr": "Quel est le degré de structuration de votre chaîne logistique (supply chain) ? (Approvisionnement, transport, stockage, mise en œuvre)."
+          },
           "levels": {
             "1": {
               "en": "No structured thinking about the supply chain.",
-              "fr": "Aucune réflexion structurée sur la chaîne d'approvisionnement."
+              "fr": "Aucune réflexion structurée sur la chaîne logistique."
             },
             "2": {
-              "en": "An initial material organization has been assembled.",
-              "fr": "Une organisation matérielle initiale a été assemblée."
+              "en": "An initial logistical organization has been outlined.",
+              "fr": "Une première organisation logistique a été esquissée."
             },
             "3": {
-              "en": "Organizational structures and process flows are documented, but not yet compared with reference models.",
-              "fr": "Les structures organisationnelles et les flux de processus sont documentés, mais pas encore comparés aux modèles de référence."
+              "en": "The supply chain is documented up to manufacturing.",
+              "fr": "La chaîne logistique est documentée jusqu’à la fabrication."
             },
             "4": {
-              "en": "The logistics plan is integrated (transport, storage), but partners have not yet been identified or confirmed.",
-              "fr": "Le plan logistique est intégré (transport, stockage), mais les partenaires n'ont pas encore été identifiés ou confirmés."
+              "en": "The logistics plan integrates transport, storage and installation.",
+              "fr": "Le schéma logistique intègre transport, stockage et pose."
             },
             "5": {
-              "en": "Experimented teams or partners, flows modeled and communicated.",
-              "fr": "Équipes ou partenaires expérimentés, flux modélisés et communiqués."
+              "en": "Partners are identified, flows are modeled and refined.",
+              "fr": "Les partenaires sont identifiés, les flux sont modélisés et affinés."
             },
             "6": {
-              "en": "Sites stakeholders (implementation, users, are informed and included in the stakeholders).",
-              "fr": "Les parties prenantes des sites (mise en œuvre, utilisateurs) sont informées et incluses dans les parties prenantes."
+              "en": "The schedule is consolidated with key suppliers.",
+              "fr": "Le planning est consolidé avec les fournisseurs clés."
             },
             "7": {
-              "en": "Tools and training for craftsmen, design offices, partners are standardized (integrated) with all stakeholders for the first site with agreement.",
-              "fr": "Les outils et formations pour les artisans, bureaux d'études, partenaires sont standardisés (intégrés) avec toutes les parties prenantes pour le premier site avec accord."
+              "en": "The diagram is validated on real site with quality audits.",
+              "fr": "Le schéma est validé sur site réel avec audits qualité."
             },
             "8": {
-              "en": "Pre-commercial demonstration reinforces market interest and perceived relevance.",
-              "fr": "La démonstration pré-commerciale renforce l'intérêt du marché et la pertinence perçue."
+              "en": "Logistics are efficient, with traceability, labeling, compliance and flow control.",
+              "fr": "La logistique est performante, avec traçabilité, étiquetage, conformité et maîtrise des flux."
             },
             "9": {
-              "en": "Several projects demonstrate market fit and scalability.",
-              "fr": "Plusieurs projets démontrent l'adéquation au marché et la scalabilité."
+              "en": "The supply chain is stabilized, managed and aligned with mass production.",
+              "fr": "La supply chain est stabilisée, pilotée et alignée sur la production en série."
             }
-          },
-          "question": {
-            "en": "What is the degree of structuring of your supply chain? (Procurement, transport, storage, implementation)",
-            "fr": "Quel est le degré de structuration de votre chaîne logistique (supply chain) ? (Approvisionnement, transport, stockage, mise en œuvre)"
           }
         },
         {
           "id": "MfRL_Q4",
+          "question": {
+            "en": "Are the quality processes and industrial tools in place and functional? (Quality, documents, equipment, training and maintenance).",
+            "fr": "Les démarches qualité et outils industriels sont-ils en place et fonctionnels ? (Qualité, documents, équipements, formation et maintenance)."
+          },
           "levels": {
             "1": {
               "en": "No quality system or control in place.",
-              "fr": "Aucun système qualité ou contrôle en place."
+              "fr": "Aucun dispositif qualité ou contrôle mis en place."
             },
             "2": {
-              "en": "An initial material organization has been assembled.",
-              "fr": "Une organisation matérielle initiale a été assemblée."
+              "en": "Production constraints are beginning to be listed.",
+              "fr": "Les contraintes de production commencent à être listées."
             },
             "3": {
-              "en": "Production constraints are beginning to be in place.",
-              "fr": "Les contraintes de production commencent à être en place."
+              "en": "Technical specifications and industrial processes are described.",
+              "fr": "Les spécifications techniques et processus industriels sont décrits."
             },
             "4": {
-              "en": "Technical specifications and industrial processes are defined.",
-              "fr": "Les spécifications techniques et les processus industriels sont définis."
+              "en": "Quality control sheets are drawn up by the relevant departments.",
+              "fr": "Les feuilles de contrôle qualité sont rédigées par les services concernés."
             },
             "5": {
-              "en": "Quality control criteria are drawn up by the production documentation is available and validated by the test.",
-              "fr": "Les critères de contrôle qualité sont établis par la documentation de production qui est disponible et validée par le test."
+              "en": "Production documentation is available and validated.",
+              "fr": "La documentation de production est disponible et validée."
             },
             "6": {
-              "en": "Production documentation is available and validated by the manufacturing organization.",
-              "fr": "La documentation de production est disponible et validée par l'organisation de fabrication."
+              "en": "Industrial resources are installed and validated according to procedures.",
+              "fr": "Les moyens industriels sont installés et validés selon les procédures."
             },
             "7": {
-              "en": "Industrial resources are installed and validated successful real case.",
-              "fr": "Les ressources industrielles sont installées et validées avec succès dans un cas réel."
+              "en": "Quality compliance is validated at each stage (production, transport, installation) via an initial pilot operation.",
+              "fr": "La conformité qualité est validée à chaque étape (production, transport, pose) via une première opération pilote."
             },
             "8": {
-              "en": "Quality, manufacturing and implementation monitor of the full project as a real site. Logistics are efficient with traceability labeling, all guarantee information, warranty. Tools are maintained, operators are properly trained, and quality control is continuously integrated and managed.",
-              "fr": "Surveillance de la qualité, de la fabrication et de la mise en œuvre du projet complet comme un site réel. La logistique est efficace avec étiquetage de traçabilité, toutes les informations de garantie. Les outils sont maintenus, les opérateurs sont correctement formés, et le contrôle qualité est continuellement intégré et géré."
+              "en": "Tools are maintained, operators are trained, and quality is certified.",
+              "fr": "Les outils sont maintenus, les opérateurs sont formés, et la qualité est certifiée."
             },
             "9": {
-              "en": "Quality control is continuously integrated and managed for commercial and industrial purposes. Production systems and protocols for industrial infrastructure and systems are daily consolidated. Warranty and the comprehensive monitoring system and serial quality control.",
-              "fr": "Le contrôle qualité est continuellement intégré et géré à des fins commerciales et industrielles. Les systèmes de production et protocoles pour l'infrastructure industrielle et les systèmes sont consolidés quotidiennement. Garantie et système de surveillance complet et contrôle qualité en série."
+              "en": "Quality control is continuously integrated with feedback from field experience.",
+              "fr": "Le contrôle qualité est intégré en continu avec retour d’expérience terrain."
             }
-          },
-          "question": {
-            "en": "Are quality procedures and industrial tools in place and functional? (Quality, documents, equipment, training, and maintenance)",
-            "fr": "Les démarches qualité et outils industriels sont-ils en place et fonctionnels ? (Qualité, documents, équipements, formation et maintenance)"
           }
         }
       ]
@@ -708,7 +708,7 @@
       "phase": 1,
       "phaseName": {
         "en": "Phase 1: Conceptualization & Research",
-        "fr": "Phase 1 : Conceptualisation et Recherche"
+        "fr": "Phase 1: Conceptualisation et Recherche"
       },
       "focusGoal": {
         "en": "Basic Feasibility & Hypothesis Validation",
@@ -743,7 +743,7 @@
     "4": {
       "phase": 2,
       "phaseName": {
-        "en": "Phase 2: Prototype & Demonstration",
+        "en": "Phase 2: Prototype & Demonstration", 
         "fr": "Phase 2 : Prototype et Démonstration"
       },
       "focusGoal": {
@@ -780,7 +780,7 @@
       "phase": 3,
       "phaseName": {
         "en": "Phase 3: System Demonstration & Validation",
-        "fr": "Phase 3 : Démonstration et Validation du Système"
+        "fr": "Phase 3 : Démonstration et Validation du Système"      
       },
       "focusGoal": {
         "en": "Operational Testing & Pilot Production Viability",
@@ -821,7 +821,7 @@
       },
       "primaryRisk": {
         "en": "Technical Failure / Inoperability",
-        "fr": "Échec Technique / Inopérabilité"
+        "fr": "Échec Technique / Inopérabilité"  
       }
     },
     "MkRL_LOWEST": {
@@ -848,572 +848,512 @@
   "gaps": {
     "TRL_Q1": {
       "1": {
-        "en": "The concept is only described informally.",
-        "fr": "Le concept n'est décrit que de manière informelle."
+        "en": "The initial formalization of the concept, accompanied by an illustration or diagram, has not yet been carried out.",
+        "fr": "La formalisation initiale du concept, accompagnée d’une illustration ou d’un schéma, n’a pas encore été réalisée."
       },
       "2": {
-        "en": "The solution has not yet been described in its entirety or analyzed in relation to the existing state of the art.",
-        "fr": "La solution n'a pas encore été décrite dans son intégralité ou analysée par rapport à l'état de l'art existant."
+        "en": "The solution has not yet been described in its entirety, nor analyzed in relation to the existing state of the art.",
+        "fr": "La solution n’a pas encore été décrite dans son ensemble, ni analysée par rapport à l’état de l’art existant."
       },
       "3": {
         "en": "The key components and their functions have not yet been identified and described.",
-        "fr": "Les composants clés et leurs fonctions n'ont pas encore été identifiés et décrits."
+        "fr": "Les composants clés et leurs fonctions n’ont pas encore été identifiés et décrits."
       },
       "4": {
-        "en": "All key components are selected and described, along with their functions.",
-        "fr": "Tous les composants clés sont sélectionnés et décrits, avec leurs fonctions."
+        "en": "The complete product and its interfaces are not yet fully described.",
+        "fr": "Le produit complet et ses interfaces ne sont pas encore entièrement décrits."
       },
       "5": {
-        "en": "The product and its interfaces integration into the building are not yet fully described or analyzed. The entire product is described, with the components and their interfaces.",
-        "fr": "Le produit et l'intégration de ses interfaces dans le bâtiment ne sont pas encore entièrement décrits ou analysés. L'ensemble du produit est décrit, avec les composants et leurs interfaces."
+        "en": "The product and its process of integration into the building are not yet described for the intended field of application.",
+        "fr": "Le produit et son procédé d’intégration au bâtiment ne sont pas encore décrits pour le domaine d’application visé."
       },
       "6": {
-        "en": "No feedback on the implementation or process flow yet. Documents are available.",
-        "fr": "Aucun retour sur la mise en œuvre ou le flux de processus pour l'instant. Les documents sont disponibles."
+        "en": "No feedback on the implementation or process has yet been documented.",
+        "fr": "Aucun retour d’expérience sur la mise en œuvre ou le procédé n’a encore été documenté."
       },
       "7": {
-        "en": "The consolidated technical file is not yet ready for commercial or industrial use.",
-        "fr": "Le dossier technique consolidé n'est pas encore prêt pour une utilisation commerciale ou industrielle."
+        "en": "Overall feedback from the application area is not yet available.",
+        "fr": "Les retours d’expérience globaux du domaine d’application ne sont pas encore disponibles."
       },
       "8": {
-        "en": "Overall feedback from the application area is not yet available.",
-        "fr": "Les retours globaux du domaine d'application ne sont pas encore disponibles."
-      },
-      "9": {
-        "en": "Initial positive feedback on the implementation of the process has been documented.",
-        "fr": "Des retours positifs initiaux sur la mise en œuvre du processus ont été documentés."
+        "en": "The consolidated technical file is not yet ready for commercial or industrial use.",
+        "fr": "Le dossier technique consolidé n’est pas encore prêt pour une utilisation commerciale ou industrielle."
       }
     },
     "TRL_Q2": {
       "1": {
-        "en": "No representation exists.",
-        "fr": "Aucune représentation n'existe."
+        "en": "No preliminary sketch or diagram has yet been produced to illustrate the solution.",
+        "fr": "Aucun croquis ou schéma préliminaire n’a encore été produit pour illustrer la solution."
       },
       "2": {
         "en": "3D views or simplified digital models of the solution are not yet available.",
-        "fr": "Les vues 3D ou modèles numériques simplifiés de la solution ne sont pas encore disponibles."
+        "fr": "Les vues 3D ou maquettes numériques simplifiées de la solution ne sont pas encore disponibles."
       },
       "3": {
-        "en": "CAD models and technical drawings are produced for the selected components.",
-        "fr": "Des modèles CAO et des plans techniques sont produits pour les composants sélectionnés."
+        "en": "CAD models and technical drawings of the main components have not yet been produced.",
+        "fr": "Les modèles CAO et dessins techniques des composants principaux n’ont pas encore été réalisés."
       },
       "4": {
         "en": "Detailed CAD/BIM models, including interfaces, tolerances and manufacturing instructions, are not yet finalized.",
-        "fr": "Les modèles CAO/BIM détaillés, incluant les interfaces, tolérances et instructions de fabrication, ne sont pas encore finalisés."
+        "fr": "Les modèles CAO/BIM détaillés, incluant interfaces, tolérances et instructions de fabrication, ne sont pas encore finalisés."
       },
       "5": {
-        "en": "The CAD/BIM model is used in a pilot project.",
-        "fr": "Le modèle CAO/BIM est utilisé dans un projet pilote."
+        "en": "The CAD model has not yet been updated based on feedback from the tested prototypes or adapted to the pilot installation.",
+        "fr": "Le modèle CAO n’a pas encore été mis à jour à partir des retours des prototypes testés ni adapté à l’installation pilote."
       },
       "6": {
-        "en": "The CAD/BIM model is not yet finalized or released for commercial use.",
-        "fr": "Le modèle CAO/BIM n'est pas encore finalisé ou publié pour une utilisation commerciale."
+        "en": "The CAD/BIM model has not yet been used in a real pilot project.",
+        "fr": "Le modèle CAO/BIM n’a pas encore été utilisé dans un projet pilote réel."
       },
       "7": {
-        "en": "The solution is finalized for commercial and industrial use (pre-production stage).",
-        "fr": "La solution est finalisée pour une utilisation commerciale et industrielle (stade de pré-production)."
+        "en": "The CAD/BIM model is not yet finalized or released for commercial use.",
+        "fr": "Le modèle CAO/BIM n’est pas encore finalisé ni diffusé pour une utilisation commerciale."
       },
       "8": {
-        "en": "The product has not yet been evaluated in different usage or context over time.",
-        "fr": "Le produit n'a pas encore été évalué dans différents usages ou contextes au fil du temps."
-      },
-      "9": {
-        "en": "Implementation and instrumented monitoring of the process is a real environment.",
-        "fr": "La mise en œuvre et la surveillance instrumentée du processus dans un environnement réel."
+        "en": "The solution is not yet optimized or standardized for large-scale deployment.",
+        "fr": "La solution n’est pas encore optimisée ni standardisée pour un déploiement à grande échelle."
       }
     },
     "TRL_Q3": {
       "1": {
-        "en": "No prototype or model was made.",
-        "fr": "Aucun prototype ou modèle n'a été réalisé."
+        "en": "No prototype or physical model has yet been produced to demonstrate the basic principle.",
+        "fr": "Aucun prototype ou modèle physique n’a encore été produit pour démontrer le principe de base."
       },
       "2": {
-        "en": "A mockup or partial MVP is available.",
-        "fr": "Une maquette ou un MVP partiel est disponible."
+        "en": "The prototype has not yet been tested to verify the feasibility of the concept.",
+        "fr": "Le prototype n’a pas encore été testé pour vérifier la faisabilité du concept."
       },
       "3": {
-        "en": "All major components have been built and observed.",
-        "fr": "Tous les composants principaux ont été construits et observés."
+        "en": "The prototype has not yet demonstrated consistency between the different functions and components.",
+        "fr": "Le prototype n’a pas encore démontré la cohérence entre les différentes fonctions et composants."
       },
       "4": {
-        "en": "A scaled-down prototype is built, observed, and tested, to validate the design prototypes/tools were used to adjust the design.",
-        "fr": "Un prototype à échelle réduite est construit, observé et testé pour valider la conception; des prototypes/outils ont été utilisés pour ajuster la conception."
+        "en": "The prototype has not yet been tested in a representative environment.",
+        "fr": "Le prototype n’a pas encore été testé dans un environnement représentatif."
       },
       "5": {
-        "en": "The full-scale prototype of the complete system (product and process) has not yet been tested or validated on a small scale. The prototype has not yet been built or tested.",
-        "fr": "Le prototype à échelle réelle du système complet (produit et processus) n'a pas encore été testé ou validé à petite échelle. Le prototype n'a pas encore été construit ou testé."
+        "en": "The prototype has not yet been installed in a real or pilot environment.",
+        "fr": "Le prototype n’a pas encore été installé dans un environnement réel ou pilote."
       },
       "6": {
         "en": "Product performance has not yet been verified or documented on a pilot site.",
-        "fr": "Les performances du produit n'ont pas encore été vérifiées ou documentées sur un site pilote."
+        "fr": "Les performances du produit n’ont pas encore été vérifiées ni documentées sur site pilote."
       },
       "7": {
-        "en": "The solution is installed on a pilot site and tested in real use.",
-        "fr": "La solution est installée sur un site pilote et testée en utilisation réelle."
+        "en": "The product has not yet been evaluated in different usage or context configurations.",
+        "fr": "Le produit n’a pas encore été évalué dans différentes configurations d’usage ou de contexte."
       },
       "8": {
-        "en": "The product has not yet been validated in a different usage or context over time.",
-        "fr": "Le produit n'a pas encore été validé dans un usage ou contexte différent au fil du temps."
-      },
-      "9": {
-        "en": "Several experimental applications on real pilot projects after implementation.",
-        "fr": "Plusieurs applications expérimentales sur des projets pilotes réels après la mise en œuvre."
+        "en": "Final large-scale validation testing has not yet been carried out.",
+        "fr": "Les tests de validation finale à grande échelle n’ont pas encore été réalisés."
       }
     },
     "TRL_Q4": {
       "1": {
-        "en": "No testing has yet been carried out.",
-        "fr": "Aucun test n'a encore été effectué."
+        "en": "No functional validation has yet been carried out on the initial concept.",
+        "fr": "Aucune validation fonctionnelle n’a encore été effectuée sur le concept initial."
       },
       "2": {
-        "en": "No tests have been carried out but the state of the art and preliminary observations have validated the initial hypothesis.",
-        "fr": "Aucun test n'a été effectué mais l'état de l'art et les observations préliminaires ont validé l'hypothèse initiale."
+        "en": "Basic performance tests on the main components have not yet been conducted.",
+        "fr": "Les essais de performance élémentaires sur les composants principaux n’ont pas encore été menés."
       },
       "3": {
-        "en": "All components of the solution are characterized independently analytically or experimentally.",
-        "fr": "Tous les composants de la solution sont caractérisés indépendamment de manière analytique ou expérimentale."
+        "en": "The complete system has not yet been tested to verify proper overall operation.",
+        "fr": "Le système complet n’a pas encore été testé pour vérifier le bon fonctionnement global."
       },
       "4": {
-        "en": "Tests carried out on small prototypes including key interface between components.",
-        "fr": "Tests réalisés sur de petits prototypes incluant l'interface clé entre les composants."
+        "en": "The demonstrator's performance tests are not yet documented or compared to measurable criteria.",
+        "fr": "Les tests de performance du démonstrateur ne sont pas encore documentés ni comparés à des critères mesurables."
       },
       "5": {
-        "en": "Tests carried out in a representative scale for future market conditions, including key interface between components.",
-        "fr": "Tests réalisés à une échelle représentative des conditions de marché futures, y compris l'interface clé entre les composants."
+        "en": "Product performance has not yet been validated in an environment representative of the target market.",
+        "fr": "Les performances du produit ne sont pas encore validées dans un environnement représentatif du marché cible."
       },
       "6": {
-        "en": "The product has not yet demonstrated stable performance for continuous or large-scale production.",
-        "fr": "Le produit n'a pas encore démontré de performances stables pour une production continue ou à grande échelle."
+        "en": "The product has not yet demonstrated stable performance on a real pilot site.",
+        "fr": "Le produit n’a pas encore démontré de performance stable sur un site pilote réel."
       },
       "7": {
-        "en": "Implementation and instrumented monitoring of the process is a real environment.",
-        "fr": "La mise en œuvre et la surveillance instrumentée du processus dans un environnement réel."
+        "en": "Overall performance has not yet been confirmed across multiple sites or usage contexts.",
+        "fr": "Les performances globales ne sont pas encore confirmées à travers plusieurs sites ou contextes d’usage."
       },
       "8": {
-        "en": "Overall performance has not yet been confirmed in actual use or a longer time span.",
-        "fr": "Les performances globales n'ont pas encore été confirmées dans une utilisation réelle ou sur une période plus longue."
-      },
-      "9": {
-        "en": "The test results are comparative and have enabled an iterative evolution covering the intended area of use and enabling a detailed economic and technical assessment for the intended area of application.",
-        "fr": "Les résultats des tests sont comparatifs et ont permis une évolution itérative couvrant le domaine d'utilisation prévu et permettant une évaluation économique et technique détaillée pour le domaine d'application prévu."
+        "en": "The final performance of the product has not yet been certified or validated by an independent body.",
+        "fr": "Les performances finales du produit n’ont pas encore été certifiées ni validées par un organisme indépendant."
       }
     },
     "TRL_Q5": {
       "1": {
-        "en": "No regulatory or voluntary testing carried out.",
-        "fr": "Aucun test réglementaire ou volontaire effectué."
+        "en": "No manufacturing process has yet been considered or described for the solution.",
+        "fr": "Aucun procédé de fabrication n’a encore été envisagé ou décrit pour la solution."
       },
       "2": {
         "en": "Possible manufacturing processes have not yet been tested or validated on a small scale.",
-        "fr": "Les processus de fabrication possibles n'ont pas encore été testés ou validés à petite échelle."
+        "fr": "Les procédés de fabrication possibles n’ont pas encore été testés ni validés à petite échelle."
       },
       "3": {
-        "en": "An initial analysis of regulatory requirements is carried out. An outline of the frameworks of testing solutions is expected.",
-        "fr": "Une analyse initiale des exigences réglementaires est effectuée. Un aperçu des cadres de solutions de test est attendu."
+        "en": "Manufacturing processes are not yet sufficiently defined to guarantee the reproducibility of components.",
+        "fr": "Les procédés de fabrication ne sont pas encore suffisamment définis pour garantir la reproductibilité des composants."
       },
       "4": {
-        "en": "Initial experimental tests carried out in the components are correct.",
-        "fr": "Les premiers tests expérimentaux effectués dans les composants sont corrects."
+        "en": "Production processes have not yet been validated for intermediate volumes.",
+        "fr": "Les procédés de production n’ont pas encore été validés pour des volumes intermédiaires."
       },
       "5": {
-        "en": "Initial accredited tests have been carried out on key interface between components. A simplified CA or LCA screening is performed.",
-        "fr": "Des tests accrédités initiaux ont été effectués sur l'interface clé entre les composants. Un screening ACV ou ACV simplifié est effectué."
+        "en": "The manufacturing process has not yet been validated on a first representative production batch.",
+        "fr": "Le procédé de fabrication n’a pas encore été validé sur un premier lot de production représentatif."
       },
       "6": {
-        "en": "The product and its process of implementation are tested similar to suitability for use.",
-        "fr": "Le produit et son processus de mise en œuvre sont testés de manière similaire à l'aptitude à l'utilisation."
+        "en": "The process has not yet been adapted for continuous or large-scale production.",
+        "fr": "Le procédé n’a pas encore été adapté à une production continue ou à grande échelle."
       },
       "7": {
-        "en": "Initial experimental tests carried out in the components on the first test case. UCA's applied to real case (initial site).",
-        "fr": "Premiers tests expérimentaux effectués dans les composants sur le premier cas de test. Les ACV sont appliquées au cas réel (site initial)."
+        "en": "The industrial process has not yet been validated in different contexts or by different manufacturers.",
+        "fr": "Le procédé industriel n’a pas encore été validé dans différents contextes ou par différents fabricants."
       },
       "8": {
-        "en": "The test results are comparative and have enabled an iterative evolution of the process and product for the pilot site.",
-        "fr": "Les résultats des tests sont comparatifs et ont permis une évolution itérative du processus et du produit pour le site pilote."
-      },
-      "9": {
-        "en": "A final version of ISO14025 is available. Several pilot projects demonstrate market fit and scalability.",
-        "fr": "Une version finale d'ISO14025 est disponible. Plusieurs projets pilotes démontrent l'adéquation au marché et la scalabilité."
+        "en": "The production process is not yet fully optimized, automated or certified.",
+        "fr": "Le procédé de production n’est pas encore totalement optimisé, automatisé ni certifié."
       }
     },
     "TRL_Q6": {
       "1": {
-        "en": "No plan or follow-up.",
-        "fr": "Aucun plan ou suivi."
+        "en": "The integration of the solution into a real environment has not yet been studied.",
+        "fr": "L’intégration de la solution dans un environnement réel n’a pas encore été étudiée."
       },
       "2": {
-        "en": "A project team is identified.",
-        "fr": "Une équipe projet est identifiée."
+        "en": "The interactions between the solution and its immediate environment (users, infrastructures, associated systems) are not yet known.",
+        "fr": "Les interactions entre la solution et son environnement immédiat (utilisateurs, infrastructures, systèmes associés) ne sont pas encore connues."
       },
       "3": {
-        "en": "A budget is elaborated to development and demonstration phases.",
-        "fr": "Un budget est élaboré pour les phases de développement et de démonstration."
+        "en": "Installation and commissioning protocols have not yet been defined.",
+        "fr": "Les protocoles d’installation et de mise en service n’ont pas encore été définis."
       },
       "4": {
-        "en": "The additional required expertise has been added or the team composition has been assessed.",
-        "fr": "L'expertise supplémentaire requise a été ajoutée ou la composition de l'équipe a été évaluée."
+        "en": "Preventive and corrective maintenance operations have not yet been identified or planned.",
+        "fr": "Les opérations de maintenance préventive et corrective ne sont pas encore identifiées ni planifiées."
       },
       "5": {
-        "en": "Validation of KPIs in demonstration or test bench scenario to initial pilot site.",
-        "fr": "Validation des KPI dans un scénario de démonstration ou de banc d'essai vers le site pilote initial."
+        "en": "Feedback on product maintenance and operation has not yet been collected.",
+        "fr": "Le retour d’expérience sur la maintenance et l’exploitation du produit n’a pas encore été collecté."
       },
       "6": {
-        "en": "A first pilot site has been identified on which the owners, partners, are informed and included in the stakeholders implementation, users, and learning are standardized and integrated in organizations.",
-        "fr": "Un premier site pilote a été identifié sur lequel les propriétaires, partenaires sont informés et inclus dans la mise en œuvre des parties prenantes, les utilisateurs et l'apprentissage sont standardisés et intégrés dans les organisations."
+        "en": "The solution has not yet demonstrated its reliability in real operating conditions.",
+        "fr": "La solution n’a pas encore démontré sa fiabilité en conditions réelles d’exploitation."
       },
       "7": {
-        "en": "Tools and training for craftsmen, design offices, partners are informed and included in the stakeholders.",
-        "fr": "Les outils et formations pour les artisans, bureaux d'études, partenaires sont informés et inclus dans les parties prenantes."
+        "en": "Operating and maintenance procedures are not yet formalized or standardized.",
+        "fr": "Les procédures d’exploitation et de maintenance ne sont pas encore formalisées ni standardisées."
       },
       "8": {
-        "en": "Indicators are being tracked for a first pilot site. Measurement tools and guarantees are ready to be used for a pilot site.",
-        "fr": "Les indicateurs sont suivis pour un premier site pilote. Les outils de mesure et les garanties sont prêts à être utilisés pour un site pilote."
-      },
-      "9": {
-        "en": "Continuous monitoring in places to identify any opportunities for improvement, a strategic plan is consolidated by demonstration and validated by tests, quality norms and industrial performance guarantee.",
-        "fr": "Une surveillance continue est en place pour identifier les opportunités d'amélioration, un plan stratégique est consolidé par la démonstration et validé par des tests, des normes de qualité et une garantie de performance industrielle."
+        "en": "The solution is not yet optimized for widespread and sustainable large-scale operation.",
+        "fr": "La solution n’est pas encore optimisée pour une exploitation généralisée et durable à grande échelle."
       }
     },
     "TRL_Q7": {
       "1": {
-        "en": "Areas of need have been identified, but without validation.",
-        "fr": "Des domaines de besoin ont été identifiés, mais sans validation."
+        "en": "The environmental impact of the concept has not yet been assessed.",
+        "fr": "L’impact environnemental du concept n’a pas encore été évalué."
       },
       "2": {
-        "en": "Market study and insight are clarified with actual data (real problems, value).",
-        "fr": "L'étude de marché et les perspectives sont clarifiées avec des données réelles (problèmes réels, valeur)."
+        "en": "No environmental data has yet been collected for the main components.",
+        "fr": "Aucune donnée environnementale n’a encore été collectée pour les composants principaux."
       },
       "3": {
-        "en": "Structured value proposition, validated by MVP use functions model.",
-        "fr": "Proposition de valeur structurée, validée par le modèle de fonctions d'utilisation MVP."
+        "en": "The environmental analysis has not yet been further investigated or compared with equivalent solutions.",
+        "fr": "L’analyse environnementale n’a pas encore été approfondie ni comparée à des solutions équivalentes."
       },
       "4": {
-        "en": "The need validated by user feedback on the first tests, prototypes, etc.",
-        "fr": "Le besoin validé par les retours utilisateurs sur les premiers tests, prototypes, etc."
+        "en": "Life cycle analysis (LCA) has not yet been conducted.",
+        "fr": "L’analyse du cycle de vie (ACV) n’a pas encore été conduite."
       },
       "5": {
-        "en": "The proposed of concept indicates strong potential to achieve strategic objectives (costs, usage, main points of vigilance) for future developments.",
-        "fr": "La proposition de concept indique un fort potentiel pour atteindre les objectifs stratégiques (coûts, utilisation, principaux points de vigilance) pour les développements futurs."
+        "en": "The applicable regulatory and normative requirements have not yet been identified.",
+        "fr": "Les exigences réglementaires et normatives applicables ne sont pas encore identifiées."
       },
       "6": {
-        "en": "The voluntary steps required for this measurability (normalized protocols, etc.) have not been compared with existing reference models.",
-        "fr": "Les étapes volontaires requises pour cette mesurabilité (protocoles normalisés, etc.) n'ont pas été comparées aux modèles de référence existants."
+        "en": "The product has not yet been assessed for regulatory compliance or certified by a competent body.",
+        "fr": "Le produit n’a pas encore été évalué pour sa conformité réglementaire ou certifié par un organisme compétent."
       },
       "7": {
-        "en": "An MVP supports the value proposition and tests, data and justification for early adopters are ready.",
-        "fr": "Un MVP soutient la proposition de valeur et les tests, les données et la justification pour les premiers adopteurs sont prêts."
+        "en": "Eco-design, recyclability or sustainability strategies are not yet integrated.",
+        "fr": "Les stratégies d’écoconception, de recyclabilité ou de durabilité ne sont pas encore intégrées."
       },
       "8": {
-        "en": "The first test and customer feedback on the first demonstration reinforces market interest and perceived relevance.",
-        "fr": "Le premier test et les retours clients sur la première démonstration renforcent l'intérêt du marché et la pertinence perçue."
-      },
-      "9": {
-        "en": "Actual user feedback (compliance) with interest and perceived relevance. Several projects demonstrate market fit and scalability.",
-        "fr": "Retours utilisateurs réels (conformité) avec intérêt et pertinence perçue. Plusieurs projets démontrent l'adéquation au marché et la scalabilité."
+        "en": "The overall impact of the solution on sustainable development has not yet been measured or communicated.",
+        "fr": "L’impact global de la solution sur le développement durable n’a pas encore été mesuré ni communiqué."
       }
     },
     "MkRL_Q1": {
       "1": {
-        "en": "Only exploratory research was conducted on existing manufacturing practices.",
-        "fr": "Seule une recherche exploratoire a été menée sur les pratiques de fabrication existantes."
+        "en": "The initial demand study is too summary and does not validate market assumptions.",
+        "fr": "L'étude de demande initiale est trop sommaire et ne valide pas les hypothèses du marché."
       },
       "2": {
-        "en": "The first manufacturing scenario (equipment, organization) was implemented.",
-        "fr": "Le premier scénario de fabrication (équipement, organisation) a été mis en œuvre."
+        "en": "The value proposition is not yet sufficiently proven by customer feedback or early iterations.",
+        "fr": "La proposition de valeur n'est pas encore suffisamment prouvée par des retours clients ou de premières itérations."
       },
       "3": {
-        "en": "A factory concept is drawn up, and the feasibility of key components has been calculated (manufacturing value chain scenario).",
-        "fr": "Un concept d'usine est élaboré et la faisabilité des composants clés a été calculée (scénario de chaîne de valeur de fabrication)."
+        "en": "The structure of the value proposition is not yet validated by a tested functional model.",
+        "fr": "La structure de la proposition de valeur n'est pas encore validée par une maquette fonctionnelle testée."
       },
       "4": {
-        "en": "Small-scale prototypes were used to select a reliable method (proof-of-concept) validated.",
-        "fr": "Des prototypes à petite échelle ont été utilisés pour sélectionner une méthode fiable (preuve de concept) validée."
+        "en": "User feedback for the first stages is not yet used to validate the benefits and perceived relevance.",
+        "fr": "Les retours utilisateurs pour les premières étapes ne sont pas encore utilisés pour valider les bénéfices et la pertinence perçue."
       },
       "5": {
-        "en": "The production organization and overall production are documented and compared with similar models.",
-        "fr": "L'organisation de production et la production globale sont documentées et comparées avec des modèles similaires."
+        "en": "The demonstration of relevance is still weak, being only at the trial or test bench stage.",
+        "fr": "La démonstration de la pertinence est encore faible, n'étant qu'au stade de l'essai ou du banc d'essai."
       },
       "6": {
-        "en": "Small-scale prototypes are produced and implemented in a comparable manufacturing environment.",
-        "fr": "Des prototypes à petite échelle sont produits et mis en œuvre dans un environnement de fabrication comparable."
+        "en": "The user feedback is clear, but has not yet resulted in confirmation of the expectations of target customers.",
+        "fr": "Les retours d'usage sont clairs, mais n'ont pas encore abouti à la confirmation des attentes des clients cibles."
       },
       "7": {
-        "en": "A full-scale manufacturing is operational; the production line is qualified for external, the industrialized and commercial pilot (SME).",
-        "fr": "Une fabrication à grande échelle est opérationnelle; la ligne de production est qualifiée pour l'externe, le pilote industrialisé et commercial (PME)."
+        "en": "Market fit and credibility are demonstrated, but not yet reinforced by successful pilot projects.",
+        "fr": "L'adéquation au marché et la crédibilité sont montrées, mais ne sont pas encore renforcées par des projets pilotes réussis."
       },
       "8": {
-        "en": "The production line is qualified for external, the industrialized and commercial pilot (SME).",
-        "fr": "La ligne de production est qualifiée pour l'externe, le pilote industrialisé et commercial (PME)."
-      },
-      "9": {
-        "en": "Social production in place, in operation as currently used in the industrial and commercial (ISM-PE). Preparation post stabilized not launch. The process and not yet validated and sustained into.",
-        "fr": "Production sociale en place, en opération tel qu'actuellement utilisé dans l'industriel et commercial (ISM-PE). Préparation post stabilisée non lancée. Le processus et pas encore validé et soutenu."
+        "en": "The adoption of the product or service is not yet effective and has not yet reached the target market.",
+        "fr": "L'adoption du produit ou service n'est pas encore effective et n'a pas encore permis d'atteindre le marché cible."
       }
     },
     "MkRL_Q2": {
       "1": {
-        "en": "Industrial capabilities are analyzed with regard to the concept.",
-        "fr": "Les capacités industrielles sont analysées par rapport au concept."
+        "en": "The requirements are identified, but a development strategy has not yet been developed to meet them.",
+        "fr": "Les exigences sont identifiées, mais une stratégie de développement n'est pas encore élaborée pour les satisfaire."
       },
       "2": {
-        "en": "An initial material organization has been assembled.",
-        "fr": "Une organisation matérielle initiale a été assemblée."
+        "en": "The concept is designed, but the points of vigilance concerning competition or risks are not yet fully integrated.",
+        "fr": "Le concept est conçu, mais les points de vigilance concernant la concurrence ou les risques ne sont pas encore totalement intégrés."
       },
       "3": {
-        "en": "Models or partial elements are made for proof-of-concept testing in a lab-scale setting.",
-        "fr": "Des modèles ou éléments partiels sont réalisés pour des tests de preuve de concept à l'échelle du laboratoire."
+        "en": "Voluntary approaches have not yet been formalized to ensure the commitment and responsibility of all parties.",
+        "fr": "Les démarches volontaires ne sont pas encore formalisées pour assurer l'engagement et la responsabilité de toutes les parties."
       },
       "4": {
-        "en": "The supply chain is documented up to manufacturing.",
-        "fr": "La chaîne d'approvisionnement est documentée jusqu'à la fabrication."
+        "en": "The strategy (tests, tools, commitments) is outlined, but needs to be detailed and formalized.",
+        "fr": "La stratégie (tests, outils, engagements) est esquissée, mais nécessite d'être détaillée et formalisée."
       },
       "5": {
-        "en": "Partners are identified, flows are modeled and communicated.",
-        "fr": "Les partenaires sont identifiés, les flux sont modélisés et communiqués."
+        "en": "Validation of key performance indicators (KPIs) is limited to a demonstration or test bench.",
+        "fr": "La validation des indicateurs clés de performance (KPIs) est limitée à une démonstration ou un banc d'essai."
       },
       "6": {
-        "en": "Consideration of costs for the business plan and verification of the model. Cost validated on prototypes or small series.",
-        "fr": "Prise en compte des coûts pour le plan d'affaires et vérification du modèle. Coût validé sur prototypes ou petites séries."
+        "en": "The success indicators have been defined, but the measurement tools are not yet in place on a first pilot site.",
+        "fr": "Les indicateurs de succès sont définis, mais les outils de mesure ne sont pas encore en place sur un premier site pilote."
       },
       "7": {
-        "en": "Tools and training for craftsmen, design offices, partners are developed and tested with all stakeholders for dissemination at a pilot site.",
-        "fr": "Des outils et des formations pour les artisans, bureaux d'études, partenaires sont développés et testés avec toutes les parties prenantes pour diffusion sur un site pilote."
+        "en": "The measurement of indicators is satisfactory, but the performance guarantee has not yet been formally tested and validated.",
+        "fr": "La mesure des indicateurs est satisfaisante, mais la garantie de performance n'est pas encore testée et validée formellement."
       },
       "8": {
-        "en": "Cost confirmed on a first pilot site. Pre-commercial demonstration reinforces market adoption.",
-        "fr": "Coût confirmé sur un premier site pilote. La démonstration pré-commerciale renforce l'adoption du marché."
-      },
-      "9": {
-        "en": "The business model is consolidated (mission proven) & sustained operations. Cost confirmed on several pilot projects.",
-        "fr": "Le modèle économique est consolidé (mission prouvée) et opérations soutenues. Coût confirmé sur plusieurs projets pilotes."
+        "en": "The guarantee is validated, but the commercial activity needs to be structured to ensure good feedback.",
+        "fr": "La garantie est validée, mais l'activité commerciale nécessite d'être structurée pour assurer un bon retour d'expérience."
       }
     },
     "MkRL_Q3": {
       "1": {
-        "en": "Only exploratory research was conducted on production in manufacturing or existing.",
-        "fr": "Seule une recherche exploratoire a été menée sur la production en fabrication ou existante."
+        "en": "The Business Model is based on revenue and customer segment assumptions that need to be verified.",
+        "fr": "Le Business Model est basé sur des hypothèses de revenus et de segments clients qui nécessitent d'être vérifiées."
       },
       "2": {
-        "en": "Production constraints are beginning to be in place.",
-        "fr": "Les contraintes de production commencent à être en place."
+        "en": "The Business Model is complete but is not yet validated by real data on value, price or customer relationships.",
+        "fr": "Le Business Model est complet mais n'est pas encore validé par des données réelles de valeur, prix ou relations clients."
       },
       "3": {
-        "en": "Technical specifications and industrial processes are defined.",
-        "fr": "Les spécifications techniques et les processus industriels sont définis."
+        "en": "The MVP and value proposition are ready, but the price/usage strategy is not yet tested.",
+        "fr": "Le MVP et la proposition de valeur sont prêts, mais la stratégie prix/usage n'est pas encore testée."
       },
       "4": {
-        "en": "Quality control criteria are drawn up by the manufacturing organizations.",
-        "fr": "Les critères de contrôle qualité sont établis par les organisations de fabrication."
+        "en": "The Business Model is defined but does not yet have feedback from early adopters on prototypes or real data.",
+        "fr": "Le Business Model est défini mais n'a pas encore de retours des early adopters sur les prototypes ou données réelles."
       },
       "5": {
-        "en": "Production documentation is available and validated by the manufacturing organizations.",
-        "fr": "La documentation de production est disponible et validée par les organisations de fabrication."
+        "en": "The Business Model is in place, but needs to be validated by real data from initial user feedback.",
+        "fr": "Le Business Model est en place, mais nécessite d'être validé par des données réelles issues des premiers retours utilisateurs."
       },
       "6": {
-        "en": "Industrial resources are installed and validated successful real case.",
-        "fr": "Les ressources industrielles sont installées et validées avec succès dans un cas réel."
+        "en": "The Business Model is validated by demonstrations and KPIs, but is not yet consolidated for launch.",
+        "fr": "Le Business Model est validé par des démonstrations et des KPIs, mais n'est pas encore consolidé pour le lancement."
       },
       "7": {
-        "en": "The physical infrastructure and systems are in real-life situations, but the repeatability of operation has not yet been confirmed.",
-        "fr": "L'infrastructure physique et les systèmes sont dans des situations réelles, mais la répétabilité de l'opération n'a pas encore été confirmée."
+        "en": "The Business Model is formalized, but monitoring for adjustment before commercial launch is not yet effective.",
+        "fr": "Le Business Model est formalisé, mais le suivi pour l'ajustement avant le lancement commercial n'est pas encore effectif."
       },
       "8": {
-        "en": "A full-scale manufacturing is operational; the production line is qualified, manufacturing and implementation monitor of the full project on a real site. Logistics are efficient, with traceability, labeling, all guarantee information, warranty. The control chain.",
-        "fr": "Une fabrication à grande échelle est opérationnelle; la ligne de production est qualifiée, surveillance de la fabrication et de la mise en œuvre du projet complet sur un site réel. La logistique est efficace, avec traçabilité, étiquetage, toutes les informations de garantie. La chaîne de contrôle."
-      },
-      "9": {
-        "en": "Production is in place, but its monitoring and adjustment of key performance criteria are efficiently and continuously managed after launch. Quality control is continuously integrated and managed for commercial and industrial purposes.",
-        "fr": "La production est en place, mais sa surveillance et l'ajustement des critères de performance clés sont gérés efficacement et en continu après le lancement. Le contrôle qualité est continuellement intégré et géré à des fins commerciales et industrielles."
+        "en": "The business model is adjusted, but post-launch monitoring and adjustment are not yet assured.",
+        "fr": "Le Business Model est ajusté, mais le suivi et l'ajustement post-lancement ne sont pas encore assurés."
       }
     },
     "MkRL_Q4": {
       "1": {
-        "en": "No prototypes was made.",
-        "fr": "Aucun prototype n'a été réalisé."
+        "en": "The cost estimate is based solely on assumptions and needs to be supported by prototype data.",
+        "fr": "L'estimation du coût est basée uniquement sur des hypothèses et nécessite d'être étayée par des données de prototypes."
       },
       "2": {
-        "en": "Production process and materials are identified.",
-        "fr": "Le processus de production et les matériaux sont identifiés."
+        "en": "The detailed cost is established, but the integration of the variants is not yet complete.",
+        "fr": "Le coût détaillé est établi, mais l'intégration des variantes n'est pas encore terminée."
       },
       "3": {
-        "en": "Models or partial elements are made for proof-of-concept testing in a lab-scale setting.",
-        "fr": "Des modèles ou éléments partiels sont réalisés pour des tests de preuve de concept à l'échelle du laboratoire."
+        "en": "The cost is consolidated, but does not yet reflect the pricing strategy and business plan.",
+        "fr": "Le coût est consolidé, mais ne reflète pas encore la stratégie prix et le business plan."
       },
       "4": {
-        "en": "Working prototypes of components are ready for demonstration (proof-of-concept).",
-        "fr": "Des prototypes fonctionnels de composants sont prêts pour la démonstration (preuve de concept)."
+        "en": "The cost is consolidated, but not yet validated by a prototype or a small production series.",
+        "fr": "Le coût est consolidé, mais n'est pas encore validé par un prototype ou une faible série de production."
       },
       "5": {
-        "en": "The logistics plan is integrated (transport, storage), but partners have not yet been identified or confirmed.",
-        "fr": "Le plan logistique est intégré (transport, stockage), mais les partenaires n'ont pas encore été identifiés ou confirmés."
+        "en": "The cost is validated, but final confirmation by a first launch site has not yet been obtained.",
+        "fr": "Le coût est validé, mais la confirmation finale par un premier site de lancement n'est pas encore obtenue."
       },
       "6": {
-        "en": "Sites and building organizations, are ready to integrate a first pilot site. Complete system is manufactured and implemented, but the test environment differs from the actual lab or a real environment, and test has not yet been carried out.",
-        "fr": "Les sites et organisations de construction sont prêts à intégrer un premier site pilote. Le système complet est fabriqué et mis en œuvre, mais l'environnement de test diffère du laboratoire réel ou d'un environnement réel, et le test n'a pas encore été effectué."
+        "en": "The cost is confirmed by a first pilot site, but is not yet validated by several pilot projects.",
+        "fr": "Le coût est confirmé par un premier site pilote, mais n'est pas encore validé par plusieurs projets pilotes."
       },
       "7": {
-        "en": "The logistics plan integrates transport, storage and partners, and flows are integrated at the pilot site.",
-        "fr": "Le plan logistique intègre le transport, le stockage et les partenaires, et les flux sont intégrés au site pilote."
+        "en": "The cost has been validated by several pilot projects, but post-launch monitoring has not yet been ensured.",
+        "fr": "Le coût est validé par plusieurs projets pilotes, mais le suivi après le lancement n'est pas encore assuré."
       },
       "8": {
-        "en": "Indicators are being tracked for a first pilot site.",
-        "fr": "Les indicateurs sont suivis pour un premier site pilote."
-      },
-      "9": {
-        "en": "Production at stabilized scale (launch); the actual test results (final site) are available for follow up, guarantee for the marketplace.",
-        "fr": "Production à l'échelle stabilisée (lancement); les résultats de test réels (site final) sont disponibles pour le suivi, garantie pour le marché."
+        "en": "The production cost has stabilized, but monitoring and adjustment of the sales price is not yet guaranteed.",
+        "fr": "Le coût de production est stabilisé, mais le suivi et l'ajustement du prix de vente n'est pas encore garanti."
       }
     },
     "MfRL_Q1": {
       "1": {
-        "en": "No plan or estimates.",
-        "fr": "Aucun plan ou estimation."
+        "en": "The manufacturing scenarios are outlined, but the organization (human and material) is not yet detailed.",
+        "fr": "Les scénarios de fabrication sont esquissés, mais l'organisation (humaine et matérielle) n'est pas encore détaillée."
       },
       "2": {
-        "en": "Estimated cost from economic data or past.",
-        "fr": "Coût estimé à partir de données économiques ou passées."
+        "en": "The unified production concept is established, but the feasibility of the components is only validated in the laboratory.",
+        "fr": "Le concept de production unifié est établi, mais la faisabilité des composants n'est validée qu'en laboratoire."
       },
       "3": {
-        "en": "Detailed cost based on reasoned hypotheses and success of initial hypothesis or project.",
-        "fr": "Coût détaillé basé sur des hypothèses raisonnées et le succès de l'hypothèse initiale ou du projet."
+        "en": "The organization and flows are documented, but their comparison with models is not yet complete.",
+        "fr": "L'organisation et les flux sont documentés, mais leur confrontation avec des maquettes n'est pas encore complète."
       },
       "4": {
-        "en": "A budget is elaborated for development and demonstration phases.",
-        "fr": "Un budget est élaboré pour les phases de développement et de démonstration."
+        "en": "Small-scale prototypes are selected, but planning for implementation is lacking.",
+        "fr": "Des prototypes à petite échelle sont sélectionnés, mais la planification de la réalisation est manquante."
       },
       "5": {
-        "en": "An MVP supports the value proposition and tests data and justification for early-adoption hypothesis.",
-        "fr": "Un MVP soutient la proposition de valeur et teste les données et la justification pour l'hypothèse d'adoption précoce."
+        "en": "A prototype is made at scale 1, but implementation in a relevant environment is not yet effective.",
+        "fr": "Un prototype est réalisé à l'échelle 1, mais la mise en œuvre dans un environnement pertinent n'est pas encore effective."
       },
       "6": {
-        "en": "Integration of building variants and suggestion (co-design with clients).",
-        "fr": "Intégration de variantes de construction et suggestion (co-conception avec les clients)."
+        "en": "An operational unit has been set up, but the actual rate of use of resources and the optimization of flows have not yet been tested.",
+        "fr": "Une unité opérationnelle est installée, mais la cadence réelle des moyens et l'optimisation des flux ne sont pas encore testées."
       },
       "7": {
-        "en": "The cost has been validated by several pilot projects, but post-launch monitoring that has not been ensured or guaranteed for operation has not been optimized.",
-        "fr": "Le coût a été validé par plusieurs projets pilotes, mais la surveillance post-lancement qui n'a pas été assurée ou garantie pour l'exploitation n'a pas été optimisée."
+        "en": "The production line is qualified (quality/quantity) but requires validation by an external organization (e.g. customer).",
+        "fr": "La ligne de production est qualifiée (qualité/quantité) mais nécessite une validation par une organisation externe (ex : client)."
       },
       "8": {
-        "en": "Indicators are involved in several real-world scenarios. The solution is being optimized for a broader commercial deployment and refined performance guarantee. Warranty activated on commercial and industrial projects (market).",
-        "fr": "Les indicateurs sont impliqués dans plusieurs scénarios réels. La solution est optimisée pour un déploiement commercial plus large et une garantie de performance affinée. Garantie activée sur les projets commerciaux et industriels (marché)."
-      },
-      "9": {
-        "en": "The business model is consolidated and validated for scale-up. The price/cost has been validated, but the operating cost has not yet been guaranteed. Continuous monitoring in places to identify any opportunities.",
-        "fr": "Le modèle économique est consolidé et validé pour la mise à l'échelle. Le prix/coût a été validé, mais le coût opérationnel n'a pas encore été garanti. Surveillance continue en place pour identifier toute opportunité."
+        "en": "Production is in place, but its monitoring (Sales & Operations Planning, S&OP) is not yet fully optimized or formalized.",
+        "fr": "La production est en place, mais son suivi (Sales & Operations Planning, S&OP) n'est pas encore totalement optimisé ou formalisé."
       }
     },
     "MfRL_Q2": {
       "1": {
-        "en": "No structured thinking about the supply chain.",
-        "fr": "Aucune réflexion structurée sur la chaîne d'approvisionnement."
+        "en": "Industrial capabilities are being analyzed at the concept level, but technical feasibility is not yet confirmed.",
+        "fr": "Les capacités industrielles sont analysées au niveau du concept, mais la faisabilité technique n'est pas encore confirmée."
       },
       "2": {
-        "en": "An initial material organization has been assembled.",
-        "fr": "Une organisation matérielle initiale a été assemblée."
+        "en": "The mockups and study elements are finalized, but the integration and testing of the exploratory components have not yet been carried out.",
+        "fr": "Les maquettes et les éléments d'étude sont fins, mais l'intégration et le test des composants exploratoires ne sont pas encore effectués."
       },
       "3": {
-        "en": "Organizational structures and process flows are documented, but not yet compared with reference models.",
-        "fr": "Les structures organisationnelles et les flux de processus sont documentés, mais pas encore comparés aux modèles de référence."
+        "en": "Working prototypes are available, but their full laboratory testing has not yet been carried out.",
+        "fr": "Des prototypes fonctionnels sont disponibles, mais leur test complet en laboratoire n'est pas encore réalisé."
       },
       "4": {
-        "en": "The logistics plan is integrated (transport, storage), but partners have not yet been identified or confirmed.",
-        "fr": "Le plan logistique est intégré (transport, stockage), mais les partenaires n'ont pas encore été identifiés ou confirmés."
+        "en": "The prototypes are being tested in the laboratory, but implementation on a test bench or in a real environment has not yet been carried out.",
+        "fr": "Les prototypes sont testés en laboratoire, mais la mise en œuvre sur banc d'essai ou en environnement réel n'est pas encore effectuée."
       },
       "5": {
-        "en": "Experimented teams or partners, flows modeled and communicated.",
-        "fr": "Équipes ou partenaires expérimentés, flux modélisés et communiqués."
+        "en": "A complete system is manufactured and implemented, but the test environment is still a (non-representative) laboratory building.",
+        "fr": "Un système complet est fabriqué et mis en œuvre, mais l'environnement de test est encore un bâtiment de laboratoire (non représentatif)."
       },
       "6": {
-        "en": "Sites stakeholders (implementation, users, are informed and included in the stakeholders).",
-        "fr": "Les parties prenantes des sites (mise en œuvre, utilisateurs) sont informées et incluses dans les parties prenantes."
+        "en": "The physical infrastructure and systems are there, but real-life implementation is not yet confirmed.",
+        "fr": "Les infrastructures physiques et systèmes sont là, mais la mise en œuvre en situation réelle n'est pas encore confirmée."
       },
       "7": {
-        "en": "The infrastructure and systems are in real-life situations, but the repeatability of operation has not yet been confirmed.",
-        "fr": "L'infrastructure et les systèmes sont dans des situations réelles, mais la répétabilité de l'opération n'a pas encore été confirmée."
+        "en": "The infrastructure and systems are in real-life situations, but the repeatability of operations has not yet been confirmed.",
+        "fr": "Les infrastructures et les systèmes sont en situation réelle, mais la répétabilité des opérations n'est pas encore confirmée."
       },
       "8": {
-        "en": "Tools and training for craftsmen, design offices, partners are standardized (integrated) with all stakeholders for the first site with agreement. Several commercial applications are available. The production systems are in place, and the logistics processes have been implemented and validated by the first site.",
-        "fr": "Les outils et formations pour les artisans, bureaux d'études, partenaires sont standardisés (intégrés) avec toutes les parties prenantes pour le premier site avec accord. Plusieurs applications commerciales sont disponibles. Les systèmes de production sont en place, et les processus logistiques ont été mis en œuvre et validés par le premier site."
-      },
-      "9": {
-        "en": "The supply chain is stabilized, but the continuous improvements that needs to be organized in series. Several projects demonstrate market fit and post-operations, logistics are efficient, with traceability, labeling.",
-        "fr": "La chaîne d'approvisionnement est stabilisée, mais les améliorations continues qui doivent être organisées en série. Plusieurs projets démontrent l'adéquation au marché et les post-opérations, la logistique est efficace, avec traçabilité, étiquetage."
+        "en": "Production is operational, but the integration of maintenance and performance monitoring is not yet optimized.",
+        "fr": "La production est opérationnelle, mais l'intégration de la maintenance et du suivi de la performance n'est pas encore optimisée."
       }
     },
     "MfRL_Q3": {
       "1": {
-        "en": "No formalization of the economic model or plans.",
-        "fr": "Aucune formalisation du modèle économique ou des plans."
+        "en": "An initial logistical organization is outlined, but the details of the flows have not yet been established.",
+        "fr": "Une première organisation logistique est esquissée, mais les détails des flux ne sont pas encore établis."
       },
       "2": {
-        "en": "A business plan is currently being drawn up with assumptions about demand, business canvas, etc.",
-        "fr": "Un plan d'affaires est actuellement en cours d'élaboration avec des hypothèses sur la demande, le canevas commercial, etc."
+        "en": "The supply chain is documented, but its integration up to manufacturing is not yet assured.",
+        "fr": "La chaîne logistique est documentée, mais son intégration jusqu'à la fabrication n'est pas encore assurée."
       },
       "3": {
-        "en": "The proposal of concept indicates strong potential to achieve strategic objectives (costs, usage, main points of vigilance) for future developments.",
-        "fr": "La proposition de concept indique un fort potentiel pour atteindre les objectifs stratégiques (coûts, utilisation, principaux points de vigilance) pour les développements futurs."
+        "en": "The logistics plan is integrated (transport, storage), but the partners have not yet been identified or confirmed.",
+        "fr": "Le schéma logistique est intégré (transport, stockage), mais les partenaires ne sont pas encore identifiés ou confirmés."
       },
       "4": {
-        "en": "Market study and insight are clarified with actual data (real problems, value) side use with real data (problems, value).",
-        "fr": "L'étude de marché et les perspectives sont clarifiées avec des données réelles (problèmes réels, valeur) utilisation avec des données réelles (problèmes, valeur)."
+        "en": "The partners are identified, but the flows are not yet modeled or refined for the entire chain.",
+        "fr": "Les partenaires sont identifiés, mais les flux ne sont pas encore modélisés ou affinés pour l'ensemble de la chaîne."
       },
       "5": {
-        "en": "The purpose of business plan, including value proposition, is clarified with client side use with real data (problems, value).",
-        "fr": "L'objectif du plan d'affaires, y compris la proposition de valeur, est clarifié avec l'utilisation côté client avec des données réelles (problèmes, valeur)."
+        "en": "The logistics plan has been validated, but the actual on-site quality audit has not yet been carried out.",
+        "fr": "Le schéma logistique est validé, mais l'audit qualité sur site réel n'est pas encore réalisé."
       },
       "6": {
-        "en": "An MVP supports the value proposition and tests data and justification for early-adoption hypothesis with client side use with real data (problems, value).",
-        "fr": "Un MVP soutient la proposition de valeur et teste les données et la justification pour l'hypothèse d'adoption précoce avec l'utilisation côté client avec des données réelles (problèmes, valeur)."
+        "en": "Logistics are efficient, but traceability and flow balancing are not yet formalized and mastered.",
+        "fr": "La logistique est performante, mais la traçabilité et l'équilibrage des flux ne sont pas encore formalisés et maîtrisés."
       },
       "7": {
-        "en": "Integration of building variants and suggestion (co-design with clients). The cost structure is consolidated, but monitoring for adjustment before commercial is not yet effective.",
-        "fr": "Intégration de variantes de construction et suggestion (co-conception avec les clients). La structure de coûts est consolidée, mais la surveillance pour l'ajustement avant commercial n'est pas encore effective."
+        "en": "The supply chain is stabilized, but the integration of flows with production needs to be aligned in series.",
+        "fr": "La chaîne logistique est stabilisée, mais l'intégration des flux avec la production nécessite d'être alignée en série."
       },
       "8": {
-        "en": "Data and justification for early-adoption hypothesis with perceived relevance validated and tested with early targets, and hypothesis of volumes. The business model is validated by demonstration and KPIs, but final monitoring has not been set to daily consolidated by launch.",
-        "fr": "Données et justification pour l'hypothèse d'adoption précoce avec pertinence perçue validée et testée avec les cibles précoces, et hypothèse de volumes. Le modèle économique est validé par la démonstration et les KPI, mais la surveillance finale n'a pas été définie pour être consolidée quotidiennement au lancement."
-      },
-      "9": {
-        "en": "A comprehensive system is manufactured and implemented at large scale (market production) & industrial manufacturing process. The business model has been validated, but monitoring and adjustment after production is not yet stabilized or formalized. The business model is adjusted, but post-operations stabilization where it is not yet stabilized.",
-        "fr": "Un système complet est fabriqué et mis en œuvre à grande échelle (production de marché) et processus de fabrication industrielle. Le modèle économique a été validé, mais la surveillance et l'ajustement après la production ne sont pas encore stabilisés ou formalisés. Le modèle économique est ajusté, mais la stabilisation post-opérations où il n'est pas encore stabilisé."
+        "en": "Quality control is integrated, but continuous improvement is not yet formalized by structured feedback.",
+        "fr": "Le contrôle qualité est intégré, mais l'amélioration continue n'est pas encore formalisée par un retour d'expérience structuré."
       }
     },
     "MfRL_Q4": {
       "1": {
-        "en": "No quality system or control in place.",
-        "fr": "Aucun système qualité ou contrôle en place."
+        "en": "Technical and regulatory constraints are listed, but process specifications are not yet documented.",
+        "fr": "Les contraintes techniques et réglementaires sont listées, mais les spécifications de processus ne sont pas encore documentées."
       },
       "2": {
-        "en": "An initial material organization has been assembled.",
-        "fr": "Une organisation matérielle initiale a été assemblée."
+        "en": "Process specifications are described, but quality control sheets for services are not yet written.",
+        "fr": "Les spécifications de processus sont décrites, mais les feuilles de contrôle qualité pour les services ne sont pas encore rédigées."
       },
       "3": {
-        "en": "Production constraints are beginning to be in place.",
-        "fr": "Les contraintes de production commencent à être en place."
+        "en": "The quality control sheets are written, but the production documentation is not yet installed and validated according to the operator stations.",
+        "fr": "Les feuilles de contrôle qualité sont rédigées, mais la documentation de production n'est pas encore installée et validée selon les postes opérateurs."
       },
       "4": {
-        "en": "Technical specifications and industrial processes are defined.",
-        "fr": "Les spécifications techniques et les processus industriels sont définis."
+        "en": "The production documentation is installed, but the industrial means have not yet been validated and tested according to the procedures.",
+        "fr": "La documentation de production est installée, mais les moyens industriels ne sont pas encore validés et éprouvés selon les procédures."
       },
       "5": {
-        "en": "Quality control criteria are drawn up by the production documentation is available and validated by the test.",
-        "fr": "Les critères de contrôle qualité sont établis par la documentation de production qui est disponible et validée par le test."
+        "en": "The industrial means are validated, but quality compliance at each stage has not yet been formalized by a pilot operator.",
+        "fr": "Les moyens industriels sont validés, mais la conformité qualité à chaque étape n'est pas encore formalisée par un opérateur pilote."
       },
       "6": {
-        "en": "Production documentation is available and validated by the manufacturing organization.",
-        "fr": "La documentation de production est disponible et validée par l'organisation de fabrication."
+        "en": "Quality compliance is validated via a pilot operator, but the updating of measurement and control tools is not yet systematic.",
+        "fr": "La conformité qualité est validée via un opérateur pilote, mais la mise à jour des outils de mesure et de contrôle n'est pas encore systématique."
       },
       "7": {
-        "en": "Industrial resources are installed and validated successful real case.",
-        "fr": "Les ressources industrielles sont installées et validées avec succès dans un cas réel."
+        "en": "The tools are maintained, but the skilled operator is not yet certified to train others.",
+        "fr": "Les outils sont maintenus, mais l'opérateur qualifié n'est pas encore certifié pour assurer la formation des autres."
       },
       "8": {
-        "en": "Quality, manufacturing and implementation monitor of the full project as a real site. Logistics are efficient with traceability labeling, all guarantee information, warranty. Tools are maintained, operators are properly trained, and quality control is continuously integrated and managed. Production is operational, but the monitoring and updating of measurement and performance monitoring skilled operators and the.",
-        "fr": "Surveillance de la qualité, de la fabrication et de la mise en œuvre du projet complet comme un site réel. La logistique est efficace avec étiquetage de traçabilité, toutes les informations de garantie. Les outils sont maintenus, les opérateurs sont correctement formés, et le contrôle qualité est continuellement intégré et géré. La production est opérationnelle, mais la surveillance et la mise à jour de la mesure et du suivi des performances des opérateurs qualifiés et le."
-      },
-      "9": {
-        "en": "Quality control is continuously integrated and managed for commercial and industrial purposes. Production systems and protocols for industrial infrastructure and systems are daily consolidated. Warranty and the comprehensive monitoring system and serial quality control.",
-        "fr": "Le contrôle qualité est continuellement intégré et géré à des fins commerciales et industrielles. Les systèmes de production et protocoles pour l'infrastructure industrielle et les systèmes sont consolidés quotidiennement. Garantie et système de surveillance complet et contrôle qualité en série."
+        "en": "Quality control is integrated, but the management of non-conformities and serial quality returns is not yet optimized.",
+        "fr": "Le contrôle qualité est intégré, mais la gestion des non-conformités et des retours qualité en série n'est pas encore optimisée."
       }
     }
   },
@@ -1425,7 +1365,7 @@
       },
       "2": {
         "en": "Describe the solution and perform a state-of-the-art analysis",
-        "fr": "Décrire la solution et effectuer une analyse de l'état de l'art"
+        "fr": "Décrire la solution et réaliser une analyse de l'état de l'art"
       },
       "3": {
         "en": "Select and describe main components",
@@ -1441,11 +1381,11 @@
       },
       "6": {
         "en": "Carry out experimental implementation and document feedback",
-        "fr": "Réaliser une mise en œuvre expérimentale et documenter les retours"
+        "fr": "Réaliser une mise en œuvre expérimentale et documenter les retours d'expérience"
       },
       "7": {
-        "en": "Set up KPI monitoring dashboard",
-        "fr": "Mettre en place un tableau de bord de suivi des KPI"
+        "en": "Collect and analyze multiple feedbacks",
+        "fr": "Collecter et analyser plusieurs retours d'expérience"
       },
       "8": {
         "en": "Finalize and consolidate the technical file",
@@ -1455,7 +1395,7 @@
     "TRL_Q2": {
       "1": {
         "en": "Create a first sketch or preliminary diagram",
-        "fr": "Créer une première esquisse ou un schéma préliminaire"
+        "fr": "Réaliser une première esquisse ou un schéma préliminaire"
       },
       "2": {
         "en": "Produce 3D views or simplified digital models",
@@ -1470,8 +1410,8 @@
         "fr": "Développer un modèle CAO/BIM détaillé"
       },
       "5": {
-        "en": "Update CAD/BIM model with feedback from pilot project",
-        "fr": "Mettre à jour le modèle CAO/BIM avec les retours du projet pilote"
+        "en": "Update CAD/BIM model with feedback from prototypes",
+        "fr": "Mettre à jour le modèle CAO/BIM avec les retours des prototypes testés"
       },
       "6": {
         "en": "Use CAD/BIM for design and monitoring of a pilot project",
@@ -1479,21 +1419,22 @@
       },
       "7": {
         "en": "Finalize CAD/BIM for commercial distribution",
-        "fr": "Finaliser la CAO/BIM pour la distribution commerciale"
+        "fr": "Finaliser le modèle CAO/BIM pour sa diffusion commerciale"
       },
       "8": {
         "en": "Optimize and standardize for industrial deployment",
-        "fr": "Optimiser et standardiser pour le déploiement industriel"
+        "fr": "Optimiser et standardiser pour un déploiement industriel"
       }
     },
+  
     "TRL_Q3": {
       "1": {
-        "en": "Design and manufacture first prototype",
-        "fr": "Concevoir et fabriquer le premier prototype"
+        "en": "Design and manufacture a first prototype",
+        "fr": "Concevoir et fabriquer un premier prototype"
       },
       "2": {
         "en": "Carry out feasibility tests",
-        "fr": "Effectuer des tests de faisabilité"
+        "fr": "Réaliser des tests de faisabilité"
       },
       "3": {
         "en": "Perform integrated tests",
@@ -1501,7 +1442,7 @@
       },
       "4": {
         "en": "Carry out tests under realistic conditions",
-        "fr": "Effectuer des tests dans des conditions réalistes"
+        "fr": "Réaliser des tests dans des conditions réalistes"
       },
       "5": {
         "en": "Install and test the prototype in a real environment",
@@ -1516,10 +1457,11 @@
         "fr": "Évaluer dans plusieurs contextes d'application"
       },
       "8": {
-        "en": "Perform final large-scale validation",
-        "fr": "Effectuer la validation finale à grande échelle"
+        "en": "Perform final large-scale validation tests",
+        "fr": "Effectuer les tests de validation finale à grande échelle"
       }
     },
+  
     "TRL_Q4": {
       "1": {
         "en": "Initial functional validation",
@@ -1531,11 +1473,11 @@
       },
       "3": {
         "en": "Integration and operational tests",
-        "fr": "Tests d'intégration et opérationnels"
+        "fr": "Tests d'intégration et de fonctionnement opérationnel"
       },
       "4": {
-        "en": "Define performance indicators and demonstration",
-        "fr": "Définir les indicateurs de performance et démonstration"
+        "en": "Define performance indicators and demonstrator tests",
+        "fr": "Définir les indicateurs de performance et les tests du démonstrateur"
       },
       "5": {
         "en": "Test in representative environments",
@@ -1543,7 +1485,7 @@
       },
       "6": {
         "en": "Complete demonstration on pilot site",
-        "fr": "Démonstration complète sur site pilote"
+        "fr": "Réaliser une démonstration complète sur site pilote"
       },
       "7": {
         "en": "Extend validation to multiple pilot sites",
@@ -1554,6 +1496,7 @@
         "fr": "Validation des performances et certification"
       }
     },
+  
     "TRL_Q5": {
       "1": {
         "en": "Identify potential manufacturing processes",
@@ -1572,23 +1515,59 @@
         "fr": "Mettre en place une ligne pilote ou semi-industrielle"
       },
       "5": {
+        "en": "Produce and control a first industrial batch",
+        "fr": "Produire et contrôler un premier lot industriel"
+      },
+      "6": {
+        "en": "Adapt and optimize for mass or continuous production",
+        "fr": "Adapter et optimiser pour une production de masse ou continue"
+      },
+      "7": {
+        "en": "Validate process at several manufacturers",
+        "fr": "Valider le procédé auprès de plusieurs fabricants"
+      },
+      "8": {
+        "en": "Optimize, automate and certify the process",
+        "fr": "Optimiser, automatiser et certifier le processus"
+      }
+    },
+  
+    "TRL_Q6": {
+      "1": {
+        "en": "Identify constraints and integration conditions",
+        "fr": "Identifier les contraintes et conditions d'intégration"
+      },
+      "2": {
+        "en": "Study interactions between product and environment",
+        "fr": "Étudier les interactions entre le produit et son environnement"
+      },
+      "3": {
+        "en": "Define and document installation and verification procedures",
+        "fr": "Définir et documenter les procédures d'installation et de vérification"
+      },
+      "4": {
         "en": "Determine maintenance needs and plan sustainability",
         "fr": "Déterminer les besoins de maintenance et planifier la durabilité"
       },
-      "6": {
+      "5": {
         "en": "Implement monitoring during operation",
-        "fr": "Mettre en œuvre la surveillance pendant l'exploitation"
+        "fr": "Mettre en œuvre le suivi pendant l'exploitation"
+      },
+      "6": {
+        "en": "Carry out long-term testing",
+        "fr": "Réaliser des tests de longue durée"
       },
       "7": {
-        "en": "Carry out long-term testing",
-        "fr": "Effectuer des tests à long terme"
+        "en": "Formalize and standardize O&M procedures",
+        "fr": "Formaliser et standardiser les procédures d'exploitation et de maintenance"
       },
       "8": {
         "en": "Optimize and scale for multi-site sustainability",
-        "fr": "Optimiser et mettre à l'échelle pour la durabilité multi-sites"
+        "fr": "Optimiser et déployer pour une durabilité multi-sites"
       }
     },
-    "TRL_Q6": {
+  
+    "TRL_Q7": {
       "1": {
         "en": "Initial qualitative assessment of environmental impact",
         "fr": "Évaluation qualitative initiale de l'impact environnemental"
@@ -1599,11 +1578,11 @@
       },
       "3": {
         "en": "Comparative environmental analysis (benchmark)",
-        "fr": "Analyse environnementale comparative (benchmark)"
+        "fr": "Analyse environnementale comparative (référentiel)"
       },
       "4": {
         "en": "Complete life cycle assessment (LCA)",
-        "fr": "Évaluation complète du cycle de vie (ACV)"
+        "fr": "Réaliser une analyse complète du cycle de vie (ACV)"
       },
       "5": {
         "en": "Identify standards and applicable certifications",
@@ -1611,7 +1590,7 @@
       },
       "6": {
         "en": "Verify compliance and initiate certification",
-        "fr": "Vérifier la conformité et initier la certification"
+        "fr": "Vérifier la conformité et engager le processus de certification"
       },
       "7": {
         "en": "Integrate eco-design and sustainability principles",
@@ -1622,310 +1601,276 @@
         "fr": "Évaluer et communiquer la durabilité globale"
       }
     },
-    "TRL_Q7": {
-      "1": {
-        "en": "Conduct an in-depth market analysis",
-        "fr": "Effectuer une analyse de marché approfondie"
-      },
-      "2": {
-        "en": "Develop models or prototypes to validate value proposition",
-        "fr": "Développer des modèles ou prototypes pour valider la proposition de valeur"
-      },
-      "3": {
-        "en": "Create a functional MVP (Minimum Viable Product)",
-        "fr": "Créer un MVP (Produit Minimum Viable) fonctionnel"
-      },
-      "4": {
-        "en": "Establish feedback process and confirm benefits",
-        "fr": "Établir un processus de retour et confirmer les avantages"
-      },
-      "5": {
-        "en": "Consolidate test bench and validate performance",
-        "fr": "Consolider le banc d'essai et valider les performances"
-      },
-      "6": {
-        "en": "Conduct post-use surveys and confirm alignment",
-        "fr": "Effectuer des enquêtes post-utilisation et confirmer l'alignement"
-      },
-      "7": {
-        "en": "Deploy pilot project or demonstrations",
-        "fr": "Déployer un projet pilote ou des démonstrations"
-      },
-      "8": {
-        "en": "Implement sales and marketing strategy",
-        "fr": "Mettre en œuvre une stratégie de vente et de marketing"
-      }
-    },
     "MkRL_Q1": {
       "1": {
-        "en": "Define a clear development strategy aligned with market vision",
-        "fr": "Définir une stratégie de développement claire alignée sur la vision du marché"
+        "en": "Conduct an in-depth market analysis.",
+        "fr": "Mener une analyse de marché approfondie."
       },
       "2": {
-        "en": "Carry out a detailed competitive analysis",
-        "fr": "Effectuer une analyse concurrentielle détaillée"
+        "en": "Develop models or prototypes to validate value proposition.",
+        "fr": "Développer des modèles ou prototypes pour valider la proposition de valeur."
       },
       "3": {
-        "en": "Formalize roles, responsibilities and stakeholder commitment",
-        "fr": "Formaliser les rôles, responsabilités et l'engagement des parties prenantes"
+        "en": "Create a functional MVP (Minimum Viable Product).",
+        "fr": "Créer un MVP fonctionnel (Minimum Viable Product)."
       },
       "4": {
-        "en": "Formalize testing and engagement strategy",
-        "fr": "Formaliser la stratégie de test et d'engagement"
+        "en": "Establish feedback process and confirm benefits.",
+        "fr": "Mettre en place un processus de retour d’expérience et confirmer les bénéfices."
       },
       "5": {
-        "en": "Define a plan for validating KPIs in real-life conditions",
-        "fr": "Définir un plan pour valider les KPI en conditions réelles"
+        "en": "Consolidate test bench and validate performance.",
+        "fr": "Consolider le banc d’essai et valider les performances."
       },
       "6": {
-        "en": "Implement success measurement tools at pilot site",
-        "fr": "Mettre en œuvre des outils de mesure du succès sur site pilote"
+        "en": "Conduct post-use surveys and confirm alignment.",
+        "fr": "Mener des enquêtes post-usage et confirmer l’alignement avec les attentes."
       },
       "7": {
-        "en": "Analyze real data from early users",
-        "fr": "Analyser les données réelles des premiers utilisateurs"
+        "en": "Deploy pilot projects or demonstrations.",
+        "fr": "Déployer des projets pilotes ou des démonstrations."
       },
       "8": {
-        "en": "Finalize and consolidate the Business Model",
-        "fr": "Finaliser et consolider le modèle d'affaires"
+        "en": "Implement sales and marketing strategy.",
+        "fr": "Mettre en œuvre une stratégie de vente et de marketing."
       }
     },
     "MkRL_Q2": {
       "1": {
-        "en": "Conduct customer surveys to validate assumptions and pricing",
-        "fr": "Effectuer des enquêtes clients pour valider les hypothèses et la tarification"
+        "en": "Define a clear development strategy aligned with market requirements.",
+        "fr": "Définir une stratégie de développement claire, alignée sur les exigences du marché."
       },
       "2": {
-        "en": "Deploy real-life pricing and value tests (A/B testing)",
-        "fr": "Déployer des tests de tarification et de valeur en conditions réelles (tests A/B)"
+        "en": "Carry out a detailed competitive analysis.",
+        "fr": "Réaliser une analyse concurrentielle détaillée."
       },
       "3": {
-        "en": "Conduct usage and pricing tests with the MVP",
-        "fr": "Effectuer des tests d'utilisation et de tarification avec le MVP"
+        "en": "Formalize roles, responsibilities and stakeholder commitments.",
+        "fr": "Formaliser les rôles, les responsabilités et les engagements des parties prenantes."
       },
       "4": {
-        "en": "Identify and engage early adopters",
-        "fr": "Identifier et engager les premiers adopteurs"
+        "en": "Formalize testing and engagement strategy.",
+        "fr": "Formaliser la stratégie de tests et d’engagement."
       },
       "5": {
-        "en": "Analyze real data from early users",
-        "fr": "Analyser les données réelles des premiers utilisateurs"
+        "en": "Define a plan for validating KPIs in real-life conditions.",
+        "fr": "Définir un plan de validation des indicateurs de performance (KPI) en conditions réelles."
       },
       "6": {
-        "en": "Conduct first cost validation at first production site",
-        "fr": "Effectuer la première validation des coûts sur le premier site de production"
+        "en": "Implement success measurement tools at pilot site.",
+        "fr": "Mettre en place des outils de mesure du succès sur un site pilote."
       },
       "7": {
-        "en": "Implement post-launch cost tracking system",
-        "fr": "Mettre en œuvre un système de suivi des coûts post-lancement"
+        "en": "Test under extreme conditions and validate guarantees.",
+        "fr": "Tester en conditions extrêmes et valider les garanties."
       },
       "8": {
-        "en": "Implement market monitoring and price adjustment process",
-        "fr": "Mettre en œuvre un processus de surveillance du marché et d'ajustement des prix"
+        "en": "Structure customer return and continuous improvement processes.",
+        "fr": "Structurer les retours clients et les processus d’amélioration continue."
       }
     },
     "MkRL_Q3": {
       "1": {
-        "en": "Detail organization, roles, skills and equipment",
-        "fr": "Détailler l'organisation, les rôles, les compétences et l'équipement"
+        "en": "Conduct customer surveys to validate assumptions.",
+        "fr": "Mener des enquêtes clients pour valider les hypothèses."
       },
       "2": {
-        "en": "Carry out pilot production tests",
-        "fr": "Effectuer des tests de production pilote"
+        "en": "Deploy real-life pricing and value tests (A/B testing).",
+        "fr": "Déployer des tests de prix et de valeur en conditions réelles (A/B testing)."
       },
       "3": {
-        "en": "Compare organization and flows with digital models",
-        "fr": "Comparer l'organisation et les flux avec des modèles numériques"
+        "en": "Conduct usage and pricing tests with the MVP.",
+        "fr": "Effectuer des tests d’usage et de tarification avec le MVP."
       },
       "4": {
-        "en": "Plan and start small-scale prototype production",
-        "fr": "Planifier et démarrer la production de prototypes à petite échelle"
+        "en": "Identify and engage early adopters.",
+        "fr": "Identifier et engager les premiers utilisateurs (early adopters)."
       },
       "5": {
-        "en": "Implement full-scale prototype in representative environment",
-        "fr": "Mettre en œuvre un prototype à grande échelle dans un environnement représentatif"
+        "en": "Analyze real data from early users.",
+        "fr": "Analyser les données réelles des premiers utilisateurs."
       },
       "6": {
-        "en": "Conduct load and cadence testing",
-        "fr": "Effectuer des tests de charge et de cadence"
+        "en": "Finalize and consolidate the Business Model.",
+        "fr": "Finaliser et consolider le business model."
       },
       "7": {
-        "en": "Conduct real life performance tests",
-        "fr": "Effectuer des tests de performance en conditions réelles"
+        "en": "Set up KPI monitoring dashboard.",
+        "fr": "Mettre en place un tableau de bord de suivi des KPI."
       },
       "8": {
-        "en": "Deploy complete traceability system and formalize balancing rules",
-        "fr": "Déployer un système de traçabilité complet et formaliser les règles d'équilibrage"
+        "en": "Deploy mechanism for continuous monitoring and adjustment.",
+        "fr": "Déployer un mécanisme de suivi et d’ajustement continus."
       }
     },
     "MkRL_Q4": {
       "1": {
-        "en": "Confirm technical feasibility through targeted tests",
-        "fr": "Confirmer la faisabilité technique par des tests ciblés"
+        "en": "Develop prototypes and models to refine cost estimates.",
+        "fr": "Développer des prototypes et des modèles pour affiner les estimations de coûts."
       },
       "2": {
-        "en": "Integrate exploratory components into mockups",
-        "fr": "Intégrer des composants exploratoires dans des maquettes"
+        "en": "Finalize integration of variants into cost calculation.",
+        "fr": "Finaliser l’intégration des variantes dans le calcul des coûts."
       },
       "3": {
-        "en": "Conduct systematic laboratory testing of prototypes",
-        "fr": "Effectuer des tests systématiques en laboratoire des prototypes"
+        "en": "Integrate pricing strategy and business plan into cost validation.",
+        "fr": "Intégrer la stratégie de tarification et le business plan dans la validation des coûts."
       },
       "4": {
-        "en": "Implement complete prototypes on advanced test site",
-        "fr": "Mettre en œuvre des prototypes complets sur site de test avancé"
+        "en": "Produce a prototype or small series to validate actual production cost.",
+        "fr": "Produire un prototype ou une petite série pour valider le coût réel de production."
       },
       "5": {
-        "en": "Model and refine logistics flows with partners",
-        "fr": "Modéliser et affiner les flux logistiques avec les partenaires"
+        "en": "Conduct final cost validation at first production site.",
+        "fr": "Réaliser la validation finale des coûts sur un premier site de production."
       },
       "6": {
-        "en": "Deploy the complete system in representative environment",
-        "fr": "Déployer le système complet dans un environnement représentatif"
+        "en": "Extend testing to several pilot projects.",
+        "fr": "Étendre les tests à plusieurs projets pilotes."
       },
       "7": {
-        "en": "Designate and train a pilot operator",
-        "fr": "Désigner et former un opérateur pilote"
+        "en": "Implement post-launch cost tracking system.",
+        "fr": "Mettre en place un système de suivi des coûts après le lancement."
       },
       "8": {
-        "en": "Implement maintenance and update plan for measurement tools",
-        "fr": "Mettre en œuvre un plan de maintenance et de mise à jour des outils de mesure"
+        "en": "Implement market monitoring and price adjustment process.",
+        "fr": "Mettre en œuvre un processus de veille marché et d’ajustement des prix."
       }
     },
     "MfRL_Q1": {
       "1": {
-        "en": "Develop prototypes and models to refine cost estimates",
-        "fr": "Développer des prototypes et des modèles pour affiner les estimations de coûts"
+        "en": "Detail organization, roles, skills and equipment.",
+        "fr": "Détailler l'organisation, les rôles, les compétences et les équipements."
       },
       "2": {
-        "en": "Finalize integration of variants into cost calculation",
-        "fr": "Finaliser l'intégration des variantes dans le calcul des coûts"
+        "en": "Carry out pilot production tests.",
+        "fr": "Réaliser des essais de production pilote."
       },
       "3": {
-        "en": "Integrate pricing strategy and business plan into cost validation",
-        "fr": "Intégrer la stratégie de tarification et le plan d'affaires dans la validation des coûts"
+        "en": "Compare organization and flows with digital models.",
+        "fr": "Comparer l'organisation et les flux avec des modèles numériques."
       },
       "4": {
-        "en": "Produce a prototype or small series to validate actual production cost",
-        "fr": "Produire un prototype ou une petite série pour valider le coût de production réel"
+        "en": "Plan and start small-scale prototype production.",
+        "fr": "Planifier et lancer la production de prototypes à petite échelle."
       },
       "5": {
-        "en": "Identify and engage early adopters",
-        "fr": "Identifier et engager les premiers adopteurs"
+        "en": "Implement full-scale prototype in representative environment.",
+        "fr": "Mettre en œuvre un prototype à l’échelle réelle dans un environnement représentatif."
       },
       "6": {
-        "en": "Extend testing to several pilot projects",
-        "fr": "Étendre les tests à plusieurs projets pilotes"
+        "en": "Conduct load and cadence testing.",
+        "fr": "Réaliser des tests de charge et de cadence."
       },
       "7": {
-        "en": "Set up KPI monitoring dashboard",
-        "fr": "Mettre en place un tableau de bord de suivi des KPI"
+        "en": "Obtain validation and qualification of the production line.",
+        "fr": "Obtenir la validation et la qualification de la ligne de production."
       },
       "8": {
-        "en": "Deploy mechanism for continuous monitoring and adjustment",
-        "fr": "Déployer un mécanisme de surveillance continue et d'ajustement"
+        "en": "Formalize and optimize S&OP processes.",
+        "fr": "Formaliser et optimiser les processus S&OP."
       }
     },
     "MfRL_Q2": {
       "1": {
-        "en": "Define detailed logistics flows (physical and information)",
-        "fr": "Définir les flux logistiques détaillés (physiques et d'information)"
+        "en": "Confirm technical feasibility through engineering studies.",
+        "fr": "Confirmer la faisabilité technique au moyen d’études d’ingénierie."
       },
       "2": {
-        "en": "Ensure integration of supply chain with manufacturing processes",
-        "fr": "Assurer l'intégration de la chaîne d'approvisionnement avec les processus de fabrication"
+        "en": "Integrate exploratory components into mockups.",
+        "fr": "Intégrer les composants exploratoires dans les maquettes."
       },
       "3": {
-        "en": "Identify and contract with key logistics partners",
-        "fr": "Identifier et contracter avec les partenaires logistiques clés"
+        "en": "Conduct systematic laboratory testing of prototypes.",
+        "fr": "Effectuer des essais systématiques en laboratoire sur les prototypes."
       },
       "4": {
-        "en": "Model and refine logistics flows with partners",
-        "fr": "Modéliser et affiner les flux logistiques avec les partenaires"
+        "en": "Implement complete prototypes on advanced test bench.",
+        "fr": "Mettre en œuvre des prototypes complets sur un banc d’essai avancé."
       },
       "5": {
-        "en": "Carry out quality and compliance audit on site",
-        "fr": "Effectuer un audit de qualité et de conformité sur site"
+        "en": "Deploy the complete system in representative environment.",
+        "fr": "Déployer le système complet dans un environnement représentatif."
       },
       "6": {
-        "en": "Deploy complete traceability system and formalize balancing rules",
-        "fr": "Déployer un système de traçabilité complet et formaliser les règles d'équilibrage"
+        "en": "Conduct real-life performance tests.",
+        "fr": "Réaliser des tests de performance en conditions réelles."
       },
       "7": {
-        "en": "Ensure alignment of logistics with production plan (S&OP)",
-        "fr": "Assurer l'alignement de la logistique avec le plan de production (S&OP)"
+        "en": "Confirm repeatability and reliability of operations.",
+        "fr": "Confirmer la répétabilité et la fiabilité des opérations."
       },
       "8": {
-        "en": "Establish feedback loop for continuous improvement",
-        "fr": "Établir une boucle de rétroaction pour l'amélioration continue"
+        "en": "Implement preventive and corrective maintenance plan.",
+        "fr": "Mettre en œuvre un plan de maintenance préventive et corrective."
       }
     },
     "MfRL_Q3": {
       "1": {
-        "en": "Define a clear development strategy aligned with market vision",
-        "fr": "Définir une stratégie de développement claire alignée sur la vision du marché"
+        "en": "Define detailed logistics flows (physical and information).",
+        "fr": "Définir des flux logistiques détaillés (physiques et informationnels)."
       },
       "2": {
-        "en": "Carry out a detailed competitive analysis",
-        "fr": "Effectuer une analyse concurrentielle détaillée"
+        "en": "Ensure integration of supply chain with manufacturing processes.",
+        "fr": "Assurer l’intégration de la chaîne d’approvisionnement avec les processus de fabrication."
       },
       "3": {
-        "en": "Formalize roles, responsibilities and stakeholder commitment",
-        "fr": "Formaliser les rôles, responsabilités et l'engagement des parties prenantes"
+        "en": "Identify and contract with key logistics partners.",
+        "fr": "Identifier et contractualiser avec les partenaires logistiques clés."
       },
       "4": {
-        "en": "Structure customer return and continuous improvement processes",
-        "fr": "Structurer les processus de retour client et d'amélioration continue"
+        "en": "Model and refine logistics flows with partners.",
+        "fr": "Modéliser et affiner les flux logistiques avec les partenaires."
       },
       "5": {
-        "en": "Deploy pilot project or demonstrations",
-        "fr": "Déployer un projet pilote ou des démonstrations"
+        "en": "Carry out quality and compliance audit on site.",
+        "fr": "Réaliser un audit qualité et conformité sur site."
       },
       "6": {
-        "en": "Implement sales and marketing strategy",
-        "fr": "Mettre en œuvre une stratégie de vente et de marketing"
+        "en": "Deploy complete traceability system and formalize balancing rules.",
+        "fr": "Déployer un système complet de traçabilité et formaliser les règles d’équilibrage."
       },
       "7": {
-        "en": "Test under extreme conditions and validate actual performance",
-        "fr": "Tester dans des conditions extrêmes et valider les performances réelles"
+        "en": "Ensure alignment of logistics with production plan (S&OP).",
+        "fr": "Assurer l’alignement de la logistique avec le plan de production (S&OP)."
       },
       "8": {
-        "en": "Optimize, automate and certify the process",
-        "fr": "Optimiser, automatiser et certifier le processus"
+        "en": "Establish feedback loop for continuous improvement.",
+        "fr": "Mettre en place une boucle de retour d’expérience pour l’amélioration continue."
       }
     },
     "MfRL_Q4": {
       "1": {
-        "en": "Write detailed technical and process specifications",
-        "fr": "Rédiger des spécifications techniques et de processus détaillées"
+        "en": "Write detailed technical and process specifications.",
+        "fr": "Rédiger des spécifications techniques et de procédé détaillées."
       },
       "2": {
-        "en": "Write specific quality control sheets for critical services",
-        "fr": "Rédiger des fiches de contrôle qualité spécifiques pour les services critiques"
+        "en": "Write specific quality control sheets for critical services.",
+        "fr": "Rédiger des fiches de contrôle qualité spécifiques pour les services critiques."
       },
       "3": {
-        "en": "Install and validate production documentation on workstations",
-        "fr": "Installer et valider la documentation de production sur les postes de travail"
+        "en": "Install and validate production documentation on workstations.",
+        "fr": "Installer et valider la documentation de production sur les postes de travail."
       },
       "4": {
-        "en": "Validate and test industrial resources (machines, tools)",
-        "fr": "Valider et tester les ressources industrielles (machines, outils)"
+        "en": "Validate and test industrial resources (machines, tools).",
+        "fr": "Valider et tester les moyens industriels (machines, outils)."
       },
       "5": {
-        "en": "Certify qualified operator and standardize practices",
-        "fr": "Certifier l'opérateur qualifié et normaliser les pratiques"
+        "en": "Designate and train a pilot operator.",
+        "fr": "Désigner et former un opérateur pilote."
       },
       "6": {
-        "en": "Implement maintenance and update plan for measurement tools",
-        "fr": "Mettre en œuvre un plan de maintenance et de mise à jour des outils de mesure"
+        "en": "Implement maintenance and update plan for measurement tools.",
+        "fr": "Mettre en œuvre un plan de maintenance et de mise à jour des outils de mesure."
       },
       "7": {
-        "en": "Optimize non-conformity management and continuous improvement",
-        "fr": "Optimiser la gestion des non-conformités et l'amélioration continue"
+        "en": "Certify qualified operator and standardize practices.",
+        "fr": "Certifier l’opérateur qualifié et standardiser les pratiques."
       },
       "8": {
-        "en": "Formalize and optimize S&OP processes",
-        "fr": "Formaliser et optimiser les processus S&OP"
+        "en": "Optimize non-conformity management and continuous improvement.",
+        "fr": "Optimiser la gestion des non-conformités et l’amélioration continue."
       }
     }
   }

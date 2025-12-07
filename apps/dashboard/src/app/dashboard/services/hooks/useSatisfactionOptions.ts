@@ -20,8 +20,11 @@ export function useSatisfactionOptions() {
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
+      setError(null);
       try {
-        await Promise.all([fetchOptions(), fetchQuestions()]);
+        await Promise.allSettled([fetchOptions(), fetchQuestions()]);
+      } catch (err) {
+        console.error('Error loading data:', err);
       } finally {
         setLoading(false);
       }
@@ -35,25 +38,38 @@ export function useSatisfactionOptions() {
         cache: 'no-store',
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to load satisfaction options');
+        // Try to get error message from response
+        let errorMessage = 'Failed to load satisfaction options';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorMessage;
+        } catch {
+          // If response is not JSON, use status text
+          errorMessage = response.statusText || errorMessage;
+        }
+        throw new Error(errorMessage);
       }
+
+      const data = await response.json();
 
       // Transform the data to an array of SatisfactionOption
       const optionsArray: SatisfactionOption[] = [];
 
-      Object.keys(data).forEach((questionId) => {
-        const levels = data[questionId];
-        Object.keys(levels).forEach((level) => {
-          optionsArray.push({
-            questionId,
-            level: parseInt(level, 10),
-            text: levels[level],
-          });
+      if (data && typeof data === 'object') {
+        Object.keys(data).forEach((questionId) => {
+          const levels = data[questionId];
+          if (levels && typeof levels === 'object') {
+            Object.keys(levels).forEach((level) => {
+              optionsArray.push({
+                questionId,
+                level: parseInt(level, 10),
+                text: levels[level],
+              });
+            });
+          }
         });
-      });
+      }
 
       setOptions(optionsArray);
     } catch (err) {
@@ -71,38 +87,50 @@ export function useSatisfactionOptions() {
         cache: 'no-store',
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to load questions');
+        // Try to get error message from response
+        let errorMessage = 'Failed to load questions';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorMessage;
+        } catch {
+          // If response is not JSON, use status text
+          errorMessage = response.statusText || errorMessage;
+        }
+        throw new Error(errorMessage);
       }
+
+      const data = await response.json();
 
       // Transform the data to a map of questionId -> QuestionInfo
       const questionsMap: Record<string, QuestionInfo> = {};
 
-      Object.keys(data).forEach((scaleType) => {
-        const scale = data[scaleType] as {
-          questions?: Array<{
-            id: string;
-            question: { en: string; fr: string };
-          }>;
-        };
-        if (scale.questions && Array.isArray(scale.questions)) {
-          scale.questions.forEach((question) => {
-            if (question.id && question.question) {
-              questionsMap[question.id] = {
-                id: question.id,
-                question: question.question,
-              };
-            }
-          });
-        }
-      });
+      if (data && typeof data === 'object') {
+        Object.keys(data).forEach((scaleType) => {
+          const scale = data[scaleType] as {
+            questions?: Array<{
+              id: string;
+              question: { en: string; fr: string };
+            }>;
+          };
+          if (scale.questions && Array.isArray(scale.questions)) {
+            scale.questions.forEach((question) => {
+              if (question.id && question.question) {
+                questionsMap[question.id] = {
+                  id: question.id,
+                  question: question.question,
+                };
+              }
+            });
+          }
+        });
+      }
 
-          setQuestions(questionsMap);
+      setQuestions(questionsMap);
     } catch (err) {
       console.error('Error fetching questions:', err);
       // Don't set error here, as satisfaction options might still work
+      // Questions will just be empty, and we'll fall back to questionId
     }
   };
 

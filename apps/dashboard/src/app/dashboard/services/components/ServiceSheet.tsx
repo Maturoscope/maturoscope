@@ -10,7 +10,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Loader2, Pencil, X } from "lucide-react";
+import { ChevronRight, Loader2, Pencil, X, ArrowRight, ArrowLeft } from "lucide-react";
 import { useServiceForm } from "../hooks/useServiceForm";
 import { Step1ServiceInfo } from "./Step1ServiceInfo";
 import { Step2CategoryScale } from "./Step2CategoryScale";
@@ -22,7 +22,7 @@ interface ServiceSheetProps {
   isOpen: boolean;
   onClose: () => void;
   serviceId?: string;
-  onSuccess: (serviceName: string) => void;
+  onSuccess: (serviceName: string, serviceId?: string) => void;
   viewOnly?: boolean;
   onEdit?: () => void;
 }
@@ -43,6 +43,8 @@ export function ServiceSheet({
     isSubmitting,
     errors,
     updateField,
+    validateField,
+    clearFieldError,
     handleNext,
     handleBack,
     handleSubmit,
@@ -134,9 +136,12 @@ export function ServiceSheet({
   };
 
   const handleFinalSubmit = async () => {
-    const success = await handleSubmit();
-    if (success) {
-      onSuccess(formData.name);
+    const result = await handleSubmit();
+    if (result) {
+      // If it's an update (serviceId exists), result will be true
+      // If it's a create, result will be the new service ID (string)
+      const newServiceId = typeof result === 'string' ? result : undefined;
+      onSuccess(formData.name, newServiceId);
       onClose();
     }
   };
@@ -167,7 +172,7 @@ export function ServiceSheet({
       <SheetContent className={`sm:max-w-[680px] text-[#0A0A0A] overflow-y-auto ${viewOnly ? '[&>button]:hidden' : ''}`}>
         {viewOnly ? (
           <>
-            <SheetHeader className="pb-1">
+            <SheetHeader className="pb-0">
               <div className="flex items-center justify-between">
                 <SheetTitle className="text-lg font-semibold">
                   {t("MODAL.VIEW_TITLE")}
@@ -192,6 +197,8 @@ export function ServiceSheet({
                 </div>
               </div>
             </SheetHeader>
+
+            <div className="border-b border-gray-200 mx-auto w-[95%]" />
 
             <div className="flex-1 overflow-y-auto px-4 pb-4 pt-6">
               <ViewServiceContent
@@ -250,6 +257,8 @@ export function ServiceSheet({
                   formData={formData}
                   errors={errors}
                   onUpdateField={updateField}
+                  onValidateField={validateField}
+                  onClearFieldError={clearFieldError}
                   viewOnly={viewOnly}
                 />
               )}
@@ -266,6 +275,8 @@ export function ServiceSheet({
                   formData={formData}
                   errors={errors}
                   onUpdateField={updateField}
+                  onValidateField={validateField}
+                  onClearFieldError={clearFieldError}
                   viewOnly={viewOnly}
                 />
               )}
@@ -277,25 +288,32 @@ export function ServiceSheet({
               </div>
             )}
 
-            <SheetFooter className="px-4 pt-4 sm:justify-end">
-              <div className="flex items-center gap-2 ml-auto">
+            <SheetFooter className="px-4 pt-4 flex-row justify-between items-center">
+              <div className="flex items-center gap-2">
                 {currentStep > 1 && (
                   <Button
                     variant="outline"
                     onClick={handleBack}
                     disabled={isSubmitting}
                   >
-                    {t("MODAL.BUTTONS.BACK")}
+                    <span className="flex items-center gap-2">
+                      <ArrowLeft className="h-4 w-4" />
+                      {t("MODAL.BUTTONS.BACK")}
+                    </span>
                   </Button>
                 )}
-
+              </div>
+              <div className="flex items-center gap-2">
                 {currentStep < 3 ? (
                   <Button
                     onClick={handleNext}
                     disabled={!canProceedToNextStep() || isSubmitting}
                     className="bg-foreground text-background hover:bg-foreground/90"
                   >
-                    {t("MODAL.BUTTONS.NEXT")}
+                    <span className="flex items-center gap-2">
+                      {t("MODAL.BUTTONS.NEXT")}
+                      <ArrowRight className="h-4 w-4" />
+                    </span>
                   </Button>
                 ) : (
                   <Button

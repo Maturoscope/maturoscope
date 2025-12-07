@@ -430,7 +430,7 @@
       }
     },
     "MODAL": {
-      "CREATE_TITLE": "Add Service",
+      "CREATE_TITLE": "New Service",
       "EDIT_TITLE": "Edit Service",
       "VIEW_TITLE": "View Service",
       "STEPS": {
@@ -501,21 +501,24 @@
       },
       "BUTTONS": {
         "CANCEL": "Cancel",
-        "NEXT": "Next",
+        "NEXT": "Continue",
         "BACK": "Back",
-        "CREATE": "Create Service",
+        "CREATE": "Save",
         "UPDATE": "Update Service",
         "CREATING": "Creating...",
         "UPDATING": "Updating..."
       },
       "ERRORS": {
-        "NAME_REQUIRED": "Service name is required.",
+        "NAME_REQUIRED": "This field cannot be left blank.",
+        "DESCRIPTION_REQUIRED": "This field cannot be left blank.",
+        "URL_REQUIRED": "This field cannot be left blank.",
+        "URL_INVALID": "Enter a valid URL.",
         "DUPLICATE_NAME": "A service with this name already exists.",
         "NO_CATEGORIES": "At least one category must be active.",
-        "INVALID_EMAIL": "Please enter a valid email address.",
-        "EMAIL_REQUIRED": "Email is required.",
-        "FIRST_NAME_REQUIRED": "First name is required.",
-        "LAST_NAME_REQUIRED": "Last name is required.",
+        "INVALID_EMAIL": "Enter a valid email address.",
+        "EMAIL_REQUIRED": "This field cannot be left blank.",
+        "FIRST_NAME_REQUIRED": "This field cannot be left blank.",
+        "LAST_NAME_REQUIRED": "This field cannot be left blank.",
         "CREATE_FAILED": "Failed to create service.",
         "UPDATE_FAILED": "Failed to update service.",
         "DELETE_FAILED": "Failed to delete service."
@@ -528,15 +531,15 @@
       }
     },
     "DELETE_DIALOG": {
-      "TITLE": "Delete Service",
-      "DESCRIPTION": "Are you sure you want to delete \"{{serviceName}}\"? This action cannot be undone.",
+      "TITLE": "You're about to delete {{serviceName}}",
+      "DESCRIPTION": "This action is irreversible. Once deleted, their information will be permanently removed.",
       "CANCEL": "Cancel",
-      "CONFIRM": "Yes, Delete"
+      "CONFIRM": "Yes, delete"
     },
     "TOASTS": {
       "SERVICE_CREATED": {
         "TITLE": "Service created successfully!",
-        "DESCRIPTION": "{{name}} has been added to your organization's services."
+        "DESCRIPTION": "{{name}} been created."
       },
       "SERVICE_UPDATED": {
         "TITLE": "Service updated successfully!",
