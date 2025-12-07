@@ -138,8 +138,6 @@ export function ServiceSheet({
   const handleFinalSubmit = async () => {
     const result = await handleSubmit();
     if (result) {
-      // If it's an update (serviceId exists), result will be true
-      // If it's a create, result will be the new service ID (string)
       const newServiceId = typeof result === 'string' ? result : undefined;
       onSuccess(formData.name, newServiceId);
       onClose();

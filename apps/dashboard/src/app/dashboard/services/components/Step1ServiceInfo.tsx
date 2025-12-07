@@ -99,10 +99,6 @@ export function Step1ServiceInfo({
           value={formData.url}
           onChange={(e) => {
             onUpdateField("url", e.target.value);
-            // Validar en tiempo real si hay contenido y hay un error previo
-            if (e.target.value.trim() && errors.url) {
-              // La validación se hará en updateField si el valor es válido
-            }
           }}
           onFocus={() => onClearFieldError("url")}
           onBlur={() => onValidateField("url")}

@@ -129,8 +129,6 @@ export function useSatisfactionOptions() {
       setQuestions(questionsMap);
     } catch (err) {
       console.error('Error fetching questions:', err);
-      // Don't set error here, as satisfaction options might still work
-      // Questions will just be empty, and we'll fall back to questionId
     }
   };
 
