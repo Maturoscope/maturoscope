@@ -13,6 +13,7 @@ export interface QuestionProps {
   name: string
   title: string
   options: Option[]
+  commentPlaceholder: string
   onQuestionClick: () => void
 }
 
@@ -21,6 +22,7 @@ const Question = ({
   name,
   options: initOptions,
   onQuestionClick,
+  commentPlaceholder,
 }: QuestionProps) => {
   const radioGroupName =
     `${name}.questions.${id}` as `${StageId}.questions.${string}`
@@ -28,6 +30,7 @@ const Question = ({
     ...option,
     name: radioGroupName,
     onClick: onQuestionClick,
+    commentPlaceholder,
   }))
 
   return (

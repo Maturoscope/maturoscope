@@ -59,6 +59,39 @@ export const getOrganizationKeyFromCookies = async (): Promise<
 
 export type ScaleType = "TRL" | "MkRL" | "MfRL"
 
+export interface LocalizedText {
+  en: string
+  fr: string
+}
+
+export interface DevelopmentPhase {
+  phase: number
+  phaseName: LocalizedText
+  focusGoal: LocalizedText
+  scaleRange: string
+}
+
+export interface RecommendedService {
+  id: string
+  name: LocalizedText
+  description: LocalizedText
+}
+
+export interface Gap {
+  questionId: string
+  level: number
+  gapDescription: LocalizedText
+  hasServices: boolean
+  recommendedServices: RecommendedService[]
+}
+
+export interface AssessmentResponse {
+  scale: ScaleType
+  readinessLevel: number
+  developmentPhase: DevelopmentPhase
+  gaps: Gap[]
+}
+
 interface SubmitAssessmentParams {
   scale: ScaleType
   answers: Record<string, string>
@@ -66,6 +99,7 @@ interface SubmitAssessmentParams {
 
 interface SubmitAssessmentResult {
   success: boolean
+  data?: AssessmentResponse
   error?: string
 }
 
@@ -94,7 +128,8 @@ export const submitAssessment = async ({
       return { success: false, error: `API error: ${response.statusText}` }
     }
 
-    return { success: true }
+    const data: AssessmentResponse = await response.json()
+    return { success: true, data }
   } catch (error) {
     console.error("Error submitting assessment:", error)
     return {
