@@ -149,8 +149,6 @@ export function useServiceForm(serviceId?: string) {
 
   const isValidUrl = (url: string): boolean => {
     if (!url.trim()) return false;
-  
-    const urlPattern = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/i;
     
     try {
       let urlToValidate = url.trim();
@@ -161,16 +159,22 @@ export function useServiceForm(serviceId?: string) {
       
       const urlObj = new URL(urlToValidate);
       
-      if (!urlObj.hostname || urlObj.hostname.length < 3) {
+      if (urlObj.protocol !== 'http:' && urlObj.protocol !== 'https:') {
         return false;
       }
       
-      if (!urlObj.hostname.includes('.')) {
+      if (!urlObj.hostname || urlObj.hostname.length < 1) {
         return false;
       }
       
-      const cleanUrl = url.trim().replace(/^https?:\/\//, '');
-      if (cleanUrl.length < 3 || !urlPattern.test(url.trim())) {
+      const isLocalhost = urlObj.hostname === 'localhost';
+      const isIpAddress = /^(\d{1,3}\.){3}\d{1,3}$/.test(urlObj.hostname);
+      
+      if (!isLocalhost && !isIpAddress && !urlObj.hostname.includes('.')) {
+        return false;
+      }
+      
+      if (urlObj.hostname.replace(/\./g, '').length === 0) {
         return false;
       }
       
