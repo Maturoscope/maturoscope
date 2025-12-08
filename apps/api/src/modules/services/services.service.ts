@@ -18,7 +18,7 @@ import {
   ContactServicesDto,
 } from './dto';
 import { ReadinessAssessmentService } from '../readiness-assessment/readiness-assessment.service';
-import { ScaleType } from '../readiness-assessment/dto/readiness-assessment.dto';
+import { ScaleType, RecommendedServiceDto as ReadinessRecommendedServiceDto, I18nText } from '../readiness-assessment/dto/readiness-assessment.dto';
 import { ServiceContactMailService } from './mail.service';
 import { OrganizationsService } from '../organizations/organizations.service';
 
@@ -46,17 +46,16 @@ export class ServicesService {
     organizationId: string,
     createServiceDto: CreateServiceDto,
   ): Promise<ServiceResponseDto> {
-    // Check for duplicate service name in the organization
     const existingService = await this.serviceRepository.findOne({
       where: {
         organizationId,
-        name: createServiceDto.name,
+        nameEn: createServiceDto.nameEn,
       },
     });
 
     if (existingService) {
       throw new ConflictException(
-        `A service with the name "${createServiceDto.name}" already exists in this organization`,
+        `A service with the name "${createServiceDto.nameEn}" already exists in this organization`,
       );
     }
 
@@ -70,8 +69,12 @@ export class ServicesService {
     // Create service
     const service = this.serviceRepository.create({
       organizationId,
-      name: createServiceDto.name,
-      description: createServiceDto.description,
+      name: createServiceDto.name || createServiceDto.nameEn,   
+      nameEn: createServiceDto.nameEn,
+      nameFr: createServiceDto.nameFr,
+      description: createServiceDto.description || createServiceDto.descriptionEn,
+      descriptionEn: createServiceDto.descriptionEn,
+      descriptionFr: createServiceDto.descriptionFr,
       url: createServiceDto.url,
       mainContactFirstName: createServiceDto.mainContactFirstName,
       mainContactLastName: createServiceDto.mainContactLastName,
@@ -147,28 +150,34 @@ export class ServicesService {
       throw new NotFoundException(`Service with ID "${id}" not found`);
     }
 
-    // Check for duplicate name if name is being updated
-    if (updateServiceDto.name && updateServiceDto.name !== service.name) {
+    if (updateServiceDto.nameEn && updateServiceDto.nameEn !== service.nameEn) {
       const existingService = await this.serviceRepository.findOne({
         where: {
           organizationId,
-          name: updateServiceDto.name,
+          nameEn: updateServiceDto.nameEn,
         },
       });
 
       if (existingService) {
         throw new ConflictException(
-          `A service with the name "${updateServiceDto.name}" already exists in this organization`,
+          `A service with the name "${updateServiceDto.nameEn}" already exists in this organization`,
         );
       }
     }
 
     // Update service fields
+    const updatedNameEn = updateServiceDto.nameEn !== undefined ? updateServiceDto.nameEn : service.nameEn;
+    const updatedDescriptionEn = updateServiceDto.descriptionEn !== undefined ? updateServiceDto.descriptionEn : service.descriptionEn;
+
     Object.assign(service, {
-      ...(updateServiceDto.name && { name: updateServiceDto.name }),
-      ...(updateServiceDto.description && {
+      ...(updateServiceDto.name ? { name: updateServiceDto.name } : { name: updatedNameEn }),
+      ...(updateServiceDto.nameEn !== undefined && { nameEn: updateServiceDto.nameEn }),
+      ...(updateServiceDto.nameFr !== undefined && { nameFr: updateServiceDto.nameFr }),
+      ...(updateServiceDto.description ? {
         description: updateServiceDto.description,
-      }),
+      } : { description: updatedDescriptionEn }),
+      ...(updateServiceDto.descriptionEn !== undefined && { descriptionEn: updateServiceDto.descriptionEn }),
+      ...(updateServiceDto.descriptionFr !== undefined && { descriptionFr: updateServiceDto.descriptionFr }),
       ...(updateServiceDto.url && { url: updateServiceDto.url }),
       ...(updateServiceDto.mainContactFirstName && {
         mainContactFirstName: updateServiceDto.mainContactFirstName,
@@ -245,8 +254,8 @@ export class ServicesService {
   async findServicesForGaps(
     organizationId: string,
     gaps: Array<{ questionId: string; level: number }>,
-  ): Promise<Map<string, RecommendedServiceDto[]>> {
-    const gapServiceMap = new Map<string, RecommendedServiceDto[]>();
+  ): Promise<Map<string, ReadinessRecommendedServiceDto[]>> {
+    const gapServiceMap = new Map<string, ReadinessRecommendedServiceDto[]>();
 
     for (const gap of gaps) {
       const gapKey = `${gap.questionId}_${gap.level}`;
@@ -260,10 +269,10 @@ export class ServicesService {
         relations: ['service'],
       });
 
-      // Filter by organization and map to DTO
+      // Filter by organization and map to DTO with I18nText structure
       const services = coverages
         .filter((coverage) => coverage.service.organizationId === organizationId)
-        .map((coverage) => this.mapToRecommendedServiceDto(coverage.service));
+        .map((coverage) => this.mapToReadinessRecommendedServiceDto(coverage.service));
 
       // Remove duplicates
       const uniqueServices = Array.from(
@@ -287,7 +296,11 @@ export class ServicesService {
       id: service.id,
       organizationId: service.organizationId,
       name: service.name,
+      nameEn: service.nameEn,
+      nameFr: service.nameFr,
       description: service.description,
+      descriptionEn: service.descriptionEn,
+      descriptionFr: service.descriptionFr,
       url: service.url,
       mainContactFirstName: service.mainContactFirstName,
       mainContactLastName: service.mainContactLastName,
@@ -327,7 +340,11 @@ export class ServicesService {
     return {
       id: service.id,
       name: service.name,
+      nameEn: service.nameEn,
+      nameFr: service.nameFr,
       description: service.description,
+      descriptionEn: service.descriptionEn,
+      descriptionFr: service.descriptionFr,
       url: service.url,
       mainContact: {
         firstName: service.mainContactFirstName,
@@ -344,13 +361,45 @@ export class ServicesService {
   }
 
   /**
-   * Map entity to recommended service DTO
+   * Map entity to recommended service DTO (for readiness-assessment with I18nText structure)
+   */
+  private mapToReadinessRecommendedServiceDto(service: Service): ReadinessRecommendedServiceDto {
+    return {
+      id: service.id,
+      name: {
+        en: service.nameEn,
+        fr: service.nameFr,
+      } as I18nText,
+      description: {
+        en: service.descriptionEn,
+        fr: service.descriptionFr,
+      } as I18nText,
+      url: service.url,
+      mainContact: {
+        firstName: service.mainContactFirstName,
+        lastName: service.mainContactLastName,
+        email: service.mainContactEmail,
+      },
+      secondaryContact: {
+        firstName: service.secondaryContactFirstName,
+        lastName: service.secondaryContactLastName,
+        email: service.secondaryContactEmail,
+      },
+    };
+  }
+
+  /**
+   * Map entity to recommended service DTO (for services module)
    */
   private mapToRecommendedServiceDto(service: Service): RecommendedServiceDto {
     return {
       id: service.id,
-      name: service.name,
-      description: service.description,
+      name: service.name || service.nameEn,
+      nameEn: service.nameEn,
+      nameFr: service.nameFr,
+      description: service.description || service.descriptionEn,
+      descriptionEn: service.descriptionEn,
+      descriptionFr: service.descriptionFr,
       url: service.url,
       mainContact: {
         firstName: service.mainContactFirstName,
@@ -464,6 +513,10 @@ export class ServicesService {
           });
         }
 
+        // Get service name and description based on organization language
+        const serviceName = organizationLanguage === 'FR' ? service.nameFr : service.nameEn;
+        const serviceDescription = organizationLanguage === 'FR' ? service.descriptionFr : service.descriptionEn;
+
         // Send email to each contact
         for (const contact of contacts) {
           emailPromises.push(
@@ -485,7 +538,8 @@ export class ServicesService {
               },
               projectData: {
                 projectName: contactServicesDto.projectName,
-                serviceTitle: service.name,
+                serviceTitle: serviceName,
+                serviceDescription: serviceDescription,
                 gapTitle: gapTitle,
                 category: scaleType,
                 currentLevel: gap.level.toString(),

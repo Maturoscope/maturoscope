@@ -23,11 +23,23 @@ export class Service {
   @JoinColumn({ name: 'organizationId' })
   organization: Organization;
 
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  name: string; 
+
   @Column({ type: 'varchar', length: 255 })
-  name: string;
+  nameEn: string;
+
+  @Column({ type: 'varchar', length: 255 })
+  nameFr: string;
+
+  @Column({ type: 'text', nullable: true })
+  description: string;
 
   @Column({ type: 'text' })
-  description: string;
+  descriptionEn: string;
+
+  @Column({ type: 'text' })
+  descriptionFr: string;
 
   @Column({ type: 'varchar', length: 500 })
   url: string;

@@ -38,8 +38,8 @@ export class AllQuestionsI18nDto {
 
 export class RecommendedServiceDto {
   id: string;
-  name: string;
-  description: string;
+  name: I18nText;
+  description: I18nText;
   url: string;
   mainContact: {
     firstName: string;

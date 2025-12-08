@@ -27,8 +27,10 @@ export interface ServiceScale {
 export interface Service {
   id: string;
   organizationId: string;
-  name: string;
-  description: string;
+  nameEn: string;
+  nameFr: string;
+  descriptionEn: string;
+  descriptionFr: string;
   url: string;
   mainContactFirstName: string;
   mainContactLastName: string;
@@ -43,8 +45,10 @@ export interface Service {
 
 export interface ServiceSummary {
   id: string;
-  name: string;
-  description: string;
+  nameEn: string;
+  nameFr: string;
+  descriptionEn: string;
+  descriptionFr: string;
   url: string;
   mainContact: Contact;
   secondaryContact: Contact;
@@ -53,7 +57,11 @@ export interface ServiceSummary {
 
 export interface CreateServicePayload {
   name: string;
+  nameEn: string;
+  nameFr: string;
   description: string;
+  descriptionEn: string;
+  descriptionFr: string;
   url: string;
   mainContactFirstName: string;
   mainContactLastName: string;

@@ -24,8 +24,10 @@ export function useServices() {
       
       const normalizedServices = servicesData.map((service) => ({
         id: service.id,
-        name: service.name || '',
-        description: service.description || '',
+        nameEn: service.nameEn || '',
+        nameFr: service.nameFr || '',
+        descriptionEn: service.descriptionEn || '',
+        descriptionFr: service.descriptionFr || '',
         url: service.url || '',
         mainContact: {
           firstName: service.mainContact?.firstName || '',

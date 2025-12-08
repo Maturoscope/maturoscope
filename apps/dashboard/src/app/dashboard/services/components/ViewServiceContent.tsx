@@ -82,6 +82,22 @@ export function ViewServiceContent({
     useSatisfactionOptions();
 
   const currentLanguage = i18n.language?.toLowerCase().startsWith("fr") ? "fr" : "en";
+  const currentLanguageCode = i18n.language?.toUpperCase().startsWith("FR") ? "FR" : "EN";
+
+  // Get translated name and description
+  const getTranslatedName = () => {
+    if (currentLanguageCode === "FR" && formData.nameFr) {
+      return formData.nameFr;
+    }
+    return formData.nameEn || '';
+  };
+
+  const getTranslatedDescription = () => {
+    if (currentLanguageCode === "FR" && formData.descriptionFr) {
+      return formData.descriptionFr;
+    }
+    return formData.descriptionEn || '';
+  };
 
   // Group gap coverages by scale type and question
   const groupedGaps = useMemo(() => {
@@ -136,10 +152,10 @@ export function ViewServiceContent({
         </div>
         <div className="space-y-3">
           <h2 className="text-lg font-semibold text-[#0A0A0A]">
-            {formData.name || "-"}
+            {getTranslatedName() || "-"}
           </h2>
           <p className="text-sm text-[#0A0A0A] leading-relaxed">
-            {formData.description || "-"}
+            {getTranslatedDescription() || "-"}
           </p>
           {formData.url && (
             <a

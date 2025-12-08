@@ -8,11 +8,14 @@ export function useServiceFilters(services: ServiceSummary[]) {
 
   const filteredServices = useMemo(() => {
     return services.filter((service) => {
-      // Search filter
+      // Search filter - search in translations
+      const searchLower = searchQuery.toLowerCase();
       const matchesSearch =
         searchQuery === '' ||
-        service.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        service.description.toLowerCase().includes(searchQuery.toLowerCase());
+        service.nameEn.toLowerCase().includes(searchLower) ||
+        service.nameFr.toLowerCase().includes(searchLower) ||
+        service.descriptionEn.toLowerCase().includes(searchLower) ||
+        service.descriptionFr.toLowerCase().includes(searchLower);
 
       // Scale filter
       const matchesScale =

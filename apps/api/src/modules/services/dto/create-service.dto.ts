@@ -35,13 +35,29 @@ export class GapCoverageDto {
 
 export class CreateServiceDto {
   @IsString()
-  @MinLength(1)
   @MaxLength(255)
-  name: string;
+  name?: string;
 
   @IsString()
   @MinLength(1)
-  description: string;
+  @MaxLength(255)
+  nameEn: string;
+
+  @IsString()
+  @MinLength(1)
+  @MaxLength(255)
+  nameFr: string;
+
+  @IsString()
+  description?: string;
+
+  @IsString()
+  @MinLength(1)
+  descriptionEn: string;
+
+  @IsString()
+  @MinLength(1)
+  descriptionFr: string;
 
   @IsUrl()
   @MaxLength(500)

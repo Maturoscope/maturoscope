@@ -21,6 +21,7 @@ interface ServiceContactEmailPayload {
   projectData: {
     projectName?: string;
     serviceTitle: string;
+    serviceDescription?: string;
     gapTitle?: string;
     category?: string;
     currentLevel?: string;
@@ -36,6 +37,7 @@ interface EmailContent {
   clientInformationTitle: string;
   projectNameLabel: string;
   serviceNeededLabel: string;
+  serviceDescriptionLabel: string;
   gapToCompleteLabel: string;
   categoryLevelLabel: string;
   companyLabel: string;
@@ -71,6 +73,7 @@ export class ServiceContactMailService extends BaseMailService {
         clientInformationTitle: 'Client Information',
         projectNameLabel: 'Project name',
         serviceNeededLabel: 'Service needed',
+        serviceDescriptionLabel: 'Service description',
         gapToCompleteLabel: 'Gap to complete',
         categoryLevelLabel: 'Category & level',
         companyLabel: 'Company',
@@ -97,6 +100,7 @@ export class ServiceContactMailService extends BaseMailService {
         clientInformationTitle: 'Informations client',
         projectNameLabel: 'Nom du projet',
         serviceNeededLabel: 'Service requis',
+        serviceDescriptionLabel: 'Description du service',
         gapToCompleteLabel: 'Écart à combler',
         categoryLevelLabel: 'Catégorie et niveau',
         companyLabel: 'Entreprise',
@@ -191,6 +195,7 @@ export class ServiceContactMailService extends BaseMailService {
                             <strong style="font-size:16px;color:#01070D;display:block;margin-bottom:16px;">${content.projectDetailsTitle}</strong>
                             ${projectData.projectName ? `<div style="margin-bottom:12px;"><strong style="color:#6B7280;font-size:14px;">${content.projectNameLabel}:</strong> <span style="color:#01070D;font-size:14px;">${projectData.projectName}</span></div>` : ''}
                             <div style="margin-bottom:12px;"><strong style="color:#6B7280;font-size:14px;">${content.serviceNeededLabel}:</strong> <span style="color:#01070D;font-size:14px;">${projectData.serviceTitle}</span></div>
+                            ${projectData.serviceDescription ? `<div style="margin-bottom:12px;"><strong style="color:#6B7280;font-size:14px;">${content.serviceDescriptionLabel}:</strong> <span style="color:#01070D;font-size:14px;">${projectData.serviceDescription}</span></div>` : ''}
                             ${projectData.gapTitle ? `<div style="margin-bottom:12px;"><strong style="color:#6B7280;font-size:14px;">${content.gapToCompleteLabel}:</strong> <span style="color:#01070D;font-size:14px;">${projectData.gapTitle}</span></div>` : ''}
                             ${projectData.category && projectData.currentLevel ? `<div style="margin-bottom:12px;"><strong style="color:#6B7280;font-size:14px;">${content.categoryLevelLabel}:</strong> <span style="color:#01070D;font-size:14px;">${projectData.category} — Currently at Level ${projectData.currentLevel}</span></div>` : ''}
                           </td>

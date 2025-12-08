@@ -121,7 +121,18 @@ export function ServicesTable({
   onDelete,
   onView,
 }: ServicesTableProps) {
-  const { t } = useTranslation("SERVICES");
+  const { t, i18n } = useTranslation("SERVICES");
+  const currentLanguageCode = i18n.language?.toUpperCase().startsWith("FR") ? "FR" : "EN";
+
+  const getTranslatedName = (service: ServiceSummary) => {
+    if (currentLanguageCode === "FR" && service.nameFr) {
+      return service.nameFr;
+    }
+    if (currentLanguageCode === "EN" && service.nameEn) {
+      return service.nameEn;
+    }
+    return service.nameEn;
+  };
 
   if (loading) {
     return (
@@ -186,7 +197,7 @@ export function ServicesTable({
                 >
                   <TableCell className="h-[53px] align-middle">
                     <p className="text-sm font-normal text-[#0A0A0A]">
-                      {service.name}
+                      {getTranslatedName(service)}
                     </p>
                   </TableCell>
                   <TableCell className="h-[53px] align-middle">

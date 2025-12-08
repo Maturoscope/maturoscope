@@ -1,6 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,6 +18,8 @@ interface Step1ServiceInfoProps {
   viewOnly?: boolean;
 }
 
+type Language = "EN" | "FR";
+
 export function Step1ServiceInfo({
   formData,
   errors,
@@ -25,63 +29,143 @@ export function Step1ServiceInfo({
   viewOnly = false,
 }: Step1ServiceInfoProps) {
   const { t } = useTranslation("SERVICES");
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>("EN");
+
+  const getCurrentName = () => {
+    return selectedLanguage === "EN" ? formData.nameEn : formData.nameFr;
+  };
+
+  const getCurrentDescription = () => {
+    return selectedLanguage === "EN" ? formData.descriptionEn : formData.descriptionFr;
+  };
+
+  const updateCurrentName = (value: string) => {
+    if (selectedLanguage === "EN") {
+      onUpdateField("nameEn", value);
+    } else {
+      onUpdateField("nameFr", value);
+    }
+  };
+
+  const updateCurrentDescription = (value: string) => {
+    if (selectedLanguage === "EN") {
+      onUpdateField("descriptionEn", value);
+    } else {
+      onUpdateField("descriptionFr", value);
+    }
+  };
 
   return (
     <div className="space-y-4">
+      {/* Language Selector */}
+      <div className="inline-flex h-9 items-center gap-2 rounded-[10px] bg-[#F5F5F5] px-1">
+        <button
+          type="button"
+          onClick={() => setSelectedLanguage("EN")}
+          disabled={viewOnly}
+          className={cn(
+            "relative h-7 shrink-0 rounded-[8px] px-4 text-sm font-medium transition-colors",
+            selectedLanguage === "EN"
+              ? "text-[#0A0A0A]"
+              : "text-[#0A0A0A]/60",
+            viewOnly && "cursor-not-allowed opacity-50"
+          )}
+        >
+          {selectedLanguage === "EN" && (
+            <motion.div
+              layoutId="activeLanguageTab"
+              className="absolute inset-0 rounded-[8px] bg-white shadow-sm"
+              transition={{
+                type: "spring",
+                stiffness: 500,
+                damping: 30,
+              }}
+            />
+          )}
+          <span className="relative z-10 whitespace-nowrap">English</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setSelectedLanguage("FR")}
+          disabled={viewOnly}
+          className={cn(
+            "relative h-7 shrink-0 rounded-[8px] px-4 text-sm font-medium transition-colors",
+            selectedLanguage === "FR"
+              ? "text-[#0A0A0A]"
+              : "text-[#0A0A0A]/60",
+            viewOnly && "cursor-not-allowed opacity-50"
+          )}
+        >
+          {selectedLanguage === "FR" && (
+            <motion.div
+              layoutId="activeLanguageTab"
+              className="absolute inset-0 rounded-[8px] bg-white shadow-sm"
+              transition={{
+                type: "spring",
+                stiffness: 500,
+                damping: 30,
+              }}
+            />
+          )}
+          <span className="relative z-10 whitespace-nowrap">French</span>
+        </button>
+      </div>
+      {/* Service Name Translation */}
       <div className="space-y-2">
-        <Label htmlFor="service-name">
-          {t("MODAL.STEP_1.NAME.LABEL")}
+        <Label htmlFor={`service-name-${selectedLanguage.toLowerCase()}`}>
+          {t("MODAL.STEP_1.NAME.LABEL")} ({selectedLanguage === "EN" ? "English" : "French"})
           <span className="text-black ml-1">
             {t("MODAL.STEP_1.NAME.REQUIRED")}
           </span>
         </Label>
         <Input
-          id="service-name"
-          value={formData.name}
-          onChange={(e) => onUpdateField("name", e.target.value)}
-          onFocus={() => onClearFieldError("name")}
-          onBlur={() => onValidateField("name")}
-          placeholder={t("MODAL.STEP_1.NAME.PLACEHOLDER")}
-          className={errors.name ? "border-red-500" : ""}
+          id={`service-name-${selectedLanguage.toLowerCase()}`}
+          value={getCurrentName()}
+          onChange={(e) => updateCurrentName(e.target.value)}
+          onFocus={() => onClearFieldError(selectedLanguage === "EN" ? "nameEn" : "nameFr")}
+          onBlur={() => onValidateField(selectedLanguage === "EN" ? "nameEn" : "nameFr")}
+          placeholder={selectedLanguage === "EN" ? "Service Name (English)" : "Service Name (French)"}
+          className={errors[selectedLanguage === "EN" ? "nameEn" : "nameFr"] ? "border-red-500" : ""}
           disabled={viewOnly}
           readOnly={viewOnly}
         />
-        {errors.name && (
-          <p className="text-sm text-red-500">{errors.name}</p>
+        {errors[selectedLanguage === "EN" ? "nameEn" : "nameFr"] && (
+          <p className="text-sm text-red-500">{errors[selectedLanguage === "EN" ? "nameEn" : "nameFr"]}</p>
         )}
       </div>
 
+      {/* Brief Description Translation */}
       <div className="space-y-2">
-        <Label htmlFor="service-description">
-          {t("MODAL.STEP_1.DESCRIPTION.LABEL")}
+        <Label htmlFor={`service-description-${selectedLanguage.toLowerCase()}`}>
+          {t("MODAL.STEP_1.DESCRIPTION.LABEL")} ({selectedLanguage === "EN" ? "English" : "French"})
           <span className="text-black ml-1">
             {t("MODAL.STEP_1.NAME.REQUIRED")}
           </span>
         </Label>
         <Textarea
-          id="service-description"
-          value={formData.description}
+          id={`service-description-${selectedLanguage.toLowerCase()}`}
+          value={getCurrentDescription()}
           onChange={(e) => {
             const value = e.target.value;
             if (value.length <= 150) {
-              onUpdateField("description", value);
+              updateCurrentDescription(value);
             }
           }}
-          onFocus={() => onClearFieldError("description")}
-          onBlur={() => onValidateField("description")}
-          placeholder={t("MODAL.STEP_1.DESCRIPTION.PLACEHOLDER")}
+          onFocus={() => onClearFieldError(selectedLanguage === "EN" ? "descriptionEn" : "descriptionFr")}
+          onBlur={() => onValidateField(selectedLanguage === "EN" ? "descriptionEn" : "descriptionFr")}
+          placeholder={selectedLanguage === "EN" ? "Brief Description (English)" : "Brief Description (French)"}
           rows={4}
           disabled={viewOnly}
           readOnly={viewOnly}
           maxLength={150}
-          className={errors.description ? "border-red-500" : ""}
+          className={errors[selectedLanguage === "EN" ? "descriptionEn" : "descriptionFr"] ? "border-red-500" : ""}
         />
         <div className="flex justify-between items-center">
-          {errors.description && (
-            <p className="text-sm text-red-500">{errors.description}</p>
+          {errors[selectedLanguage === "EN" ? "descriptionEn" : "descriptionFr"] && (
+            <p className="text-sm text-red-500">{errors[selectedLanguage === "EN" ? "descriptionEn" : "descriptionFr"]}</p>
           )}
           <p className="text-sm text-gray-500 ml-auto">
-            {formData.description.length}/150
+            {getCurrentDescription().length}/150
           </p>
         </div>
       </div>

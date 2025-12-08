@@ -80,8 +80,10 @@ export function ServiceSheet({
           
           setFormData((prev) => ({
             ...prev,
-            name: service.name || '',
-            description: service.description || '',
+            nameEn: service.nameEn || '',
+            nameFr: service.nameFr || '',
+            descriptionEn: service.descriptionEn || '',
+            descriptionFr: service.descriptionFr || '',
             url: service.url || '',
             gapCoverages: service.gapCoverages || [],
             activeCategories: activeCategories as Set<'TRL' | 'MkRL' | 'MfRL'>,
@@ -136,12 +138,12 @@ export function ServiceSheet({
   };
 
   const handleFinalSubmit = async () => {
-    const result = await handleSubmit();
-    if (result) {
-      const newServiceId = typeof result === 'string' ? result : undefined;
-      onSuccess(formData.name, newServiceId);
-      onClose();
-    }
+      const result = await handleSubmit();
+      if (result) {
+        const newServiceId = typeof result === 'string' ? result : undefined;
+        onSuccess(formData.nameEn || formData.nameFr, newServiceId);
+        onClose();
+      }
   };
 
   const STEPS = [

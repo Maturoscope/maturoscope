@@ -3,8 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { CreateServicePayload, GapCoverage, ScaleType } from '../types/service';
 
 export interface ServiceFormData {
-  name: string;
-  description: string;
+  nameEn: string;
+  nameFr: string;
+  descriptionEn: string;
+  descriptionFr: string;
   url: string;
   gapCoverages: GapCoverage[];
   activeCategories: Set<ScaleType>;
@@ -17,8 +19,10 @@ export interface ServiceFormData {
 }
 
 const getInitialFormData = (): ServiceFormData => ({
-  name: '',
-  description: '',
+  nameEn: '',
+  nameFr: '',
+  descriptionEn: '',
+  descriptionFr: '',
   url: '',
   gapCoverages: [],
   activeCategories: new Set(),
@@ -31,8 +35,10 @@ const getInitialFormData = (): ServiceFormData => ({
 });
 
 interface ServiceFormDataSnapshot {
-  name: string;
-  description: string;
+  nameEn: string;
+  nameFr: string;
+  descriptionEn: string;
+  descriptionFr: string;
   url: string;
   gapCoverages: GapCoverage[];
   activeCategories: string[];
@@ -86,8 +92,10 @@ export function useServiceForm(serviceId?: string) {
       }
 
       const loadedData: ServiceFormData = {
-        name: service.name || '',
-        description: service.description || '',
+        nameEn: service.nameEn || '',
+        nameFr: service.nameFr || '',
+        descriptionEn: service.descriptionEn || '',
+        descriptionFr: service.descriptionFr || '',
         url: service.url || '',
         gapCoverages: service.gapCoverages || [],
         activeCategories,
@@ -197,19 +205,35 @@ export function useServiceForm(serviceId?: string) {
   const validateField = (field: keyof ServiceFormData): void => {
     const newErrors: Record<string, string> = { ...errors };
 
-    if (field === 'name') {
-      if (!formData.name.trim()) {
-        newErrors.name = t('MODAL.ERRORS.NAME_REQUIRED');
+    if (field === 'nameEn') {
+      if (!formData.nameEn.trim()) {
+        newErrors.nameEn = t('MODAL.ERRORS.NAME_REQUIRED');
       } else {
-        delete newErrors.name;
+        delete newErrors.nameEn;
       }
     }
 
-    if (field === 'description') {
-      if (!formData.description.trim()) {
-        newErrors.description = t('MODAL.ERRORS.DESCRIPTION_REQUIRED');
+    if (field === 'nameFr') {
+      if (!formData.nameFr.trim()) {
+        newErrors.nameFr = t('MODAL.ERRORS.NAME_REQUIRED');
       } else {
-        delete newErrors.description;
+        delete newErrors.nameFr;
+      }
+    }
+
+    if (field === 'descriptionEn') {
+      if (!formData.descriptionEn.trim()) {
+        newErrors.descriptionEn = t('MODAL.ERRORS.DESCRIPTION_REQUIRED');
+      } else {
+        delete newErrors.descriptionEn;
+      }
+    }
+
+    if (field === 'descriptionFr') {
+      if (!formData.descriptionFr.trim()) {
+        newErrors.descriptionFr = t('MODAL.ERRORS.DESCRIPTION_REQUIRED');
+      } else {
+        delete newErrors.descriptionFr;
       }
     }
 
@@ -283,12 +307,20 @@ export function useServiceForm(serviceId?: string) {
   const validateStep1 = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = t('MODAL.ERRORS.NAME_REQUIRED');
+    if (!formData.nameEn.trim()) {
+      newErrors.nameEn = t('MODAL.ERRORS.NAME_REQUIRED');
     }
 
-    if (!formData.description.trim()) {
-      newErrors.description = t('MODAL.ERRORS.DESCRIPTION_REQUIRED');
+    if (!formData.nameFr.trim()) {
+      newErrors.nameFr = t('MODAL.ERRORS.NAME_REQUIRED');
+    }
+
+    if (!formData.descriptionEn.trim()) {
+      newErrors.descriptionEn = t('MODAL.ERRORS.DESCRIPTION_REQUIRED');
+    }
+
+    if (!formData.descriptionFr.trim()) {
+      newErrors.descriptionFr = t('MODAL.ERRORS.DESCRIPTION_REQUIRED');
     }
 
     if (!formData.url.trim()) {
@@ -353,8 +385,10 @@ export function useServiceForm(serviceId?: string) {
     switch (currentStep) {
       case 1:
         return !!(
-          formData.name.trim() &&
-          formData.description.trim() &&
+          formData.nameEn.trim() &&
+          formData.nameFr.trim() &&
+          formData.descriptionEn.trim() &&
+          formData.descriptionFr.trim() &&
           formData.url.trim() &&
           isValidUrl(formData.url)
         );
@@ -410,8 +444,12 @@ export function useServiceForm(serviceId?: string) {
     setIsSubmitting(true);
     try {
       const payload: CreateServicePayload = {
-        name: formData.name,
-        description: formData.description,
+        name: formData.nameEn, // Use English as default for backend compatibility
+        nameEn: formData.nameEn,
+        nameFr: formData.nameFr,
+        description: formData.descriptionEn, // Use English as default for backend compatibility
+        descriptionEn: formData.descriptionEn,
+        descriptionFr: formData.descriptionFr,
         url: formData.url,
         mainContactFirstName: formData.mainContactFirstName,
         mainContactLastName: formData.mainContactLastName,
@@ -470,8 +508,10 @@ export function useServiceForm(serviceId?: string) {
   const hasUnsavedChanges = useCallback((): boolean => {
     if (!initialFormDataSnapshot) {
       return !!(
-        formData.name.trim() ||
-        formData.description.trim() ||
+        formData.nameEn.trim() ||
+        formData.nameFr.trim() ||
+        formData.descriptionEn.trim() ||
+        formData.descriptionFr.trim() ||
         formData.url.trim() ||
         formData.gapCoverages.length > 0 ||
         formData.mainContactFirstName.trim() ||

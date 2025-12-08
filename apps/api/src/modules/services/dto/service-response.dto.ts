@@ -9,8 +9,12 @@ export class GapCoverageResponseDto {
 export class ServiceResponseDto {
   id: string;
   organizationId: string;
-  name: string;
-  description: string;
+  name?: string;
+  nameEn: string;
+  nameFr: string;
+  description?: string;
+  descriptionEn: string;
+  descriptionFr: string;
   url: string;
   mainContactFirstName: string;
   mainContactLastName: string;
@@ -25,8 +29,12 @@ export class ServiceResponseDto {
 
 export class ServiceSummaryDto {
   id: string;
-  name: string;
-  description: string;
+  name?: string; // Optional, generated from nameEn
+  nameEn: string;
+  nameFr: string;
+  description?: string; // Optional, generated from descriptionEn
+  descriptionEn: string;
+  descriptionFr: string;
   url: string;
   mainContact: {
     firstName: string;
@@ -47,7 +55,11 @@ export class ServiceSummaryDto {
 export class RecommendedServiceDto {
   id: string;
   name: string;
+  nameEn: string;
+  nameFr: string;
   description: string;
+  descriptionEn: string;
+  descriptionFr: string;
   url: string;
   mainContact: {
     firstName: string;

@@ -14,9 +14,18 @@ import { useServiceFilters } from "./hooks/useServiceFilters";
 import { ServiceSummary } from "./types/service";
 
 export default function ServicesPage() {
-  const { t } = useTranslation("SERVICES");
+  const { t, i18n } = useTranslation("SERVICES");
   const { t: tDashboard } = useTranslation("DASHBOARD");
   const { user } = useUserContext();
+  const currentLanguageCode = i18n.language?.toUpperCase().startsWith("FR") ? "FR" : "EN";
+
+  const getTranslatedServiceName = (service: ServiceSummary | null): string => {
+    if (!service) return "";
+    if (currentLanguageCode === "FR") {
+      return service.nameFr;
+    }
+    return service.nameEn;
+  };
   const { services, loading, deleteService, fetchServices } = useServices();
   const {
     searchQuery,
@@ -77,7 +86,7 @@ export default function ServicesPage() {
 
     try {
       await deleteService(serviceToDelete.id);
-      setToastServiceName(serviceToDelete.name);
+      setToastServiceName(getTranslatedServiceName(serviceToDelete));
       setShowDeletedToast(true);
       setIsDeleteDialogOpen(false);
       setServiceToDelete(null);
@@ -157,7 +166,7 @@ export default function ServicesPage() {
           setServiceToDelete(null);
         }}
         onConfirm={handleConfirmDelete}
-        serviceName={serviceToDelete?.name || ""}
+        serviceName={getTranslatedServiceName(serviceToDelete)}
       />
 
       {/* Toast Notifications */}
