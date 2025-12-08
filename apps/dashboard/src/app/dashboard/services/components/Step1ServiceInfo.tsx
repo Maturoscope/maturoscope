@@ -29,6 +29,7 @@ export function Step1ServiceInfo({
   viewOnly = false,
 }: Step1ServiceInfoProps) {
   const { t } = useTranslation("SERVICES");
+  const { t: tl } = useTranslation("LANGUAJES");
   const [selectedLanguage, setSelectedLanguage] = useState<Language>("EN");
 
   const getCurrentName = () => {
@@ -82,7 +83,7 @@ export function Step1ServiceInfo({
               }}
             />
           )}
-          <span className="relative z-10 whitespace-nowrap">English</span>
+          <span className="relative z-10 whitespace-nowrap">{tl("EN")}</span>
         </button>
         <button
           type="button"
@@ -107,13 +108,13 @@ export function Step1ServiceInfo({
               }}
             />
           )}
-          <span className="relative z-10 whitespace-nowrap">French</span>
+          <span className="relative z-10 whitespace-nowrap">{tl("FR")}</span>
         </button>
       </div>
       {/* Service Name Translation */}
       <div className="space-y-2">
         <Label htmlFor={`service-name-${selectedLanguage.toLowerCase()}`}>
-          {t("MODAL.STEP_1.NAME.LABEL")} ({selectedLanguage === "EN" ? "English" : "French"})
+          {t("MODAL.STEP_1.NAME.LABEL")}
           <span className="text-black ml-1">
             {t("MODAL.STEP_1.NAME.REQUIRED")}
           </span>
@@ -124,7 +125,7 @@ export function Step1ServiceInfo({
           onChange={(e) => updateCurrentName(e.target.value)}
           onFocus={() => onClearFieldError(selectedLanguage === "EN" ? "nameEn" : "nameFr")}
           onBlur={() => onValidateField(selectedLanguage === "EN" ? "nameEn" : "nameFr")}
-          placeholder={selectedLanguage === "EN" ? "Service Name (English)" : "Service Name (French)"}
+          placeholder={t("MODAL.STEP_1.NAME.PLACEHOLDER")}
           className={errors[selectedLanguage === "EN" ? "nameEn" : "nameFr"] ? "border-red-500" : ""}
           disabled={viewOnly}
           readOnly={viewOnly}
@@ -137,7 +138,7 @@ export function Step1ServiceInfo({
       {/* Brief Description Translation */}
       <div className="space-y-2">
         <Label htmlFor={`service-description-${selectedLanguage.toLowerCase()}`}>
-          {t("MODAL.STEP_1.DESCRIPTION.LABEL")} ({selectedLanguage === "EN" ? "English" : "French"})
+          {t("MODAL.STEP_1.DESCRIPTION.LABEL")}
           <span className="text-black ml-1">
             {t("MODAL.STEP_1.NAME.REQUIRED")}
           </span>
@@ -153,7 +154,7 @@ export function Step1ServiceInfo({
           }}
           onFocus={() => onClearFieldError(selectedLanguage === "EN" ? "descriptionEn" : "descriptionFr")}
           onBlur={() => onValidateField(selectedLanguage === "EN" ? "descriptionEn" : "descriptionFr")}
-          placeholder={selectedLanguage === "EN" ? "Brief Description (English)" : "Brief Description (French)"}
+          placeholder={t("MODAL.STEP_1.DESCRIPTION.PLACEHOLDER")}
           rows={4}
           disabled={viewOnly}
           readOnly={viewOnly}
