@@ -93,7 +93,7 @@ export function MembersTable({
   return (
     <>
     <div className="overflow-hidden rounded-[8px] border border-slate-200">
-      <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-200px)]">
+      <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-280px)]">
         <table className="min-w-full divide-y divide-[#E5E5E5] text-[#0A0A0A]">
           <thead className="bg-[#F5F5F5] text-sm text-[#0A0A0A] sticky top-0 z-10">
             <tr>
@@ -179,7 +179,7 @@ export function MembersTable({
     </div>
 
     {!loading && members.length === 0 && (
-      <div className="flex w-full flex-col items-center justify-center gap-6 rounded-lg border border-dashed border-[#E5E5E5] bg-white mt-[-15px]" style={{ height: 'calc(100vh - 230px)' }}>
+      <div className="flex w-full flex-col items-center justify-center gap-6 rounded-lg border border-dashed border-[#E5E5E5] bg-white mt-[-15px]" style={{ height: 'calc(100vh - 265px)' }}>
         <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#E5E5E5] shadow-xs">
           <User className="h-6 w-6 text-[#0A0A0A]" strokeWidth={1.5} />
         </div>

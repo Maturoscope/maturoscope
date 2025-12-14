@@ -148,7 +148,7 @@ export function ServicesTable({
   return (
     <>
     <div className="overflow-hidden rounded-[8px] border border-[#E5E5E5] bg-white shadow-sm">
-      <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-200px)]">
+      <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-280px)]">
         <div className="relative w-full">
           <table className="w-full caption-bottom text-sm">
             <TableHeader className="bg-[#F5F5F5]">
@@ -260,7 +260,7 @@ export function ServicesTable({
     </div>
 
     {!loading && services.length === 0 && (
-      <div className="flex w-full flex-col items-center justify-center gap-6 rounded-lg border border-dashed border-[#E5E5E5] bg-white mt-[-15px]" style={{ height: 'calc(100vh - 230px)' }}>
+      <div className="flex w-full flex-col items-center justify-center gap-6 rounded-lg border border-dashed border-[#E5E5E5] bg-white mt-[-15px]" style={{ height: 'calc(100vh - 265px)' }}>
         <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#E5E5E5] shadow-xs">
           <FileText className="h-6 w-6 text-[#0A0A0A]" strokeWidth={1.5} />
         </div>
