@@ -145,26 +145,8 @@ export function ServicesTable({
     );
   }
 
-  if (services.length === 0) {
-    return (
-      <div
-        className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg"
-        style={{ height: 'calc(100vh - 230px)' }}
-      >
-        <div className="flex items-center justify-center w-12 h-12 rounded-lg border border-[#E5E5E5] shadow-xs mb-4 bg-gray-50">
-          <FileText className="h-6 w-6 text-[#0A0A0A]" />
-        </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          {t("TABLE.NO_RESULTS")}
-        </h3>
-        <p className="text-sm text-gray-500 text-center max-w-md">
-          {t("TABLE.EMPTY_DESCRIPTION")}
-        </p>
-      </div>
-    );
-  }
-
   return (
+    <>
     <div className="overflow-hidden rounded-[8px] border border-[#E5E5E5] bg-white shadow-sm">
       <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-200px)]">
         <div className="relative w-full">
@@ -192,15 +174,15 @@ export function ServicesTable({
               return (
                 <TableRow
                   key={service.id}
-                  className="border-b border-[#F0F0F0] hover:bg-[#FDFDFE] h-[53px] cursor-pointer"
+                  className="border-b border-[#F0F0F0] hover:bg-[#FDFDFE] cursor-pointer"
                   onClick={() => onView?.(service)}
                 >
-                  <TableCell className="h-[53px] align-middle">
+                  <TableCell className="px-6 py-4 align-middle">
                     <p className="text-sm font-normal text-[#0A0A0A]">
                       {getTranslatedName(service)}
                     </p>
                   </TableCell>
-                  <TableCell className="h-[53px] align-middle">
+                  <TableCell className="px-6 py-4 align-middle">
                     {service.scales.length === 0 ? (
                       <span className="text-sm text-[#8C8C8C]">—</span>
                     ) : (
@@ -224,20 +206,20 @@ export function ServicesTable({
                       </div>
                     )}
                   </TableCell>
-                  <TableCell className="h-[53px] align-middle">
+                  <TableCell className="px-6 py-4 align-middle">
                     <ContactCell
                       firstName={service.mainContact.firstName}
                       lastName={service.mainContact.lastName}
                     />
                   </TableCell>
-                  <TableCell className="h-[53px] align-middle">
+                  <TableCell className="px-6 py-4 align-middle">
                     <ContactCell
                       firstName={service.secondaryContact.firstName}
                       lastName={service.secondaryContact.lastName}
                     />
                   </TableCell>
                   <TableCell 
-                    className="text-right h-[53px] align-middle" 
+                    className="px-6 py-4 text-right align-middle" 
                     onClick={(e) => e.stopPropagation()}
                   >
                     <DropdownMenu>
@@ -276,6 +258,23 @@ export function ServicesTable({
         </div>
       </div>
     </div>
+
+    {!loading && services.length === 0 && (
+      <div className="flex w-full flex-col items-center justify-center gap-6 rounded-lg border border-dashed border-[#E5E5E5] bg-white mt-[-15px]" style={{ height: 'calc(100vh - 230px)' }}>
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#E5E5E5] shadow-xs">
+          <FileText className="h-6 w-6 text-[#0A0A0A]" strokeWidth={1.5} />
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <h3 className="text-lg font-semibold text-[#0A0A0A]">
+            {t("TABLE.NO_RESULTS")}
+          </h3>
+          <p className="text-sm text-[#737373]">
+            {t("TABLE.EMPTY_DESCRIPTION")}
+          </p>
+        </div>
+      </div>
+    )}
+    </>
   );
 }
 

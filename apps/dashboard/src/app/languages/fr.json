@@ -588,5 +588,111 @@
       "ORGANIZATION_KEY_MISSING": "La clé d'organisation est manquante.",
       "SEND_FAILED": "Échec de l'envoi de la demande de contact."
     }
+  },
+  "ORGANIZATIONS": {
+    "PAGE_TITLE": "Organisations",
+    "FILTERS": {
+      "ALL": "Tous",
+      "COMPLETED": "Terminé",
+      "PENDING": "En attente",
+      "EXPIRED": "Expiré",
+      "ACTIVE": "Actif",
+      "INACTIVE": "Inactif"
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Rechercher par nom d'organisation ou e-mail"
+    },
+    "ADD_ORGANIZATION_BUTTON": "Ajouter une organisation",
+    "TABLE": {
+      "HEADERS": {
+        "ORGANIZATION_NAME": "Nom de l'organisation",
+        "EMAIL": "E-mail",
+        "REGISTRATION": "Inscription",
+        "ACTIVE": "Actif"
+      },
+      "TOOLTIPS": {
+        "REGISTRATION": "Indique si le premier utilisateur de l'organisation a complété l'invitation par e-mail, est encore en attente de confirmation ou a expiré.",
+        "ACTIVE": "Indique si l'organisation est actuellement active ou désactivée sans être supprimée de la base de données."
+      },
+      "LOADING": "Chargement des organisations…",
+      "NO_RESULTS": "Aucune organisation ne correspond aux filtres actuels.",
+      "EMPTY_DESCRIPTION": "Vous n'avez aucune organisation correspondant aux filtres sélectionnés.",
+      "NO_INACTIVE_ORGANIZATIONS": "Aucune organisation inactive",
+      "NO_INACTIVE_ORGANIZATIONS_DESCRIPTION": "Vous n'avez aucune organisation inactive.",
+      "RESEND_INVITATION": "Renvoyer l'invitation"
+    },
+    "TOASTS": {
+      "ORGANIZATION_CREATED": {
+        "TITLE": "Organisation créée avec succès !",
+        "DESCRIPTION": "{{name}} a été créée et le premier utilisateur a reçu un lien pour accéder à la plateforme."
+      },
+      "ORGANIZATION_DEACTIVATED": {
+        "TITLE": "Organisation désactivée avec succès !",
+        "DESCRIPTION": "{{name}} a été désactivée. Les utilisateurs de cette organisation n'ont plus accès à la plateforme."
+      },
+      "ORGANIZATION_REACTIVATED": {
+        "TITLE": "Organisation réactivée avec succès !",
+        "DESCRIPTION": "{{name}} a été réactivée. Les utilisateurs de cette organisation ont maintenant accès à la plateforme."
+      },
+      "UNDO": "Annuler"
+    },
+    "REGISTRATION_STATUS": {
+      "COMPLETED": "Terminé",
+      "PENDING": "En attente",
+      "EXPIRED": "Expiré"
+    },
+    "NEW_ORGANIZATION": {
+      "TITLE": "Nouvelle organisation",
+      "FIELDS": {
+        "NAME": {
+          "LABEL": "Nom de l'organisation",
+          "PLACEHOLDER": "Nom de l'organisation",
+          "REQUIRED": "*",
+          "HELPER_TEXT": "Le nom ne peut pas être modifié une fois l'organisation créée."
+        },
+        "EMAIL": {
+          "LABEL": "E-mail",
+          "PLACEHOLDER": "E-mail",
+          "REQUIRED": "*",
+          "HELPER_TEXT": "Cette adresse e-mail ne peut pas être modifiée une fois l'organisation créée."
+        },
+        "CONFIRM_EMAIL": {
+          "LABEL": "Confirmer l'e-mail",
+          "PLACEHOLDER": "Confirmer l'e-mail",
+          "REQUIRED": "*"
+        }
+      },
+      "BUTTONS": {
+        "CREATE": "Créer l'organisation",
+        "CREATING": "Création en cours…"
+      },
+      "ERRORS": {
+        "FIELD_REQUIRED": "Ce champ ne peut pas être laissé vide.",
+        "INVALID_EMAIL": "Entrez une adresse e-mail valide.",
+        "EMAILS_DONT_MATCH": "Les e-mails ne correspondent pas.",
+        "CREATE_FAILED": "Échec de la création de l'organisation.",
+        "UNEXPECTED_ERROR": "Erreur inattendue lors de la création de l'organisation."
+      }
+    },
+    "UNSAVED_CHANGES": {
+      "TITLE": "Modifications non enregistrées",
+      "MESSAGE": "Vous avez des modifications non enregistrées. Si vous partez maintenant, vos dernières mises à jour seront perdues.",
+      "CANCEL": "Annuler",
+      "LEAVE_ANYWAY": "Partir quand même"
+    },
+    "DEACTIVATE_ORGANIZATION": {
+      "TITLE": "Vous êtes sur le point de désactiver {{name}}",
+      "MESSAGE": "Une fois désactivée, les utilisateurs de cette organisation n'auront plus accès à la plateforme.",
+      "CANCEL": "Annuler",
+      "CONFIRM": "Oui, désactiver"
+    },
+    "NOTIFICATIONS": {
+      "ORGANIZATION_CREATED": "Organisation créée avec succès",
+      "INVITATION_RESENT": "Invitation renvoyée avec succès !",
+      "UPDATE_FAILED": "Échec de la mise à jour du statut de l'organisation.",
+      "RESEND_FAILED": "Échec du renvoi de l'invitation.",
+      "LOAD_FAILED": "Échec du chargement des organisations.",
+      "LOAD_ERROR": "Erreur inattendue lors de la récupération des organisations."
+    }
   }
 }

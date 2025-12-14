@@ -1,61 +1,57 @@
 import { useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Member } from "../types/member";
+import { Organization } from "../types/organization";
 
-export function useMembers(organizationId?: string) {
-  const { t } = useTranslation("MEMBERS");
-  const [members, setMembers] = useState<Member[]>([]);
-  const [loading, setLoading] = useState(true);
+export function useOrganizations() {
+  const { t } = useTranslation("ORGANIZATIONS");
+  const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [resendingUserId, setResendingUserId] = useState<string | null>(null);
 
-  const fetchMembers = useCallback(async () => {
-    if (!organizationId) return;
+  const fetchOrganizations = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch(
-        `/api/users?organizationId=${organizationId}`,
-        {
-          cache: "no-store",
-        }
-      );
+      const response = await fetch(`/api/organizations`, {
+        cache: "no-store",
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
         setError(data.message || t("NOTIFICATIONS.LOAD_FAILED"));
-        setMembers([]);
+        setOrganizations([]);
         return;
       }
 
-      setMembers(data);
+      setOrganizations(data);
     } catch (err) {
-      console.error("Error fetching members:", err);
+      console.error("Error fetching organizations:", err);
       setError(t("NOTIFICATIONS.LOAD_ERROR"));
-      setMembers([]);
+      setOrganizations([]);
     } finally {
       setLoading(false);
     }
-  }, [organizationId, t]);
+  }, [t]);
 
   useEffect(() => {
-    fetchMembers();
-  }, [fetchMembers]);
+    fetchOrganizations();
+  }, [fetchOrganizations]);
 
   const handleToggleActive = async (
-    member: Member,
+    organization: Organization,
     nextValue: boolean,
-    onSuccess?: (memberName: string, wasActivated: boolean) => void
+    onSuccess?: (organizationName: string, wasActivated: boolean) => void
   ) => {
     try {
       const response = await fetch(
-        `/api/user/${encodeURIComponent(member.email)}`,
+        `/api/organizations/${encodeURIComponent(organization.id)}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ isActive: nextValue }),
+          body: JSON.stringify({ status: nextValue ? 'active' : 'inactive' }),
         }
       );
 
@@ -64,37 +60,34 @@ export function useMembers(organizationId?: string) {
         throw new Error(data.error || t("NOTIFICATIONS.UPDATE_FAILED"));
       }
 
-      setMembers((prev) =>
+      setOrganizations((prev) =>
         prev.map((item) =>
-          item.email === member.email ? { ...item, isActive: nextValue } : item
+          item.id === organization.id ? { ...item, isActive: nextValue } : item
         )
       );
 
-      // Call success callback with member name and action
+      // Call success callback with organization name and action
       if (onSuccess) {
-        const memberName = `${member.firstName} ${member.lastName}`;
-        onSuccess(memberName, nextValue);
+        onSuccess(organization.name, nextValue);
       }
     } catch (err) {
-      console.error("Error updating user:", err);
+      console.error("Error updating organization:", err);
       setError(t("NOTIFICATIONS.UPDATE_FAILED"));
       setTimeout(() => setError(null), 4000);
     }
   };
 
-  const handleResendInvitation = async (member: Member) => {
-    if (!organizationId) return;
+  const handleResendInvitation = async (organization: Organization) => {
+    if (!organization.userEmail) return;
 
-    setResendingUserId(member.id);
+    setResendingUserId(organization.id);
     try {
-      const response = await fetch("/api/users/resend-invitation", {
+      const response = await fetch("/api/organizations/resend-invitation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: member.email,
-          firstName: member.firstName,
-          lastName: member.lastName,
-          organizationId,
+          organizationId: organization.id,
+          email: organization.userEmail,
         }),
       });
 
@@ -104,8 +97,8 @@ export function useMembers(organizationId?: string) {
         throw new Error(data.message || t("NOTIFICATIONS.RESEND_FAILED"));
       }
 
-      // Refresh the members list to get updated createdAt and registrationStatus
-      await fetchMembers();
+      // Refresh the organizations list to get updated createdAt and registrationStatus
+      await fetchOrganizations();
 
       setError(t("NOTIFICATIONS.INVITATION_RESENT"));
       setTimeout(() => setError(null), 3000);
@@ -121,11 +114,11 @@ export function useMembers(organizationId?: string) {
   };
 
   return {
-    members,
+    organizations,
     loading,
     error,
     resendingUserId,
-    fetchMembers,
+    fetchOrganizations,
     handleToggleActive,
     handleResendInvitation,
   };

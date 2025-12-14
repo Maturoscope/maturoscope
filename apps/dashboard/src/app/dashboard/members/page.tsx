@@ -89,6 +89,7 @@ export default function MembersPage() {
           activeFilter={activeFilter}
           onToggleActive={handleToggleActiveWithToast}
           onResendInvitation={handleResendInvitation}
+          organizationEmail={user?.organization?.email}
         />
       </div>
 

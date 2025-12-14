@@ -21,12 +21,47 @@ export class UsersService {
   ) {}
 
   private getInvitationExpirationDays(): number {
-    const configured = this.configService.get<string>('INVITATION_EXPIRATION_DAYS');
-    if (!configured) {
-      return 30;
+    // First try to use INVITATION_TOKEN_EXPIRATION (same as JWT token expiration)
+    const tokenExpiration = this.configService.get<string>('INVITATION_TOKEN_EXPIRATION');
+    
+    if (tokenExpiration) {
+      // If it's a number (seconds), convert to days
+      const numericValue = Number(tokenExpiration);
+      if (!Number.isNaN(numericValue)) {
+        // Convert seconds to days
+        return Math.floor(numericValue / (24 * 60 * 60));
+      }
+      
+      // If it's a string like '30d', '7d', etc., parse it
+      const match = tokenExpiration.match(/^(\d+)([dhms])$/);
+      if (match) {
+        const value = Number(match[1]);
+        const unit = match[2];
+        
+        switch (unit) {
+          case 'd':
+            return value;
+          case 'h':
+            return value / 24;
+          case 'm':
+            return value / (24 * 60);
+          case 's':
+            return value / (24 * 60 * 60);
+          default:
+            return 30;
+        }
+      }
     }
-    const numericValue = Number(configured);
-    return Number.isNaN(numericValue) ? 30 : numericValue;
+    
+    // Fallback to INVITATION_EXPIRATION_DAYS for backward compatibility
+    const expirationDays = this.configService.get<string>('INVITATION_EXPIRATION_DAYS');
+    if (expirationDays) {
+      const numericValue = Number(expirationDays);
+      return Number.isNaN(numericValue) ? 30 : numericValue;
+    }
+    
+    // Default to 30 days
+    return 30;
   }
 
   private enrichUserWithStatus(user: User): UserResponseDto {

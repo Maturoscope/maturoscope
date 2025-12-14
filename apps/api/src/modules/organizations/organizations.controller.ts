@@ -11,6 +11,7 @@ import {
   UploadedFile,
   UseInterceptors,
   Req,
+  Query,
 } from '@nestjs/common';
 import { OrganizationsService } from './organizations.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
@@ -32,7 +33,10 @@ export class OrganizationsController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('withStatus') withStatus?: string) {
+    if (withStatus === 'true') {
+      return this.organizationsService.findAllWithRegistrationStatus();
+    }
     return this.organizationsService.findAll();
   }
 
