@@ -110,6 +110,7 @@ export default function OrganizationsPage() {
           error={error}
           resendingUserId={resendingUserId}
           activeFilter={activeFilter}
+          registrationFilter={registrationFilter}
           onToggleActive={handleToggleActiveWithToast}
           onResendInvitation={handleResendInvitation}
         />

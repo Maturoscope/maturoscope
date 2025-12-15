@@ -93,7 +93,12 @@ export class OrganizationsController {
     return this.organizationsService.updateLanguageByUserEmail(user?.email, updateLanguageDto.language);
   }
 
-  @Get(':key')
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.organizationsService.findOne(id);
+  }
+
+  @Get('key/:key')
   findByKey(@Param('key') key: string) {
     return this.organizationsService.findByKey(key);
   }

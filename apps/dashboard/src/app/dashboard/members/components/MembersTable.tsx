@@ -26,6 +26,7 @@ interface MembersTableProps {
   error: string | null;
   resendingUserId: string | null;
   activeFilter: "all" | "active" | "inactive";
+  registrationFilter: "all" | "completed" | "pending" | "expired";
   onToggleActive: (member: Member, value: boolean) => void;
   onResendInvitation: (member: Member) => void;
   organizationEmail?: string;
@@ -37,6 +38,7 @@ export function MembersTable({
   error,
   resendingUserId,
   activeFilter,
+  registrationFilter,
   onToggleActive,
   onResendInvitation,
   organizationEmail,
@@ -44,6 +46,45 @@ export function MembersTable({
   const { t } = useTranslation("MEMBERS");
   const [showDeactivateDialog, setShowDeactivateDialog] = useState(false);
   const [memberToDeactivate, setMemberToDeactivate] = useState<Member | null>(null);
+
+  // Helper function to get empty state messages based on filters
+  const getEmptyStateMessages = () => {
+    const messageMap: Record<string, { title: string; description: string }> = {
+      completed: {
+        title: t("TABLE.NO_COMPLETED_MEMBERS"),
+        description: t("TABLE.NO_COMPLETED_MEMBERS_DESCRIPTION"),
+      },
+      pending: {
+        title: t("TABLE.NO_PENDING_MEMBERS"),
+        description: t("TABLE.NO_PENDING_MEMBERS_DESCRIPTION"),
+      },
+      expired: {
+        title: t("TABLE.NO_EXPIRED_MEMBERS"),
+        description: t("TABLE.NO_EXPIRED_MEMBERS_DESCRIPTION"),
+      },
+      inactive: {
+        title: t("TABLE.NO_INACTIVE_MEMBERS"),
+        description: t("TABLE.NO_INACTIVE_MEMBERS_DESCRIPTION"),
+      },
+      active: {
+        title: t("TABLE.NO_ACTIVE_MEMBERS"),
+        description: t("TABLE.NO_ACTIVE_MEMBERS_DESCRIPTION"),
+      },
+      default: {
+        title: t("TABLE.NO_RESULTS"),
+        description: t("TABLE.EMPTY_DESCRIPTION"),
+      },
+    };
+
+    // Priority: registration filter first, then active filter, then default
+    if (registrationFilter !== "all") {
+      return messageMap[registrationFilter] || messageMap.default;
+    }
+    if (activeFilter !== "all") {
+      return messageMap[activeFilter] || messageMap.default;
+    }
+    return messageMap.default;
+  };
 
   // Check if a member is the admin (first user) by comparing email with organization email
   const isAdmin = (member: Member): boolean => {
@@ -109,7 +150,7 @@ export function MembersTable({
                         type="button"
                         className="text-[#0A0A0A]/40 transition hover:text-[#0A0A0A]/70"
                       >
-                        <Info className="h-4 w-4" />
+                        <Info className="h-4 w-4 text-[#0A0A0A]" />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent
@@ -130,11 +171,11 @@ export function MembersTable({
                         type="button"
                         className="text-[#0A0A0A]/40 transition hover:text-[#0A0A0A]/70"
                       >
-                        <Info className="h-4 w-4" />
+                        <Info className="h-4 w-4 text-[#0A0A0A]" />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent
-                      side="bottom"
+                      side="top"
                       className="max-w-xs text-xs text-center"
                     >
                       {t("TABLE.TOOLTIPS.ACTIVE")}
@@ -185,20 +226,10 @@ export function MembersTable({
         </div>
         <div className="flex flex-col items-center gap-2">
           <h3 className="text-lg font-semibold text-[#0A0A0A]">
-            {error 
-              ? "Error loading members" 
-              : activeFilter === "inactive" 
-                ? t("TABLE.NO_INACTIVE_MEMBERS")
-                : t("TABLE.NO_RESULTS")
-            }
+            {error ? "Error loading members" : getEmptyStateMessages().title}
           </h3>
           <p className="text-sm text-[#737373]">
-            {error 
-              ? error 
-              : activeFilter === "inactive"
-                ? t("TABLE.NO_INACTIVE_MEMBERS_DESCRIPTION")
-                : t("TABLE.EMPTY_DESCRIPTION")
-            }
+            {error ? error : getEmptyStateMessages().description}
           </p>
         </div>
       </div>

@@ -74,6 +74,9 @@
       "GO_BACK_TO": "Retour à",
       "SIGN_IN": "Se connecter"
     },
+    "INACTIVE_ORGANIZATION": {
+      "MESSAGE": "Votre organisation est actuellement inactive. Veuillez contacter votre administrateur pour réactiver votre organisation."
+    },
     "RESET_PASSWORD": {
       "TITLE": "Réinitialiser votre mot de passe",
       "SUBTITLE": "Tapez votre adresse e-mail pour envoyer des instructions de réinitialisation de votre mot de passe dans votre boîte de réception.",
@@ -140,10 +143,18 @@
         "ACTIVE": "Indique si le compte du membre est actuellement actif ou désactivé sans être supprimé de la base de données."
       },
       "LOADING": "Chargement des membres…",
-      "NO_RESULTS": "Aucun membre ne correspond aux filtres actuels.",
-      "EMPTY_DESCRIPTION": "Vous n'avez aucun membre correspondant aux filtres sélectionnés.",
+      "NO_RESULTS": "Aucun membre ajouté",
+      "EMPTY_DESCRIPTION": "Commençons par ajouter votre premier membre.",
       "NO_INACTIVE_MEMBERS": "Aucun membre inactif",
       "NO_INACTIVE_MEMBERS_DESCRIPTION": "Vous n'avez aucun membre inactif.",
+      "NO_ACTIVE_MEMBERS": "Aucun membre actif",
+      "NO_ACTIVE_MEMBERS_DESCRIPTION": "Vous n'avez aucun membre actif.",
+      "NO_COMPLETED_MEMBERS": "Aucun membre complété",
+      "NO_COMPLETED_MEMBERS_DESCRIPTION": "Vous n'avez aucun membre complété.",
+      "NO_PENDING_MEMBERS": "Aucun membre en attente",
+      "NO_PENDING_MEMBERS_DESCRIPTION": "Vous n'avez aucun membre en attente.",
+      "NO_EXPIRED_MEMBERS": "Aucun membre expiré",
+      "NO_EXPIRED_MEMBERS_DESCRIPTION": "Vous n'avez aucun membre expiré.",
       "RESEND_INVITATION": "Renvoyer l'invitation"
     },
     "TOASTS": {
@@ -440,17 +451,27 @@
       },
       "STEP_1": {
         "NAME": {
-          "LABEL": "Nom du service",
-          "PLACEHOLDER": "Entrez le nom du service",
           "REQUIRED": "*"
         },
-        "DESCRIPTION": {
-          "LABEL": "Description",
-          "PLACEHOLDER": "Décrivez ce que ce service offre"
+        "NAME_EN": {
+          "LABEL": "Nom du service (EN)",
+          "PLACEHOLDER": "eg. Intelligent Structural Monitoring Service"
+        },
+        "NAME_FR": {
+          "LABEL": "Nom du service (FR)",
+          "PLACEHOLDER": "eg. Service de Surveillance Structurelle Intelligente"
+        },
+        "DESCRIPTION_EN": {
+          "LABEL": "Description brève (EN)",
+          "PLACEHOLDER": "eg. 24/7 structural monitoring with IoT sensors and predictive analytics to detect anomalies and prevent failures in buildings in real-time."
+        },
+        "DESCRIPTION_FR": {
+          "LABEL": "Description brève (FR)",
+          "PLACEHOLDER": "eg. Surveillance structurelle 24/7 avec capteurs IoT et analyse prédictive pour détecter anomalies et prévenir défaillances en temps réel."
         },
         "URL": {
-          "LABEL": "URL du service",
-          "PLACEHOLDER": "https://example.com"
+          "LABEL": "URL",
+          "PLACEHOLDER": "URL"
         }
       },
       "STEP_2": {
@@ -619,6 +640,14 @@
       "EMPTY_DESCRIPTION": "Vous n'avez aucune organisation correspondant aux filtres sélectionnés.",
       "NO_INACTIVE_ORGANIZATIONS": "Aucune organisation inactive",
       "NO_INACTIVE_ORGANIZATIONS_DESCRIPTION": "Vous n'avez aucune organisation inactive.",
+      "NO_ACTIVE_ORGANIZATIONS": "Aucune organisation active",
+      "NO_ACTIVE_ORGANIZATIONS_DESCRIPTION": "Vous n'avez aucune organisation active.",
+      "NO_COMPLETED_ORGANIZATIONS": "Aucune organisation complétée",
+      "NO_COMPLETED_ORGANIZATIONS_DESCRIPTION": "Vous n'avez aucune organisation complétée.",
+      "NO_PENDING_ORGANIZATIONS": "Aucune organisation en attente",
+      "NO_PENDING_ORGANIZATIONS_DESCRIPTION": "Vous n'avez aucune organisation en attente.",
+      "NO_EXPIRED_ORGANIZATIONS": "Aucune organisation expirée",
+      "NO_EXPIRED_ORGANIZATIONS_DESCRIPTION": "Vous n'avez aucune organisation expirée.",
       "RESEND_INVITATION": "Renvoyer l'invitation"
     },
     "TOASTS": {

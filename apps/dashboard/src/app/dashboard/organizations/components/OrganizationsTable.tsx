@@ -26,6 +26,7 @@ interface OrganizationsTableProps {
   error: string | null;
   resendingUserId: string | null;
   activeFilter: "all" | "active" | "inactive";
+  registrationFilter: "all" | "completed" | "pending" | "expired";
   onToggleActive: (organization: Organization, value: boolean) => void;
   onResendInvitation: (organization: Organization) => void;
 }
@@ -36,12 +37,52 @@ export function OrganizationsTable({
   error,
   resendingUserId,
   activeFilter,
+  registrationFilter,
   onToggleActive,
   onResendInvitation,
 }: OrganizationsTableProps) {
   const { t } = useTranslation("ORGANIZATIONS");
   const [showDeactivateDialog, setShowDeactivateDialog] = useState(false);
   const [organizationToDeactivate, setOrganizationToDeactivate] = useState<Organization | null>(null);
+
+  // Helper function to get empty state messages based on filters
+  const getEmptyStateMessages = () => {
+    const messageMap: Record<string, { title: string; description: string }> = {
+      completed: {
+        title: t("TABLE.NO_COMPLETED_ORGANIZATIONS"),
+        description: t("TABLE.NO_COMPLETED_ORGANIZATIONS_DESCRIPTION"),
+      },
+      pending: {
+        title: t("TABLE.NO_PENDING_ORGANIZATIONS"),
+        description: t("TABLE.NO_PENDING_ORGANIZATIONS_DESCRIPTION"),
+      },
+      expired: {
+        title: t("TABLE.NO_EXPIRED_ORGANIZATIONS"),
+        description: t("TABLE.NO_EXPIRED_ORGANIZATIONS_DESCRIPTION"),
+      },
+      inactive: {
+        title: t("TABLE.NO_INACTIVE_ORGANIZATIONS"),
+        description: t("TABLE.NO_INACTIVE_ORGANIZATIONS_DESCRIPTION"),
+      },
+      active: {
+        title: t("TABLE.NO_ACTIVE_ORGANIZATIONS"),
+        description: t("TABLE.NO_ACTIVE_ORGANIZATIONS_DESCRIPTION"),
+      },
+      default: {
+        title: t("TABLE.NO_RESULTS"),
+        description: t("TABLE.EMPTY_DESCRIPTION"),
+      },
+    };
+
+    // Priority: registration filter first, then active filter, then default
+    if (registrationFilter !== "all") {
+      return messageMap[registrationFilter] || messageMap.default;
+    }
+    if (activeFilter !== "all") {
+      return messageMap[activeFilter] || messageMap.default;
+    }
+    return messageMap.default;
+  };
 
   const handleSwitchChange = (organization: Organization, value: boolean) => {
     if (!value) {
@@ -85,7 +126,7 @@ export function OrganizationsTable({
                         type="button"
                         className="text-[#0A0A0A]/40 transition hover:text-[#0A0A0A]/70"
                       >
-                        <Info className="h-4 w-4" />
+                        <Info className="h-4 w-4 text-[#0A0A0A]" />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent
@@ -106,11 +147,11 @@ export function OrganizationsTable({
                         type="button"
                         className="text-[#0A0A0A]/40 transition hover:text-[#0A0A0A]/70"
                       >
-                        <Info className="h-4 w-4" />
+                        <Info className="h-4 w-4 text-[#0A0A0A]" />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent
-                      side="bottom"
+                      side="top"
                       className="max-w-xs text-xs text-center"
                     >
                       {t("TABLE.TOOLTIPS.ACTIVE")}
@@ -167,24 +208,14 @@ export function OrganizationsTable({
     {!loading && organizations.length === 0 && (
       <div className="flex w-full flex-col items-center justify-center gap-6 rounded-lg border border-dashed border-[#E5E5E5] bg-white mt-[-15px]" style={{ height: 'calc(100vh - 265px)' }}>
         <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#E5E5E5] shadow-xs">
-          <Building2 className="h-6 w-6 text-[#0A0A0A]" strokeWidth={1.5} />
+          <Building2 className="h-6 w-6 text-[#0A0A0A]" strokeWidth={1.5} fill="none" />
         </div>
         <div className="flex flex-col items-center gap-2">
           <h3 className="text-lg font-semibold text-[#0A0A0A]">
-            {error 
-              ? "Error loading organizations" 
-              : activeFilter === "inactive" 
-                ? t("TABLE.NO_INACTIVE_ORGANIZATIONS")
-                : t("TABLE.NO_RESULTS")
-            }
+            {error ? "Error loading organizations" : getEmptyStateMessages().title}
           </h3>
           <p className="text-sm text-[#737373]">
-            {error 
-              ? error 
-              : activeFilter === "inactive"
-                ? t("TABLE.NO_INACTIVE_ORGANIZATIONS_DESCRIPTION")
-                : t("TABLE.EMPTY_DESCRIPTION")
-            }
+            {error ? error : getEmptyStateMessages().description}
           </p>
         </div>
       </div>

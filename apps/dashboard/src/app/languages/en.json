@@ -74,6 +74,9 @@
       "GO_BACK_TO": "Go back to",
       "SIGN_IN": "Sign in"
     },
+    "INACTIVE_ORGANIZATION": {
+      "MESSAGE": "Your organization is currently inactive. Please contact your administrator to reactivate your organization."
+    },
     "RESET_PASSWORD": {
       "TITLE": "Reset your password",
       "SUBTITLE": "Type your email address to send instructions to reset your password to you inbox.",
@@ -140,10 +143,18 @@
         "ACTIVE": "Indicates whether the member's account is currently active or deactivated without being removed from the database."
       },
       "LOADING": "Loading members…",
-      "NO_RESULTS": "No members match the current filters.",
-      "EMPTY_DESCRIPTION": "You don't have any members matching the selected filters.",
+      "NO_RESULTS": "No members added",
+      "EMPTY_DESCRIPTION": "Let's get started with your first member.",
       "NO_INACTIVE_MEMBERS": "No inactive members",
       "NO_INACTIVE_MEMBERS_DESCRIPTION": "You don't have any inactive members.",
+      "NO_ACTIVE_MEMBERS": "No active members",
+      "NO_ACTIVE_MEMBERS_DESCRIPTION": "You don't have any active members.",
+      "NO_COMPLETED_MEMBERS": "No completed members",
+      "NO_COMPLETED_MEMBERS_DESCRIPTION": "You don't have any completed members.",
+      "NO_PENDING_MEMBERS": "No pending members",
+      "NO_PENDING_MEMBERS_DESCRIPTION": "You don't have any pending members.",
+      "NO_EXPIRED_MEMBERS": "No expired members",
+      "NO_EXPIRED_MEMBERS_DESCRIPTION": "You don't have any expired members.",
       "RESEND_INVITATION": "Resend invitation"
     },
     "TOASTS": {
@@ -440,17 +451,27 @@
       },
       "STEP_1": {
         "NAME": {
-          "LABEL": "Service Name",
-          "PLACEHOLDER": "Enter service name",
           "REQUIRED": "*"
         },
-        "DESCRIPTION": {
-          "LABEL": "Description",
-          "PLACEHOLDER": "Describe what this service offers"
+        "NAME_EN": {
+          "LABEL": "Service Name (EN)",
+          "PLACEHOLDER": "eg. Intelligent Structural Monitoring Service"
+        },
+        "NAME_FR": {
+          "LABEL": "Service Name (FR)",
+          "PLACEHOLDER": "eg. Service de Surveillance Structurelle Intelligente"
+        },
+        "DESCRIPTION_EN": {
+          "LABEL": "Brief Description (EN)",
+          "PLACEHOLDER": "eg. 24/7 structural monitoring with IoT sensors and predictive analytics to detect anomalies and prevent failures in buildings in real-time."
+        },
+        "DESCRIPTION_FR": {
+          "LABEL": "Brief Description (FR)",
+          "PLACEHOLDER": "eg. Surveillance structurelle 24/7 avec capteurs IoT et analyse prédictive pour détecter anomalies et prévenir défaillances en temps réel."
         },
         "URL": {
-          "LABEL": "Service URL",
-          "PLACEHOLDER": "https://example.com"
+          "LABEL": "URL",
+          "PLACEHOLDER": "URL"
         }
       },
       "STEP_2": {
@@ -619,6 +640,14 @@
       "EMPTY_DESCRIPTION": "You don't have any organizations matching the selected filters.",
       "NO_INACTIVE_ORGANIZATIONS": "No inactive organizations",
       "NO_INACTIVE_ORGANIZATIONS_DESCRIPTION": "You don't have any inactive organizations.",
+      "NO_ACTIVE_ORGANIZATIONS": "No active organizations",
+      "NO_ACTIVE_ORGANIZATIONS_DESCRIPTION": "You don't have any active organizations.",
+      "NO_COMPLETED_ORGANIZATIONS": "No completed organizations",
+      "NO_COMPLETED_ORGANIZATIONS_DESCRIPTION": "You don't have any completed organizations.",
+      "NO_PENDING_ORGANIZATIONS": "No pending organizations",
+      "NO_PENDING_ORGANIZATIONS_DESCRIPTION": "You don't have any pending organizations.",
+      "NO_EXPIRED_ORGANIZATIONS": "No expired organizations",
+      "NO_EXPIRED_ORGANIZATIONS_DESCRIPTION": "You don't have any expired organizations.",
       "RESEND_INVITATION": "Resend invitation"
     },
     "TOASTS": {

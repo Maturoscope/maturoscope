@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ChevronDown, Minus, Plus } from "lucide-react";
 import { ServiceFormData } from "../hooks/useServiceForm";
@@ -107,88 +105,81 @@ export function Step2CategoryScale({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {errors.categories && (
         <div className="p-4 bg-red-50 border border-red-200 rounded-md">
           <p className="text-sm text-red-600">{errors.categories}</p>
         </div>
       )}
 
-      <div className="space-y-0">
-        {SCALES.map((scale, index) => {
+      <div className="space-y-4">
+        {SCALES.map((scale) => {
           const isExpanded = expandedCategories.has(scale.type);
           const questions = getQuestionsByScale(scale.type);
 
           return (
-            <div key={scale.type}>
-              {index > 0 && (
-                <div className="border-t border-[#E5E5E5] my-0" />
-              )}
-              <div className="space-y-4 py-6">
+            <div
+              key={scale.type}
+              className="rounded-lg border border-[#E5E5E5] bg-white"
+            >
+              <button
+                type="button"
+                onClick={() => handleToggleExpand(scale.type)}
+                className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors rounded-lg"
+                disabled={viewOnly}
+              >
                 <div className="flex items-center gap-2">
-                  <div className="flex-1 min-w-0">
-                    <Label className="text-base font-semibold text-[#0A0A0A]">
-                      {scale.type}{" "}
-                      <span className="font-normal text-[#8C8C8C]">
-                        {t("MODAL.STEP_2.SELECT_ALL_THAT_APPLY")}
-                      </span>
-                    </Label>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleToggleExpand(scale.type)}
-                    className="h-6 w-6 shrink-0"
-                  >
-                    <ChevronDown
-                      className={cn(
-                        "h-4 w-4 text-[#0A0A0A] transition-transform duration-200",
-                        isExpanded && "rotate-180"
-                      )}
-                    />
-                  </Button>
+                  <span className="text-base font-semibold text-[#0A0A0A]">
+                    {scale.type}
+                  </span>
+                  <span className="text-sm font-normal text-[#8C8C8C]">
+                    {t("MODAL.STEP_2.SELECT_ALL_THAT_APPLY")}
+                  </span>
                 </div>
+                <ChevronDown
+                  className={cn(
+                    "h-4 w-4 text-[#0A0A0A] transition-transform duration-200",
+                    isExpanded && "rotate-180"
+                  )}
+                />
+              </button>
 
-                {isExpanded && (
-                  <div className="mt-4 space-y-6">
-                    {questions.length === 0 ? (
-                      <p className="text-sm text-gray-500">
-                        {t("MODAL.STEP_2.NO_QUESTIONS")}
-                      </p>
-                    ) : (
-                      <>
-                        <div className="border-t border-gray-200 pb-4" />
-                        {questions.map((questionId, questionIndex) => {
-                        const levels = getLevelsForQuestion(questionId);
-                        const isQuestionExpanded = expandedQuestions.has(questionId);
+              {isExpanded && (
+                <div className="px-4 pb-4 space-y-6 border-t border-[#E5E5E5] pt-4">
+                  {questions.length === 0 ? (
+                    <p className="text-sm text-gray-500">
+                      {t("MODAL.STEP_2.NO_QUESTIONS")}
+                    </p>
+                  ) : (
+                    questions.map((questionId, questionIndex) => {
+                      const levels = getLevelsForQuestion(questionId);
+                      const isQuestionExpanded = expandedQuestions.has(questionId);
 
-                        return (
-                          <div key={questionId}>
-                            {questionIndex > 0 && (
-                              <div className="border-t border-gray-200 my-4" />
-                            )}
-                            <div className="space-y-2">
-                              <div className="flex items-center gap-2">
-                                <h4 className="text-sm font-medium text-[#0A0A0A] flex-1 min-w-0">
-                                  {getQuestionText(questionId, currentLanguage)}
-                                </h4>
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  onClick={() => handleToggleQuestion(questionId)}
-                                  className="h-6 w-6 shrink-0"
-                                  disabled={viewOnly}
-                                >
-                                  {isQuestionExpanded ? (
-                                    <Minus className="h-4 w-4 text-[#0A0A0A]" />
-                                  ) : (
-                                    <Plus className="h-4 w-4 text-[#0A0A0A]" />
-                                  )}
-                                </Button>
-                              </div>
+                      return (
+                        <div key={questionId}>
+                          {questionIndex > 0 && (
+                            <div className="border-t border-[#E5E5E5] my-4" />
+                          )}
+                          
+                          <div className="space-y-3">
+                            <button
+                              type="button"
+                              onClick={() => handleToggleQuestion(questionId)}
+                              className="w-full flex items-center justify-between text-left"
+                              disabled={viewOnly}
+                            >
+                              <h4 className="text-sm font-medium text-[#0A0A0A] flex-1 pr-2">
+                                {getQuestionText(questionId, currentLanguage)}
+                              </h4>
+                              {isQuestionExpanded ? (
+                                <Minus className="h-4 w-4 text-[#0A0A0A] shrink-0" />
+                              ) : (
+                                <Plus className="h-4 w-4 text-[#0A0A0A] shrink-0" />
+                              )}
+                            </button>
 
                             {isQuestionExpanded && (
-                              <div className="space-y-2">
+                              <div className="space-y-2 pl-0">
                                 {levels.map((option) => {
                                   const isChecked = isLevelSelected(
                                     questionId,
@@ -231,15 +222,13 @@ export function Step2CategoryScale({
                                 })}
                               </div>
                             )}
-                            </div>
                           </div>
-                        );
-                        })}
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              )}
             </div>
           );
         })}
