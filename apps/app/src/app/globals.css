@@ -37,6 +37,8 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   --neutral-50: #FAFAFA;
+  --orange-50: #FFF7ED;
+  --teal-50: #F0FDFA;
 
   /* Default accent color (amber/orange - fallback) */
   --accent: #171717;

@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils"
 import { Gap } from "@/actions/organization"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
+// Components
+import ServiceAccordion from "@/components/custom/ResultsPage/ServiceAccordion/ServiceAccordion"
 
 interface DetailedScaleProps {
   title: string
@@ -29,6 +31,12 @@ const COLOR_TO_KEY: Record<string, string> = {
   mfrl: "#2563EB",
 }
 
+const INDEX_COLOR_TO_KEY: Record<string, string> = {
+  trl: "bg-orange-50",
+  mkrl: "bg-teal-50",
+  mfrl: "bg-blue-50",
+}
+
 const DetailedScale = ({
   id,
   title,
@@ -36,11 +44,11 @@ const DetailedScale = ({
   copyPreLevel,
   copyPostLevel,
   serviceLabel,
+  comingSoonLabel,
   gaps,
   className,
 }: DetailedScaleProps & ExtraProps) => {
   const { lang } = useParams<{ lang: Locale }>()
-  console.log({ lang })
 
   return (
     <div
@@ -80,7 +88,19 @@ const DetailedScale = ({
         <span className="font-semibold text-xl">
           {copyPreLevel} {level + 1}: {copyPostLevel}
         </span>
-        <div></div>
+        <div className="flex flex-col">
+          {gaps.map((gap, index) => (
+            <ServiceAccordion
+              key={gap.questionId}
+              index={index}
+              title={gap.gapDescription[lang]}
+              serviceLabel={serviceLabel}
+              comingSoonLabel={comingSoonLabel}
+              hasServices={gap.hasServices}
+              indexColor={INDEX_COLOR_TO_KEY[id]}
+            />
+          ))}
+        </div>
       </div>
     </div>
   )
