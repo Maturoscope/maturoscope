@@ -1,5 +1,52 @@
 <html>
-  <body>
-    <h1>PDF Report for <%= id %></h1>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <% var dir = process.cwd() %>
+    <%- include(dir + '/src/modules/report/pdf/styles.ejs') %>
+  </head>
+  <body class="bg-[#F5F5F5]">
+    <main class="w-[1440px] h-[2040px] aspect-ratio-1440/2040 flex flex-col gap-4">
+      <%- include(dir + '/src/modules/report/pdf/nav.ejs') %>
+
+      <div class="w-full h-full px-6">
+        <div>
+          <h1>Your Maturity Report</h1>
+          <p>Completed on January 20, 2025</p>
+        </div>
+
+        <div class="overview">
+          <div class="card">
+            <div>
+              <span>TRL</span>
+              <span>Technology Readiness Level</span>
+            </div>
+
+            <div>
+              2/9
+            </div>
+
+            <div class="description">
+              <span>Phase 1: Conceptualization & Research</span>
+              <span>Basic Feasibility & Hypothesis Validation</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="detailed">
+          <div>
+            <h2>Detailed report</h2>
+            <p>Look for the "Service available" tags below to see where our experts can accelerate your progress.</p>
+          </div>
+
+          <div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+
+      <%- include(dir + '/src/modules/report/pdf/footer.ejs') %>
+    </main>
   </body>
 </html>
