@@ -64,7 +64,7 @@ const DetailedScale = ({
         className
       )}
     >
-      <div className="w-full flex flex-col gap-5 md:max-w-[240px] py-4 px-5 md:p-6 rounded-3xl bg-white">
+      <div className="w-full flex flex-col gap-5 md:max-w-[240px] py-4 px-5 md:p-6 rounded-3xl bg-white h-min">
         <div className="flex flex-col gap-3 items-center">
           <h3 className="text-xl font-semibold w-max">{title}</h3>
           <div className="w-[75px] h-auto aspect-square lg:w-[120px] mb-1">
@@ -109,7 +109,7 @@ const DetailedScale = ({
         </div>
       </div>
 
-      <div className="w-full flex flex-col gap-2.5 p-6 rounded-3xl bg-white">
+      <div className="w-full flex flex-col gap-2.5 p-6 rounded-3xl bg-white h-min">
         <span className="font-semibold text-xl">
           {copyPreLevel} {level + 1}: {copyPostLevel}
         </span>
