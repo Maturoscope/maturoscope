@@ -136,7 +136,9 @@
       "copyPreLevel": "To reach Level ",
       "copyPostLevel": "Complete the gaps below",
       "serviceLabel": "Service available",
-      "comingSoonLabel": "Coming soon"
+      "comingSoonLabel": "Coming soon",
+      "focusLabel": "Current focus",
+      "primaryRiskLabel": "Primary Risk to Mitigate"
     },
     "ctaBanner": {
       "title": "Turn this plan into reality.",

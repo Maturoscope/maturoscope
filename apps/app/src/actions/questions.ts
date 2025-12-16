@@ -36,9 +36,45 @@ interface TransformedStage {
   questions: QuestionData[]
 }
 
-/**
- * Transforms API question data structure to match the form stages format
- */
+// Risk Analysis Types
+type ScaleAbbreviation = "TRL" | "MkRL" | "MfRL"
+
+interface ScaleInput {
+  scale: ScaleAbbreviation
+  readinessLevel: number
+  phase: number
+}
+
+interface RiskAnalysisRequest {
+  scales: ScaleInput[]
+}
+
+interface RiskItem {
+  scale: ScaleAbbreviation
+  readinessLevel: number
+  phase: number
+  isLowest: boolean
+  strategicFocus?: LocalizedText
+  primaryRisk?: LocalizedText
+}
+
+interface RiskAnalysisResponse {
+  overallPhase: number
+  phasesMatch: boolean
+  risks: RiskItem[]
+  recommendations: LocalizedText[]
+}
+
+export interface RiskData {
+  readinessLevel: number
+  phase: number
+  isLowest: boolean
+  strategicFocus?: LocalizedText
+  primaryRisk?: LocalizedText
+}
+
+export type RisksRecord = Record<StageId, RiskData>
+
 const transformQuestionsToStages = (
   questionsData: ApiQuestionsResponse,
   lang: Locale
@@ -80,9 +116,6 @@ const transformQuestionsToStages = (
     .filter((stage): stage is TransformedStage => stage !== undefined)
 }
 
-/**
- * Fetches questions from API and transforms them to the expected format
- */
 export const getQuestions = async (lang: Locale) => {
   const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/readiness-assessment/questions`
   const response = await fetch(endpoint)
@@ -93,4 +126,60 @@ export const getQuestions = async (lang: Locale) => {
 
   const questionsData: ApiQuestionsResponse = await response.json()
   return transformQuestionsToStages(questionsData, lang)
+}
+
+const SCALE_TO_STAGE_ID: Record<ScaleAbbreviation, StageId> = {
+  TRL: "trl",
+  MkRL: "mkrl",
+  MfRL: "mfrl",
+}
+
+interface GetRisksParams {
+  levels: Record<StageId, number>
+  phases: Record<StageId, number>
+}
+
+export const getRisks = async ({
+  levels,
+  phases,
+}: GetRisksParams): Promise<RisksRecord> => {
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/readiness-assessment/analyze-risk`
+
+  const scales: ScaleInput[] = [
+    { scale: "TRL", readinessLevel: levels.trl, phase: phases.trl },
+    { scale: "MkRL", readinessLevel: levels.mkrl, phase: phases.mkrl },
+    { scale: "MfRL", readinessLevel: levels.mfrl, phase: phases.mfrl },
+  ]
+
+  const body: RiskAnalysisRequest = { scales }
+
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch risks: ${response.statusText}`)
+  }
+
+  const data: RiskAnalysisResponse = await response.json()
+
+  const risksRecord: RisksRecord = {} as RisksRecord
+
+  data.risks.forEach((risk) => {
+    const stageId = SCALE_TO_STAGE_ID[risk.scale]
+
+    risksRecord[stageId] = {
+      readinessLevel: risk.readinessLevel,
+      phase: risk.phase,
+      isLowest: risk.isLowest,
+      strategicFocus: risk.strategicFocus,
+      primaryRisk: risk.primaryRisk,
+    }
+  })
+
+  return risksRecord
 }
