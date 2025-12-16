@@ -268,16 +268,13 @@ export class ReadinessAssessmentService {
       );
     }
 
-    // Find the lowest phase
-    const phases = scales.map((s) => s.phase);
-    const lowestPhase = Math.min(...phases);
+    const readinessLevels = scales.map((s) => s.readinessLevel);
+    const lowestReadinessLevel = Math.min(...readinessLevels);
 
-    // Check if all phases match
-    const phasesMatch = phases.every((p) => p === phases[0]);
+    const readinessLevelsMatch = readinessLevels.every((r) => r === readinessLevels[0]);
 
-    // Identify risks
     const risks = scales.map((scaleInput) => {
-      const isLowest = scaleInput.phase === lowestPhase && !phasesMatch;
+      const isLowest = scaleInput.readinessLevel === lowestReadinessLevel && !readinessLevelsMatch;
       let strategicFocus: I18nText | undefined;
       let primaryRisk: I18nText | undefined;
 
@@ -300,10 +297,9 @@ export class ReadinessAssessmentService {
       };
     });
 
-    // Generate recommendations
     const recommendations: I18nText[] = [];
 
-    if (!phasesMatch) {
+    if (!readinessLevelsMatch) {
       const lowestRisks = risks.filter((r) => r.isLowest);
       lowestRisks.forEach((risk) => {
         if (risk.strategicFocus && risk.primaryRisk) {
@@ -329,8 +325,8 @@ export class ReadinessAssessmentService {
     }
 
     return {
-      overallPhase: lowestPhase,
-      phasesMatch,
+      overallPhase: lowestReadinessLevel,
+      phasesMatch: readinessLevelsMatch,
       risks,
       recommendations,
     };

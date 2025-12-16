@@ -61,7 +61,8 @@ export class ReadinessAssessmentController {
   /**
    * POST /readiness-assessment/analyze-risk
    * Analyze risk with EN & FR translations
-   * @param riskAnalysisDto - Contains all three scale levels and phases
+   * @param riskAnalysisDto - Contains all three scale readiness levels and phases
+   * The analysis determines the lowest risk based on readinessLevel (not phase)
    */
   @Post('analyze-risk')
   analyzeRisk(@Body() riskAnalysisDto: RiskAnalysisDto): RiskAnalysisResultI18nDto {

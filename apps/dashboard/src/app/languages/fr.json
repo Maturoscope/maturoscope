@@ -155,6 +155,8 @@
       "NO_PENDING_MEMBERS_DESCRIPTION": "Vous n'avez aucun membre en attente.",
       "NO_EXPIRED_MEMBERS": "Aucun membre expiré",
       "NO_EXPIRED_MEMBERS_DESCRIPTION": "Vous n'avez aucun membre expiré.",
+      "NO_MEMBERS_AVAILABLE": "Aucun membre disponible",
+      "NO_MEMBERS_AVAILABLE_DESCRIPTION": "Aucun membre ne correspond aux filtres sélectionnés.",
       "RESEND_INVITATION": "Renvoyer l'invitation"
     },
     "TOASTS": {

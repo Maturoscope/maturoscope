@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Info, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Switch } from "@/components/ui/switch";
@@ -47,62 +47,54 @@ export function MembersTable({
   const [showDeactivateDialog, setShowDeactivateDialog] = useState(false);
   const [memberToDeactivate, setMemberToDeactivate] = useState<Member | null>(null);
 
-  // Helper function to get empty state messages based on filters
-  const getEmptyStateMessages = () => {
-    const messageMap: Record<string, { title: string; description: string }> = {
-      completed: {
-        title: t("TABLE.NO_COMPLETED_MEMBERS"),
-        description: t("TABLE.NO_COMPLETED_MEMBERS_DESCRIPTION"),
-      },
-      pending: {
-        title: t("TABLE.NO_PENDING_MEMBERS"),
-        description: t("TABLE.NO_PENDING_MEMBERS_DESCRIPTION"),
-      },
-      expired: {
-        title: t("TABLE.NO_EXPIRED_MEMBERS"),
-        description: t("TABLE.NO_EXPIRED_MEMBERS_DESCRIPTION"),
-      },
-      inactive: {
+  const emptyStateMessages = useMemo(() => {
+    if (activeFilter === "inactive") {
+      return {
         title: t("TABLE.NO_INACTIVE_MEMBERS"),
         description: t("TABLE.NO_INACTIVE_MEMBERS_DESCRIPTION"),
-      },
-      active: {
-        title: t("TABLE.NO_ACTIVE_MEMBERS"),
-        description: t("TABLE.NO_ACTIVE_MEMBERS_DESCRIPTION"),
-      },
-      default: {
+      };
+    }
+
+    if (registrationFilter === "all" && activeFilter === "all") {
+      return {
         title: t("TABLE.NO_RESULTS"),
         description: t("TABLE.EMPTY_DESCRIPTION"),
-      },
-    };
+      };
+    }
 
-    // Priority: registration filter first, then active filter, then default
     if (registrationFilter !== "all") {
-      return messageMap[registrationFilter] || messageMap.default;
+      return {
+        title: t("TABLE.NO_MEMBERS_AVAILABLE"),
+        description: t("TABLE.NO_MEMBERS_AVAILABLE_DESCRIPTION"),
+      };
     }
-    if (activeFilter !== "all") {
-      return messageMap[activeFilter] || messageMap.default;
-    }
-    return messageMap.default;
-  };
 
-  // Check if a member is the admin (first user) by comparing email with organization email
+    if (activeFilter === "active") {
+      return {
+        title: t("TABLE.NO_MEMBERS_AVAILABLE"),
+        description: t("TABLE.NO_MEMBERS_AVAILABLE_DESCRIPTION"),
+      };
+    }
+
+    return {
+      title: t("TABLE.NO_RESULTS"),
+      description: t("TABLE.EMPTY_DESCRIPTION"),
+    };
+  }, [t, activeFilter, registrationFilter]);
+
   const isAdmin = (member: Member): boolean => {
     return organizationEmail ? member.email.toLowerCase() === organizationEmail.toLowerCase() : false;
   };
 
   const handleSwitchChange = (member: Member, value: boolean) => {
-    // Prevent deactivating the admin user
     if (!value && isAdmin(member)) {
       return;
     }
     
     if (!value) {
-      // User is trying to deactivate - show confirmation dialog
       setMemberToDeactivate(member);
       setShowDeactivateDialog(true);
     } else {
-      // User is activating - proceed directly
       onToggleActive(member, value);
     }
   };
@@ -226,10 +218,10 @@ export function MembersTable({
         </div>
         <div className="flex flex-col items-center gap-2">
           <h3 className="text-lg font-semibold text-[#0A0A0A]">
-            {error ? "Error loading members" : getEmptyStateMessages().title}
+            {error ? "Error loading members" : emptyStateMessages.title}
           </h3>
           <p className="text-sm text-[#737373]">
-            {error ? error : getEmptyStateMessages().description}
+            {error ? error : emptyStateMessages.description}
           </p>
         </div>
       </div>
