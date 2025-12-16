@@ -145,7 +145,15 @@
       "description": "Ne vous engagez pas seuls. Nos experts sont prêts à vous aider à atteindre le prochain niveau de maturité.",
       "or": "ou",
       "talkButtonLabel": "Parler à un expert",
-      "resetButtonLabel": "Réinitialiser le questionnaire"
+      "resetButtonLabel": "Réinitialiser le questionnaire",
+
+      "resetFormModal": {
+        "title": "Réinitialiser le questionnaire",
+        "description": "Cette action supprimera toutes vos réponses. Nous ne stockons pas vos réponses. Téléchargez votre rapport maintenant pour conserver un enregistrement de vos résultats.",
+        "downloadButtonLabel": "Télécharger et réinitialiser",
+        "cancelButtonLabel": "Annuler",
+        "resetButtonLabel": "Réinitialiser"
+      }
     }
   }
 }

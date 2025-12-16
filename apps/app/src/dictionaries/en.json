@@ -145,7 +145,14 @@
       "description": "Don't tackle these gaps alone. Our experts are ready to help you reach the next maturity level.",
       "or": "or",
       "talkButtonLabel": "Talk to an Expert",
-      "resetButtonLabel": "Reset questionnaire"
+      "resetButtonLabel": "Reset questionnaire",
+      "resetFormModal": {
+        "title": "Reset questionnaire",
+        "description": "This will permanently delete all your answers. We don't store your responses. Download your report now to keep a record of your results.",
+        "downloadButtonLabel": "Download and reset",
+        "cancelButtonLabel": "Cancel",
+        "resetButtonLabel": "Reset"
+      }
     }
   }
 }

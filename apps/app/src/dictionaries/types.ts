@@ -14,6 +14,7 @@ import { OverviewProps } from "@/components/custom/ResultsPage/Overview/Overview
 import { UnlockNextLevelProps } from "@/components/custom/ResultsPage/UnlockNextLevel/UnlockNextLevel"
 import { DetailedReportProps } from "@/components/custom/ResultsPage/DetailedReport/DetailedReport"
 import { CTABannerProps } from "@/components/custom/ResultsPage/CTABanner/CTABanner"
+import { ResetFormModalProps } from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
 
 // Dictionary form stages don't include questions (they come from API)
 type DictionaryStage = Omit<StageType, "questions">
@@ -50,5 +51,6 @@ export type Dictionary = {
     unlockNextLevel: UnlockNextLevelProps
     detailedReport: DetailedReportProps
     ctaBanner: CTABannerProps
+    resetFormModal: ResetFormModalProps
   }
 }
