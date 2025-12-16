@@ -191,10 +191,7 @@ export const ProgressProvider = ({
       answers: stageData.questions,
     })
 
-    // Save assessment response to localStorage
-    if (result.success && result.data) {
-      saveAssessmentToLocalStorage(currStageId, result.data)
-    }
+    if (result?.data) saveAssessmentToLocalStorage(currStageId, result.data)
 
     const nextStage = stages[currStageIndex + 1]
     const isLastCheckpoint = !nextStage?.id

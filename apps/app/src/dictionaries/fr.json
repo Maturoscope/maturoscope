@@ -136,7 +136,9 @@
       "copyPreLevel": "Pour atteindre le niveau ",
       "copyPostLevel": "Complétez les lacunes ci-dessous",
       "serviceLabel": "Service disponible",
-      "comingSoonLabel": "Bientôt disponible"
+      "comingSoonLabel": "Bientôt disponible",
+      "focusLabel": "Focus actuel",
+      "primaryRiskLabel": "Risque principal à mitiger"
     },
     "ctaBanner": {
       "title": "Transformez ce plan en réalité.",
