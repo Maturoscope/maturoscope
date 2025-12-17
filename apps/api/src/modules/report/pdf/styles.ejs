@@ -1,4 +1,12 @@
 <style type="text/tailwindcss">
+  @layer base {
+    html, body, * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  }
+
   @theme {
     --color-background: #F5F5F5;
     --color-foreground: #171717;
@@ -37,9 +45,5 @@
     --color-neutral-50: #FAFAFA;
     --color-orange-50: #FFF7ED;
     --color-teal-50: #F0FDFA;
-  }
-
-  html, body, * {
-    box-sizing: border-box;
   }
 </style>
