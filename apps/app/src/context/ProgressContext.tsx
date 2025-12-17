@@ -31,6 +31,7 @@ interface ProgressContextType {
   currQuestionIndex: number
   currQuestion: QuestionProps
   isCheckpoint: boolean
+  isFormCompleted: boolean
   stageStepNumber: number
   isNextButtonEnabled: boolean
   handlePrevButtonClick: () => void
@@ -122,6 +123,7 @@ export const ProgressProvider = ({
   children,
 }: ProgressProviderProps) => {
   const [isCheckpoint, setIsCheckpoint] = useState(false)
+  const [isFormCompleted, setIsFormCompleted] = useState(false)
   const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false)
   const [currStageId, setCurrStageId] = useState<StageId>(DEFAULT_STAGE_ID)
   const [currQuestionId, setCurrQuestionId] = useState(
@@ -226,6 +228,10 @@ export const ProgressProvider = ({
   }
 
   useEffect(() => {
+    // Check if form was already completed
+    const completedOn = localStorage.getItem("completedOn")
+    setIsFormCompleted(!!completedOn)
+
     const savedForm = JSON.parse(
       localStorage.getItem("form") || "{}"
     ) as DefaultValues
@@ -257,6 +263,7 @@ export const ProgressProvider = ({
         currQuestionIndex,
         currQuestion,
         isCheckpoint,
+        isFormCompleted,
         stageStepNumber,
         isNextButtonEnabled,
         handlePrevButtonClick,

@@ -15,6 +15,7 @@ export interface QuestionProps {
   options: Option[]
   commentPlaceholder: string
   onQuestionClick: () => void
+  disabled?: boolean
 }
 
 const Question = ({
@@ -23,6 +24,7 @@ const Question = ({
   options: initOptions,
   onQuestionClick,
   commentPlaceholder,
+  disabled = false,
 }: QuestionProps) => {
   const radioGroupName =
     `${name}.questions.${id}` as `${StageId}.questions.${string}`
@@ -31,6 +33,7 @@ const Question = ({
     name: radioGroupName,
     onClick: onQuestionClick,
     commentPlaceholder,
+    disabled,
   }))
 
   return (

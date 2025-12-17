@@ -43,6 +43,7 @@ const CTABanner = ({
     localStorage.removeItem("gaps")
     localStorage.removeItem("level")
     localStorage.removeItem("phases")
+    localStorage.removeItem("completedOn")
     setIsResetFormModalOpen(false)
   }
 

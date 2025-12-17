@@ -52,6 +52,7 @@ const Form = ({
     currStage,
     currQuestion,
     isCheckpoint,
+    isFormCompleted,
     isNextButtonEnabled,
     handleReviewClick,
     handleCheckpointButtonClick,
@@ -85,6 +86,7 @@ const Form = ({
         name={currStage.id}
         onQuestionClick={handleQuestionClick}
         commentPlaceholder={commentPlaceholder}
+        disabled={isFormCompleted}
       />
 
       <div className="w-full flex items-center justify-between gap-3 bg-background lg:bg-none py-4 lg:pt-6 lg:pb-8">
