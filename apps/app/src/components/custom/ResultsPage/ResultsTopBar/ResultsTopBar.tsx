@@ -65,6 +65,7 @@ interface ScalePayload {
 }
 
 interface ReportPayload {
+  completedOn: string
   trl: ScalePayload
   mkrl: ScalePayload
   mfrl: ScalePayload
@@ -175,8 +176,20 @@ const ResultsTopBar = ({
         })
       }
 
+      // Get completion date from localStorage or use current date
+      const storedCompletedOn = localStorage.getItem("completedOn")
+      const completedOnDate =
+        storedCompletedOn ? new Date(storedCompletedOn) : new Date()
+
+      // Format date based on locale
+      const completedOn = completedOnDate.toLocaleDateString(
+        lang === "fr" ? "fr-FR" : "en-US",
+        { year: "numeric", month: "long", day: "numeric" }
+      )
+
       // Build the payload
       const payload: ReportPayload = {
+        completedOn,
         trl: buildScalePayload(
           "trl",
           lang,

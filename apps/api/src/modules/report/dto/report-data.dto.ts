@@ -62,6 +62,9 @@ export class ScaleDataDto {
 }
 
 export class ReportDataDto {
+  @IsString()
+  completedOn: string;
+
   @ValidateNested()
   @Type(() => ScaleDataDto)
   trl: ScaleDataDto;
