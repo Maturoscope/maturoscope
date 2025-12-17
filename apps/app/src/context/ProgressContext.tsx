@@ -32,7 +32,6 @@ interface ProgressContextType {
   currQuestion: QuestionProps
   isCheckpoint: boolean
   stageStepNumber: number
-  isPrevButtonEnabled: boolean
   isNextButtonEnabled: boolean
   handlePrevButtonClick: () => void
   handleNextButtonClick: () => void
@@ -141,13 +140,18 @@ export const ProgressProvider = ({
   const stageStepNumber = STAGES_STEP_NUMBER[currStage.id]
   const isFirstStage = currStageIndex === 0
   const isFirstQuestionOfStage = currQuestionIndex === 0
-  const isPrevButtonEnabled = !(isFirstStage && isFirstQuestionOfStage)
 
   const saveProgress = () =>
     localStorage.setItem("form", JSON.stringify(getValues()))
 
   const handlePrevButtonClick = () => {
-    if (!isPrevButtonEnabled) return
+    const isFirstQuestionOfQuestionnaire =
+      isFirstStage && isFirstQuestionOfStage
+
+    if (isFirstQuestionOfQuestionnaire) {
+      return router.push(`/${lang}/begin`)
+    }
+
     setIsNextButtonEnabled(true)
 
     if (isFirstQuestionOfStage) {
@@ -260,7 +264,6 @@ export const ProgressProvider = ({
         currQuestion,
         isCheckpoint,
         stageStepNumber,
-        isPrevButtonEnabled,
         isNextButtonEnabled,
         handlePrevButtonClick,
         handleNextButtonClick,

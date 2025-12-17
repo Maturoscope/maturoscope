@@ -52,7 +52,6 @@ const Form = ({
     currStage,
     currQuestion,
     isCheckpoint,
-    isPrevButtonEnabled,
     isNextButtonEnabled,
     handleReviewClick,
     handleCheckpointButtonClick,
@@ -89,11 +88,7 @@ const Form = ({
       />
 
       <div className="w-full flex items-center justify-between gap-3 bg-background lg:bg-none py-4 lg:pt-6 lg:pb-8">
-        <Button
-          variant="outline"
-          onClick={handlePrevButtonClick}
-          disabled={!isPrevButtonEnabled}
-        >
+        <Button variant="outline" onClick={handlePrevButtonClick}>
           <Image
             src="/icons/form/arrow-prev.svg"
             alt="Arrow Prev"
