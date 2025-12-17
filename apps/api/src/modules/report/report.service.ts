@@ -7,6 +7,7 @@ import * as os from 'os';
 import puppeteer, { Browser } from 'puppeteer';
 // Types
 import { LaunchOptions, PDFOptions } from 'puppeteer';
+import { ReportDataDto } from './dto/report-data.dto';
 
 const PUPPETEER_OPTIONS: LaunchOptions = {
   executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
@@ -32,21 +33,21 @@ export class ReportService {
     return JSON.parse(localeContent);
   }
 
-  async getPDF(id: string, locale: string = 'en'): Promise<Buffer> {
+  async getPDF(
+    reportData: ReportDataDto,
+    locale: string = 'en',
+  ): Promise<Buffer> {
     // Load translations for the specified locale
     const t = this.loadTranslations(locale);
 
     // Interpolate the dynamic data into the template
-    const templateData = { id, t };
+    const templateData = { reportData, t };
     const templatePath = path.join(__dirname, 'pdf/template.ejs');
     const template = fs.readFileSync(templatePath, 'utf8');
     const html = ejs.render(template, templateData);
 
     // Write HTML to a temp file (avoids data URL size limits)
-    const tempFilePath = path.join(
-      os.tmpdir(),
-      `report-${id}-${Date.now()}.html`,
-    );
+    const tempFilePath = path.join(os.tmpdir(), `report-${Date.now()}.html`);
     fs.writeFileSync(tempFilePath, html, 'utf8');
 
     let browser: Browser | null = null;
