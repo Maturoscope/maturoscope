@@ -121,8 +121,10 @@ const DetailedScale = ({
               title={gap.gapDescription[lang]}
               serviceLabel={serviceLabel}
               comingSoonLabel={comingSoonLabel}
+              recommendedServices={gap.recommendedServices}
               hasServices={gap.hasServices}
               indexColor={INDEX_COLOR_TO_KEY[id]}
+              lang={lang}
             />
           ))}
         </div>

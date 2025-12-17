@@ -222,15 +222,20 @@ const ResultsTopBar = ({
         ),
       }
 
+      console.log("payload", payload)
+      console.log("api", process.env.NEXT_PUBLIC_API_URL)
+
       // Make the POST request to the PDF endpoint
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || ""
-      const response = await fetch(`${apiUrl}/report/${lang}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/report/${lang}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      )
 
       if (!response.ok) {
         throw new Error(`Failed to generate PDF: ${response.statusText}`)
