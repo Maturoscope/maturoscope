@@ -8,7 +8,22 @@
     "completedOn": "Completed on"
   },
   "overview": {
-    "title": "Overview"
+    "title": "Overview",
+    "phaseLabel": "Phase",
+    "stages": {
+      "trl": {
+        "label": "TRL",
+        "description": "Technology Readiness Level"
+      },
+      "mkrl": {
+        "label": "MkRL",
+        "description": "Market Readiness Level"
+      },
+      "mfrl": {
+        "label": "MfRL",
+        "description": "Manufacturing Readiness Level"
+      }
+    }
   },
   "detailedReport": {
     "title": "Detailed report",

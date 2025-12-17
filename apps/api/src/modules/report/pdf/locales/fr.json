@@ -8,7 +8,22 @@
     "completedOn": "Complété le"
   },
   "overview": {
-    "title": "Aperçu"
+    "title": "Aperçu",
+    "phaseLabel": "Phase",
+    "stages": {
+      "trl": {
+        "label": "TRL",
+        "description": "Niveau de maturité technologique"
+      },
+      "mkrl": {
+        "label": "MkRL",
+        "description": "Niveau de maturité du marché"
+      },
+      "mfrl": {
+        "label": "MfRL",
+        "description": "Niveau de maturité de fabrication"
+      }
+    }
   },
   "detailedReport": {
     "title": "Rapport détaillé",

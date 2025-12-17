@@ -22,9 +22,9 @@
           <h2 class="text-2xl font-semibold"><%= t.overview.title %></h2>
 
           <div class="flex gap-6 items-center justify-between">
-            <%- include(dir + '/src/modules/report/pdf/overview-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/overview-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/overview-card.ejs') %>
+            <%- include(dir + '/src/modules/report/pdf/overview-card.ejs', { t, scale: reportData.trl, stageTranslation: t.overview.stages.trl, color: '#EA580C' }) %>
+            <%- include(dir + '/src/modules/report/pdf/overview-card.ejs', { t, scale: reportData.mkrl, stageTranslation: t.overview.stages.mkrl, color: '#0D9488' }) %>
+            <%- include(dir + '/src/modules/report/pdf/overview-card.ejs', { t, scale: reportData.mfrl, stageTranslation: t.overview.stages.mfrl, color: '#2563EB' }) %>
           </div>
         </div>
 
