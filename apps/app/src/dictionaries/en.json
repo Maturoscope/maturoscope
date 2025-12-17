@@ -93,7 +93,8 @@
   },
   "singleReview": {
     "cancelButtonLabel": "Cancel",
-    "saveButtonLabel": "Save"
+    "saveButtonLabel": "Save",
+    "commentPlaceholder": "Add specific notes for your final report (Optional)"
   },
   "results": {
     "topBar": {
