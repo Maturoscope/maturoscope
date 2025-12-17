@@ -222,9 +222,8 @@ const ResultsTopBar = ({
         ),
       }
 
-      // Make the POST request to the PDF endpoint
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || ""
-      const response = await fetch(`${apiUrl}/report/${lang}`, {
+      // Make the POST request to the PDF endpoint through Next.js API route
+      const response = await fetch(`/api/report?lang=${lang}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
