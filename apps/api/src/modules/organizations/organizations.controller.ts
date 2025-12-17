@@ -11,6 +11,7 @@ import {
   UploadedFile,
   UseInterceptors,
   Req,
+  Query,
 } from '@nestjs/common';
 import { OrganizationsService } from './organizations.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
@@ -32,7 +33,10 @@ export class OrganizationsController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('withStatus') withStatus?: string) {
+    if (withStatus === 'true') {
+      return this.organizationsService.findAllWithRegistrationStatus();
+    }
     return this.organizationsService.findAll();
   }
 
@@ -89,7 +93,12 @@ export class OrganizationsController {
     return this.organizationsService.updateLanguageByUserEmail(user?.email, updateLanguageDto.language);
   }
 
-  @Get(':key')
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.organizationsService.findOne(id);
+  }
+
+  @Get('key/:key')
   findByKey(@Param('key') key: string) {
     return this.organizationsService.findByKey(key);
   }

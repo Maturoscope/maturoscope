@@ -35,7 +35,7 @@ export const POST = async (req: Request) => {
       return NextResponse.json({ error: data.error_description || 'Error en autenticación' }, { status: 400 });
     }
 
-    // Check if the user is active in our database
+    // Check if the user is active in our database and if the organization is active
     try {
       const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
       const userResponse = await fetch(`${apiBaseUrl}/users/email/${encodeURIComponent(email)}`, {
@@ -58,6 +58,33 @@ export const POST = async (req: Request) => {
             }, 
             { status: 403 }
           );
+        }
+
+        // Check if the organization is inactive
+        if (userData.organizationId) {
+          const orgResponse = await fetch(`${apiBaseUrl}/organizations/${userData.organizationId}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${data.access_token}`,
+            },
+          });
+
+          if (orgResponse.ok) {
+            const orgData = await orgResponse.json();
+            
+            // Check if the organization is inactive
+            // The organization entity uses 'status' field with values 'active' or 'inactive'
+            if (orgData.status === 'inactive' || orgData.isActive === false) {
+              return NextResponse.json(
+                { 
+                  error: 'Your organization is currently inactive. Please contact your administrator to reactivate your organization.',
+                  code: 'INACTIVE_ORGANIZATION'
+                }, 
+                { status: 403 }
+              );
+            }
+          }
         }
       }
     } catch (error) {

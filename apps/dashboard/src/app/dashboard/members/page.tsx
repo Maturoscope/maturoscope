@@ -87,8 +87,10 @@ export default function MembersPage() {
           error={error}
           resendingUserId={resendingUserId}
           activeFilter={activeFilter}
+          registrationFilter={registrationFilter}
           onToggleActive={handleToggleActiveWithToast}
           onResendInvitation={handleResendInvitation}
+          organizationEmail={user?.organization?.email}
         />
       </div>
 

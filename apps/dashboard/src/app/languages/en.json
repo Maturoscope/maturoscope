@@ -74,6 +74,9 @@
       "GO_BACK_TO": "Go back to",
       "SIGN_IN": "Sign in"
     },
+    "INACTIVE_ORGANIZATION": {
+      "MESSAGE": "Your organization is currently inactive. Please contact your administrator to reactivate your organization."
+    },
     "RESET_PASSWORD": {
       "TITLE": "Reset your password",
       "SUBTITLE": "Type your email address to send instructions to reset your password to you inbox.",
@@ -140,10 +143,20 @@
         "ACTIVE": "Indicates whether the member's account is currently active or deactivated without being removed from the database."
       },
       "LOADING": "Loading members…",
-      "NO_RESULTS": "No members match the current filters.",
-      "EMPTY_DESCRIPTION": "You don't have any members matching the selected filters.",
+      "NO_RESULTS": "No members added",
+      "EMPTY_DESCRIPTION": "Let's get started with your first member.",
       "NO_INACTIVE_MEMBERS": "No inactive members",
       "NO_INACTIVE_MEMBERS_DESCRIPTION": "You don't have any inactive members.",
+      "NO_ACTIVE_MEMBERS": "No active members",
+      "NO_ACTIVE_MEMBERS_DESCRIPTION": "You don't have any active members.",
+      "NO_COMPLETED_MEMBERS": "No completed members",
+      "NO_COMPLETED_MEMBERS_DESCRIPTION": "You don't have any completed members.",
+      "NO_PENDING_MEMBERS": "No pending members",
+      "NO_PENDING_MEMBERS_DESCRIPTION": "You don't have any pending members.",
+      "NO_EXPIRED_MEMBERS": "No expired members",
+      "NO_EXPIRED_MEMBERS_DESCRIPTION": "You don't have any expired members.",
+      "NO_MEMBERS_AVAILABLE": "No members available",
+      "NO_MEMBERS_AVAILABLE_DESCRIPTION": "No members match the selected filters.",
       "RESEND_INVITATION": "Resend invitation"
     },
     "TOASTS": {
@@ -440,17 +453,27 @@
       },
       "STEP_1": {
         "NAME": {
-          "LABEL": "Service Name",
-          "PLACEHOLDER": "Enter service name",
           "REQUIRED": "*"
         },
-        "DESCRIPTION": {
-          "LABEL": "Description",
-          "PLACEHOLDER": "Describe what this service offers"
+        "NAME_EN": {
+          "LABEL": "Service Name (EN)",
+          "PLACEHOLDER": "eg. Intelligent Structural Monitoring Service"
+        },
+        "NAME_FR": {
+          "LABEL": "Service Name (FR)",
+          "PLACEHOLDER": "eg. Service de Surveillance Structurelle Intelligente"
+        },
+        "DESCRIPTION_EN": {
+          "LABEL": "Brief Description (EN)",
+          "PLACEHOLDER": "eg. 24/7 structural monitoring with IoT sensors and predictive analytics to detect anomalies and prevent failures in buildings in real-time."
+        },
+        "DESCRIPTION_FR": {
+          "LABEL": "Brief Description (FR)",
+          "PLACEHOLDER": "eg. Surveillance structurelle 24/7 avec capteurs IoT et analyse prédictive pour détecter anomalies et prévenir défaillances en temps réel."
         },
         "URL": {
-          "LABEL": "Service URL",
-          "PLACEHOLDER": "https://example.com"
+          "LABEL": "URL",
+          "PLACEHOLDER": "URL"
         }
       },
       "STEP_2": {
@@ -587,6 +610,120 @@
       "PHONE_REQUIRED": "Phone number is required.",
       "ORGANIZATION_KEY_MISSING": "Organization key is missing.",
       "SEND_FAILED": "Failed to send contact request."
+    }
+  },
+  "ORGANIZATIONS": {
+    "PAGE_TITLE": "Organizations",
+    "FILTERS": {
+      "ALL": "All",
+      "COMPLETED": "Completed",
+      "PENDING": "Pending",
+      "EXPIRED": "Expired",
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive"
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Search by organization name or email"
+    },
+    "ADD_ORGANIZATION_BUTTON": "Add Organization",
+    "TABLE": {
+      "HEADERS": {
+        "ORGANIZATION_NAME": "Organization Name",
+        "EMAIL": "Email",
+        "REGISTRATION": "Registration",
+        "ACTIVE": "Active"
+      },
+      "TOOLTIPS": {
+        "REGISTRATION": "Shows if the first user of the organization has completed the email invitation, is still pending confirmation or has expired.",
+        "ACTIVE": "Indicates whether the organization is currently active or deactivated without being removed from the database."
+      },
+      "LOADING": "Loading organizations…",
+      "NO_RESULTS": "No organizations match the current filters.",
+      "EMPTY_DESCRIPTION": "You don't have any organizations matching the selected filters.",
+      "NO_INACTIVE_ORGANIZATIONS": "No inactive organizations",
+      "NO_INACTIVE_ORGANIZATIONS_DESCRIPTION": "You don't have any inactive organizations.",
+      "NO_ACTIVE_ORGANIZATIONS": "No active organizations",
+      "NO_ACTIVE_ORGANIZATIONS_DESCRIPTION": "You don't have any active organizations.",
+      "NO_COMPLETED_ORGANIZATIONS": "No completed organizations",
+      "NO_COMPLETED_ORGANIZATIONS_DESCRIPTION": "You don't have any completed organizations.",
+      "NO_PENDING_ORGANIZATIONS": "No pending organizations",
+      "NO_PENDING_ORGANIZATIONS_DESCRIPTION": "You don't have any pending organizations.",
+      "NO_EXPIRED_ORGANIZATIONS": "No expired organizations",
+      "NO_EXPIRED_ORGANIZATIONS_DESCRIPTION": "You don't have any expired organizations.",
+      "RESEND_INVITATION": "Resend invitation"
+    },
+    "TOASTS": {
+      "ORGANIZATION_CREATED": {
+        "TITLE": "Organization created successfully!",
+        "DESCRIPTION": "{{name}} has been created and the first user has received a link to access the platform."
+      },
+      "ORGANIZATION_DEACTIVATED": {
+        "TITLE": "Organization deactivated successfully!",
+        "DESCRIPTION": "{{name}} has been deactivated. Users in this organization no longer have access to the platform."
+      },
+      "ORGANIZATION_REACTIVATED": {
+        "TITLE": "Organization reactivated successfully!",
+        "DESCRIPTION": "{{name}} has been reactivated. Users in this organization now have access to the platform."
+      },
+      "UNDO": "Undo"
+    },
+    "REGISTRATION_STATUS": {
+      "COMPLETED": "Completed",
+      "PENDING": "Pending",
+      "EXPIRED": "Expired"
+    },
+    "NEW_ORGANIZATION": {
+      "TITLE": "New Organization",
+      "FIELDS": {
+        "NAME": {
+          "LABEL": "Organization Name",
+          "PLACEHOLDER": "Organization Name",
+          "REQUIRED": "*",
+          "HELPER_TEXT": "The name cannot be modified once the organization is created."
+        },
+        "EMAIL": {
+          "LABEL": "Email",
+          "PLACEHOLDER": "Email",
+          "REQUIRED": "*",
+          "HELPER_TEXT": "This email address cannot be modified once the organization is created."
+        },
+        "CONFIRM_EMAIL": {
+          "LABEL": "Confirm email",
+          "PLACEHOLDER": "Confirm email",
+          "REQUIRED": "*"
+        }
+      },
+      "BUTTONS": {
+        "CREATE": "Create organization",
+        "CREATING": "Creating…"
+      },
+      "ERRORS": {
+        "FIELD_REQUIRED": "This field cannot be left blank.",
+        "INVALID_EMAIL": "Enter a valid email address.",
+        "EMAILS_DONT_MATCH": "The emails do not match.",
+        "CREATE_FAILED": "Failed to create organization.",
+        "UNEXPECTED_ERROR": "Unexpected error creating organization."
+      }
+    },
+    "UNSAVED_CHANGES": {
+      "TITLE": "Unsaved Changes",
+      "MESSAGE": "You have unsaved changes. If you leave now, your latest updates will be lost.",
+      "CANCEL": "Cancel",
+      "LEAVE_ANYWAY": "Leave anyway"
+    },
+    "DEACTIVATE_ORGANIZATION": {
+      "TITLE": "You're about to deactivate {{name}}",
+      "MESSAGE": "Once deactivated, users in this organization will no longer have access to the platform.",
+      "CANCEL": "Cancel",
+      "CONFIRM": "Yes, Deactivate"
+    },
+    "NOTIFICATIONS": {
+      "ORGANIZATION_CREATED": "Organization created successfully",
+      "INVITATION_RESENT": "Invitation resent successfully!",
+      "UPDATE_FAILED": "Failed to update organization status.",
+      "RESEND_FAILED": "Failed to resend invitation.",
+      "LOAD_FAILED": "Failed to load organizations.",
+      "LOAD_ERROR": "Unexpected error fetching organizations."
     }
   }
 }

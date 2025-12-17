@@ -7,6 +7,8 @@ import { UploadedFile } from '../../common/types/uploaded-file.type';
 import { UsersService } from '../users/users.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
+import { OrganizationResponseDto } from './dto/organization-response.dto';
+import { RegistrationStatus } from '../users/helpers/registration-status.helper';
 import { validate as uuidValidate } from 'uuid';
 
 @Injectable()
@@ -44,6 +46,58 @@ export class OrganizationsService {
     return await this.organizationRepository.find({
       order: { createdAt: 'DESC' },
     });
+  }
+
+  async findAllWithRegistrationStatus(): Promise<OrganizationResponseDto[]> {
+    const organizations = await this.findAll();
+    
+    const organizationsWithStatus = await Promise.all(
+      organizations.map(async (org) => {
+        try {
+          // Get all users for this organization without excluding any email
+          // We use findByOrganization without excludeEmail to get all users including the first one
+          const users = await this.usersService.findByOrganization(org.id);
+          
+          if (users && users.length > 0) {
+            // Find the first user created (oldest by createdAt)
+            // The array is ordered DESC, so the oldest is at the end
+            const firstUser = users.reduce((oldest, current) => {
+              const oldestDate = new Date(oldest.createdAt).getTime();
+              const currentDate = new Date(current.createdAt).getTime();
+              return currentDate < oldestDate ? current : oldest;
+            });
+            
+            // Use the registrationStatus that's already calculated by the backend
+            return {
+              id: org.id,
+              name: org.name,
+              email: org.email,
+              key: org.key,
+              isActive: org.status === 'active',
+              createdAt: org.createdAt,
+              registrationStatus: firstUser.registrationStatus || 'pending',
+              userEmail: firstUser.email,
+            };
+          }
+        } catch (error) {
+          console.error('Error getting registration status for organization:', error);
+        }
+        
+        // If no user found, return organization with pending status
+        return {
+          id: org.id,
+          name: org.name,
+          email: org.email,
+          key: org.key,
+          isActive: org.status === 'active',
+          createdAt: org.createdAt,
+          registrationStatus: 'pending' as RegistrationStatus,
+          userEmail: org.email,
+        };
+      })
+    );
+    
+    return organizationsWithStatus;
   }
 
   async findOne(id: string): Promise<Organization> {

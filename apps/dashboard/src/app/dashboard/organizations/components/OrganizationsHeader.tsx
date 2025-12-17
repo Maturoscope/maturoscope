@@ -9,11 +9,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ActiveFilter, RegistrationFilter } from "../types/member";
+import { ActiveFilter, RegistrationFilter } from "../types/organization";
 import { RegistrationTabs } from "./RegistrationTabs";
-import { NewMemberSheet } from "./NewMemberSheet";
+import { NewOrganizationSheet } from "./NewOrganizationSheet";
 
-interface MembersHeaderProps {
+interface OrganizationsHeaderProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
   registrationFilter: RegistrationFilter;
@@ -21,11 +21,10 @@ interface MembersHeaderProps {
   activeFilter: ActiveFilter;
   onActiveFilterChange: (filter: ActiveFilter) => void;
   activeCounts: { active: number; inactive: number };
-  organizationId: string;
-  onMemberCreated: (memberName: string) => void;
+  onOrganizationCreated: (organizationName: string) => void;
 }
 
-export function MembersHeader({
+export function OrganizationsHeader({
   searchQuery,
   onSearchChange,
   registrationFilter,
@@ -33,10 +32,9 @@ export function MembersHeader({
   activeFilter,
   onActiveFilterChange,
   activeCounts,
-  organizationId,
-  onMemberCreated,
-}: MembersHeaderProps) {
-  const { t } = useTranslation("MEMBERS");
+  onOrganizationCreated,
+}: OrganizationsHeaderProps) {
+  const { t } = useTranslation("ORGANIZATIONS");
 
   return (
     <div className="flex flex-col gap-3">
@@ -53,9 +51,8 @@ export function MembersHeader({
               className="h-9 rounded-[8px] border-slate-200 pl-10"
             />
           </div>
-          <NewMemberSheet
-            organizationId={organizationId}
-            onSuccess={onMemberCreated}
+          <NewOrganizationSheet
+            onSuccess={onOrganizationCreated}
           />
         </div>
       </div>

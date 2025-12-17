@@ -126,6 +126,10 @@ export default function LoginForm({
             setInactiveAccountError(`${t("INACTIVE_ACCOUNT.MESSAGE")} ${t("INACTIVE_ACCOUNT.CONTACT_ADMIN")}`);
             return;
           }
+          if (data.code === 'INACTIVE_ORGANIZATION') {
+            setInactiveAccountError(data.error || t("INACTIVE_ORGANIZATION.MESSAGE"));
+            return;
+          }
         }
         setError(t("PAGE.INVALID_CREDENTIALS"));
         return;
