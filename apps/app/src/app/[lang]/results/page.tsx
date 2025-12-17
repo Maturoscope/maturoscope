@@ -27,7 +27,7 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
   return (
     <main className="w-full h-full">
       <Header stringConnector={stringConnector} showBackButton />
-      <ResultsTopBar {...topBar} />
+      <ResultsTopBar {...topBar} lang={lang} />
       <Overview {...overview} />
       <UnlockNextLevel {...unlockNextLevel} />
       <DetailedReport {...detailedReport} />

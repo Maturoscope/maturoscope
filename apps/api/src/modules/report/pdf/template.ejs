@@ -10,110 +10,107 @@
     <!-- FIRST PAGE -->
     <!-- FIRST PAGE -->
     <main class="w-[1440px] h-[2040px] aspect-ratio-1440/2040 flex flex-col gap-4">
-      <%- include(dir + '/src/modules/report/pdf/nav.ejs') %>
+      <%- include(dir + '/src/modules/report/pdf/nav.ejs', { t }) %>
 
       <div class="w-full h-full px-6">
         <div class="flex flex-col gap-1.5 mb-9">
-          <h1 class="text-3xl font-bold">Your Maturity Report</h1>
-          <p class="text-sm text-muted-foreground">Completed on January 20, 2025</p>
+          <h1 class="text-3xl font-bold"><%= t.report.title %></h1>
+          <p class="text-sm text-muted-foreground"><%= t.report.completedOn %> <%= reportData.completedOn %></p>
         </div>
 
         <div class="flex flex-col gap-6 mb-9">
-          <h2 class="text-2xl font-semibold">Overview</h2>
+          <h2 class="text-2xl font-semibold"><%= t.overview.title %></h2>
 
           <div class="flex gap-6 items-center justify-between">
-            <%- include(dir + '/src/modules/report/pdf/overview-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/overview-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/overview-card.ejs') %>
+            <%- include(dir + '/src/modules/report/pdf/overview-card.ejs', { t, scale: reportData.trl, stageTranslation: t.overview.stages.trl, color: '#EA580C' }) %>
+            <%- include(dir + '/src/modules/report/pdf/overview-card.ejs', { t, scale: reportData.mkrl, stageTranslation: t.overview.stages.mkrl, color: '#0D9488' }) %>
+            <%- include(dir + '/src/modules/report/pdf/overview-card.ejs', { t, scale: reportData.mfrl, stageTranslation: t.overview.stages.mfrl, color: '#2563EB' }) %>
           </div>
         </div>
 
         <div class="flex flex-col gap-6">
           <div class="flex flex-col gap-1.5">
-            <h2 class="text-2xl font-semibold">Detailed report</h2>
-            <p class="text-sm text-[#171717]">Look for the "Service available" tags below to see where our experts can accelerate your progress.</p>
+            <h2 class="text-2xl font-semibold"><%= t.detailedReport.title %></h2>
+            <p class="text-sm text-[#171717]"><%= t.detailedReport.description %></p>
           </div>
 
           <div class="flex flex-col gap-6">
-            <%- include(dir + '/src/modules/report/pdf/detailed-card.ejs') %>
+            <%- include(dir + '/src/modules/report/pdf/detailed-card.ejs', { t, scale: reportData.trl, stageTranslation: t.overview.stages.trl, color: '#EA580C', indexBgColor: 'bg-orange-50' }) %>
           </div>
         </div>
       </div>
 
-      <%- include(dir + '/src/modules/report/pdf/footer.ejs') %>
+      <%- include(dir + '/src/modules/report/pdf/footer.ejs', { t }) %>
     </main>
 
     <!-- SECOND PAGE -->
     <!-- SECOND PAGE -->
     <!-- SECOND PAGE -->
     <main class="w-[1440px] h-[2040px] aspect-ratio-1440/2040 flex flex-col gap-4">
-      <%- include(dir + '/src/modules/report/pdf/nav.ejs') %>
+      <%- include(dir + '/src/modules/report/pdf/nav.ejs', { t }) %>
 
       <div class="flex flex-col gap-6 w-full h-full px-6">
-        <%- include(dir + '/src/modules/report/pdf/detailed-card.ejs') %>
-        <%- include(dir + '/src/modules/report/pdf/detailed-card.ejs') %>
+        <%- include(dir + '/src/modules/report/pdf/detailed-card.ejs', { t, scale: reportData.mkrl, stageTranslation: t.overview.stages.mkrl, color: '#0D9488', indexBgColor: 'bg-teal-50' }) %>
+        <%- include(dir + '/src/modules/report/pdf/detailed-card.ejs', { t, scale: reportData.mfrl, stageTranslation: t.overview.stages.mfrl, color: '#2563EB', indexBgColor: 'bg-blue-50' }) %>
       </div>
 
-      <%- include(dir + '/src/modules/report/pdf/footer.ejs') %>
+      <%- include(dir + '/src/modules/report/pdf/footer.ejs', { t }) %>
     </main>
 
     <!-- THIRD PAGE -->
     <!-- THIRD PAGE -->
     <!-- THIRD PAGE -->
     <main class="w-[1440px] h-[2040px] aspect-ratio-1440/2040 flex flex-col gap-4">
-      <%- include(dir + '/src/modules/report/pdf/nav.ejs') %>
+      <%- include(dir + '/src/modules/report/pdf/nav.ejs', { t }) %>
 
       <div class="flex flex-col w-full h-full px-6 mt-8">
-        <h1 class="text-2xl font-semibold mb-6">Your answers</h1>
+        <h1 class="text-2xl font-semibold mb-6"><%= t.answers.title %></h1>
         <div class="flex flex-col gap-4 mb-9">
           <span class="text-xl font-semibold">TRL</span>
           <div class="flex flex-col gap-2">
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
+            <% reportData.trl.answers.forEach(function(answer) { %>
+              <%- include(dir + '/src/modules/report/pdf/answer-card.ejs', { answer }) %>
+            <% }) %>
           </div>
         </div>
         <div class="flex flex-col gap-2">
           <span class="text-xl font-semibold">MkRL</span>
           <div class="flex flex-col gap-2">
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
+            <% reportData.mkrl.answers.slice(0, 3).forEach(function(answer) { %>
+              <%- include(dir + '/src/modules/report/pdf/answer-card.ejs', { answer }) %>
+            <% }) %>
           </div>
         </div>
       </div>
 
-      <%- include(dir + '/src/modules/report/pdf/footer.ejs') %>
+      <%- include(dir + '/src/modules/report/pdf/footer.ejs', { t }) %>
     </main>
 
     <!-- FOURTH PAGE -->
     <!-- FOURTH PAGE -->
     <!-- FOURTH PAGE -->
     <main class="w-[1440px] h-[2040px] aspect-ratio-1440/2040 flex flex-col gap-4">
-      <%- include(dir + '/src/modules/report/pdf/nav.ejs') %>
+      <%- include(dir + '/src/modules/report/pdf/nav.ejs', { t }) %>
 
       <div class="flex flex-col w-full h-full px-6 mt-8">
         <div class="flex flex-col gap-4 mb-9">
           <div class="flex flex-col gap-2">
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
+            <% reportData.mkrl.answers.slice(3).forEach(function(answer) { %>
+              <%- include(dir + '/src/modules/report/pdf/answer-card.ejs', { answer }) %>
+            <% }) %>
           </div>
         </div>
         <div class="flex flex-col gap-2">
           <span class="text-xl font-semibold">MfRL</span>
           <div class="flex flex-col gap-2">
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
+            <% reportData.mfrl.answers.forEach(function(answer) { %>
+              <%- include(dir + '/src/modules/report/pdf/answer-card.ejs', { answer }) %>
+            <% }) %>
           </div>
         </div>
       </div>
 
-      <%- include(dir + '/src/modules/report/pdf/footer.ejs') %>
+      <%- include(dir + '/src/modules/report/pdf/footer.ejs', { t }) %>
     </main>
   </body>
 </html>

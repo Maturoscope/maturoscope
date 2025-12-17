@@ -1,0 +1,44 @@
+{
+  "lang": "fr",
+  "header": {
+    "by": "par"
+  },
+  "report": {
+    "title": "Votre rapport de maturité",
+    "completedOn": "Complété le"
+  },
+  "overview": {
+    "title": "Aperçu",
+    "phaseLabel": "Phase",
+    "stages": {
+      "trl": {
+        "label": "TRL",
+        "description": "Niveau de maturité technologique"
+      },
+      "mkrl": {
+        "label": "MkRL",
+        "description": "Niveau de maturité du marché"
+      },
+      "mfrl": {
+        "label": "MfRL",
+        "description": "Niveau de maturité de fabrication"
+      }
+    }
+  },
+  "detailedReport": {
+    "title": "Rapport détaillé",
+    "description": "Recherchez les étiquettes \"Service disponible\" ci-dessous pour voir où nos experts peuvent accélérer votre progression.",
+    "currentFocus": "Focus actuel",
+    "primaryRiskToMitigate": "Risque principal à mitiger",
+    "toReachLevel": "Pour atteindre le niveau",
+    "completeTheGapsBelow": "Complétez les lacunes ci-dessous",
+    "serviceAvailable": "Service disponible",
+    "comingSoon": "Bientôt disponible"
+  },
+  "answers": {
+    "title": "Vos réponses"
+  },
+  "footer": {
+    "disclaimer": "Le projet METABUILDING LABS a reçu un financement de la part de la Commission européenne dans le cadre du Programme européen de recherche et d'innovation Horizon 2020 sous le numéro de convention No. 953193. La responsabilité exclusive du contenu de ce document repose entièrement sur l'avis du déposant. La Commission européenne n'est pas responsable de l'utilisation qui peut en être faite."
+  }
+}

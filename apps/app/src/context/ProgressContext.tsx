@@ -196,7 +196,10 @@ export const ProgressProvider = ({
     const nextStage = stages[currStageIndex + 1]
     const isLastCheckpoint = !nextStage?.id
 
-    if (isLastCheckpoint) return router.push(`/${lang}/results`)
+    if (isLastCheckpoint) {
+      localStorage.setItem("completedOn", new Date().toISOString())
+      return router.push(`/${lang}/results`)
+    }
 
     setCurrStageId(nextStage.id)
     setCurrQuestionId(nextStage.questions[0].id)
@@ -225,7 +228,13 @@ export const ProgressProvider = ({
       Object.values(stage.questions).every((question) => !!question)
     )
 
-    if (hasAnswerAllQuestions) return router.push(`/${lang}/results`)
+    if (hasAnswerAllQuestions) {
+      // Only set completedOn if not already set (form was completed in a previous session)
+      if (!localStorage.getItem("completedOn")) {
+        localStorage.setItem("completedOn", new Date().toISOString())
+      }
+      return router.push(`/${lang}/results`)
+    }
 
     const lastStageQuestionsId = Object.keys(
       savedForm[lastSavedStage].questions
