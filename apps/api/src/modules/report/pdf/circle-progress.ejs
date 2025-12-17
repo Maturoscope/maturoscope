@@ -1,11 +1,8 @@
-<div>
-  <svg width="170" height="170" viewBox="0 0 250 250">
-    <circle class="bg"
-      cx="125" cy="125" r="115" fill="none" stroke="#ddd" stroke-width="20"
-    ></circle>
-    <circle class="fg"
-      cx="125" cy="125" r="115" fill="none" stroke="#5394fd" stroke-width="20"
-      stroke-dasharray="361.25 361.25"
-    ></circle>
-  </svg>
+<div role="progressbar" style="--p:<%= percentage %>; --s:<%= size %>; --c:<%= color %>" class="flex items-center justify-center">
+  <div class="flex items-end">
+    <span class="text-5xl font-medium"><%= level %></span>
+    <% if (showMaxLevel) { %>
+      <span class="text-lg text-muted-foreground">/ 9</span>
+    <% } %>
+  </div>
 </div>

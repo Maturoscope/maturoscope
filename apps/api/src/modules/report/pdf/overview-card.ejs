@@ -6,8 +6,7 @@
 
   <div class="flex flex-col gap-2 items-center">
     <% var dir = process.cwd() %>
-    <%- include(dir + '/src/modules/report/pdf/circle-progress.ejs') %>
-    <span>2/9</span>
+    <%- include(dir + '/src/modules/report/pdf/circle-progress.ejs', { percentage: 25, size: '170px', color: '#EA580C', level: 7, showMaxLevel: true }) %>
   </div>
 
   <div class="flex flex-col gap-2 items-center">
