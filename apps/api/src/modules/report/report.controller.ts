@@ -7,12 +7,16 @@ import { ReportService } from './report.service';
 export class ReportController {
   constructor(private readonly reportService: ReportService) {}
 
-  @Get(':id')
+  @Get(':locale/:id')
   @Header('Content-Type', 'application/pdf')
   @Header('Content-Disposition', 'inline; filename=report.pdf')
   @Header('Cache-Control', 'no-cache, no-store, must-revalidate')
-  async getPDF(@Param('id') id: string): Promise<StreamableFile> {
-    const buffer = await this.reportService.getPDF(id);
+  async getPDF(
+    @Param('locale') locale: string,
+    @Param('id') id: string,
+  ): Promise<StreamableFile> {
+    const validLocale = ['en', 'fr'].includes(locale) ? locale : 'en';
+    const buffer = await this.reportService.getPDF(id, validLocale);
 
     return new StreamableFile(buffer, {
       type: 'application/pdf',

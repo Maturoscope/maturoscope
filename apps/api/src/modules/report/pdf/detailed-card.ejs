@@ -10,7 +10,7 @@
     <div class="flex flex-col gap-5 mb-5">
       <div class="w-full h-px bg-border"></div>
       <div class="flex flex-col">
-        <span class="text-sm text-muted-foreground">[[ TRANSLATE: Current focus ]]</span>
+        <span class="text-sm text-muted-foreground"><%= t.detailedReport.currentFocus %></span>
         <span class="text-sm font-medium">Maturation & Demonstration</span>
       </div>
     </div>
@@ -18,7 +18,7 @@
     <div class="flex flex-col gap-5">
       <div class="w-full h-px bg-border"></div>
       <div class="flex flex-col">
-        <span class="text-sm text-muted-foreground">[[ TRANSLATE: Primary risk to mitigate ]]</span>
+        <span class="text-sm text-muted-foreground"><%= t.detailedReport.primaryRiskToMitigate %></span>
         <span class="text-sm font-medium">Technical Failure / Inoperability</span>
       </div>
     </div>
@@ -26,7 +26,7 @@
   </div>
 
   <div class="flex flex-col h-min bg-white rounded-2xl p-6 w-full gap-2.5">
-    <h3 class="text-xl font-bold">[[ TRANSLATE: To reach Level ]] 3: [[ TRANSLATE: Complete the gaps below ]]</h3>
+    <h3 class="text-xl font-bold"><%= t.detailedReport.toReachLevel %> 3: <%= t.detailedReport.completeTheGapsBelow %></h3>
 
     <div class="flex flex-col">
       <%- include(dir + '/src/modules/report/pdf/detailed-gap.ejs') %>

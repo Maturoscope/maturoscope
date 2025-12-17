@@ -26,9 +26,18 @@ const PAGE_PDF_OPTIONS: PDFOptions = {
 
 @Injectable()
 export class ReportService {
-  async getPDF(id: string): Promise<Buffer> {
+  private loadTranslations(locale: string): Record<string, unknown> {
+    const localePath = path.join(__dirname, `./pdf/locales/${locale}.json`);
+    const localeContent = fs.readFileSync(localePath, 'utf8');
+    return JSON.parse(localeContent);
+  }
+
+  async getPDF(id: string, locale: string = 'en'): Promise<Buffer> {
+    // Load translations for the specified locale
+    const t = this.loadTranslations(locale);
+
     // Interpolate the dynamic data into the template
-    const templateData = { id };
+    const templateData = { id, t };
     const templatePath = path.join(__dirname, 'pdf/template.ejs');
     const template = fs.readFileSync(templatePath, 'utf8');
     const html = ejs.render(template, templateData);
