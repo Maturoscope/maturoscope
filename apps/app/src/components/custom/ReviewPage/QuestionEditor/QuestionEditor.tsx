@@ -153,7 +153,7 @@ const QuestionEditor = ({
                   {isChecked && (
                     <div className="w-[calc(100%-56px)] p-3 pt-0 flex flex-col items-end gap-2 relative z-20">
                       <textarea
-                        maxLength={150}
+                        maxLength={160}
                         onChange={handleCommentChange}
                         value={comment}
                         placeholder={commentPlaceholder}
@@ -164,7 +164,7 @@ const QuestionEditor = ({
                         <span className="text-foreground">
                           {comment.length}
                         </span>
-                        /150
+                        /160
                       </span>
                     </div>
                   )}
