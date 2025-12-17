@@ -25,10 +25,6 @@ export class ReportController {
     @Body() reportData: ReportDataDto,
   ): Promise<StreamableFile> {
     const validLocale = ['en', 'fr'].includes(locale) ? locale : 'en';
-
-    // Console log the payload for debugging
-    console.log('Report Data Received:', JSON.stringify(reportData, null, 2));
-
     const buffer = await this.reportService.getPDF(reportData, validLocale);
 
     return new StreamableFile(buffer, {

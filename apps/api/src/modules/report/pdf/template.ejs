@@ -35,7 +35,7 @@
           </div>
 
           <div class="flex flex-col gap-6">
-            <%- include(dir + '/src/modules/report/pdf/detailed-card.ejs', { t }) %>
+            <%- include(dir + '/src/modules/report/pdf/detailed-card.ejs', { t, scale: reportData.trl, stageTranslation: t.overview.stages.trl, color: '#EA580C', indexBgColor: 'bg-orange-50' }) %>
           </div>
         </div>
       </div>
@@ -50,8 +50,8 @@
       <%- include(dir + '/src/modules/report/pdf/nav.ejs', { t }) %>
 
       <div class="flex flex-col gap-6 w-full h-full px-6">
-        <%- include(dir + '/src/modules/report/pdf/detailed-card.ejs', { t }) %>
-        <%- include(dir + '/src/modules/report/pdf/detailed-card.ejs', { t }) %>
+        <%- include(dir + '/src/modules/report/pdf/detailed-card.ejs', { t, scale: reportData.mkrl, stageTranslation: t.overview.stages.mkrl, color: '#0D9488', indexBgColor: 'bg-teal-50' }) %>
+        <%- include(dir + '/src/modules/report/pdf/detailed-card.ejs', { t, scale: reportData.mfrl, stageTranslation: t.overview.stages.mfrl, color: '#2563EB', indexBgColor: 'bg-blue-50' }) %>
       </div>
 
       <%- include(dir + '/src/modules/report/pdf/footer.ejs', { t }) %>

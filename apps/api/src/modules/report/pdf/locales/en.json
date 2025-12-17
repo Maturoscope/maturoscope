@@ -31,7 +31,9 @@
     "currentFocus": "Current focus",
     "primaryRiskToMitigate": "Primary risk to mitigate",
     "toReachLevel": "To reach Level",
-    "completeTheGapsBelow": "Complete the gaps below"
+    "completeTheGapsBelow": "Complete the gaps below",
+    "serviceAvailable": "Service available",
+    "comingSoon": "Coming soon"
   },
   "answers": {
     "title": "Your answers"

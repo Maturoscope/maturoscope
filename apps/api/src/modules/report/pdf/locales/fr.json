@@ -31,7 +31,9 @@
     "currentFocus": "Focus actuel",
     "primaryRiskToMitigate": "Risque principal à mitiger",
     "toReachLevel": "Pour atteindre le niveau",
-    "completeTheGapsBelow": "Complétez les lacunes ci-dessous"
+    "completeTheGapsBelow": "Complétez les lacunes ci-dessous",
+    "serviceAvailable": "Service disponible",
+    "comingSoon": "Bientôt disponible"
   },
   "answers": {
     "title": "Vos réponses"
