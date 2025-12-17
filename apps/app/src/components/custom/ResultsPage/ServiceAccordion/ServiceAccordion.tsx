@@ -57,7 +57,9 @@ const AccordionTrigger = ({
           <span className={cn("rounded-full w-6 h-6 shrink-0", indexColor)}>
             {index + 1}
           </span>
-          <h1 className="text-base font-semibold text-left">{title}</h1>
+          <h1 className="text-sm lg:text-base font-semibold text-left">
+            {title}
+          </h1>
         </div>
 
         <div className="w-max flex items-center gap-2.5 shrink-0">
@@ -104,7 +106,7 @@ const AccordionContent = ({
     <ul className="flex flex-col pl-8 mb-4 gap-2">
       {recommendedServices.map((service) => (
         <li key={service.id} className="flex flex-col">
-          <span className="text-base font-semibold text-foreground">
+          <span className="text-sm lg:text-base font-semibold text-foreground">
             {service.name[lang]}
           </span>
           <span className="text-sm text-muted-foreground">
