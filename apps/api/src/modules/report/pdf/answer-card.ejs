@@ -1,5 +1,7 @@
 <div class="w-full p-6 bg-white rounded-2xl border border-border shadow-xs flex flex-col">
-  <span class="text-lg font-semibold">Is the technical concept formalized and positioned relative to existing solutions?</span>
-  <span class="text-[#171717]">The solution is described as a whole, with its key features and components. An analysis of the existing situation (benchmark, state of the art) was carried out.</span>
-  <span class="text-sm text-muted-foreground">Lorem ipsum dolor sit amet consectetur. Cursus laoreet scelerisque eget in pharetra dui eget accumsan. Tellus dolor id lacinia elit at tortor urna morbi. A nisi ut facilisis velit euismod tellus a massa. Quis netus purus id pellentesque purus.</span>
+  <span class="text-lg font-semibold"><%= answer.question %></span>
+  <span class="text-[#171717]"><%= answer.answer %></span>
+  <% if (answer.comment) { %>
+  <span class="text-sm text-muted-foreground"><%= answer.comment %></span>
+  <% } %>
 </div>

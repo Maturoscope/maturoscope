@@ -68,21 +68,17 @@
         <div class="flex flex-col gap-4 mb-9">
           <span class="text-xl font-semibold">TRL</span>
           <div class="flex flex-col gap-2">
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
+            <% reportData.trl.answers.forEach(function(answer) { %>
+              <%- include(dir + '/src/modules/report/pdf/answer-card.ejs', { answer }) %>
+            <% }) %>
           </div>
         </div>
         <div class="flex flex-col gap-2">
           <span class="text-xl font-semibold">MkRL</span>
           <div class="flex flex-col gap-2">
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
+            <% reportData.mkrl.answers.slice(0, 3).forEach(function(answer) { %>
+              <%- include(dir + '/src/modules/report/pdf/answer-card.ejs', { answer }) %>
+            <% }) %>
           </div>
         </div>
       </div>
@@ -99,16 +95,17 @@
       <div class="flex flex-col w-full h-full px-6 mt-8">
         <div class="flex flex-col gap-4 mb-9">
           <div class="flex flex-col gap-2">
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
+            <% reportData.mkrl.answers.slice(3).forEach(function(answer) { %>
+              <%- include(dir + '/src/modules/report/pdf/answer-card.ejs', { answer }) %>
+            <% }) %>
           </div>
         </div>
         <div class="flex flex-col gap-2">
           <span class="text-xl font-semibold">MfRL</span>
           <div class="flex flex-col gap-2">
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
-            <%- include(dir + '/src/modules/report/pdf/answer-card.ejs') %>
+            <% reportData.mfrl.answers.forEach(function(answer) { %>
+              <%- include(dir + '/src/modules/report/pdf/answer-card.ejs', { answer }) %>
+            <% }) %>
           </div>
         </div>
       </div>
