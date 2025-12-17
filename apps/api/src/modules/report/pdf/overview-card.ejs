@@ -1,0 +1,17 @@
+<div class="flex flex-col gap-5 p-6 pt-8 bg-white rounded-2xl shadow-xs w-full">
+  <div class="flex flex-col gap-2 items-center">
+    <span class="text-xl font-semibold">TRL</span>
+    <span class="text-sm text-muted-foreground">Technology Readiness Level</span>
+  </div>
+
+  <div class="flex flex-col gap-2 items-center">
+    <% var dir = process.cwd() %>
+    <%- include(dir + '/src/modules/report/pdf/circle-progress.ejs') %>
+    <span>2/9</span>
+  </div>
+
+  <div class="flex flex-col gap-2 items-center">
+    <span class="text-sm font-medium">Phase 1: Conceptualization & Research</span>
+    <span class="text-sm text-muted-foreground">Basic Feasibility & Hypothesis Validation</span>
+  </div>
+</div>

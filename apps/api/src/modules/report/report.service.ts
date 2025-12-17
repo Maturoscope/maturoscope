@@ -3,7 +3,8 @@ import { Injectable } from '@nestjs/common';
 import * as path from 'path';
 import * as ejs from 'ejs';
 import * as fs from 'fs';
-import puppeteer from 'puppeteer';
+import * as os from 'os';
+import puppeteer, { Browser } from 'puppeteer';
 // Types
 import { LaunchOptions, PDFOptions } from 'puppeteer';
 
@@ -18,26 +19,75 @@ const PUPPETEER_OPTIONS: LaunchOptions = {
 };
 
 const PAGE_PDF_OPTIONS: PDFOptions = {
-  format: 'A4',
   printBackground: true,
+  width: '1440px',
+  height: '2040px',
 };
 
 @Injectable()
 export class ReportService {
-  async getPDF(id: string) {
+  async getPDF(id: string): Promise<Buffer> {
     // Interpolate the dynamic data into the template
     const templateData = { id };
     const templatePath = path.join(__dirname, 'pdf/template.ejs');
     const template = fs.readFileSync(templatePath, 'utf8');
     const html = ejs.render(template, templateData);
 
-    // Launch the browser and render our HTML to get it exported as PDF
-    const browser = await puppeteer.launch(PUPPETEER_OPTIONS);
-    const page = await browser.newPage();
-    await page.setContent(html);
-    const buffer = await page.pdf(PAGE_PDF_OPTIONS);
-    await browser.close();
+    // Write HTML to a temp file (avoids data URL size limits)
+    const tempFilePath = path.join(
+      os.tmpdir(),
+      `report-${id}-${Date.now()}.html`,
+    );
+    fs.writeFileSync(tempFilePath, html, 'utf8');
 
-    return buffer;
+    let browser: Browser | null = null;
+
+    try {
+      // Launch the browser
+      browser = await puppeteer.launch(PUPPETEER_OPTIONS);
+      const page = await browser.newPage();
+
+      // Set a longer timeout for the page
+      page.setDefaultTimeout(30000);
+
+      // Navigate to the temp file using file:// protocol (more reliable than data URL)
+      await page.goto(`file://${tempFilePath}`, {
+        waitUntil: ['load', 'networkidle0'],
+        timeout: 30000,
+      });
+
+      // Wait for Tailwind CDN to process and apply styles
+      await page.waitForFunction(
+        () => {
+          const styles = document.querySelectorAll('style');
+          return styles.length > 0;
+        },
+        { timeout: 15000 },
+      );
+
+      // Wait for computed styles to be applied to body
+      await page.waitForFunction(
+        () => {
+          const body = document.body;
+          const computedStyle = window.getComputedStyle(body);
+          return computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)';
+        },
+        { timeout: 10000 },
+      );
+
+      // Generate PDF
+      const pdfBuffer = await page.pdf(PAGE_PDF_OPTIONS);
+
+      return Buffer.from(pdfBuffer);
+    } finally {
+      // Always cleanup: close browser and delete temp file
+      if (browser) {
+        await browser.close();
+      }
+      // Delete temp file
+      if (fs.existsSync(tempFilePath)) {
+        fs.unlinkSync(tempFilePath);
+      }
+    }
   }
 }

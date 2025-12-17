@@ -1,11 +1,17 @@
 "use client"
 
+// Packages
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 // Utils
 import { cn } from "@/lib/utils"
-// Components
-import { Button } from "@/components/ui/button"
 // Icons
 import { ResetIcon } from "@/components/icons"
+// Types
+import { ResetFormModalProps } from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
+// Components
+import { Button } from "@/components/ui/button"
+import ResetFormModal from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
 
 export interface CTABannerProps {
   title: string
@@ -13,6 +19,7 @@ export interface CTABannerProps {
   or: string
   talkButtonLabel: string
   resetButtonLabel: string
+  resetFormModal: ResetFormModalProps
 }
 
 interface ExtraProps {
@@ -25,18 +32,43 @@ const CTABanner = ({
   or,
   talkButtonLabel,
   resetButtonLabel,
+  resetFormModal,
   className,
 }: CTABannerProps & ExtraProps) => {
+  const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
+  const router = useRouter()
+
+  const handleResetForm = () => {
+    localStorage.removeItem("form")
+    localStorage.removeItem("gaps")
+    localStorage.removeItem("level")
+    localStorage.removeItem("phases")
+    setIsResetFormModalOpen(false)
+  }
+
   const handleTalkButtonClick = () => {
     console.log("talk button clicked")
   }
 
   const handleResetButtonClick = () => {
-    console.log("reset button clicked")
+    handleResetForm()
+    router.push("/")
+  }
+
+  const handleDownloadButtonClick = () => {
+    console.log("download button clicked")
   }
 
   return (
     <div className="w-full flex flex-col items-center justify-center mt-11 px-4 lg:px-6 mb-8">
+      <ResetFormModal
+        {...resetFormModal}
+        isOpen={isResetFormModalOpen}
+        setIsOpen={setIsResetFormModalOpen}
+        onDownloadClick={handleDownloadButtonClick}
+        onResetClick={handleResetButtonClick}
+      />
+
       <div
         className={cn(
           "w-full flex items-center justify-center py-11 px-8 bg-accent rounded-xl",
@@ -63,7 +95,7 @@ const CTABanner = ({
           <div className="w-full h-px bg-border max-w-[340px]" />
         </div>
         <Button
-          onClick={handleResetButtonClick}
+          onClick={() => setIsResetFormModalOpen(true)}
           variant="outline"
           icon={<ResetIcon />}
         >
