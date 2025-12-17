@@ -38,6 +38,7 @@ interface ProgressContextType {
   handleReviewClick: () => void
   handleCheckpointButtonClick: () => void
   handleQuestionClick: () => void
+  handleBackToLastQuestionClick: () => void
 }
 
 interface ProgressProviderProps {
@@ -212,6 +213,11 @@ export const ProgressProvider = ({
 
   const handleQuestionClick = () => setIsNextButtonEnabled(true)
 
+  const handleBackToLastQuestionClick = () => {
+    setIsCheckpoint(false)
+    setIsNextButtonEnabled(true)
+  }
+
   const currQuestion: QuestionProps = {
     ...currQuestionData,
     name: currStage.id,
@@ -227,18 +233,6 @@ export const ProgressProvider = ({
 
     if (!checkpoint) return
     const { lastSavedStage, lastSavedQuestion } = checkpoint
-
-    const hasAnswerAllQuestions = Object.values(savedForm).every((stage) =>
-      Object.values(stage.questions).every((question) => !!question)
-    )
-
-    if (hasAnswerAllQuestions) {
-      // Only set completedOn if not already set (form was completed in a previous session)
-      if (!localStorage.getItem("completedOn")) {
-        localStorage.setItem("completedOn", new Date().toISOString())
-      }
-      return router.push(`/${lang}/results`)
-    }
 
     const lastStageQuestionsId = Object.keys(
       savedForm[lastSavedStage].questions
@@ -270,6 +264,7 @@ export const ProgressProvider = ({
         handleReviewClick,
         handleCheckpointButtonClick,
         handleQuestionClick,
+        handleBackToLastQuestionClick,
       }}
     >
       {children}
