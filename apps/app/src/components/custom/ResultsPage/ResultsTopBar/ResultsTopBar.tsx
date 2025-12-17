@@ -11,7 +11,7 @@ import { Locale } from "@/dictionaries/dictionaries"
 import { StageId, QuestionData } from "@/components/custom/FormPage/Form/Form"
 import { DevelopmentPhase, Gap, LocalizedText } from "@/actions/organization"
 // Actions
-import { getQuestions, RiskData } from "@/actions/questions"
+import { getQuestions, getRisks, RiskData } from "@/actions/questions"
 
 export interface ResultsTopBarProps {
   title: string
@@ -148,9 +148,32 @@ const ResultsTopBar = ({
       const gapsData: GapsStorage = JSON.parse(
         localStorage.getItem("gaps") || "{}"
       )
-      const risksData: RisksStorage | null = JSON.parse(
-        localStorage.getItem("risks") || "null"
-      )
+
+      // Fetch risks data using getRisks
+      let risksData: RisksStorage | null = null
+      const hasAllLevels =
+        levelData.trl !== undefined &&
+        levelData.mkrl !== undefined &&
+        levelData.mfrl !== undefined
+      const hasAllPhases =
+        phasesData.trl?.phase !== undefined &&
+        phasesData.mkrl?.phase !== undefined &&
+        phasesData.mfrl?.phase !== undefined
+
+      if (hasAllLevels && hasAllPhases) {
+        risksData = await getRisks({
+          levels: {
+            trl: levelData.trl as number,
+            mkrl: levelData.mkrl as number,
+            mfrl: levelData.mfrl as number,
+          },
+          phases: {
+            trl: phasesData.trl!.phase,
+            mkrl: phasesData.mkrl!.phase,
+            mfrl: phasesData.mfrl!.phase,
+          },
+        })
+      }
 
       // Build the payload
       const payload: ReportPayload = {
