@@ -1,7 +1,7 @@
 "use client"
 
 // Packages
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 // Components
 import { Button } from "@/components/ui/button"
 // Utils
@@ -132,6 +132,19 @@ const ResultsTopBar = ({
   className,
 }: ResultsTopBarProps & ExtraProps) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [completedOnDate, setCompletedOnDate] = useState<string>("")
+
+  useEffect(() => {
+    const storedCompletedOn = localStorage.getItem("completedOn")
+    if (storedCompletedOn) {
+      const date = new Date(storedCompletedOn)
+      const formattedDate = date.toLocaleDateString(
+        lang === "fr" ? "fr-FR" : "en-US",
+        { year: "numeric", month: "long", day: "numeric" }
+      )
+      setCompletedOnDate(formattedDate)
+    }
+  }, [lang])
 
   const handleDownloadClick = useCallback(async () => {
     setIsLoading(true)
@@ -266,7 +279,10 @@ const ResultsTopBar = ({
     >
       <div className="flex flex-col items-start justify-start">
         <h1 className="text-2xl font-bold">{title}</h1>
-        <p className="text-sm text-muted-foreground">{subtitle}</p>
+        <p className="text-sm text-muted-foreground">
+          {subtitle}
+          {completedOnDate}
+        </p>
       </div>
       <div className="flex gap-2">
         <Button
