@@ -12,6 +12,7 @@ import { StageId, QuestionData } from "@/components/custom/FormPage/Form/Form"
 import { DevelopmentPhase, Gap, LocalizedText } from "@/actions/organization"
 // Actions
 import { getQuestions, getRisks, RiskData } from "@/actions/questions"
+import { generateReport, ReportPayload } from "@/actions/report"
 
 export interface ResultsTopBarProps {
   title: string
@@ -62,13 +63,6 @@ interface ScalePayload {
   isLowest: boolean
   gaps: GapPayload[]
   answers: AnswerPayload[]
-}
-
-interface ReportPayload {
-  completedOn: string
-  trl: ScalePayload
-  mkrl: ScalePayload
-  mfrl: ScalePayload
 }
 
 const buildScalePayload = (
@@ -222,27 +216,22 @@ const ResultsTopBar = ({
         ),
       }
 
-      console.log("payload", payload)
-      console.log("api", process.env.NEXT_PUBLIC_API_URL)
+      // Generate the PDF using server action
+      const result = await generateReport(lang, payload)
 
-      // Make the POST request to the PDF endpoint
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/report/${lang}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      )
-
-      if (!response.ok) {
-        throw new Error(`Failed to generate PDF: ${response.statusText}`)
+      if (!result.success || !result.data) {
+        throw new Error(result.error || "Failed to generate PDF")
       }
 
-      // Get the PDF blob and download it
-      const blob = await response.blob()
+      // Convert base64 to blob and download
+      const byteCharacters = atob(result.data)
+      const byteNumbers = new Array(byteCharacters.length)
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i)
+      }
+      const byteArray = new Uint8Array(byteNumbers)
+      const blob = new Blob([byteArray], { type: "application/pdf" })
+
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement("a")
       link.href = url
