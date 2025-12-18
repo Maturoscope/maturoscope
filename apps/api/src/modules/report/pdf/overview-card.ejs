@@ -9,8 +9,7 @@
   </div>
 
   <div class="flex flex-col gap-2 items-center">
-    <% var dir = process.cwd() %>
-    <%- include(dir + '/src/modules/report/pdf/circle-progress.ejs', { percentage: percentage, size: '170px', color: color, level: scale.level, showMaxLevel: true }) %>
+    <%- include(baseDir + '/pdf/circle-progress.ejs', { percentage: percentage, size: '170px', color: color, level: scale.level, showMaxLevel: true }) %>
   </div>
 
   <div class="flex flex-col gap-2 items-center">
