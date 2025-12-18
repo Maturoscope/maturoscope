@@ -8,9 +8,15 @@ interface AnswerPayload {
   comment: string
 }
 
+interface RecommendedServicePayload {
+  name: string
+  description: string
+}
+
 interface GapPayload {
   gapDescription: string
   hasServices: boolean
+  recommendedServices: RecommendedServicePayload[]
 }
 
 interface ScalePayload {

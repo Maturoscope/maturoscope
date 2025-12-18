@@ -8,12 +8,25 @@ import {
   IsOptional,
 } from 'class-validator';
 
+export class RecommendedServicePayload {
+  @IsString()
+  name: string;
+
+  @IsString()
+  description: string;
+}
+
 export class GapDto {
   @IsString()
   gapDescription: string;
 
   @IsBoolean()
   hasServices: boolean;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => RecommendedServicePayload)
+  recommendedServices: RecommendedServicePayload[];
 }
 
 export class AnswerDto {

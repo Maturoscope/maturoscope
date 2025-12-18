@@ -48,9 +48,15 @@ interface AnswerPayload {
   comment: string
 }
 
+interface RecommendedServicePayload {
+  name: string
+  description: string
+}
+
 interface GapPayload {
   gapDescription: string
   hasServices: boolean
+  recommendedServices: RecommendedServicePayload[]
 }
 
 interface ScalePayload {
@@ -98,6 +104,10 @@ const buildScalePayload = (
   const gapsPayload: GapPayload[] = gaps.map((gap) => ({
     gapDescription: gap.gapDescription[lang],
     hasServices: gap.hasServices,
+    recommendedServices: gap.recommendedServices.map((service) => ({
+      name: service.name[lang],
+      description: service.description[lang],
+    })),
   }))
 
   return {
