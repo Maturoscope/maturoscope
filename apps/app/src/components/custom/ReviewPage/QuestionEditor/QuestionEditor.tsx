@@ -24,6 +24,7 @@ const STAGE_TO_SCALE: Record<StageId, ScaleType> = {
 export interface QuestionEditorProps {
   saveButtonLabel: string
   cancelButtonLabel: string
+  commentPlaceholder: string
   stageName: StageId
   lang: Locale
   question: QuestionData
@@ -32,25 +33,33 @@ export interface QuestionEditorProps {
 const QuestionEditor = ({
   saveButtonLabel,
   cancelButtonLabel,
+  commentPlaceholder,
   stageName,
   lang,
   question,
 }: QuestionEditorProps) => {
   const router = useRouter()
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null)
+  const [comment, setComment] = useState<string>("")
 
   useEffect(() => {
-    // Read selected answer from localStorage
+    // Read selected answer and comment from localStorage
     const savedForm = JSON.parse(
       localStorage.getItem("form") || "{}"
     ) as DefaultValues
 
     const answerId = savedForm[stageName]?.questions?.[question.id] || null
+    const savedComment = savedForm[stageName]?.comments?.[question.id] || ""
     setSelectedOptionId(answerId)
+    setComment(savedComment)
   }, [stageName, question.id])
 
   const handleOptionChange = (optionId: string) => {
     setSelectedOptionId(optionId)
+  }
+
+  const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value)
   }
 
   const handleSaveClick = async () => {
@@ -61,7 +70,7 @@ const QuestionEditor = ({
       localStorage.getItem("form") || "{}"
     ) as DefaultValues
 
-    // Update the answer for this question
+    // Update the answer and comment for this question
     const updatedForm = {
       ...savedForm,
       [stageName]: {
@@ -69,6 +78,10 @@ const QuestionEditor = ({
         questions: {
           ...savedForm[stageName]?.questions,
           [question.id]: selectedOptionId,
+        },
+        comments: {
+          ...savedForm[stageName]?.comments,
+          [question.id]: comment,
         },
       },
     }
@@ -108,9 +121,9 @@ const QuestionEditor = ({
               return (
                 <label
                   key={option.id}
-                  className="w-full flex items-center justify-start rounded-lg border border-input relative cursor-pointer bg-white"
+                  className="relative w-full flex flex-col items-center justify-start rounded-lg border border-input cursor-pointer bg-white"
                 >
-                  <div className="flex items-start justify-start gap-3 w-full relative z-20 -mt-px p-3">
+                  <div className="flex items-start justify-start gap-3 w-full z-20 -mt-px p-3">
                     <input
                       type="radio"
                       name={radioGroupName}
@@ -137,6 +150,24 @@ const QuestionEditor = ({
                       {option.title}
                     </span>
                   </div>
+                  {isChecked && (
+                    <div className="w-[calc(100%-56px)] p-3 pt-0 flex flex-col items-end gap-2 relative z-20">
+                      <textarea
+                        maxLength={160}
+                        onChange={handleCommentChange}
+                        value={comment}
+                        placeholder={commentPlaceholder}
+                        className="bg-white w-full h-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none"
+                        aria-label="Add comment"
+                      />
+                      <span className="text-xs text-muted-foreground">
+                        <span className="text-foreground">
+                          {comment.length}
+                        </span>
+                        /160
+                      </span>
+                    </div>
+                  )}
                 </label>
               )
             })}

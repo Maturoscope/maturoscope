@@ -2,13 +2,11 @@
 
 // Packages
 import Image from "next/image"
-import { useParams } from "next/navigation"
 // Utils
 import { cn } from "@/lib/utils"
 // Context
 import { useProgressContext } from "@/context/ProgressContext"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
 
 interface CheckpointTopBarProps {
   buttonLabel: string
@@ -19,8 +17,8 @@ const CheckpointTopBar = ({
   buttonLabel,
   className,
 }: CheckpointTopBarProps) => {
-  const { isCheckpoint, currStage } = useProgressContext()
-  const { lang } = useParams()
+  const { isCheckpoint, currStage, handleBackToLastQuestionClick } =
+    useProgressContext()
 
   if (!isCheckpoint) return
 
@@ -31,19 +29,20 @@ const CheckpointTopBar = ({
         className
       )}
     >
-      <Link href={`/${lang}/form/`}>
-        <Button className="bg-white border border-border text-foreground hover:bg-foreground/5">
-          <Image
-            src="/icons/form/arrow-prev.svg"
-            alt="Arrow Prev"
-            width={16}
-            height={16}
-          />
-          <span>
-            {buttonLabel} {currStage.name}
-          </span>
-        </Button>
-      </Link>
+      <Button
+        onClick={handleBackToLastQuestionClick}
+        className="bg-white border border-border text-foreground hover:bg-foreground/5"
+      >
+        <Image
+          src="/icons/form/arrow-prev.svg"
+          alt="Arrow Prev"
+          width={16}
+          height={16}
+        />
+        <span>
+          {buttonLabel} {currStage.name}
+        </span>
+      </Button>
     </div>
   )
 }

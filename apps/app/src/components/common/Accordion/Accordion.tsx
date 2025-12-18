@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 
 interface AccordionProps {
   trigger: (isOpen: boolean, handleClick: () => void) => React.ReactNode
-  content?: React.ReactNode
+  content: () => React.ReactNode
   className?: string
 }
 
@@ -16,11 +16,12 @@ const Accordion = ({ trigger, content, className }: AccordionProps) => {
 
   const handleClick = () => setIsOpen(!isOpen)
   const TriggerComponent = () => trigger(isOpen, handleClick)
+  const ContentComponent = () => content()
 
   return (
     <div className={cn("flex flex-col w-full", className)}>
       <TriggerComponent />
-      {isOpen && <div>{content}</div>}
+      {isOpen && <ContentComponent />}
     </div>
   )
 }

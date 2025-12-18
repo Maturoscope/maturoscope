@@ -15,6 +15,7 @@ export interface RadioItemProps {
   name: `${StageId}.questions.${string}`
   onClick: () => void
   commentPlaceholder?: string
+  disabled?: boolean
 }
 
 const RadioItem = ({
@@ -23,6 +24,7 @@ const RadioItem = ({
   name,
   onClick,
   commentPlaceholder,
+  disabled = false,
 }: RadioItemProps) => {
   const { control } = useFormContext()
   const { field } = useController({ control, name })
@@ -36,6 +38,7 @@ const RadioItem = ({
   const charCount = commentField.value?.length || 0
 
   const handleChange = () => {
+    if (disabled) return
     field.onChange(id)
     onClick()
   }
@@ -45,7 +48,9 @@ const RadioItem = ({
   }
 
   return (
-    <label className="relative w-full flex flex-col items-center justify-start rounded-lg border border-input cursor-pointer bg-white">
+    <label
+      className={`relative w-full flex flex-col items-center justify-start rounded-lg border border-input bg-white ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
+    >
       <div className="flex items-start justify-start gap-3 w-full z-20 -mt-px p-3">
         <input
           type="radio"
@@ -54,6 +59,7 @@ const RadioItem = ({
           name={name}
           value={id}
           checked={isChecked}
+          disabled={disabled}
           className="peer appearance-none absolute outline-none"
         />
         <div className="absolute top-0 left-0 w-full h-full rounded-[10px] bg-accent/10 border border-accent hidden peer-checked:block" />
@@ -67,14 +73,15 @@ const RadioItem = ({
       {isChecked && (
         <div className="w-[calc(100%-56px)] p-3 pt-0 flex flex-col items-end gap-2 relative z-20">
           <textarea
-            maxLength={150}
+            maxLength={160}
             onChange={handleCommentChange}
             value={commentField.value || ""}
             placeholder={commentPlaceholder}
-            className="bg-white w-full h-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none"
+            disabled={disabled}
+            className={`bg-white w-full h-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none ${disabled ? "cursor-not-allowed" : ""}`}
           />
           <span className="text-xs text-muted-foreground">
-            <span className="text-foreground">{charCount}</span>/150
+            <span className="text-foreground">{charCount}</span>/160
           </span>
         </div>
       )}

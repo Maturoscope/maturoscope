@@ -43,6 +43,7 @@ const CTABanner = ({
     localStorage.removeItem("gaps")
     localStorage.removeItem("level")
     localStorage.removeItem("phases")
+    localStorage.removeItem("completedOn")
     setIsResetFormModalOpen(false)
   }
 
@@ -76,10 +77,12 @@ const CTABanner = ({
         )}
       >
         <div className="w-full max-w-2xl flex flex-col items-center justify-center">
-          <h2 className="text-4xl font-semibold text-neutral-50 mb-3">
+          <h2 className="text-center lg:text-left text-4xl font-semibold text-neutral-50 mb-3">
             {title}
           </h2>
-          <p className="text-sm text-neutral-50 mb-8">{description}</p>
+          <p className="text-center lg:text-left text-sm text-neutral-50 mb-8">
+            {description}
+          </p>
           <div className="flex gap-2">
             <Button onClick={handleTalkButtonClick} variant="outline">
               {talkButtonLabel}

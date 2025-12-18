@@ -1,7 +1,7 @@
 "use client"
 
 // Packages
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 // Components
 import { Button } from "@/components/ui/button"
 // Utils
@@ -12,6 +12,7 @@ import { StageId, QuestionData } from "@/components/custom/FormPage/Form/Form"
 import { DevelopmentPhase, Gap, LocalizedText } from "@/actions/organization"
 // Actions
 import { getQuestions, getRisks, RiskData } from "@/actions/questions"
+import { generateReport, ReportPayload } from "@/actions/report"
 
 export interface ResultsTopBarProps {
   title: string
@@ -47,9 +48,15 @@ interface AnswerPayload {
   comment: string
 }
 
+interface RecommendedServicePayload {
+  name: string
+  description: string
+}
+
 interface GapPayload {
   gapDescription: string
   hasServices: boolean
+  recommendedServices: RecommendedServicePayload[]
 }
 
 interface ScalePayload {
@@ -62,13 +69,6 @@ interface ScalePayload {
   isLowest: boolean
   gaps: GapPayload[]
   answers: AnswerPayload[]
-}
-
-interface ReportPayload {
-  completedOn: string
-  trl: ScalePayload
-  mkrl: ScalePayload
-  mfrl: ScalePayload
 }
 
 const buildScalePayload = (
@@ -104,6 +104,10 @@ const buildScalePayload = (
   const gapsPayload: GapPayload[] = gaps.map((gap) => ({
     gapDescription: gap.gapDescription[lang],
     hasServices: gap.hasServices,
+    recommendedServices: gap.recommendedServices.map((service) => ({
+      name: service.name[lang],
+      description: service.description[lang],
+    })),
   }))
 
   return {
@@ -128,6 +132,19 @@ const ResultsTopBar = ({
   className,
 }: ResultsTopBarProps & ExtraProps) => {
   const [isLoading, setIsLoading] = useState(false)
+  const [completedOnDate, setCompletedOnDate] = useState<string>("")
+
+  useEffect(() => {
+    const storedCompletedOn = localStorage.getItem("completedOn")
+    if (storedCompletedOn) {
+      const date = new Date(storedCompletedOn)
+      const formattedDate = date.toLocaleDateString(
+        lang === "fr" ? "fr-FR" : "en-US",
+        { year: "numeric", month: "long", day: "numeric" }
+      )
+      setCompletedOnDate(formattedDate)
+    }
+  }, [lang])
 
   const handleDownloadClick = useCallback(async () => {
     setIsLoading(true)
@@ -222,22 +239,22 @@ const ResultsTopBar = ({
         ),
       }
 
-      // Make the POST request to the PDF endpoint
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || ""
-      const response = await fetch(`${apiUrl}/report/${lang}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
+      // Generate the PDF using server action
+      const result = await generateReport(lang, payload)
 
-      if (!response.ok) {
-        throw new Error(`Failed to generate PDF: ${response.statusText}`)
+      if (!result.success || !result.data) {
+        throw new Error(result.error || "Failed to generate PDF")
       }
 
-      // Get the PDF blob and download it
-      const blob = await response.blob()
+      // Convert base64 to blob and download
+      const byteCharacters = atob(result.data)
+      const byteNumbers = new Array(byteCharacters.length)
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i)
+      }
+      const byteArray = new Uint8Array(byteNumbers)
+      const blob = new Blob([byteArray], { type: "application/pdf" })
+
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement("a")
       link.href = url
@@ -262,7 +279,10 @@ const ResultsTopBar = ({
     >
       <div className="flex flex-col items-start justify-start">
         <h1 className="text-2xl font-bold">{title}</h1>
-        <p className="text-sm text-muted-foreground">{subtitle}</p>
+        <p className="text-sm text-muted-foreground">
+          {subtitle}
+          {completedOnDate}
+        </p>
       </div>
       <div className="flex gap-2">
         <Button

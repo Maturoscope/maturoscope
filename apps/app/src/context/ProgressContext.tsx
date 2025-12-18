@@ -31,14 +31,15 @@ interface ProgressContextType {
   currQuestionIndex: number
   currQuestion: QuestionProps
   isCheckpoint: boolean
+  isFormCompleted: boolean
   stageStepNumber: number
-  isPrevButtonEnabled: boolean
   isNextButtonEnabled: boolean
   handlePrevButtonClick: () => void
   handleNextButtonClick: () => void
   handleReviewClick: () => void
   handleCheckpointButtonClick: () => void
   handleQuestionClick: () => void
+  handleBackToLastQuestionClick: () => void
 }
 
 interface ProgressProviderProps {
@@ -122,6 +123,7 @@ export const ProgressProvider = ({
   children,
 }: ProgressProviderProps) => {
   const [isCheckpoint, setIsCheckpoint] = useState(false)
+  const [isFormCompleted, setIsFormCompleted] = useState(false)
   const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false)
   const [currStageId, setCurrStageId] = useState<StageId>(DEFAULT_STAGE_ID)
   const [currQuestionId, setCurrQuestionId] = useState(
@@ -141,13 +143,18 @@ export const ProgressProvider = ({
   const stageStepNumber = STAGES_STEP_NUMBER[currStage.id]
   const isFirstStage = currStageIndex === 0
   const isFirstQuestionOfStage = currQuestionIndex === 0
-  const isPrevButtonEnabled = !(isFirstStage && isFirstQuestionOfStage)
 
   const saveProgress = () =>
     localStorage.setItem("form", JSON.stringify(getValues()))
 
   const handlePrevButtonClick = () => {
-    if (!isPrevButtonEnabled) return
+    const isFirstQuestionOfQuestionnaire =
+      isFirstStage && isFirstQuestionOfStage
+
+    if (isFirstQuestionOfQuestionnaire) {
+      return router.push(`/${lang}/begin`)
+    }
+
     setIsNextButtonEnabled(true)
 
     if (isFirstQuestionOfStage) {
@@ -208,6 +215,11 @@ export const ProgressProvider = ({
 
   const handleQuestionClick = () => setIsNextButtonEnabled(true)
 
+  const handleBackToLastQuestionClick = () => {
+    setIsCheckpoint(false)
+    setIsNextButtonEnabled(true)
+  }
+
   const currQuestion: QuestionProps = {
     ...currQuestionData,
     name: currStage.id,
@@ -216,6 +228,10 @@ export const ProgressProvider = ({
   }
 
   useEffect(() => {
+    // Check if form was already completed
+    const completedOn = localStorage.getItem("completedOn")
+    setIsFormCompleted(!!completedOn)
+
     const savedForm = JSON.parse(
       localStorage.getItem("form") || "{}"
     ) as DefaultValues
@@ -223,18 +239,6 @@ export const ProgressProvider = ({
 
     if (!checkpoint) return
     const { lastSavedStage, lastSavedQuestion } = checkpoint
-
-    const hasAnswerAllQuestions = Object.values(savedForm).every((stage) =>
-      Object.values(stage.questions).every((question) => !!question)
-    )
-
-    if (hasAnswerAllQuestions) {
-      // Only set completedOn if not already set (form was completed in a previous session)
-      if (!localStorage.getItem("completedOn")) {
-        localStorage.setItem("completedOn", new Date().toISOString())
-      }
-      return router.push(`/${lang}/results`)
-    }
 
     const lastStageQuestionsId = Object.keys(
       savedForm[lastSavedStage].questions
@@ -259,14 +263,15 @@ export const ProgressProvider = ({
         currQuestionIndex,
         currQuestion,
         isCheckpoint,
+        isFormCompleted,
         stageStepNumber,
-        isPrevButtonEnabled,
         isNextButtonEnabled,
         handlePrevButtonClick,
         handleNextButtonClick,
         handleReviewClick,
         handleCheckpointButtonClick,
         handleQuestionClick,
+        handleBackToLastQuestionClick,
       }}
     >
       {children}

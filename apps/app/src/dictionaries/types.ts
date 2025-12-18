@@ -43,7 +43,7 @@ export type Dictionary = {
   review: ReviewHeroProps
   singleReview: Pick<
     QuestionEditorProps,
-    "saveButtonLabel" | "cancelButtonLabel"
+    "saveButtonLabel" | "cancelButtonLabel" | "commentPlaceholder"
   >
   results: {
     topBar: ResultsTopBarProps

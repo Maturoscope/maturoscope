@@ -60,11 +60,11 @@ const DetailedScale = ({
   return (
     <div
       className={cn(
-        "w-full flex flex-col md:flex-row gap-3.5 md:gap-6",
+        "w-full flex flex-col lg:flex-row gap-3.5 md:gap-6",
         className
       )}
     >
-      <div className="w-full flex flex-col gap-5 md:max-w-[240px] py-4 px-5 md:p-6 rounded-3xl bg-white h-min">
+      <div className="w-full flex lg:flex-col gap-6 lg:gap-5 lg:max-w-[240px] py-4 px-5 lg:p-6 rounded-3xl bg-white h-min">
         <div className="flex flex-col gap-3 items-center">
           <h3 className="text-xl font-semibold w-max">{title}</h3>
           <div className="w-[75px] h-auto aspect-square lg:w-[120px] mb-1">
@@ -82,7 +82,7 @@ const DetailedScale = ({
               }}
             >
               <div className="flex items-end">
-                <span className="text-5xl font-medium text-center leading-[0.88]">
+                <span className="text-3xl lg:text-5xl font-medium text-center leading-[0.88]">
                   {level}
                 </span>
               </div>
@@ -90,27 +90,29 @@ const DetailedScale = ({
           </div>
         </div>
 
-        <div className="flex flex-col">
-          <div className="mb-5 w-full h-px bg-border" />
-          <span className="text-sm text-muted-foreground">{focusLabel}</span>
-          <span className="text-sm font-medium">
-            {strategicFocus?.[lang] ?? "-"}
-          </span>
-        </div>
+        <div className="flex flex-col gap-5 w-full">
+          <div className="flex flex-col">
+            <div className="mb-5 w-full h-px bg-border hidden lg:block" />
+            <span className="text-sm text-muted-foreground">{focusLabel}</span>
+            <span className="text-sm font-medium">
+              {strategicFocus?.[lang] ?? "-"}
+            </span>
+          </div>
 
-        <div className="flex flex-col">
-          <div className="mb-5 w-full h-px bg-border" />
-          <span className="text-sm text-muted-foreground">
-            {primaryRiskLabel}
-          </span>
-          <span className="text-sm font-medium">
-            {primaryRisk?.[lang] ?? "-"}
-          </span>
+          <div className="flex flex-col">
+            <div className="mb-5 w-full h-px bg-border" />
+            <span className="text-sm text-muted-foreground">
+              {primaryRiskLabel}
+            </span>
+            <span className="text-sm font-medium">
+              {primaryRisk?.[lang] ?? "-"}
+            </span>
+          </div>
         </div>
       </div>
 
       <div className="w-full flex flex-col gap-2.5 p-6 rounded-3xl bg-white h-min">
-        <span className="font-semibold text-xl">
+        <span className="font-semibold text-base lg:text-xl">
           {copyPreLevel} {level + 1}: {copyPostLevel}
         </span>
         <div className="flex flex-col">
@@ -121,8 +123,10 @@ const DetailedScale = ({
               title={gap.gapDescription[lang]}
               serviceLabel={serviceLabel}
               comingSoonLabel={comingSoonLabel}
+              recommendedServices={gap.recommendedServices}
               hasServices={gap.hasServices}
               indexColor={INDEX_COLOR_TO_KEY[id]}
+              lang={lang}
             />
           ))}
         </div>
