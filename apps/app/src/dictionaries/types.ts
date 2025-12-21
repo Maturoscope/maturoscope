@@ -15,9 +15,13 @@ import { UnlockNextLevelProps } from "@/components/custom/ResultsPage/UnlockNext
 import { DetailedReportProps } from "@/components/custom/ResultsPage/DetailedReport/DetailedReport"
 import { CTABannerProps } from "@/components/custom/ResultsPage/CTABanner/CTABanner"
 import { ResetFormModalProps } from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
+import { CommonModalStepProps } from "@/components/custom/ResultsPage/ContactExpertModal/ContactExpertModal"
 
-// Dictionary form stages don't include questions (they come from API)
 type DictionaryStage = Omit<StageType, "questions">
+type ContactExpertModalStepProps = Pick<
+  CommonModalStepProps,
+  "title" | "description" | "primaryButtonLabel" | "secondaryButtonLabel"
+>
 
 export type Dictionary = {
   lang: Locale
@@ -52,5 +56,11 @@ export type Dictionary = {
     detailedReport: DetailedReportProps
     ctaBanner: CTABannerProps
     resetFormModal: ResetFormModalProps
+    contactExpertModal: {
+      supportNeeded: ContactExpertModalStepProps
+      reachOut: ContactExpertModalStepProps
+      successStatus: ContactExpertModalStepProps
+      failedStatus: ContactExpertModalStepProps
+    }
   }
 }

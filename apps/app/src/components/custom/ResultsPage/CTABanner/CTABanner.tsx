@@ -9,9 +9,11 @@ import { cn } from "@/lib/utils"
 import { ResetIcon } from "@/components/icons"
 // Types
 import { ResetFormModalProps } from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
+import { Dictionary } from "@/dictionaries/types"
 // Components
 import { Button } from "@/components/ui/button"
 import ResetFormModal from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
+import ContactExpertModal from "@/components/custom/ResultsPage/ContactExpertModal/ContactExpertModal"
 
 export interface CTABannerProps {
   title: string
@@ -23,6 +25,7 @@ export interface CTABannerProps {
 }
 
 interface ExtraProps {
+  dictionary: Dictionary
   className?: string
 }
 
@@ -33,9 +36,11 @@ const CTABanner = ({
   talkButtonLabel,
   resetButtonLabel,
   resetFormModal,
+  dictionary,
   className,
 }: CTABannerProps & ExtraProps) => {
   const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
+  const [isContactExpertModalOpen, setIsContactExpertModalOpen] = useState(true)
   const router = useRouter()
 
   const handleResetForm = () => {
@@ -68,6 +73,12 @@ const CTABanner = ({
         setIsOpen={setIsResetFormModalOpen}
         onDownloadClick={handleDownloadButtonClick}
         onResetClick={handleResetButtonClick}
+      />
+
+      <ContactExpertModal
+        dictionary={dictionary}
+        isOpen={isContactExpertModalOpen}
+        setIsOpen={setIsContactExpertModalOpen}
       />
 
       <div

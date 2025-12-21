@@ -31,7 +31,7 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
       <Overview {...overview} />
       <UnlockNextLevel {...unlockNextLevel} />
       <DetailedReport {...detailedReport} />
-      <CTABanner {...ctaBanner} />
+      <CTABanner {...ctaBanner} dictionary={dictionary} />
       <PrivacyPolicy {...policy} />
     </main>
   )

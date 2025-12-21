@@ -154,6 +154,34 @@
         "cancelButtonLabel": "Cancel",
         "resetButtonLabel": "Reset"
       }
+    },
+    "contactExpertModal": {
+      "supportNeeded": {
+        "title": "Support needed for:",
+        "description": "Select the specific gaps you would like us to help you solve.",
+        "primaryButtonLabel": "Continue",
+        "completedLabel": "completed",
+        "chipLabel": "Highest Priority for Growth"
+      },
+      "reachOut": {
+        "title": "How can we reach you?",
+        "description": "Please provide your details so our expert knows who to ask for.",
+        "primaryButtonLabel": "Request contact",
+        "secondaryButtonLabel": "Back",
+        "completedLabel": "completed"
+      },
+      "successStatus": {
+        "title": "Request sent successfully!",
+        "description": "Our team will review your needs and contact you within 48 hours. In the meantime, don't forget to save your full report.",
+        "primaryButtonLabel": "Download report",
+        "secondaryButtonLabel": "Close"
+      },
+      "failedStatus": {
+        "title": "Something went wrong",
+        "description": "We couldn't send your request. Please check your connection and try again.",
+        "primaryButtonLabel": "Try again",
+        "secondaryButtonLabel": "Close"
+      }
     }
   }
 }
