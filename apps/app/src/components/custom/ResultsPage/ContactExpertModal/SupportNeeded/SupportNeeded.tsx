@@ -1,8 +1,16 @@
+"use client"
+
 // Packages
+import { useState, useEffect } from "react"
 import Image from "next/image"
+import { useParams } from "next/navigation"
 // Components
 import Modal from "@/components/common/Modal/Modal"
 import { Button } from "@/components/ui/button"
+// Types
+import { Gap } from "@/actions/organization"
+import { StageId } from "@/components/custom/FormPage/Form/Form"
+import { Locale } from "@/dictionaries/dictionaries"
 
 export interface SupportNeededProps {
   title: string
@@ -17,6 +25,20 @@ interface ExtraProps {
   setIsOpen: (isOpen: boolean) => void
 }
 
+interface GapsStorage {
+  trl?: Gap[]
+  mkrl?: Gap[]
+  mfrl?: Gap[]
+}
+
+interface LevelStorage {
+  trl?: number
+  mkrl?: number
+  mfrl?: number
+}
+
+type StageGapsItem = { trl: Gap[] } | { mkrl: Gap[] } | { mfrl: Gap[] }
+
 const SupportNeeded = ({
   title,
   description,
@@ -26,6 +48,41 @@ const SupportNeeded = ({
   isOpen,
   setIsOpen,
 }: SupportNeededProps & ExtraProps) => {
+  const [orderedGaps, setOrderedGaps] = useState<StageGapsItem[]>([])
+  const { lang } = useParams<{ lang: Locale }>()
+
+  useEffect(() => {
+    const storedGaps = localStorage.getItem("gaps")
+    const storedLevel = localStorage.getItem("level")
+
+    if (!storedGaps) return
+
+    const gapsData: GapsStorage = JSON.parse(storedGaps)
+    const levelData: LevelStorage = storedLevel ? JSON.parse(storedLevel) : {}
+
+    const sortByLevel = (gaps: Gap[]) =>
+      [...gaps].sort((a, b) => a.level - b.level)
+
+    const stageIds: StageId[] = ["trl", "mkrl", "mfrl"]
+
+    const stagesWithAvgLevel = stageIds.map((stageId) => {
+      const stageGaps = gapsData[stageId] ?? []
+      const stageLevel = levelData[stageId] ?? 0
+      return { stageId, gaps: stageGaps, stageLevel }
+    })
+
+    stagesWithAvgLevel.sort((a, b) => a.stageLevel - b.stageLevel)
+
+    const result: StageGapsItem[] = stagesWithAvgLevel.map(
+      ({ stageId, gaps }) => {
+        const sortedGaps = sortByLevel(gaps)
+        return { [stageId]: sortedGaps } as StageGapsItem
+      }
+    )
+
+    setOrderedGaps(result)
+  }, [])
+
   return (
     <Modal
       isOpen={isOpen}
@@ -59,7 +116,58 @@ const SupportNeeded = ({
         </div>
       </div>
 
-      <div></div>
+      <div className="flex flex-col gap-6 max-h-[700px] overflow-y-auto">
+        {orderedGaps.map((scale, index) => {
+          const scaleName = Object.keys(scale)[0] as StageId
+          const gaps = scale[scaleName as keyof StageGapsItem] as Gap[]
+
+          return (
+            <div key={index}>
+              <div className="flex items-center gap-2 border-b border-border pb-2.5">
+                <h3 className="text-sm font-medium uppercase w-full">
+                  {scaleName}
+                </h3>
+                {index === 0 && (
+                  <div className="bg-[#0D9488] py-0.5 px-2 rounded-md text-xs font-semibold text-white shrink-0">
+                    {chipLabel}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-3 pt-3">
+                {gaps.map((gap) => (
+                  <label
+                    key={gap.questionId}
+                    className="flex items-start gap-2 cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      className="peer appearance-none absolute outline-none"
+                    />
+                    <Image
+                      src="/icons/common/checkbox-unchecked.svg"
+                      alt="Checkbox"
+                      width={16}
+                      height={16}
+                      className="peer-checked:hidden mt-0.5"
+                    />
+                    <Image
+                      src="/icons/common/checkbox-checked.svg"
+                      alt="Checkbox"
+                      width={16}
+                      height={16}
+                      className="hidden peer-checked:block mt-0.5"
+                    />
+                    <h4 className="text-sm font-medium">
+                      {gap.gapDescription[lang]}
+                    </h4>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )
+        })}
+      </div>
 
       <div className="flex justify-end">
         <Button variant="default" accent>
