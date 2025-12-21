@@ -4,6 +4,8 @@ import { useState } from "react"
 import SupportNeeded from "./SupportNeeded/SupportNeeded"
 import ReachOut from "./ReachOut/ReachOut"
 import Status from "./Status/Status"
+// Context
+import { ContactExpertProvider } from "@/context/ContactExpertContext"
 // Types
 import { ComponentType } from "react"
 import { Dictionary } from "@/dictionaries/types"
@@ -24,7 +26,11 @@ interface ContactExpertModalProps {
   setIsOpen: (isOpen: boolean) => void
 }
 
-type ModalStep = "supportNeeded" | "reachOut" | "successStatus" | "failedStatus"
+export type ModalStep =
+  | "supportNeeded"
+  | "reachOut"
+  | "successStatus"
+  | "failedStatus"
 
 const MODAL_STEPS: Record<ModalStep, ComponentType<CommonModalStepProps>> = {
   supportNeeded:
@@ -48,12 +54,14 @@ const ContactExpertModal = ({
   const currentStepProps = contactExpertModal[currentStep]
 
   return (
-    <CurrentStepComponent
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-      setCurrentStep={setCurrentStep}
-      {...currentStepProps}
-    />
+    <ContactExpertProvider>
+      <CurrentStepComponent
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        setCurrentStep={setCurrentStep}
+        {...currentStepProps}
+      />
+    </ContactExpertProvider>
   )
 }
 

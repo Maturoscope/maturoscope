@@ -7,10 +7,13 @@ import { useParams } from "next/navigation"
 // Components
 import Modal from "@/components/common/Modal/Modal"
 import { Button } from "@/components/ui/button"
+// Context
+import { useContactExpertContext } from "@/context/ContactExpertContext"
 // Types
 import { Gap } from "@/actions/organization"
 import { StageId } from "@/components/custom/FormPage/Form/Form"
 import { Locale } from "@/dictionaries/dictionaries"
+import { ModalStep } from "../ContactExpertModal"
 
 export interface SupportNeededProps {
   title: string
@@ -23,6 +26,7 @@ export interface SupportNeededProps {
 interface ExtraProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
+  setCurrentStep: (step: ModalStep) => void
 }
 
 interface GapsStorage {
@@ -47,9 +51,29 @@ const SupportNeeded = ({
   chipLabel,
   isOpen,
   setIsOpen,
+  setCurrentStep,
 }: SupportNeededProps & ExtraProps) => {
   const [orderedGaps, setOrderedGaps] = useState<StageGapsItem[]>([])
   const { lang } = useParams<{ lang: Locale }>()
+  const { addGap, removeGap, isGapSelected, selectedGaps } =
+    useContactExpertContext()
+  const isButtonDisabled = selectedGaps.length === 0
+
+  const handleGapToggle = (gap: Gap, isChecked: boolean) => {
+    if (isChecked) {
+      addGap({
+        questionId: gap.questionId,
+        level: gap.level,
+        recommendedServices: gap.recommendedServices.map(
+          (service) => service.id
+        ),
+      })
+    } else {
+      removeGap(gap.questionId)
+    }
+  }
+
+  const handleButtonClick = () => setCurrentStep("reachOut")
 
   useEffect(() => {
     const storedGaps = localStorage.getItem("gaps")
@@ -135,34 +159,40 @@ const SupportNeeded = ({
               </div>
 
               <div className="flex flex-col gap-3 pt-3">
-                {gaps.map((gap) => (
-                  <label
-                    key={gap.questionId}
-                    className="flex items-start gap-2 cursor-pointer"
-                  >
-                    <input
-                      type="checkbox"
-                      className="peer appearance-none absolute outline-none"
-                    />
-                    <Image
-                      src="/icons/common/checkbox-unchecked.svg"
-                      alt="Checkbox"
-                      width={16}
-                      height={16}
-                      className="peer-checked:hidden mt-0.5"
-                    />
-                    <Image
-                      src="/icons/common/checkbox-checked.svg"
-                      alt="Checkbox"
-                      width={16}
-                      height={16}
-                      className="hidden peer-checked:block mt-0.5"
-                    />
-                    <h4 className="text-sm font-medium">
-                      {gap.gapDescription[lang]}
-                    </h4>
-                  </label>
-                ))}
+                {gaps.map((gap) => {
+                  const isChecked = isGapSelected(gap.questionId)
+
+                  return (
+                    <label
+                      key={gap.questionId}
+                      className="flex items-start gap-2 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={(e) => handleGapToggle(gap, e.target.checked)}
+                        className="peer appearance-none absolute outline-none"
+                      />
+                      <Image
+                        src="/icons/common/checkbox-unchecked.svg"
+                        alt="Checkbox"
+                        width={16}
+                        height={16}
+                        className="peer-checked:hidden mt-0.5"
+                      />
+                      <Image
+                        src="/icons/common/checkbox-checked.svg"
+                        alt="Checkbox"
+                        width={16}
+                        height={16}
+                        className="hidden peer-checked:block mt-0.5"
+                      />
+                      <h4 className="text-sm font-medium">
+                        {gap.gapDescription[lang]}
+                      </h4>
+                    </label>
+                  )
+                })}
               </div>
             </div>
           )
@@ -170,7 +200,12 @@ const SupportNeeded = ({
       </div>
 
       <div className="flex justify-end">
-        <Button variant="default" accent>
+        <Button
+          variant="default"
+          accent
+          onClick={handleButtonClick}
+          disabled={isButtonDisabled}
+        >
           {primaryButtonLabel}
         </Button>
       </div>
