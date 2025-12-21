@@ -4,6 +4,7 @@ import { getDictionary } from "@/dictionaries/dictionaries"
 import { Locale } from "@/dictionaries/dictionaries"
 // Components
 import Header from "@/components/common/Header/Header"
+import ResultsPageWrapper from "@/components/custom/ResultsPage/ResultsPageWrapper/ResultsPageWrapper"
 import ResultsTopBar from "@/components/custom/ResultsPage/ResultsTopBar/ResultsTopBar"
 import Overview from "@/components/custom/ResultsPage/Overview/Overview"
 import UnlockNextLevel from "@/components/custom/ResultsPage/UnlockNextLevel/UnlockNextLevel"
@@ -27,12 +28,14 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
   return (
     <main className="w-full h-full">
       <Header stringConnector={stringConnector} showBackButton />
-      <ResultsTopBar {...topBar} lang={lang} />
-      <Overview {...overview} />
-      <UnlockNextLevel {...unlockNextLevel} />
-      <DetailedReport {...detailedReport} />
-      <CTABanner {...ctaBanner} dictionary={dictionary} />
-      <PrivacyPolicy {...policy} />
+      <ResultsPageWrapper dictionary={dictionary}>
+        <ResultsTopBar {...topBar} lang={lang} />
+        <Overview {...overview} />
+        <UnlockNextLevel {...unlockNextLevel} />
+        <DetailedReport {...detailedReport} />
+        <CTABanner {...ctaBanner} />
+        <PrivacyPolicy {...policy} />
+      </ResultsPageWrapper>
     </main>
   )
 }

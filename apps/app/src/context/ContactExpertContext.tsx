@@ -15,6 +15,9 @@ interface ContactExpertContextType {
   addGap: (gap: SelectedGap) => void
   removeGap: (questionId: string) => void
   isGapSelected: (questionId: string) => boolean
+  isModalOpen: boolean
+  openModal: () => void
+  closeModal: () => void
 }
 
 interface ContactExpertProviderProps {
@@ -29,6 +32,7 @@ export const ContactExpertProvider = ({
   children,
 }: ContactExpertProviderProps) => {
   const [selectedGaps, setSelectedGaps] = useState<SelectedGap[]>([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const addGap = (gap: SelectedGap) => {
     setSelectedGaps((prev) => {
@@ -46,6 +50,9 @@ export const ContactExpertProvider = ({
     return selectedGaps.some((g) => g.questionId === questionId)
   }
 
+  const openModal = () => setIsModalOpen(true)
+  const closeModal = () => setIsModalOpen(false)
+
   return (
     <ContactExpertContext.Provider
       value={{
@@ -54,6 +61,9 @@ export const ContactExpertProvider = ({
         addGap,
         removeGap,
         isGapSelected,
+        isModalOpen,
+        openModal,
+        closeModal,
       }}
     >
       {children}

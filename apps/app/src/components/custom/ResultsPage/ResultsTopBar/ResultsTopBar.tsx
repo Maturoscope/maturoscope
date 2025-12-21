@@ -4,6 +4,8 @@
 import { useState, useCallback, useEffect } from "react"
 // Components
 import { Button } from "@/components/ui/button"
+// Context
+import { useContactExpertContext } from "@/context/ContactExpertContext"
 // Utils
 import { cn } from "@/lib/utils"
 // Types
@@ -133,6 +135,11 @@ const ResultsTopBar = ({
 }: ResultsTopBarProps & ExtraProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [completedOnDate, setCompletedOnDate] = useState<string>("")
+  const { openModal } = useContactExpertContext()
+
+  const handleTalkButtonClick = () => {
+    openModal()
+  }
 
   useEffect(() => {
     const storedCompletedOn = localStorage.getItem("completedOn")
@@ -292,7 +299,7 @@ const ResultsTopBar = ({
         >
           {isLoading ? "Loading..." : downloadButtonLabel}
         </Button>
-        <Button variant="default" accent>
+        <Button variant="default" accent onClick={handleTalkButtonClick}>
           {talkButtonLabel}
         </Button>
       </div>

@@ -3,17 +3,17 @@
 // Packages
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+// Components
+import { Button } from "@/components/ui/button"
+import ResetFormModal from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
+// Context
+import { useContactExpertContext } from "@/context/ContactExpertContext"
 // Utils
 import { cn } from "@/lib/utils"
 // Icons
 import { ResetIcon } from "@/components/icons"
 // Types
 import { ResetFormModalProps } from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
-import { Dictionary } from "@/dictionaries/types"
-// Components
-import { Button } from "@/components/ui/button"
-import ResetFormModal from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
-import ContactExpertModal from "@/components/custom/ResultsPage/ContactExpertModal/ContactExpertModal"
 
 export interface CTABannerProps {
   title: string
@@ -25,7 +25,6 @@ export interface CTABannerProps {
 }
 
 interface ExtraProps {
-  dictionary: Dictionary
   className?: string
 }
 
@@ -36,11 +35,10 @@ const CTABanner = ({
   talkButtonLabel,
   resetButtonLabel,
   resetFormModal,
-  dictionary,
   className,
 }: CTABannerProps & ExtraProps) => {
   const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
-  const [isContactExpertModalOpen, setIsContactExpertModalOpen] = useState(true)
+  const { openModal } = useContactExpertContext()
   const router = useRouter()
 
   const handleResetForm = () => {
@@ -53,7 +51,7 @@ const CTABanner = ({
   }
 
   const handleTalkButtonClick = () => {
-    console.log("talk button clicked")
+    openModal()
   }
 
   const handleResetButtonClick = () => {
@@ -73,12 +71,6 @@ const CTABanner = ({
         setIsOpen={setIsResetFormModalOpen}
         onDownloadClick={handleDownloadButtonClick}
         onResetClick={handleResetButtonClick}
-      />
-
-      <ContactExpertModal
-        dictionary={dictionary}
-        isOpen={isContactExpertModalOpen}
-        setIsOpen={setIsContactExpertModalOpen}
       />
 
       <div
