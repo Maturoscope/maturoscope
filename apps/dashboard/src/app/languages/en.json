@@ -394,6 +394,11 @@
       "LABEL": "Email",
       "VALUE": "nobatek@gmail.com"
     },
+    "MATUROSCOPE_LINK": {
+      "LABEL": "Maturoscope Link",
+      "COPY_BUTTON": "Copy",
+      "COPIED_TO_CLIPBOARD": "Link copied!"
+    },
     "UPDATE_BUTTON": "Update profile",
     "TOASTS": {
       "SUCCESS_TITLE": "Profile Information Updated",
@@ -681,6 +686,11 @@
           "REQUIRED": "*",
           "HELPER_TEXT": "The name cannot be modified once the organization is created."
         },
+        "CONFIRM_NAME": {
+          "LABEL": "Confirm Organization Name",
+          "PLACEHOLDER": "Confirm Organization Name",
+          "REQUIRED": "*"
+        },
         "EMAIL": {
           "LABEL": "Email",
           "PLACEHOLDER": "Email",
@@ -692,6 +702,14 @@
           "PLACEHOLDER": "Confirm email",
           "REQUIRED": "*"
         }
+      },
+      "ERRORS": {
+        "FIELD_REQUIRED": "This field cannot be left blank.",
+        "INVALID_EMAIL": "Enter a valid email address.",
+        "EMAILS_DONT_MATCH": "The emails do not match.",
+        "NAMES_DONT_MATCH": "The organization names do not match.",
+        "CREATE_FAILED": "Failed to create organization.",
+        "UNEXPECTED_ERROR": "Unexpected error creating organization."
       },
       "BUTTONS": {
         "CREATE": "Create organization",

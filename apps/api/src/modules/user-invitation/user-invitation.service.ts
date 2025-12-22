@@ -6,6 +6,7 @@ import { OrganizationsService } from '../organizations/organizations.service';
 import { CreateUserInvitationDto } from './dto/create-user-invitation.dto';
 import { CompleteUserInvitationDto } from './dto/complete-user-invitation.dto';
 import { UserInvitationMailService } from './mail.service';
+import { getRolesMapped } from '../../common/auth-module/interfaces/valid-roles';
 
 export interface InvitationPayload {
   email: string;
@@ -67,6 +68,21 @@ export class UserInvitationService {
     return `${baseUrl}${path}?token=${token}`;
   }
 
+  private isAdminUser(roles: string[]): boolean {
+    if (!roles || roles.length === 0) {
+      return false;
+    }
+
+    const rolesMapped = getRolesMapped();
+    const adminRole = rolesMapped.admin;
+
+    return roles.some(
+      (role) =>
+        role.toLowerCase() === 'admin' ||
+        (adminRole && role.toLowerCase() === adminRole.toLowerCase()),
+    );
+  }
+
   async inviteUser(createUserInvitationDto: CreateUserInvitationDto, invitedBy?: { email?: string; name?: string }) {
     const { email, firstName, lastName, roles, organizationId } = createUserInvitationDto;
 
@@ -96,30 +112,26 @@ export class UserInvitationService {
     }
 
     let companyName =
-      invitedBy?.name ||
       this.configService.get<string>('APP_NAME') ||
       'Maturoscope';
     let companyLogoUrl: string | undefined;
-    let organizationLanguage = 'EN'; // Default to English
+    let organizationLanguage = 'EN';
 
-    // Get organization details to retrieve language preference
     try {
       const organization = await this.organizationsService.findOne(organizationId);
       if (organization) {
+        companyName = organization.name || companyName;
+        companyLogoUrl = organization.avatar || undefined;
         organizationLanguage = organization.language?.toUpperCase() || 'EN';
       }
     } catch (error) {
       console.error('Error fetching organization for language:', error);
     }
 
-    if (invitedBy?.email) {
+    if (!companyLogoUrl && invitedBy?.email) {
       const inviter = await this.usersService.findByUserEmail(invitedBy.email);
-      if (inviter) {
-        companyName =
-          inviter.organization?.name ||
-          inviter.firstName ||
-          companyName;
-        companyLogoUrl = inviter.organization?.avatar || undefined;
+      if (inviter && inviter.organization) {
+        companyLogoUrl = inviter.organization.avatar || undefined;
       }
     }
 
@@ -143,15 +155,32 @@ export class UserInvitationService {
 
     const magicLink = this.buildMagicLink(token);
 
-    await this.userInvitationMailService.sendInvitationEmail({
-      inviteeEmail: email,
-      inviteeFirstName: firstName,
-      magicLink,
-      companyName,
-      companyLogoUrl,
-      expirationDays: expirationDaysDisplay,
-      language: organizationLanguage,
-    });
+    const existingUsers = await this.usersService.findByOrganization(organizationId, email);
+    const isFirstUser = existingUsers.length === 0;
+
+    const isAdmin = this.isAdminUser(roles);
+    const shouldUseAdminTemplate = isAdmin || isFirstUser;
+
+    if (shouldUseAdminTemplate) {
+      await this.userInvitationMailService.sendAdminInvitationEmail({
+        inviteeEmail: email,
+        inviteeFirstName: firstName,
+        magicLink,
+        organizationName: companyName,
+        expirationDays: expirationDaysDisplay,
+        language: organizationLanguage,
+      });
+    } else {
+      await this.userInvitationMailService.sendInvitationEmail({
+        inviteeEmail: email,
+        inviteeFirstName: firstName,
+        magicLink,
+        companyName,
+        companyLogoUrl,
+        expirationDays: expirationDaysDisplay,
+        language: organizationLanguage,
+      });
+    }
 
     return {
       message: 'Invitation sent successfully',
@@ -217,30 +246,26 @@ export class UserInvitationService {
     });
 
     let companyName =
-      invitedBy?.name ||
       this.configService.get<string>('APP_NAME') ||
       'Maturoscope';
     let companyLogoUrl: string | undefined;
-    let organizationLanguage = 'EN'; // Default to English
+    let organizationLanguage = 'EN';
 
-    // Get organization details to retrieve language preference
     try {
       const organization = await this.organizationsService.findOne(organizationId);
       if (organization) {
+        companyName = organization.name || companyName;
+        companyLogoUrl = organization.avatar || undefined;
         organizationLanguage = organization.language?.toUpperCase() || 'EN';
       }
     } catch (error) {
       console.error('Error fetching organization for language:', error);
     }
 
-    if (invitedBy?.email) {
+    if (!companyLogoUrl && invitedBy?.email) {
       const inviter = await this.usersService.findByUserEmail(invitedBy.email);
-      if (inviter) {
-        companyName =
-          inviter.organization?.name ||
-          inviter.firstName ||
-          companyName;
-        companyLogoUrl = inviter.organization?.avatar || undefined;
+      if (inviter && inviter.organization) {
+        companyLogoUrl = inviter.organization.avatar || undefined;
       }
     }
 
@@ -264,15 +289,32 @@ export class UserInvitationService {
 
     const magicLink = this.buildMagicLink(token);
 
-    await this.userInvitationMailService.sendInvitationEmail({
-      inviteeEmail: email,
-      inviteeFirstName: firstName,
-      magicLink,
-      companyName,
-      companyLogoUrl,
-      expirationDays: expirationDaysDisplay,
-      language: organizationLanguage,
-    });
+    const existingUsers = await this.usersService.findByOrganization(organizationId, email);
+    const isFirstUser = existingUsers.length === 0;
+
+    const isAdmin = this.isAdminUser(roles);
+    const shouldUseAdminTemplate = isAdmin || isFirstUser;
+
+    if (shouldUseAdminTemplate) {
+      await this.userInvitationMailService.sendAdminInvitationEmail({
+        inviteeEmail: email,
+        inviteeFirstName: firstName,
+        magicLink,
+        organizationName: companyName,
+        expirationDays: expirationDaysDisplay,
+        language: organizationLanguage,
+      });
+    } else {
+      await this.userInvitationMailService.sendInvitationEmail({
+        inviteeEmail: email,
+        inviteeFirstName: firstName,
+        magicLink,
+        companyName,
+        companyLogoUrl,
+        expirationDays: expirationDaysDisplay,
+        language: organizationLanguage,
+      });
+    }
 
     return {
       message: 'Invitation resent successfully',

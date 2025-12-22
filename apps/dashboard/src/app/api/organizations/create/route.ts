@@ -24,7 +24,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'API base URL is not configured' }, { status: 500 });
     }
 
-    // Generate a key from the organization name
     const key = name
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
@@ -51,8 +50,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(orgData, { status: createOrgResponse.status });
     }
 
-    // Now create and invite the first user for this organization
-    // Use the organization name as firstName and "admin" as lastName
     const inviteResponse = await fetch(`${apiBaseUrl}/user-invitation/invite`, {
       method: 'POST',
       headers: {
@@ -61,8 +58,8 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         email,
-        firstName: name, // Use organization name as firstName
-        lastName: 'admin', // Always use "admin" as lastName
+        firstName: name,
+        lastName: 'Admin',
         organizationId: orgData.id,
         roles: ['user'],
       }),
@@ -71,7 +68,6 @@ export async function POST(req: NextRequest) {
     const inviteData = await inviteResponse.json().catch(() => ({}));
 
     if (!inviteResponse.ok) {
-      // If invitation fails, we still return the organization but with an error message
       return NextResponse.json(
         {
           ...orgData,
