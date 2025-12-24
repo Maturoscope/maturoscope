@@ -446,7 +446,7 @@ export class ServicesService {
     const organization = await this.organizationsService.findByKey(organizationKey);
     const companyName = organization.name || 'Maturoscope';
     const companyLogoUrl = organization.avatar || undefined;
-    const organizationLanguage = organization.language || 'EN';
+    const organizationLanguage = organization.language?.toUpperCase() === 'FR' ? 'FR' : 'EN';
     const supportEmail = organization.email || undefined;
 
     // Collect all unique service IDs from all gaps
@@ -519,6 +519,16 @@ export class ServicesService {
 
         // Send email to each contact
         for (const contact of contacts) {
+          // Reassignment contact must be the service secondary contact (per design)
+          // Only show it when the recipient is NOT the secondary contact (avoid self-reassign link).
+          let reassignmentContact: { name: string; email: string } | undefined;
+          if (service.secondaryContactEmail) {
+            reassignmentContact = {
+              name: `${service.secondaryContactFirstName} ${service.secondaryContactLastName}`.trim(),
+              email: service.secondaryContactEmail,
+            };
+          }
+
           emailPromises.push(
             this.serviceContactMailService.sendServiceContactEmail({
               expertEmail: contact.email,
@@ -528,6 +538,7 @@ export class ServicesService {
               companyLogoUrl,
               supportEmail,
               language: organizationLanguage,
+              reassignmentContact,
               clientData: {
                 company: contactServicesDto.company,
                 firstName: contactServicesDto.firstName,

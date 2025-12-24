@@ -65,17 +65,11 @@ export function useNewOrganizationForm() {
         break;
       case "confirmName":
         if (!value.trim()) {
-          const translated = t("NEW_ORGANIZATION.ERRORS.FIELD_REQUIRED");
-          error = translated && translated !== "NEW_ORGANIZATION.ERRORS.FIELD_REQUIRED" 
-            ? translated 
-            : "This field cannot be left blank.";
+          error = t("NEW_ORGANIZATION.ERRORS.FIELD_REQUIRED");
         } else if (
           value.trim() !== formState.name.trim()
         ) {
-          const translated = t("NEW_ORGANIZATION.ERRORS.NAMES_DONT_MATCH");
-          error = translated && translated !== "NEW_ORGANIZATION.ERRORS.NAMES_DONT_MATCH" 
-            ? translated 
-            : "The organization names do not match.";
+          error = t("NEW_ORGANIZATION.ERRORS.NAMES_DONT_MATCH");
         }
         break;
       case "email":

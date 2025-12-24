@@ -1,4 +1,4 @@
-import { Injectable, type OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, type OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { BaseMailService } from '../../common/mail/mail.service';
 import * as path from 'path';
@@ -38,6 +38,7 @@ interface EmailContent {
 @Injectable()
 export class UserInvitationMailService extends BaseMailService implements OnModuleInit {
   protected maturoscopeLogoPath: string;
+  private readonly logger = new Logger(UserInvitationMailService.name);
 
   constructor(configService: ConfigService) {
     super(configService);
@@ -48,12 +49,12 @@ export class UserInvitationMailService extends BaseMailService implements OnModu
     await super.onModuleInit();
     try {
       if (fs.existsSync(this.maturoscopeLogoPath)) {
-        console.log('Maturoscope logo file found at:', this.maturoscopeLogoPath);
+        this.logger.log(`Maturoscope logo file found at: ${this.maturoscopeLogoPath}`);
       } else {
-        console.warn('Maturoscope logo file not found at:', this.maturoscopeLogoPath);
+        this.logger.warn(`Maturoscope logo file not found at: ${this.maturoscopeLogoPath}`);
       }
     } catch (error) {
-      console.error('Error checking Maturoscope logo file:', error);
+      this.logger.error('Error checking Maturoscope logo file', error);
     }
   }
 
@@ -217,10 +218,10 @@ export class UserInvitationMailService extends BaseMailService implements OnModu
         cid: 'maturoscope-logo',
       });
       maturoscopeSignature = `<img src="cid:maturoscope-logo" alt="Maturoscope" style="max-width:200px;height:auto;display:block;margin:0 auto;" />`;
-      console.log('Maturoscope logo file found at:', this.maturoscopeLogoPath);
+      this.logger.log(`Maturoscope logo file found at: ${this.maturoscopeLogoPath}`);
     } else {
       maturoscopeSignature = `<strong style="font-size:18px;color:#1F2937;font-weight:600;">Maturoscope.</strong>`;
-      console.warn('Maturoscope logo file not found at:', this.maturoscopeLogoPath);
+      this.logger.warn(`Maturoscope logo file not found at: ${this.maturoscopeLogoPath}`);
     }
     
     // Load and render the EJS template
