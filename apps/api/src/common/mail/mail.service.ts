@@ -75,7 +75,7 @@ export class BaseMailService implements OnModuleInit {
     }
   }
 
-  protected async sendEmail(options: { to: string; subject: string; html: string }) {
+  protected async sendEmail(options: { to: string; subject: string; html: string; attachments?: nodemailer.Attachment[] }) {
     if (!this.isInitialized) {
       throw new Error('Mail service not initialized');
     }

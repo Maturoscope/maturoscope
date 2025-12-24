@@ -159,23 +159,8 @@ export function ToolCustomizationSection({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div>
         <h2 className="text-xl font-semibold">{t('SECTIONS.CUSTOMIZATION')}</h2>
-        <Button
-          onClick={() => {
-            const endUserUrl = process.env.NEXT_PUBLIC_END_USER_URL;
-            if (!endUserUrl) {
-              console.error('NEXT_PUBLIC_END_USER_URL environment variable is not configured');
-              alert('Preview URL is not configured. Please contact your administrator.');
-              return;
-            }
-            window.open(endUserUrl, '_blank');
-          }}
-          variant="outline"
-          size="sm"
-        >
-          {t('CUSTOMIZATION.PREVIEW_TOOL')}
-        </Button>
       </div>
 
       <Separator />

@@ -44,13 +44,13 @@ export function useToolSettingsState() {
     signatureUrl: user?.organization?.signature || ''
   })
   
-  // Language Form
+  // Language Form - Only from organization language in DB, not from browser
   const [languageForm, setLanguageForm] = useState<ToolLanguageFormData>({
-    language: user?.organization?.language || browserLanguage || 'EN'
+    language: user?.organization?.language || 'EN'
   })
   
   const [originalLanguageForm, setOriginalLanguageForm] = useState<ToolLanguageFormData>({
-    language: user?.organization?.language || browserLanguage || 'EN'
+    language: user?.organization?.language || 'EN'
   })
   
   // Update forms when user data changes
@@ -65,8 +65,9 @@ export function useToolSettingsState() {
         signatureFile: null,
         signatureUrl: user.organization.signature || ''
       }
+      // Organization language should ONLY come from DB, not from browser
       const newLanguageForm = {
-        language: user.organization.language || browserLanguage || 'EN'
+        language: user.organization.language || 'EN'
       }
       
       setCustomizationForm(newCustomizationForm)
@@ -76,7 +77,7 @@ export function useToolSettingsState() {
       setLanguageForm(newLanguageForm)
       setOriginalLanguageForm(newLanguageForm)
     }
-  }, [user, browserLanguage])
+  }, [user])
   
   // Loading states
   const [isUpdatingCustomization, setIsUpdatingCustomization] = useState(false)
@@ -92,15 +93,6 @@ export function useToolSettingsState() {
   const [showUnsavedChangesDialog, setShowUnsavedChangesDialog] = useState(false)
   const [pendingSection, setPendingSection] = useState<string | null>(null)
   const [pendingNavigation, setPendingNavigation] = useState<(() => void) | null>(null)
-
-  // Update language form when browser language changes
-  useEffect(() => {
-    const formData = {
-      language: browserLanguage || 'EN'
-    }
-    setLanguageForm(formData)
-    setOriginalLanguageForm(formData)
-  }, [browserLanguage])
 
   // Check for changes whenever form data changes
   useEffect(() => {

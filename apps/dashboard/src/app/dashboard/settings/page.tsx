@@ -29,22 +29,44 @@ import { useImageVersion } from "@/hooks/useImageVersion";
 import { IMAGE_VERSION_CONSTANTS } from "@/constants/imageVersion";
 import { revokePreviewUrl, clearFileInput } from "@/utils/fileValidation";
 import { AvatarUploadSection } from "@/components/profile";
+import { Copy } from "lucide-react";
+import { useBrowserLanguageState } from "@/app/hooks/contexts/useBrowserLanguage";
 
 export default function SettingsPage() {
   const { t } = useTranslation("TOOL_SETTINGS");
   const { t: tp } = useTranslation("PROFILE_SETTINGS");
   const { loading, user, refetch: refetchUser } = useUserContext();
+  const { browserLanguage } = useBrowserLanguageState();
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  
+  const maturoscopeUrl = React.useMemo(() => {
+    if (loading || !user) {
+      return "";
+    }
+    const endUserUrl = process.env.NEXT_PUBLIC_END_USER_URL;
+    if (!endUserUrl) {
+      console.warn("NEXT_PUBLIC_END_USER_URL is not configured");
+      return "";
+    }
+    if (!user?.organization?.key) {
+      console.warn("Organization key is not available", user?.organization);
+      return "";
+    }
+    // Use only organization language from DB, not browser language
+    const language = user?.organization?.language?.toLowerCase() || "en";
+    const url = `${endUserUrl}/${language}?key=${user.organization.key}`;
+    return url;
+  }, [loading, user, user?.organization?.key, user?.organization?.language]);
+  
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [showRemoveAvatarDialog, setShowRemoveAvatarDialog] = useState(false);
-  const [avatarToRemove, setAvatarToRemove] = useState(false); // Flag to indicate avatar should be removed
-  
-  // Toast states
+  const [avatarToRemove, setAvatarToRemove] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [avatarError, setAvatarError] = useState<string>('');
+  const [showCopyMessage, setShowCopyMessage] = useState(false);
 
   // Use the custom hook for state management
   const settingsState = useToolSettingsState();
@@ -91,18 +113,11 @@ export default function SettingsPage() {
     settingsState.languageForm.language !== settingsState.originalLanguageForm.language;
 
   // Intercept navigation when there are unsaved changes
+  // Removed beforeunload alert - user requested to disable system alert
   useEffect(() => {
     const currentHasChanges = settingsState.activeSection === 'profile' 
       ? hasProfileChanges 
       : hasCustomizationChanges;
-
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (currentHasChanges) {
-        e.preventDefault();
-        e.returnValue = '';
-        return '';
-      }
-    };
 
     const handleClick = (e: MouseEvent) => {
       if (currentHasChanges) {
@@ -127,12 +142,10 @@ export default function SettingsPage() {
     };
 
     if (currentHasChanges) {
-      window.addEventListener('beforeunload', handleBeforeUnload);
       document.addEventListener('click', handleClick, true);
     }
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
       document.removeEventListener('click', handleClick, true);
     };
   }, [settingsState.activeSection, hasProfileChanges, hasCustomizationChanges, settingsState]);
@@ -302,6 +315,50 @@ export default function SettingsPage() {
                   disabled
                   className="bg-muted"
                 />
+              </div>
+
+              {/* Maturoscope Link */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">
+                  {tp("MATUROSCOPE_LINK.LABEL")}
+                </label>
+                <div className="relative">
+                  <Input
+                    type="text"
+                    value={maturoscopeUrl || ""}
+                    disabled
+                    className="bg-muted pr-10"
+                  />
+                  {showCopyMessage ? (
+                    <div className="absolute right-0 top-0 h-full flex items-center px-3">
+                      <span className="text-green-600 text-sm font-medium">
+                        {tp("MATUROSCOPE_LINK.COPIED_TO_CLIPBOARD")}
+                      </span>
+                    </div>
+                  ) : (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={async () => {
+                        if (!maturoscopeUrl) {
+                          return;
+                        }
+                        try {
+                          await navigator.clipboard.writeText(maturoscopeUrl);
+                          setShowCopyMessage(true);
+                          setTimeout(() => setShowCopyMessage(false), 2000);
+                        } catch (err) {
+                          console.error("Failed to copy:", err);
+                        }
+                      }}
+                      disabled={!maturoscopeUrl || loading}
+                      className="absolute right-0 top-0 h-full px-3 hover:bg-gray-100 hover:shadow-sm transition-all"
+                    >
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                  )}
+                </div>
               </div>
 
               {/* Avatar */}

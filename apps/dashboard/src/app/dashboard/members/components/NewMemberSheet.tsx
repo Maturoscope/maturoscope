@@ -216,6 +216,15 @@ export function NewMemberSheet({
                     confirmEmail: value,
                   }));
                 }}
+                onPaste={(e) => {
+                  e.preventDefault();
+                }}
+                onCopy={(e) => {
+                  e.preventDefault();
+                }}
+                onCut={(e) => {
+                  e.preventDefault();
+                }}
                 onFocus={() => {
                   setFormErrors((prev) => ({ ...prev, confirmEmail: "" }));
                 }}

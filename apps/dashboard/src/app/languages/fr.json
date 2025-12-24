@@ -394,6 +394,11 @@
       "LABEL": "Email",
       "VALUE": "nobatek@gmail.com"
     },
+    "MATUROSCOPE_LINK": {
+      "LABEL": "Lien Maturoscope",
+      "COPY_BUTTON": "Copier",
+      "COPIED_TO_CLIPBOARD": "Lien copié !"
+    },
     "UPDATE_BUTTON": "Mettre à jour le profil",
     "TOASTS": {
       "SUCCESS_TITLE": "Informations du profil mises à jour",
@@ -681,6 +686,11 @@
           "REQUIRED": "*",
           "HELPER_TEXT": "Le nom ne peut pas être modifié une fois l'organisation créée."
         },
+        "CONFIRM_NAME": {
+          "LABEL": "Confirmer le nom de l'organisation",
+          "PLACEHOLDER": "Confirmer le nom de l'organisation",
+          "REQUIRED": "*"
+        },
         "EMAIL": {
           "LABEL": "E-mail",
           "PLACEHOLDER": "E-mail",
@@ -693,16 +703,17 @@
           "REQUIRED": "*"
         }
       },
-      "BUTTONS": {
-        "CREATE": "Créer l'organisation",
-        "CREATING": "Création en cours…"
-      },
       "ERRORS": {
         "FIELD_REQUIRED": "Ce champ ne peut pas être laissé vide.",
         "INVALID_EMAIL": "Entrez une adresse e-mail valide.",
         "EMAILS_DONT_MATCH": "Les e-mails ne correspondent pas.",
+        "NAMES_DONT_MATCH": "Les noms d'organisation ne correspondent pas.",
         "CREATE_FAILED": "Échec de la création de l'organisation.",
         "UNEXPECTED_ERROR": "Erreur inattendue lors de la création de l'organisation."
+      },
+      "BUTTONS": {
+        "CREATE": "Créer l'organisation",
+        "CREATING": "Création en cours…"
       }
     },
     "UNSAVED_CHANGES": {

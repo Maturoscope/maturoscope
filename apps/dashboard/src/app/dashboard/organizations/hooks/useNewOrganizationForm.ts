@@ -3,18 +3,21 @@ import { useTranslation } from "react-i18next";
 
 interface FormState {
   name: string;
+  confirmName: string;
   email: string;
   confirmEmail: string;
 }
 
 interface FormErrors {
   name: string;
+  confirmName: string;
   email: string;
   confirmEmail: string;
 }
 
 interface FormTouched {
   name: boolean;
+  confirmName: boolean;
   email: boolean;
   confirmEmail: boolean;
 }
@@ -24,18 +27,21 @@ export function useNewOrganizationForm() {
   
   const [formState, setFormState] = useState<FormState>({
     name: "",
+    confirmName: "",
     email: "",
     confirmEmail: "",
   });
 
   const [formErrors, setFormErrors] = useState<FormErrors>({
     name: "",
+    confirmName: "",
     email: "",
     confirmEmail: "",
   });
 
   const [formTouched, setFormTouched] = useState<FormTouched>({
     name: false,
+    confirmName: false,
     email: false,
     confirmEmail: false,
   });
@@ -55,6 +61,15 @@ export function useNewOrganizationForm() {
       case "name":
         if (!value.trim()) {
           error = t("NEW_ORGANIZATION.ERRORS.FIELD_REQUIRED");
+        }
+        break;
+      case "confirmName":
+        if (!value.trim()) {
+          error = t("NEW_ORGANIZATION.ERRORS.FIELD_REQUIRED");
+        } else if (
+          value.trim() !== formState.name.trim()
+        ) {
+          error = t("NEW_ORGANIZATION.ERRORS.NAMES_DONT_MATCH");
         }
         break;
       case "email":
@@ -82,6 +97,7 @@ export function useNewOrganizationForm() {
   const hasUnsavedChanges = useMemo(() => {
     return (
       formState.name.trim() !== "" ||
+      formState.confirmName.trim() !== "" ||
       formState.email.trim() !== "" ||
       formState.confirmEmail.trim() !== ""
     );
@@ -90,13 +106,18 @@ export function useNewOrganizationForm() {
   const isFormValid = useMemo(() => {
     const hasAllFields =
       formState.name.trim() !== "" &&
+      formState.confirmName.trim() !== "" &&
       formState.email.trim() !== "" &&
       formState.confirmEmail.trim() !== "";
 
     const hasNoErrors =
       !formErrors.name &&
+      !formErrors.confirmName &&
       !formErrors.email &&
       !formErrors.confirmEmail;
+
+    const namesMatch =
+      formState.name.trim() === formState.confirmName.trim();
 
     const emailsMatch =
       formState.email.trim().toLowerCase() ===
@@ -104,22 +125,25 @@ export function useNewOrganizationForm() {
 
     const emailIsValid = validateEmail(formState.email);
 
-    return hasAllFields && hasNoErrors && emailsMatch && emailIsValid;
+    return hasAllFields && hasNoErrors && namesMatch && emailsMatch && emailIsValid;
   }, [formState, formErrors]);
 
   const resetForm = () => {
     setFormState({
       name: "",
+      confirmName: "",
       email: "",
       confirmEmail: "",
     });
     setFormErrors({
       name: "",
+      confirmName: "",
       email: "",
       confirmEmail: "",
     });
     setFormTouched({
       name: false,
+      confirmName: false,
       email: false,
       confirmEmail: false,
     });

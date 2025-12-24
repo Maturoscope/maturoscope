@@ -19,7 +19,6 @@ interface InvitationData {
 
 interface PasswordValidation {
   minLength: boolean;
-  hasLetter: boolean;
   hasUppercase: boolean;
   hasNumberOrSpecial: boolean;
 }
@@ -44,7 +43,6 @@ function CompleteRegistrationForm() {
   const passwordValidation = useMemo<PasswordValidation>(() => {
     return {
       minLength: password.length >= 10,
-      hasLetter: /[a-zA-Z]/.test(password),
       hasUppercase: /[A-Z]/.test(password),
       hasNumberOrSpecial: /[0-9#?!&]/.test(password),
     };
@@ -52,7 +50,6 @@ function CompleteRegistrationForm() {
 
   const isPasswordValid = useMemo(() => {
     return passwordValidation.minLength && 
-           passwordValidation.hasLetter && 
            passwordValidation.hasUppercase &&
            passwordValidation.hasNumberOrSpecial;
   }, [passwordValidation]);
@@ -210,14 +207,6 @@ function CompleteRegistrationForm() {
               className="data-[state=checked]:bg-black data-[state=checked]:border-black"
             />
             <span className="text-sm text-foreground">{t('PASSWORD_REQUIREMENTS.MIN_LENGTH')}</span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Checkbox 
-              checked={passwordValidation.hasLetter} 
-              className="data-[state=checked]:bg-black data-[state=checked]:border-black"
-            />
-            <span className="text-sm text-foreground">{t('PASSWORD_REQUIREMENTS.ONE_LETTER')}</span>
           </div>
 
           <div className="flex items-center gap-2">
