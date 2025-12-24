@@ -30,13 +30,11 @@ import { IMAGE_VERSION_CONSTANTS } from "@/constants/imageVersion";
 import { revokePreviewUrl, clearFileInput } from "@/utils/fileValidation";
 import { AvatarUploadSection } from "@/components/profile";
 import { Copy } from "lucide-react";
-import { useBrowserLanguageState } from "@/app/hooks/contexts/useBrowserLanguage";
 
 export default function SettingsPage() {
   const { t } = useTranslation("TOOL_SETTINGS");
   const { t: tp } = useTranslation("PROFILE_SETTINGS");
   const { loading, user, refetch: refetchUser } = useUserContext();
-  const { browserLanguage } = useBrowserLanguageState();
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   
   const maturoscopeUrl = React.useMemo(() => {
@@ -56,7 +54,7 @@ export default function SettingsPage() {
     const language = user?.organization?.language?.toLowerCase() || "en";
     const url = `${endUserUrl}/${language}?key=${user.organization.key}`;
     return url;
-  }, [loading, user, user?.organization?.key, user?.organization?.language]);
+  }, [loading, user]);
   
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
