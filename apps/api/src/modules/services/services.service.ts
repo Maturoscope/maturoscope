@@ -540,7 +540,7 @@ export class ServicesService {
               language: organizationLanguage,
               reassignmentContact,
               clientData: {
-                company: contactServicesDto.company,
+                company: contactServicesDto.organization || contactServicesDto.company,
                 firstName: contactServicesDto.firstName,
                 lastName: contactServicesDto.lastName,
                 email: contactServicesDto.email,

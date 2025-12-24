@@ -52,10 +52,11 @@ export default function SettingsPage() {
       console.warn("Organization key is not available", user?.organization);
       return "";
     }
-    const language = user?.organization?.language?.toLowerCase() || browserLanguage?.toLowerCase() || "en";
+    // Use only organization language from DB, not browser language
+    const language = user?.organization?.language?.toLowerCase() || "en";
     const url = `${endUserUrl}/${language}?key=${user.organization.key}`;
     return url;
-  }, [loading, user, user?.organization?.key, user?.organization?.language, browserLanguage]);
+  }, [loading, user, user?.organization?.key, user?.organization?.language]);
   
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
@@ -112,18 +113,11 @@ export default function SettingsPage() {
     settingsState.languageForm.language !== settingsState.originalLanguageForm.language;
 
   // Intercept navigation when there are unsaved changes
+  // Removed beforeunload alert - user requested to disable system alert
   useEffect(() => {
     const currentHasChanges = settingsState.activeSection === 'profile' 
       ? hasProfileChanges 
       : hasCustomizationChanges;
-
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (currentHasChanges) {
-        e.preventDefault();
-        e.returnValue = '';
-        return '';
-      }
-    };
 
     const handleClick = (e: MouseEvent) => {
       if (currentHasChanges) {
@@ -148,12 +142,10 @@ export default function SettingsPage() {
     };
 
     if (currentHasChanges) {
-      window.addEventListener('beforeunload', handleBeforeUnload);
       document.addEventListener('click', handleClick, true);
     }
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
       document.removeEventListener('click', handleClick, true);
     };
   }, [settingsState.activeSection, hasProfileChanges, hasCustomizationChanges, settingsState]);
