@@ -12,6 +12,7 @@ import { IntegrationAuth0Module } from './modules/integration-auth0/integration-
 import { UserInvitationModule } from './modules/user-invitation/user-invitation.module';
 import { ReadinessAssessmentModule } from './modules/readiness-assessment/readiness-assessment.module';
 import { ServicesModule } from './modules/services/services.module';
+import { StatisticsModule } from './modules/statistics/statistics.module';
 import { AuthIdInterceptor } from './common/auth-module/interceptors/auth-id.interceptor';
 import * as fs from 'fs';
 import { SchemaInitService } from './common/schema-init/schema-init.service';
@@ -56,6 +57,7 @@ import { SchemaInitService } from './common/schema-init/schema-init.service';
     UserInvitationModule,
     ReadinessAssessmentModule,
     ServicesModule,
+    StatisticsModule,
   ],
   controllers: [AppController],
   providers: [

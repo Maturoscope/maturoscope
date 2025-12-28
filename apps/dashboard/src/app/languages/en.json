@@ -114,7 +114,21 @@
     "SUPER_ADMIN": "Super-Admin",
     "REPORTS": "Reports",
     "ORGANIZATIONS": "Organizations",
-    "LOG_OUT": "Log Out"
+    "LOG_OUT": "Log Out",
+    "KPIS": {
+      "ANALYSIS_COMPLETION_RATE": "Analysis completion rate",
+      "CONTACT_RATE": "Contact rate",
+      "TOTAL_ASSESSMENTS_STARTED": "Total assessments started"
+    },
+    "CHART": {
+      "TITLE": "Users quantity by scale and level",
+      "DESCRIPTION": "Showing current user distribution across levels."
+    },
+    "LOADING": "Loading...",
+    "REPORTS_FILTER": {
+      "SELECT_ORGANIZATION": "Select organization",
+      "ALL_ORGANIZATIONS": "All organizations"
+    }
   },
   "MEMBERS": {
     "PAGE_TITLE": "Members",
@@ -714,13 +728,6 @@
       "BUTTONS": {
         "CREATE": "Create organization",
         "CREATING": "Creating…"
-      },
-      "ERRORS": {
-        "FIELD_REQUIRED": "This field cannot be left blank.",
-        "INVALID_EMAIL": "Enter a valid email address.",
-        "EMAILS_DONT_MATCH": "The emails do not match.",
-        "CREATE_FAILED": "Failed to create organization.",
-        "UNEXPECTED_ERROR": "Unexpected error creating organization."
       }
     },
     "UNSAVED_CHANGES": {

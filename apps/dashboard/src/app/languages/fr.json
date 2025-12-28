@@ -114,7 +114,21 @@
     "SUPER_ADMIN": "Super-Admin",
     "REPORTS": "Rapports",
     "ORGANIZATIONS": "Organisations",
-    "LOG_OUT": "Se déconnecter"
+    "LOG_OUT": "Se déconnecter",
+    "KPIS": {
+      "ANALYSIS_COMPLETION_RATE": "Taux de complétion de l'analyse",
+      "CONTACT_RATE": "Taux de contact",
+      "TOTAL_ASSESSMENTS_STARTED": "Total d'analyses démarrées"
+    },
+    "CHART": {
+      "TITLE": "Quantité d'utilisateurs par échelle et niveau",
+      "DESCRIPTION": "Affichage de la distribution actuelle des utilisateurs par niveau."
+    },
+    "LOADING": "Chargement...",
+    "REPORTS_FILTER": {
+      "SELECT_ORGANIZATION": "Sélectionner une organisation",
+      "ALL_ORGANIZATIONS": "Toutes les organisations"
+    }
   },
   "MEMBERS": {
     "PAGE_TITLE": "Membres",

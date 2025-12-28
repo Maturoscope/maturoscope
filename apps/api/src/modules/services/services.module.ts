@@ -9,6 +9,7 @@ import { ReadinessAssessmentModule } from '../readiness-assessment/readiness-ass
 import { IntegrationAuth0Module } from '../integration-auth0/integration-auth0.module';
 import { ServiceContactMailService } from './mail.service';
 import { OrganizationsModule } from '../organizations/organizations.module';
+import { StatisticsModule } from '../statistics/statistics.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { OrganizationsModule } from '../organizations/organizations.module';
     forwardRef(() => ReadinessAssessmentModule),
     IntegrationAuth0Module,
     OrganizationsModule,
+    StatisticsModule,
   ],
   controllers: [ServicesController],
   providers: [ServicesService, ServiceContactMailService],
