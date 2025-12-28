@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/u
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Organization } from "../organizations/types/organization";
 import { formatKPINumber, formatYAxisLabel, formatTooltipValue, getYTickValues } from "@/utils/numberFormat";
+import { Info } from "lucide-react";
+import { Tooltip as UITooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
 interface DashboardStatistics {
   analysisCompletionRate: number;
@@ -42,13 +44,15 @@ interface TooltipProps {
     color: string;
   }>;
   label?: number | string;
+  t?: (key: string) => string;
 }
 
-const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
-  if (active && payload && payload.length) {
+const CustomTooltip = ({ active, payload, label, t }: TooltipProps) => {
+  if (active && payload && payload.length && t) {
+    const usersText = t('CHART.USERS');
     return (
       <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-3">
-        <p className="font-semibold text-gray-900 mb-2">{`Level ${label}`}</p>
+        <p className="font-semibold text-gray-900 mb-2">{`${t('CHART.TOOLTIP_LEVEL')} ${label}`}</p>
         {payload.map((entry, index: number) => (
           <div key={index} className="flex items-center gap-2 mb-1">
             <div 
@@ -57,7 +61,7 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
             />
             <span className="text-sm text-gray-600">{entry.name}:</span>
             <span className="text-sm font-semibold text-gray-900">
-              {formatTooltipValue(entry.value)}
+              {formatTooltipValue(entry.value, usersText)}
             </span>
           </div>
         ))}
@@ -257,16 +261,40 @@ export default function ReportsPage() {
                 </div>
               </div>
               <div className="bg-white rounded-lg border border-gray-200 p-6 max-h-[150px]">
-                <div className="text-sm font-medium text-gray-600 mb-2">
-                  {t('KPIS.ANALYSIS_COMPLETION_RATE')}
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="text-sm font-medium text-gray-600">
+                    {t('KPIS.ANALYSIS_COMPLETION_RATE')}
+                  </div>
+                  <UITooltip>
+                    <TooltipTrigger asChild>
+                      <button type="button" className="flex items-center">
+                        <Info className="h-4 w-4" style={{ color: '#0A0A0A' }} />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="bg-black text-white whitespace-normal max-w-md text-center">
+                      {t('KPIS.ANALYSIS_COMPLETION_RATE_TOOLTIP')}
+                    </TooltipContent>
+                  </UITooltip>
                 </div>
                 <div className="text-4xl font-bold text-gray-900">
                   {statistics.analysisCompletionRate}%
                 </div>
               </div>
               <div className="bg-white rounded-lg border border-gray-200 p-6 max-h-[150px]">
-                <div className="text-sm font-medium text-gray-600 mb-2">
-                  {t('KPIS.CONTACT_RATE')}
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="text-sm font-medium text-gray-600">
+                    {t('KPIS.CONTACT_RATE')}
+                  </div>
+                  <UITooltip>
+                    <TooltipTrigger asChild>
+                      <button type="button" className="flex items-center">
+                        <Info className="h-4 w-4" style={{ color: '#0A0A0A' }} />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="bg-black text-white whitespace-normal max-w-md text-center">
+                      {t('KPIS.CONTACT_RATE_TOOLTIP')}
+                    </TooltipContent>
+                  </UITooltip>
                 </div>
                 <div className="text-4xl font-bold text-gray-900">
                   {statistics.contactRate}%
@@ -292,19 +320,19 @@ export default function ReportsPage() {
                     type="number"
                     domain={[0, 9]}
                     ticks={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}
-                    label={{ value: 'Levels', position: 'insideBottom', offset: -5 }}
+                    label={{ value: t('CHART.X_AXIS_LABEL'), position: 'insideBottom', offset: -5 }}
                   />
                   <YAxis 
                     type="number"
                     domain={[0, 'dataMax']}
                     ticks={yTickValues}
                     tickFormatter={formatYAxisLabel}
-                    label={{ value: 'Users quantity', angle: -90, position: 'insideLeft' }}
+                    label={{ value: t('CHART.Y_AXIS_LABEL'), angle: -90, position: 'insideLeft' }}
                     width={80}
                     tick={{ fill: '#666', fontSize: 12 }}
                     allowDecimals={false}
                   />
-                  <Tooltip content={<CustomTooltip />} />
+                  <Tooltip content={<CustomTooltip t={t} />} />
                   <Legend height={2}/>
                   <Line 
                     type="monotone" 

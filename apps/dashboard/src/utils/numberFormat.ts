@@ -35,14 +35,15 @@ export const formatYAxisLabel = (value: number): string => {
 };
 
 /**
- * Formats a number for tooltip display with "users" suffix
+ * Formats a number for tooltip display with a custom suffix
  * @param value - The number to format
+ * @param suffix - The suffix to append (e.g., "users", "utilisateurs")
  * @returns Formatted string (e.g., "123 users", "1.3K users", "5K users")
  */
-export const formatTooltipValue = (value: number): string => {
-  if (value < 1000) return `${value} users`;
-  if (value < 10000) return `${(value / 1000).toFixed(1)}K users`;
-  return `${(value / 1000).toFixed(1)}K users`;
+export const formatTooltipValue = (value: number, suffix: string = "users"): string => {
+  if (value < 1000) return `${value} ${suffix}`;
+  if (value < 10000) return `${(value / 1000).toFixed(1)}K ${suffix}`;
+  return `${(value / 1000).toFixed(1)}K ${suffix}`;
 };
 
 /**

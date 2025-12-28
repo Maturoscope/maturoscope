@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Query } from '@nestjs/common';
+import { Controller, Get, Post, Req, Query } from '@nestjs/common';
 import { StatisticsService } from './statistics.service';
 import { Auth } from '../../common/decorators/auth.decorator';
 import { Request } from 'express';
@@ -48,8 +48,8 @@ export class StatisticsController {
         : 0;
 
     const contactRate =
-      statistics.startedAssessments > 0
-        ? Math.round((statistics.contactedServices / statistics.startedAssessments) * 100)
+      statistics.completedAssessments > 0
+        ? Math.round((statistics.contactedServices / statistics.completedAssessments) * 100)
         : 0;
 
     // Prepare chart data - counts by level for each category (non-cumulative)
@@ -135,8 +135,8 @@ export class StatisticsController {
         : 0;
 
     const contactRate =
-      statistics.startedAssessments > 0
-        ? Math.round((statistics.contactedServices / statistics.startedAssessments) * 100)
+      statistics.completedAssessments > 0
+        ? Math.round((statistics.contactedServices / statistics.completedAssessments) * 100)
         : 0;
 
     // Prepare chart data - counts by level for each category (non-cumulative)
@@ -172,6 +172,36 @@ export class StatisticsController {
         usersByCategoryAndLevel: statistics.usersByCategoryAndLevel,
       },
     };
+  }
+
+  /**
+   * POST /statistics/track-started?organizationKey=synopp
+   * Track when a user starts an assessment
+   * PUBLIC endpoint - No authentication required
+   */
+  @Post('track-started')
+  async trackStartedAssessment(@Query('organizationKey') organizationKey: string) {
+    if (!organizationKey) {
+      throw new ForbiddenException('organizationKey query parameter is required');
+    }
+
+    await this.statisticsService.incrementStartedAssessments(organizationKey);
+    return { success: true, message: 'Started assessment tracked successfully' };
+  }
+
+  /**
+   * POST /statistics/track-completed?organizationKey=synopp
+   * Track when a user completes an assessment
+   * PUBLIC endpoint - No authentication required
+   */
+  @Post('track-completed')
+  async trackCompletedAssessment(@Query('organizationKey') organizationKey: string) {
+    if (!organizationKey) {
+      throw new ForbiddenException('organizationKey query parameter is required');
+    }
+
+    await this.statisticsService.incrementCompletedAssessments(organizationKey);
+    return { success: true, message: 'Completed assessment tracked successfully' };
   }
 }
 

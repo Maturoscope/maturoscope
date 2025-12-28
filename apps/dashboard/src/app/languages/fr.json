@@ -118,11 +118,17 @@
     "KPIS": {
       "ANALYSIS_COMPLETION_RATE": "Taux de complétion de l'analyse",
       "CONTACT_RATE": "Taux de contact",
-      "TOTAL_ASSESSMENTS_STARTED": "Total d'analyses démarrées"
+      "TOTAL_ASSESSMENTS_STARTED": "Total d'analyses démarrées",
+      "ANALYSIS_COMPLETION_RATE_TOOLTIP": "Ce taux est calculé sur la base des analyses complétées.",
+      "CONTACT_RATE_TOOLTIP": "Ce taux est calculé sur la base des utilisateurs qui ont contacté un expert après avoir terminé leur analyse."
     },
     "CHART": {
       "TITLE": "Quantité d'utilisateurs par échelle et niveau",
-      "DESCRIPTION": "Affichage de la distribution actuelle des utilisateurs par niveau."
+      "DESCRIPTION": "Affichage de la distribution actuelle des utilisateurs par niveau.",
+      "X_AXIS_LABEL": "Niveaux",
+      "Y_AXIS_LABEL": "Quantité d'utilisateurs",
+      "TOOLTIP_LEVEL": "Niveau",
+      "USERS": "utilisateurs"
     },
     "LOADING": "Chargement...",
     "REPORTS_FILTER": {

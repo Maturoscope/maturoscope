@@ -118,11 +118,17 @@
     "KPIS": {
       "ANALYSIS_COMPLETION_RATE": "Analysis completion rate",
       "CONTACT_RATE": "Contact rate",
-      "TOTAL_ASSESSMENTS_STARTED": "Total assessments started"
+      "TOTAL_ASSESSMENTS_STARTED": "Total assessments started",
+      "ANALYSIS_COMPLETION_RATE_TOOLTIP": "This rate is calculated based on completed analyses.",
+      "CONTACT_RATE_TOOLTIP": "This rate is calculated based on users who contacted an expert after completing their analysis."
     },
     "CHART": {
       "TITLE": "Users quantity by scale and level",
-      "DESCRIPTION": "Showing current user distribution across levels."
+      "DESCRIPTION": "Showing current user distribution across levels.",
+      "X_AXIS_LABEL": "Levels",
+      "Y_AXIS_LABEL": "Users quantity",
+      "TOOLTIP_LEVEL": "Level",
+      "USERS": "users"
     },
     "LOADING": "Loading...",
     "REPORTS_FILTER": {
