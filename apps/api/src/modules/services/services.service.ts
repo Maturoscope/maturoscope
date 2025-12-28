@@ -21,6 +21,7 @@ import { ReadinessAssessmentService } from '../readiness-assessment/readiness-as
 import { ScaleType, RecommendedServiceDto as ReadinessRecommendedServiceDto, I18nText } from '../readiness-assessment/dto/readiness-assessment.dto';
 import { ServiceContactMailService } from './mail.service';
 import { OrganizationsService } from '../organizations/organizations.service';
+import { StatisticsService } from '../statistics/statistics.service';
 
 @Injectable()
 export class ServicesService {
@@ -35,6 +36,7 @@ export class ServicesService {
     readinessAssessmentService: ReadinessAssessmentService,
     private readonly serviceContactMailService: ServiceContactMailService,
     private readonly organizationsService: OrganizationsService,
+    private readonly statisticsService: StatisticsService,
   ) {
     this.readinessAssessmentService = readinessAssessmentService;
   }
@@ -562,6 +564,12 @@ export class ServicesService {
     }
 
     await Promise.all(emailPromises);
+
+    // Track service contact
+    this.statisticsService.incrementContactedServices(organizationKey).catch((error) => {
+      // Log error but don't fail the request
+      console.error('Failed to track service contact:', error);
+    });
 
     return {
       message: 'Emails sent successfully',
