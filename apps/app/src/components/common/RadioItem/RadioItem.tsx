@@ -73,7 +73,7 @@ const RadioItem = ({
       {isChecked && (
         <div className="w-[calc(100%-56px)] p-3 pt-0 flex flex-col items-end gap-2 relative z-20">
           <textarea
-            maxLength={160}
+            maxLength={280}
             onChange={handleCommentChange}
             value={commentField.value || ""}
             placeholder={commentPlaceholder}
@@ -81,7 +81,7 @@ const RadioItem = ({
             className={`bg-white w-full h-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none ${disabled ? "cursor-not-allowed" : ""}`}
           />
           <span className="text-xs text-muted-foreground">
-            <span className="text-foreground">{charCount}</span>/160
+            <span className="text-foreground">{charCount}</span>/280
           </span>
         </div>
       )}
