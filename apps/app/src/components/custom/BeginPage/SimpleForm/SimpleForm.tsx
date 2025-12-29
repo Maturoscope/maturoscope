@@ -28,6 +28,10 @@ const SimpleForm = ({
   const router = useRouter()
   const { lang } = useParams<{ lang: Locale }>()
 
+  const handleBackButtonClick = () => {
+    router.push(`/${lang}/`)
+  }
+
   const handleNextButtonClick = () => {
     localStorage.setItem("projectName", projectName)
     router.push(`/${lang}/form`)
@@ -50,7 +54,7 @@ const SimpleForm = ({
       </div>
 
       <div className="w-full mb-4 lg:mb-8 flex items-center justify-between gap-3">
-        <Button variant="outline" size="lg" className="w-max">
+        <Button variant="outline" size="lg" className="w-max" onClick={handleBackButtonClick}>
           <Image
             src="/icons/form/arrow-prev.svg"
             alt="Arrow Prev"
