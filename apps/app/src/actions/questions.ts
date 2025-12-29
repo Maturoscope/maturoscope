@@ -2,6 +2,7 @@
 
 import { StageId, QuestionData } from "@/components/custom/FormPage/Form/Form"
 import { Locale } from "@/dictionaries/dictionaries"
+import { getOrganizationKeyFromCookies } from "./organization"
 
 interface LocalizedText {
   en: string
@@ -117,7 +118,8 @@ const transformQuestionsToStages = (
 }
 
 export const getQuestions = async (lang: Locale) => {
-  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/readiness-assessment/questions`
+  const organizationKey = await getOrganizationKeyFromCookies()
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/readiness-assessment/questions${organizationKey ? `?organizationKey=${organizationKey}` : ""}`
   const response = await fetch(endpoint)
 
   if (!response.ok) {
@@ -143,7 +145,8 @@ export const getRisks = async ({
   levels,
   phases,
 }: GetRisksParams): Promise<RisksRecord> => {
-  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/readiness-assessment/analyze-risk`
+  const organizationKey = await getOrganizationKeyFromCookies()
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/readiness-assessment/analyze-risk${organizationKey ? `?organizationKey=${organizationKey}` : ""}`
 
   const scales: ScaleInput[] = [
     { scale: "TRL", readinessLevel: levels.trl, phase: phases.trl },

@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button"
 import Input from "@/components/common/Input/Input"
 // Context
 import { useContactExpertContext } from "@/context/ContactExpertContext"
+// Actions
+import { requestContact } from "@/actions/organization"
 // Types
 import { ModalStep } from "../ContactExpertModal"
 import { Locale } from "@/dictionaries/dictionaries"
@@ -172,7 +174,7 @@ const ReachOut = ({
   setIsOpen,
   setCurrentStep,
 }: ReachOutProps & ExtraProps) => {
-  const { setContactInformation } = useContactExpertContext()
+  const { setContactInformation, selectedGaps } = useContactExpertContext()
   const { control, handleSubmit, formState } = useForm<ContactFormData>({
     mode: "onChange",
     defaultValues: {
@@ -190,8 +192,24 @@ const ReachOut = ({
 
   const clarification = lang === "en" ? EN_CLARIFICATION : FR_CLARIFICATION
 
-  const onSubmit = (data: ContactFormData) => {
+  const onSubmit = async (data: ContactFormData) => {
     setContactInformation(data)
+    const projectName = localStorage.getItem("projectName")
+    console.log("🔍 Project name: ", projectName)
+
+    const result = await requestContact({
+      gaps: selectedGaps,
+      contactInformation: data,
+      projectName: projectName as string,
+    })
+
+    console.log("🔍 Request contact result: ", result)
+
+    if (result.success) {
+      setCurrentStep("successStatus")
+    } else {
+      setCurrentStep("failedStatus")
+    }
   }
 
   // Check if required fields are filled
@@ -228,7 +246,7 @@ const ReachOut = ({
 
             <div className="flex items-center gap-1.5">
               <div className="bg-border w-px h-3.5" />
-              <div className="cursor-pointer size-8 flex items-center justify-center">
+              <div className="cursor-pointer size-8 flex items-center justify-center hover:bg-neutral-100 rounded-sm transition-all duration-200" onClick={() => setIsOpen(false)}>
                 <Image
                   src="/icons/common/cross.svg"
                   alt="Close"

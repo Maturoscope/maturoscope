@@ -18,6 +18,7 @@ export interface CommonModalStepProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   setCurrentStep: (step: ModalStep) => void
+  currentStep?: ModalStep
 }
 
 interface ContactExpertModalProps {
@@ -53,6 +54,7 @@ const ContactExpertModal = ({ dictionary }: ContactExpertModalProps) => {
       isOpen={isModalOpen}
       setIsOpen={closeModal}
       setCurrentStep={setCurrentStep}
+      currentStep={currentStep}
       {...currentStepProps}
     />
   )

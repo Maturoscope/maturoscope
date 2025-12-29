@@ -23,7 +23,8 @@ const VALID_ACCENT_THEMES: AccentTheme[] = [
 const getOrganizationByKey = async (key: string | undefined) => {
   if (!key) return false
 
-  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/organizations/${key}`
+  const organizationKey = await getOrganizationKeyFromCookies()
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/organizations/${key}${organizationKey ? `?organizationKey=${organizationKey}` : ""}`
   const response = await fetch(endpoint)
   const organization = await response.json()
 
@@ -132,6 +133,86 @@ export const submitAssessment = async ({
     return { success: true, data }
   } catch (error) {
     console.error("Error submitting assessment:", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    }
+  }
+}
+
+export interface SelectedGap {
+  questionId: string
+  level: number
+  recommendedServices: string[]
+}
+
+export interface ContactInformation {
+  organization?: string
+  country?: string
+  firstName?: string
+  lastName?: string
+  email?: string
+  phoneNumber?: string
+  additionalInformation?: string
+}
+
+interface RequestContactParams {
+  gaps: SelectedGap[]
+  contactInformation: ContactInformation
+  projectName: string
+}
+
+interface RequestContactResult {
+  success: boolean
+  error?: string
+}
+
+export const requestContact = async ({
+  gaps,
+  contactInformation,
+  projectName,
+}: RequestContactParams): Promise<RequestContactResult> => {
+  const organizationKey = await getOrganizationKeyFromCookies()
+
+  if (!organizationKey) {
+    return { success: false, error: "Organization key not found" }
+  }
+
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/services/contact?organizationKey=${organizationKey}`
+
+  console.log("🔍 Request contact endpoint: ", endpoint)
+
+  const body = {
+    gaps,
+    company: contactInformation.organization,
+    firstName: contactInformation.firstName,
+    lastName: contactInformation.lastName,
+    email: contactInformation.email,
+    phoneNumber: contactInformation.phoneNumber,
+    additionalInformation: contactInformation.additionalInformation,
+    projectName,
+  }
+
+  console.log("🔍 Request contact body: ", body)
+
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+
+    console.log("🔍 Request contact response: ", response)
+
+    if (!response.ok) {
+      return { success: false, error: `API error: ${response.statusText}` }
+    }
+
+    return { success: true }
+  } catch (error) {
+    console.error("Error requesting contact:", error)
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",

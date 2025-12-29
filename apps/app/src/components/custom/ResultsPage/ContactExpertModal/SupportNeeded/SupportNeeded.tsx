@@ -9,6 +9,8 @@ import Modal from "@/components/common/Modal/Modal"
 import { Button } from "@/components/ui/button"
 // Context
 import { useContactExpertContext } from "@/context/ContactExpertContext"
+// Utils
+import { cn } from "@/lib/utils"
 // Types
 import { Gap } from "@/actions/organization"
 import { StageId } from "@/components/custom/FormPage/Form/Form"
@@ -128,7 +130,7 @@ const SupportNeeded = ({
 
           <div className="flex items-center gap-1.5">
             <div className="bg-border w-px h-3.5" />
-            <div className="cursor-pointer size-8 flex items-center justify-center">
+            <div className="cursor-pointer size-8 flex items-center justify-center hover:bg-neutral-100 rounded-sm transition-all duration-200" onClick={() => setIsOpen(false)}>
               <Image
                 src="/icons/common/cross.svg"
                 alt="Close"
@@ -161,17 +163,19 @@ const SupportNeeded = ({
               <div className="flex flex-col gap-3 pt-3">
                 {gaps.map((gap) => {
                   const isChecked = isGapSelected(gap.questionId)
+                  const { hasServices } = gap
 
                   return (
                     <label
                       key={gap.questionId}
-                      className="flex items-start gap-2 cursor-pointer"
+                      className={cn("flex items-start gap-2 cursor-pointer", !hasServices && "pointer-events-none opacity-50")}
                     >
                       <input
                         type="checkbox"
                         checked={isChecked}
                         onChange={(e) => handleGapToggle(gap, e.target.checked)}
                         className="peer appearance-none absolute outline-none"
+                        disabled={!hasServices}
                       />
                       <Image
                         src="/icons/common/checkbox-unchecked.svg"
