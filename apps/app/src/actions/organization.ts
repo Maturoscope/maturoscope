@@ -1,7 +1,9 @@
 "use server"
 
 import { cookies } from "next/headers"
-import { DEFAULT_ACCENT_THEME } from "@/context/ThemeContext"
+import { DEFAULT_ACCENT_THEME, DEFAULT_FONT_THEME } from "@/context/ThemeContext"
+
+export type FontTheme = "geist" | "open-sans" | "inter" | "poppins"
 
 export type AccentTheme =
   | "default"
@@ -11,43 +13,36 @@ export type AccentTheme =
   | "pink"
   | "violet"
 
-const VALID_ACCENT_THEMES: AccentTheme[] = [
-  "default",
-  "orange",
-  "blue",
-  "green",
-  "pink",
-  "violet",
-]
-
 const getOrganizationByKey = async (key: string | undefined) => {
   if (!key) return false
 
   const organizationKey = await getOrganizationKeyFromCookies()
-  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/organizations/${key}${organizationKey ? `?organizationKey=${organizationKey}` : ""}`
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/organizations/key/${key}${organizationKey ? `?organizationKey=${organizationKey}` : ""}`
   const response = await fetch(endpoint)
   const organization = await response.json()
 
   return organization
 }
 
-export const getOrganizationAccentColor = async (
+export const getOrganizationTheme = async (
   key: string | null | undefined
-): Promise<AccentTheme> => {
-  if (!key) return "default"
+): Promise<{ accentColor: AccentTheme, font: FontTheme }> => {
+  if (!key) return { accentColor: DEFAULT_ACCENT_THEME, font: DEFAULT_FONT_THEME }
 
   try {
     const organization = await getOrganizationByKey(key)
-    const accentColor = organization?.accentColor || organization?.theme || null
+    const { theme: accentColor, font } = organization
 
-    if (accentColor && VALID_ACCENT_THEMES.includes(accentColor)) {
-      return accentColor as AccentTheme
+    return {
+      accentColor: accentColor || DEFAULT_ACCENT_THEME,
+      font: font || DEFAULT_FONT_THEME,
     }
-
-    return DEFAULT_ACCENT_THEME
   } catch (error) {
-    console.error("Error fetching accent color:", error)
-    return DEFAULT_ACCENT_THEME
+    console.error("Error fetching theme:", error)
+    return {
+      accentColor: DEFAULT_ACCENT_THEME,
+      font: DEFAULT_FONT_THEME,
+    }
   }
 }
 
