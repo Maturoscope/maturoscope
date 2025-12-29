@@ -11,6 +11,7 @@ import UnlockNextLevel from "@/components/custom/ResultsPage/UnlockNextLevel/Unl
 import DetailedReport from "@/components/custom/ResultsPage/DetailedReport/DetailedReport"
 import CTABanner from "@/components/custom/ResultsPage/CTABanner/CTABanner"
 import PrivacyPolicy from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
+import TrackCompletedAssessment from "@/components/common/TrackCompletedAssessment/TrackCompletedAssessment"
 
 type ResultsPageProps = {
   params: Promise<{ lang: Locale }>
@@ -19,6 +20,7 @@ type ResultsPageProps = {
 const ResultsPage = async ({ params }: ResultsPageProps) => {
   const { lang } = await params
   const dictionary = await getDictionary(lang)
+
   const {
     header: { stringConnector },
     homepage: { policy },
@@ -27,6 +29,7 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
 
   return (
     <main className="w-full h-full">
+      <TrackCompletedAssessment />
       <Header stringConnector={stringConnector} showBackButton />
       <ResultsPageWrapper dictionary={dictionary}>
         <ResultsTopBar {...topBar} lang={lang} />
