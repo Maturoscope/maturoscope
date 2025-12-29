@@ -1,6 +1,18 @@
-import { getOrganizationKeyFromCookies } from "./organization"
+"use server"
+
+// Packages
+import { cookies } from "next/headers"
+// Actions
+import { getOrganizationKeyFromCookies } from "@/actions/organization"
 
 const trackStartedAssessment = async () => {
+  const cookieStore = await cookies()
+  const startedAssessment = cookieStore.get("started-assessment")?.value
+
+  if (startedAssessment) {
+    return { success: false, error: "Assessment already started" }
+  }
+
   const organizationKey = await getOrganizationKeyFromCookies()
 
   if (!organizationKey) {
@@ -12,10 +24,19 @@ const trackStartedAssessment = async () => {
     method: "POST",
   })
 
+  cookieStore.set("started-assessment", "true")
+
   return response.json()
 }
 
 const trackCompletedAssessment = async () => {
+  const cookieStore = await cookies()
+  const completedAssessment = cookieStore.get("completed-assessment")?.value
+
+  if (completedAssessment) {
+    return { success: false, error: "Assessment already completed" }
+  }
+
   const organizationKey = await getOrganizationKeyFromCookies()
 
   if (!organizationKey) {
@@ -26,7 +47,16 @@ const trackCompletedAssessment = async () => {
   const response = await fetch(endpoint, {
     method: "POST",
   })
+
+  cookieStore.set("completed-assessment", "true")
+
   return response.json()
 }
 
-export { trackStartedAssessment, trackCompletedAssessment }
+const clearAssessmentTracking = async () => {
+  const cookieStore = await cookies()
+  cookieStore.delete("started-assessment")
+  cookieStore.delete("completed-assessment")
+}
+
+export { trackStartedAssessment, trackCompletedAssessment, clearAssessmentTracking }

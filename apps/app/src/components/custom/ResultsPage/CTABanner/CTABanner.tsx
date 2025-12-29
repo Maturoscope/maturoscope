@@ -14,6 +14,8 @@ import { cn } from "@/lib/utils"
 import { ResetIcon } from "@/components/icons"
 // Types
 import { ResetFormModalProps } from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
+// Actions
+import { clearAssessmentTracking } from "@/actions/tracking"
 
 export interface CTABannerProps {
   title: string
@@ -41,7 +43,8 @@ const CTABanner = ({
   const { openModal } = useContactExpertContext()
   const router = useRouter()
 
-  const handleResetForm = () => {
+  const handleResetForm = async () => {
+    await clearAssessmentTracking()
     localStorage.removeItem("form")
     localStorage.removeItem("gaps")
     localStorage.removeItem("level")
