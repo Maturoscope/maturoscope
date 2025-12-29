@@ -1,7 +1,6 @@
 "use client"
 
-import { useParams } from "next/navigation"
-import Link from "next/link"
+import { useParams, useRouter } from "next/navigation"
 // Components
 import { Button } from "@/components/ui/button"
 import {
@@ -12,6 +11,8 @@ import {
 } from "@/components/icons"
 // Dictionaries
 import { Locale } from "@/dictionaries/dictionaries"
+// Actions
+import { trackStartedAssessment } from "@/actions/tracking"
 
 export interface InformationProps {
   noAccount: string
@@ -28,6 +29,12 @@ const Information = ({
 }: InformationProps) => {
   const { lang } = useParams<{ lang: Locale }>()
   const nextPage = `/${lang}/begin`
+  const router = useRouter()
+
+  const handleLetsBeginClick = async () => {
+    await trackStartedAssessment()
+    router.push(nextPage)
+  }
 
   return (
     <>
@@ -47,17 +54,16 @@ const Information = ({
       </div>
 
       <div className="w-full flex items-center justify-start gap-5 mt-7">
-        <Link href={nextPage} className="w-max h-9">
-          <Button
-            variant="default"
-            size="lg"
-            className="w-max px-4 rounded-md flex items-center justify-center gap-2 h-full"
-            accent
-          >
-            {buttonLabel}
-            <ArrowNextIcon className="w-4 h-4" />
-          </Button>
-        </Link>
+        <Button
+          variant="default"
+          size="lg"
+          className="w-max h-9 px-4 rounded-md flex items-center justify-center gap-2"
+          accent
+          onClick={handleLetsBeginClick}
+        >
+          {buttonLabel}
+          <ArrowNextIcon className="w-4 h-4" />
+        </Button>
 
         <div className="flex items-center justify-start gap-1.5">
           <ClockIcon className="w-5 h-5 text-muted-foreground" />

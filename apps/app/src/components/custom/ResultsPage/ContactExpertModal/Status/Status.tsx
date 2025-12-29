@@ -1,31 +1,31 @@
 "use client"
 
 // Packages
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback } from "react"
+import { useParams } from "next/navigation"
 // Components
+import Modal from "@/components/common/Modal/Modal"
 import { Button } from "@/components/ui/button"
-// Context
-import { useContactExpertContext } from "@/context/ContactExpertContext"
-// Utils
-import { cn } from "@/lib/utils"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
 import { StageId, QuestionData } from "@/components/custom/FormPage/Form/Form"
 import { DevelopmentPhase, Gap, LocalizedText } from "@/actions/organization"
+import { ModalStep } from "../ContactExpertModal"
 // Actions
 import { getQuestions, getRisks, RiskData } from "@/actions/questions"
 import { generateReport, ReportPayload } from "@/actions/report"
 
-export interface ResultsTopBarProps {
+export interface StatusProps {
   title: string
-  subtitle: string
-  downloadButtonLabel: string
-  talkButtonLabel: string
-  lang: Locale
+  description: string
+  primaryButtonLabel: string
+  secondaryButtonLabel: string
 }
 
 interface ExtraProps {
-  className?: string
+  isOpen: boolean
+  setIsOpen: (isOpen: boolean) => void
+  currentStep?: ModalStep
 }
 
 interface FormStorage {
@@ -125,33 +125,18 @@ const buildScalePayload = (
   }
 }
 
-const ResultsTopBar = ({
+const Status = ({
+  isOpen,
+  setIsOpen,
   title,
-  subtitle,
-  downloadButtonLabel,
-  talkButtonLabel,
-  lang,
-  className,
-}: ResultsTopBarProps & ExtraProps) => {
+  description,
+  primaryButtonLabel,
+  secondaryButtonLabel,
+  currentStep,
+}: StatusProps & ExtraProps) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [completedOnDate, setCompletedOnDate] = useState<string>("")
-  const { openModal } = useContactExpertContext()
-
-  const handleTalkButtonClick = () => {
-    openModal()
-  }
-
-  useEffect(() => {
-    const storedCompletedOn = localStorage.getItem("completedOn")
-    if (storedCompletedOn) {
-      const date = new Date(storedCompletedOn)
-      const formattedDate = date.toLocaleDateString(
-        lang === "fr" ? "fr-FR" : "en-US",
-        { year: "numeric", month: "long", day: "numeric" }
-      )
-      setCompletedOnDate(formattedDate)
-    }
-  }, [lang])
+  const { lang } = useParams<{ lang: Locale }>()
+  const isSuccess = currentStep === "successStatus"
 
   const handleDownloadClick = useCallback(async () => {
     setIsLoading(true)
@@ -274,37 +259,39 @@ const ResultsTopBar = ({
       console.error("Error downloading PDF:", error)
     } finally {
       setIsLoading(false)
+      setIsOpen(false)
     }
   }, [lang])
 
+  const handlePrimaryButtonClick = () => {
+    if (isSuccess) handleDownloadClick()
+    else setIsOpen(false)
+  }
+
   return (
-    <div
-      className={cn(
-        "w-full flex items-center flex-wrap gap-y-4 justify-between p-4 lg:px-6 py-4 bg-white border-b border-border",
-        className
-      )}
-    >
-      <div className="flex flex-col items-start justify-start">
-        <h1 className="text-2xl font-bold">{title}</h1>
-        <p className="text-sm text-muted-foreground">
-          {subtitle}
-          {completedOnDate}
-        </p>
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen} className="max-w-[512px]">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-1.5">
+          <h1 className="text-base font-semibold">{title}</h1>
+          <p className="text-sm text-muted-foreground">{description}</p>
+        </div>
+
+        <div className="flex justify-end w-full gap-2">
+          <Button variant="ghost" onClick={() => setIsOpen(false)}>
+            {secondaryButtonLabel}
+          </Button>
+          <Button
+            variant="default"
+            onClick={handlePrimaryButtonClick}
+            accent
+            disabled={isLoading}
+          >
+            {isLoading ? "Loading..." : primaryButtonLabel}
+          </Button>
+        </div>
       </div>
-      <div className="flex gap-2">
-        <Button
-          variant="outline"
-          onClick={handleDownloadClick}
-          disabled={isLoading}
-        >
-          {isLoading ? "Loading..." : downloadButtonLabel}
-        </Button>
-        <Button variant="default" accent onClick={handleTalkButtonClick}>
-          {talkButtonLabel}
-        </Button>
-      </div>
-    </div>
+    </Modal>
   )
 }
 
-export default ResultsTopBar
+export default Status

@@ -1,7 +1,9 @@
 "use server"
 
 import { cookies } from "next/headers"
-import { DEFAULT_ACCENT_THEME } from "@/context/ThemeContext"
+import { DEFAULT_ACCENT_THEME, DEFAULT_FONT_THEME } from "@/context/ThemeContext"
+
+export type FontTheme = "geist" | "open-sans" | "inter" | "poppins"
 
 export type AccentTheme =
   | "default"
@@ -11,42 +13,36 @@ export type AccentTheme =
   | "pink"
   | "violet"
 
-const VALID_ACCENT_THEMES: AccentTheme[] = [
-  "default",
-  "orange",
-  "blue",
-  "green",
-  "pink",
-  "violet",
-]
-
 const getOrganizationByKey = async (key: string | undefined) => {
   if (!key) return false
 
-  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/organizations/${key}`
+  const organizationKey = await getOrganizationKeyFromCookies()
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/organizations/key/${key}${organizationKey ? `?organizationKey=${organizationKey}` : ""}`
   const response = await fetch(endpoint)
   const organization = await response.json()
 
   return organization
 }
 
-export const getOrganizationAccentColor = async (
+export const getOrganizationTheme = async (
   key: string | null | undefined
-): Promise<AccentTheme> => {
-  if (!key) return "default"
+): Promise<{ accentColor: AccentTheme, font: FontTheme }> => {
+  if (!key) return { accentColor: DEFAULT_ACCENT_THEME, font: DEFAULT_FONT_THEME }
 
   try {
     const organization = await getOrganizationByKey(key)
-    const accentColor = organization?.accentColor || organization?.theme || null
+    const { theme: accentColor, font } = organization
 
-    if (accentColor && VALID_ACCENT_THEMES.includes(accentColor)) {
-      return accentColor as AccentTheme
+    return {
+      accentColor: accentColor || DEFAULT_ACCENT_THEME,
+      font: font || DEFAULT_FONT_THEME,
     }
-
-    return DEFAULT_ACCENT_THEME
   } catch (error) {
-    console.error("Error fetching accent color:", error)
-    return DEFAULT_ACCENT_THEME
+    console.error("Error fetching theme:", error)
+    return {
+      accentColor: DEFAULT_ACCENT_THEME,
+      font: DEFAULT_FONT_THEME,
+    }
   }
 }
 
@@ -132,6 +128,86 @@ export const submitAssessment = async ({
     return { success: true, data }
   } catch (error) {
     console.error("Error submitting assessment:", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    }
+  }
+}
+
+export interface SelectedGap {
+  questionId: string
+  level: number
+  recommendedServices: string[]
+}
+
+export interface ContactInformation {
+  organization?: string
+  country?: string
+  firstName?: string
+  lastName?: string
+  email?: string
+  phoneNumber?: string
+  additionalInformation?: string
+}
+
+interface RequestContactParams {
+  gaps: SelectedGap[]
+  contactInformation: ContactInformation
+  projectName: string
+}
+
+interface RequestContactResult {
+  success: boolean
+  error?: string
+}
+
+export const requestContact = async ({
+  gaps,
+  contactInformation,
+  projectName,
+}: RequestContactParams): Promise<RequestContactResult> => {
+  const organizationKey = await getOrganizationKeyFromCookies()
+
+  if (!organizationKey) {
+    return { success: false, error: "Organization key not found" }
+  }
+
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/services/contact?organizationKey=${organizationKey}`
+
+  console.log("🔍 Request contact endpoint: ", endpoint)
+
+  const body = {
+    gaps,
+    company: contactInformation.organization,
+    firstName: contactInformation.firstName,
+    lastName: contactInformation.lastName,
+    email: contactInformation.email,
+    phoneNumber: contactInformation.phoneNumber,
+    additionalInformation: contactInformation.additionalInformation,
+    projectName,
+  }
+
+  console.log("🔍 Request contact body: ", body)
+
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+
+    console.log("🔍 Request contact response: ", response)
+
+    if (!response.ok) {
+      return { success: false, error: `API error: ${response.statusText}` }
+    }
+
+    return { success: true }
+  } catch (error) {
+    console.error("Error requesting contact:", error)
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",

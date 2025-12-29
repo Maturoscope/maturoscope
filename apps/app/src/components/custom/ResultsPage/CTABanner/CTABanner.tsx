@@ -3,15 +3,19 @@
 // Packages
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+// Components
+import { Button } from "@/components/ui/button"
+import ResetFormModal from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
+// Context
+import { useContactExpertContext } from "@/context/ContactExpertContext"
 // Utils
 import { cn } from "@/lib/utils"
 // Icons
 import { ResetIcon } from "@/components/icons"
 // Types
 import { ResetFormModalProps } from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
-// Components
-import { Button } from "@/components/ui/button"
-import ResetFormModal from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
+// Actions
+import { clearAssessmentTracking } from "@/actions/tracking"
 
 export interface CTABannerProps {
   title: string
@@ -36,9 +40,11 @@ const CTABanner = ({
   className,
 }: CTABannerProps & ExtraProps) => {
   const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
+  const { openModal } = useContactExpertContext()
   const router = useRouter()
 
-  const handleResetForm = () => {
+  const handleResetForm = async () => {
+    await clearAssessmentTracking()
     localStorage.removeItem("form")
     localStorage.removeItem("gaps")
     localStorage.removeItem("level")
@@ -48,7 +54,7 @@ const CTABanner = ({
   }
 
   const handleTalkButtonClick = () => {
-    console.log("talk button clicked")
+    openModal()
   }
 
   const handleResetButtonClick = () => {

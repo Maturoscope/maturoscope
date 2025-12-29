@@ -28,7 +28,14 @@ const SimpleForm = ({
   const router = useRouter()
   const { lang } = useParams<{ lang: Locale }>()
 
-  const handleNextButtonClick = () => router.push(`/${lang}/form`)
+  const handleBackButtonClick = () => {
+    router.push(`/${lang}/`)
+  }
+
+  const handleNextButtonClick = () => {
+    localStorage.setItem("projectName", projectName)
+    router.push(`/${lang}/form`)
+  }
 
   return (
     <div className="h-full w-full max-w-[750px] flex flex-col px-4 lg:px-0">
@@ -42,12 +49,12 @@ const SimpleForm = ({
           value={projectName}
           onChange={(e) => setProjectName(e.target.value)}
           type="text"
-          className="w-full h-9 rounded-md border border-input bg-white px-3 py-2 text-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
+          className="w-full h-9 rounded-md border border-input bg-white px-3 py-2 text-sm ring-offset-background data-placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
         />
       </div>
 
       <div className="w-full mb-4 lg:mb-8 flex items-center justify-between gap-3">
-        <Button variant="outline" size="lg" className="w-max">
+        <Button variant="outline" size="lg" className="w-max" onClick={handleBackButtonClick}>
           <Image
             src="/icons/form/arrow-prev.svg"
             alt="Arrow Prev"

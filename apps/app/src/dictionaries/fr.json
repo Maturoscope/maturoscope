@@ -155,6 +155,34 @@
         "cancelButtonLabel": "Annuler",
         "resetButtonLabel": "Réinitialiser"
       }
+    },
+    "contactExpertModal": {
+      "supportNeeded": {
+        "title": "Support nécessaire pour:",
+        "description": "Sélectionnez les lacunes spécifiques que vous aimeriez que nous vous aidions à résoudre.",
+        "primaryButtonLabel": "Continuer",
+        "completedLabel": "complété",
+        "chipLabel": "Highest Priority for Growth"
+      },
+      "reachOut": {
+        "title": "Comment pouvons-nous vous contacter ?",
+        "description": "Veuillez fournir vos détails afin que notre expert sache à qui demander.",
+        "primaryButtonLabel": "Demander un contact",
+        "secondaryButtonLabel": "Retour",
+        "completedLabel": "complété"
+      },
+      "successStatus": {
+        "title": "Demande envoyée avec succès !",
+        "description": "Notre équipe examinera vos besoins et vous contactera dans les 48 heures. En attendant, n'oubliez pas de télécharger votre rapport complet.",
+        "primaryButtonLabel": "Télécharger le rapport",
+        "secondaryButtonLabel": "Fermer"
+      },
+      "failedStatus": {
+        "title": "Une erreur est survenue",
+        "description": "Nous n'avons pas pu envoyer votre demande. Veuillez vérifier votre connexion et réessayer.",
+        "primaryButtonLabel": "Réessayer",
+        "secondaryButtonLabel": "Fermer"
+      }
     }
   }
 }

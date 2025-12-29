@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { useEffect } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 // Utils
 import { cn } from "@/lib/utils"
@@ -17,6 +18,15 @@ export interface ModalProps {
 const Modal = ({ isOpen, setIsOpen, children, className }: ModalProps) => {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) =>
     e.stopPropagation()
+
+  useEffect(() => {
+    if (isOpen) document.body.style.overflowY = "hidden"
+    else document.body.style.overflowY = ""
+
+    return () => {
+      document.body.style.overflowY = ""
+    }
+  }, [isOpen])
 
   return (
     <AnimatePresence>

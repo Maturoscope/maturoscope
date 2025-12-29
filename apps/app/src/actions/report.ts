@@ -1,6 +1,7 @@
 "use server"
 
 import { Locale } from "@/dictionaries/dictionaries"
+import { getOrganizationKeyFromCookies } from "./organization"
 
 interface AnswerPayload {
   question: string
@@ -49,16 +50,16 @@ export const generateReport = async (
   payload: ReportPayload
 ): Promise<GenerateReportResponse> => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/report/${lang}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      }
-    )
+    const organizationKey = await getOrganizationKeyFromCookies()
+    const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/report/${lang}${organizationKey ? `?organizationKey=${organizationKey}` : ""}`
+    
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
 
     if (!response.ok) {
       return {
