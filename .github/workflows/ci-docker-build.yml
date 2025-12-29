@@ -246,16 +246,19 @@ jobs:
           if [[ "${{ steps.vars.outputs.environment }}" == "production" ]]; then
             AUTH0_CLIENT_SECRET="${{ secrets.PROD_AUTH0_CLIENT_SECRET }}"
             AUTH0_SECRET="${{ secrets.PROD_AUTH0_SECRET }}"
+            NEXT_PUBLIC_END_USER_URL="${{ secrets.PROD_END_USER_URL || secrets.PROD_NEXT_PUBLIC_END_USER_URL || '' }}"
             echo "🔧 Using PRODUCTION secrets"
             echo "🔍 DEBUG: PROD_AUTH0_CLIENT_SECRET exists: $([ -n '${{ secrets.PROD_AUTH0_CLIENT_SECRET }}' ] && echo 'YES' || echo 'NO')"
           else
             AUTH0_CLIENT_SECRET="${{ secrets.STAGING_AUTH0_CLIENT_SECRET }}"
             AUTH0_SECRET="${{ secrets.STAGING_AUTH0_SECRET }}"
+            NEXT_PUBLIC_END_USER_URL="${{ secrets.STAGING_END_USER_URL || secrets.STAGING_NEXT_PUBLIC_END_USER_URL || '' }}"
             echo "🔧 Using STAGING secrets"
             echo "🔍 DEBUG: STAGING_AUTH0_CLIENT_SECRET exists: $([ -n '${{ secrets.STAGING_AUTH0_CLIENT_SECRET }}' ] && echo 'YES' || echo 'NO')"
           fi
           
           echo "🔍 DEBUG: Final AUTH0_CLIENT_SECRET length: ${#AUTH0_CLIENT_SECRET}"
+          echo "🔍 DEBUG: NEXT_PUBLIC_END_USER_URL: ${NEXT_PUBLIC_END_USER_URL:0:50}..."
           
           docker build \
             --file apps/dashboard/Dockerfile \
@@ -264,6 +267,7 @@ jobs:
             --build-arg AUTH0_SECRET="$AUTH0_SECRET" \
             --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
+            --build-arg NEXT_PUBLIC_END_USER_URL="$NEXT_PUBLIC_END_USER_URL" \
             .
           docker push ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:${{ steps.vars.outputs.TAG }}
 

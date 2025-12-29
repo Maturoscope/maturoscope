@@ -16,6 +16,8 @@ interface UseToolSettingsActionsProps {
   setSuccessToastType: React.Dispatch<React.SetStateAction<'customization' | 'pdfSignature' | 'language'>>
   setShowSuccessToast: React.Dispatch<React.SetStateAction<boolean>>
   updateSignatureVersion: () => void
+  organizationId?: string
+  refetchUser?: () => Promise<void>
 }
 
 export function useToolSettingsActions({
@@ -32,19 +34,35 @@ export function useToolSettingsActions({
   setErrors,
   setSuccessToastType,
   setShowSuccessToast,
-  updateSignatureVersion
+  updateSignatureVersion,
+  organizationId,
+  refetchUser
 }: UseToolSettingsActionsProps) {
   const handleSaveCustomization = async () => {
     setIsUpdatingCustomization(true)
     setErrors({})
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      if (!organizationId) {
+        throw new Error('Organization ID is required')
+      }
+
+      // Update font and theme
+      await OrganizationService.updateSettings(organizationId, {
+        font: customizationForm.font,
+        theme: customizationForm.theme
+      })
+
+      // Refresh user data to reflect changes
+      if (refetchUser) {
+        await refetchUser()
+      }
+
       setOriginalCustomizationForm({ ...customizationForm })
     } catch (error) {
       console.error('Error saving customization:', error)
       setErrors({
-        general: 'Failed to save customization settings. Please try again.'
+        general: error instanceof Error ? error.message : 'Failed to save customization settings. Please try again.'
       })
     } finally {
       setIsUpdatingCustomization(false)
@@ -111,9 +129,11 @@ export function useToolSettingsActions({
     setErrors({})
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      setOriginalCustomizationForm({ ...customizationForm })
+      if (!organizationId) {
+        throw new Error('Organization ID is required')
+      }
 
+      // Handle PDF signature first
       if (pdfSignatureForm.signatureFile || signatureToRemove) {
         if (signatureToRemove) {
           await OrganizationService.removeSignature()
@@ -137,7 +157,19 @@ export function useToolSettingsActions({
         }
       }
 
-      await OrganizationService.updateLanguage(languageForm.language)
+      // Update font, theme, and language together
+      await OrganizationService.updateSettings(organizationId, {
+        font: customizationForm.font,
+        theme: customizationForm.theme,
+        language: languageForm.language
+      })
+
+      // Refresh user data to reflect changes
+      if (refetchUser) {
+        await refetchUser()
+      }
+
+      setOriginalCustomizationForm({ ...customizationForm })
       setOriginalLanguageForm({ ...languageForm })
 
       setSuccessToastType('customization')

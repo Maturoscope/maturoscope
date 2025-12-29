@@ -23,13 +23,29 @@ export function useToolSettingsState() {
   const [activeSection, setActiveSection] = useState('profile')
   
   // Customization Form
+  // Normalize font value: convert old format (e.g., 'Geist') to new format (e.g., 'geist')
+  const normalizeFont = (font: string | undefined | null): string => {
+    if (!font) return 'geist'
+    const fontMap: Record<string, string> = {
+      'Geist': 'geist',
+      'geist': 'geist',
+      'Open Sans': 'open-sans',
+      'open-sans': 'open-sans',
+      'Inter': 'inter',
+      'inter': 'inter',
+      'Poppins': 'poppins',
+      'poppins': 'poppins',
+    }
+    return fontMap[font] || 'geist'
+  }
+
   const [customizationForm, setCustomizationForm] = useState<ToolCustomizationFormData>({
-    font: user?.organization?.font || 'Geist',
+    font: normalizeFont(user?.organization?.font),
     theme: user?.organization?.theme === 'Default' ? 'default' : (user?.organization?.theme || 'default')
   })
   
   const [originalCustomizationForm, setOriginalCustomizationForm] = useState<ToolCustomizationFormData>({
-    font: user?.organization?.font || 'Geist',
+    font: normalizeFont(user?.organization?.font),
     theme: user?.organization?.theme === 'Default' ? 'default' : (user?.organization?.theme || 'default')
   })
   
@@ -44,13 +60,13 @@ export function useToolSettingsState() {
     signatureUrl: user?.organization?.signature || ''
   })
   
-  // Language Form
+  // Language Form - Only from organization language in DB, not from browser
   const [languageForm, setLanguageForm] = useState<ToolLanguageFormData>({
-    language: user?.organization?.language || browserLanguage || 'EN'
+    language: user?.organization?.language || 'EN'
   })
   
   const [originalLanguageForm, setOriginalLanguageForm] = useState<ToolLanguageFormData>({
-    language: user?.organization?.language || browserLanguage || 'EN'
+    language: user?.organization?.language || 'EN'
   })
   
   // Update forms when user data changes
@@ -58,15 +74,16 @@ export function useToolSettingsState() {
     if (user?.organization) {
       const themeValue = user.organization.theme === 'Default' ? 'default' : (user.organization.theme || 'default')
       const newCustomizationForm = {
-        font: user.organization.font || 'Geist',
+        font: normalizeFont(user.organization.font),
         theme: themeValue
       }
       const newPDFSignatureForm = {
         signatureFile: null,
         signatureUrl: user.organization.signature || ''
       }
+      // Organization language should ONLY come from DB, not from browser
       const newLanguageForm = {
-        language: user.organization.language || browserLanguage || 'EN'
+        language: user.organization.language || 'EN'
       }
       
       setCustomizationForm(newCustomizationForm)
@@ -76,7 +93,7 @@ export function useToolSettingsState() {
       setLanguageForm(newLanguageForm)
       setOriginalLanguageForm(newLanguageForm)
     }
-  }, [user, browserLanguage])
+  }, [user])
   
   // Loading states
   const [isUpdatingCustomization, setIsUpdatingCustomization] = useState(false)
@@ -92,15 +109,6 @@ export function useToolSettingsState() {
   const [showUnsavedChangesDialog, setShowUnsavedChangesDialog] = useState(false)
   const [pendingSection, setPendingSection] = useState<string | null>(null)
   const [pendingNavigation, setPendingNavigation] = useState<(() => void) | null>(null)
-
-  // Update language form when browser language changes
-  useEffect(() => {
-    const formData = {
-      language: browserLanguage || 'EN'
-    }
-    setLanguageForm(formData)
-    setOriginalLanguageForm(formData)
-  }, [browserLanguage])
 
   // Check for changes whenever form data changes
   useEffect(() => {

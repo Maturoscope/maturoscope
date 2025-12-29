@@ -85,9 +85,14 @@ export class UsersService {
       registrationStatus,
       organization: user.organization ? {
         id: user.organization.id,
+        key: user.organization.key,
         name: user.organization.name,
+        email: user.organization.email,
         avatar: user.organization.avatar,
         signature: user.organization.signature,
+        language: user.organization.language,
+        font: user.organization.font,
+        theme: user.organization.theme,
       } : undefined,
     };
   }

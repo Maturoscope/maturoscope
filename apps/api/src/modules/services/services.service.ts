@@ -21,6 +21,7 @@ import { ReadinessAssessmentService } from '../readiness-assessment/readiness-as
 import { ScaleType, RecommendedServiceDto as ReadinessRecommendedServiceDto, I18nText } from '../readiness-assessment/dto/readiness-assessment.dto';
 import { ServiceContactMailService } from './mail.service';
 import { OrganizationsService } from '../organizations/organizations.service';
+import { StatisticsService } from '../statistics/statistics.service';
 
 @Injectable()
 export class ServicesService {
@@ -35,6 +36,7 @@ export class ServicesService {
     readinessAssessmentService: ReadinessAssessmentService,
     private readonly serviceContactMailService: ServiceContactMailService,
     private readonly organizationsService: OrganizationsService,
+    private readonly statisticsService: StatisticsService,
   ) {
     this.readinessAssessmentService = readinessAssessmentService;
   }
@@ -446,7 +448,7 @@ export class ServicesService {
     const organization = await this.organizationsService.findByKey(organizationKey);
     const companyName = organization.name || 'Maturoscope';
     const companyLogoUrl = organization.avatar || undefined;
-    const organizationLanguage = organization.language || 'EN';
+    const organizationLanguage = organization.language?.toUpperCase() === 'FR' ? 'FR' : 'EN';
     const supportEmail = organization.email || undefined;
 
     // Collect all unique service IDs from all gaps
@@ -519,6 +521,16 @@ export class ServicesService {
 
         // Send email to each contact
         for (const contact of contacts) {
+          // Reassignment contact must be the service secondary contact (per design)
+          // Only show it when the recipient is NOT the secondary contact (avoid self-reassign link).
+          let reassignmentContact: { name: string; email: string } | undefined;
+          if (service.secondaryContactEmail) {
+            reassignmentContact = {
+              name: `${service.secondaryContactFirstName} ${service.secondaryContactLastName}`.trim(),
+              email: service.secondaryContactEmail,
+            };
+          }
+
           emailPromises.push(
             this.serviceContactMailService.sendServiceContactEmail({
               expertEmail: contact.email,
@@ -528,8 +540,9 @@ export class ServicesService {
               companyLogoUrl,
               supportEmail,
               language: organizationLanguage,
+              reassignmentContact,
               clientData: {
-                company: contactServicesDto.company,
+                company: contactServicesDto.organization || contactServicesDto.company,
                 firstName: contactServicesDto.firstName,
                 lastName: contactServicesDto.lastName,
                 email: contactServicesDto.email,
@@ -551,6 +564,12 @@ export class ServicesService {
     }
 
     await Promise.all(emailPromises);
+
+    // Track service contact
+    this.statisticsService.incrementContactedServices(organizationKey).catch((error) => {
+      // Log error but don't fail the request
+      console.error('Failed to track service contact:', error);
+    });
 
     return {
       message: 'Emails sent successfully',

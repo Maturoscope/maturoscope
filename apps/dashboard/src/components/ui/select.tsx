@@ -73,10 +73,14 @@ SelectTrigger.displayName = "SelectTrigger"
 
 interface SelectValueProps {
   placeholder?: string
+  children?: React.ReactNode
 }
 
-const SelectValue = ({ placeholder }: SelectValueProps) => {
+const SelectValue = ({ placeholder, children }: SelectValueProps) => {
   const { value } = React.useContext(SelectContext)
+  if (children) {
+    return <span className={cn(!value && "text-muted-foreground")}>{children}</span>
+  }
   return (
     <span className={cn(!value && "text-muted-foreground")}>
       {value || placeholder}
@@ -89,11 +93,29 @@ interface SelectContentProps {
   className?: string
 }
 
-const SelectContent = ({ children, className }: SelectContentProps) => (
-  <DropdownMenuContent className={cn("w-[200px] p-0", className)}>
-    {children}
-  </DropdownMenuContent>
-)
+const SelectContent = ({ children, className }: SelectContentProps) => {
+  const { open } = React.useContext(SelectContext);
+  const [triggerWidth, setTriggerWidth] = React.useState<number | undefined>(undefined);
+
+  React.useEffect(() => {
+    if (open) {
+      // Find the trigger element to get its width when dropdown opens
+      const trigger = document.querySelector('[role="combobox"]') as HTMLElement;
+      if (trigger) {
+        setTriggerWidth(trigger.offsetWidth);
+      }
+    }
+  }, [open]);
+
+  return (
+    <DropdownMenuContent 
+      className={cn("p-0", className)}
+      style={triggerWidth ? { width: `${triggerWidth}px`, minWidth: `${triggerWidth}px` } : undefined}
+    >
+      {children}
+    </DropdownMenuContent>
+  );
+}
 
 interface SelectItemProps {
   value: string

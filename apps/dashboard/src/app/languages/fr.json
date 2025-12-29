@@ -114,7 +114,27 @@
     "SUPER_ADMIN": "Super-Admin",
     "REPORTS": "Rapports",
     "ORGANIZATIONS": "Organisations",
-    "LOG_OUT": "Se déconnecter"
+    "LOG_OUT": "Se déconnecter",
+    "KPIS": {
+      "ANALYSIS_COMPLETION_RATE": "Taux de complétion de l'analyse",
+      "CONTACT_RATE": "Taux de contact",
+      "TOTAL_ASSESSMENTS_STARTED": "Total d'analyses démarrées",
+      "ANALYSIS_COMPLETION_RATE_TOOLTIP": "Ce taux est calculé sur la base des analyses complétées.",
+      "CONTACT_RATE_TOOLTIP": "Ce taux est calculé sur la base des utilisateurs qui ont contacté un expert après avoir terminé leur analyse."
+    },
+    "CHART": {
+      "TITLE": "Quantité d'utilisateurs par échelle et niveau",
+      "DESCRIPTION": "Affichage de la distribution actuelle des utilisateurs par niveau.",
+      "X_AXIS_LABEL": "Niveaux",
+      "Y_AXIS_LABEL": "Quantité d'utilisateurs",
+      "TOOLTIP_LEVEL": "Niveau",
+      "USERS": "utilisateurs"
+    },
+    "LOADING": "Chargement...",
+    "REPORTS_FILTER": {
+      "SELECT_ORGANIZATION": "Sélectionner une organisation",
+      "ALL_ORGANIZATIONS": "Toutes les organisations"
+    }
   },
   "MEMBERS": {
     "PAGE_TITLE": "Membres",
@@ -393,6 +413,11 @@
     "EMAIL": {
       "LABEL": "Email",
       "VALUE": "nobatek@gmail.com"
+    },
+    "MATUROSCOPE_LINK": {
+      "LABEL": "Lien Maturoscope",
+      "COPY_BUTTON": "Copier",
+      "COPIED_TO_CLIPBOARD": "Lien copié !"
     },
     "UPDATE_BUTTON": "Mettre à jour le profil",
     "TOASTS": {
@@ -681,6 +706,11 @@
           "REQUIRED": "*",
           "HELPER_TEXT": "Le nom ne peut pas être modifié une fois l'organisation créée."
         },
+        "CONFIRM_NAME": {
+          "LABEL": "Confirmer le nom de l'organisation",
+          "PLACEHOLDER": "Confirmer le nom de l'organisation",
+          "REQUIRED": "*"
+        },
         "EMAIL": {
           "LABEL": "E-mail",
           "PLACEHOLDER": "E-mail",
@@ -693,16 +723,17 @@
           "REQUIRED": "*"
         }
       },
-      "BUTTONS": {
-        "CREATE": "Créer l'organisation",
-        "CREATING": "Création en cours…"
-      },
       "ERRORS": {
         "FIELD_REQUIRED": "Ce champ ne peut pas être laissé vide.",
         "INVALID_EMAIL": "Entrez une adresse e-mail valide.",
         "EMAILS_DONT_MATCH": "Les e-mails ne correspondent pas.",
+        "NAMES_DONT_MATCH": "Les noms d'organisation ne correspondent pas.",
         "CREATE_FAILED": "Échec de la création de l'organisation.",
         "UNEXPECTED_ERROR": "Erreur inattendue lors de la création de l'organisation."
+      },
+      "BUTTONS": {
+        "CREATE": "Créer l'organisation",
+        "CREATING": "Création en cours…"
       }
     },
     "UNSAVED_CHANGES": {

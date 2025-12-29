@@ -110,6 +110,9 @@ export function NewOrganizationSheet({
                 onBlur={() => {
                   setFormTouched((prev) => ({ ...prev, name: true }));
                   validateField("name", formState.name);
+                  if (formTouched.confirmName && formState.confirmName) {
+                    validateField("confirmName", formState.confirmName);
+                  }
                 }}
                 className={cn(
                   formTouched.name &&
@@ -118,14 +121,56 @@ export function NewOrganizationSheet({
                 )}
               />
               <div className="min-h-[20px]">
-                {formTouched.name && formErrors.name && (
+                {formErrors.name ? (
                   <p className="text-xs text-destructive">
                     {formErrors.name}
                   </p>
-                )}
-                {formTouched.name && !formErrors.name && (
+                ) : (
                   <p className="text-xs text-muted-foreground">
                     {t("NEW_ORGANIZATION.FIELDS.NAME.HELPER_TEXT")}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="confirmName">{t("NEW_ORGANIZATION.FIELDS.CONFIRM_NAME.LABEL")}{t("NEW_ORGANIZATION.FIELDS.CONFIRM_NAME.REQUIRED")}</Label>
+              <Input
+                id="confirmName"
+                placeholder={t("NEW_ORGANIZATION.FIELDS.CONFIRM_NAME.PLACEHOLDER")}
+                value={formState.confirmName}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  setFormState((prev) => ({
+                    ...prev,
+                    confirmName: value,
+                  }));
+                }}
+                onPaste={(e) => {
+                  e.preventDefault();
+                }}
+                onCopy={(e) => {
+                  e.preventDefault();
+                }}
+                onCut={(e) => {
+                  e.preventDefault();
+                }}
+                onFocus={() => {
+                  setFormErrors((prev) => ({ ...prev, confirmName: "" }));
+                }}
+                onBlur={() => {
+                  setFormTouched((prev) => ({ ...prev, confirmName: true }));
+                  validateField("confirmName", formState.confirmName);
+                }}
+                className={cn(
+                  formTouched.confirmName &&
+                    formErrors.confirmName &&
+                    "border-destructive"
+                )}
+              />
+              <div className="min-h-[20px]">
+                {formTouched.confirmName && formErrors.confirmName && (
+                  <p className="text-xs text-destructive">
+                    {formErrors.confirmName}
                   </p>
                 )}
               </div>
@@ -150,7 +195,6 @@ export function NewOrganizationSheet({
                 onBlur={() => {
                   setFormTouched((prev) => ({ ...prev, email: true }));
                   validateField("email", formState.email);
-                  // Re-validate confirm email if it's been touched
                   if (formTouched.confirmEmail && formState.confirmEmail) {
                     validateField("confirmEmail", formState.confirmEmail);
                   }
@@ -160,7 +204,7 @@ export function NewOrganizationSheet({
                 )}
               />
               <div className="min-h-[20px]">
-                {formTouched.email && formErrors.email ? (
+                {formErrors.email ? (
                   <p className="text-xs text-destructive">{formErrors.email}</p>
                 ) : (
                   <p className="text-xs text-muted-foreground">
@@ -182,6 +226,15 @@ export function NewOrganizationSheet({
                     ...prev,
                     confirmEmail: value,
                   }));
+                }}
+                onPaste={(e) => {
+                  e.preventDefault();
+                }}
+                onCopy={(e) => {
+                  e.preventDefault();
+                }}
+                onCut={(e) => {
+                  e.preventDefault();
                 }}
                 onFocus={() => {
                   setFormErrors((prev) => ({ ...prev, confirmEmail: "" }));

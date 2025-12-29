@@ -49,8 +49,15 @@ export const dropdownLanguageList = [
 i18n.use(initReactI18next).init({
   resources,
   lng: "EN",
+  fallbackLng: "EN",
   interpolation: {
     escapeValue: false,
+  },
+  returnEmptyString: false,
+  returnNull: false,
+  returnObjects: false,
+  missingKeyHandler: (lng, ns, key) => {
+    console.warn(`Missing translation key: ${key} in namespace: ${ns} for language: ${lng}`);
   },
 });
 

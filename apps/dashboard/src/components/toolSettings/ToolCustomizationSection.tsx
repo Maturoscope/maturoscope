@@ -140,11 +140,10 @@ export function ToolCustomizationSection({
   }
 
   const fontOptions = [
-    { value: 'Geist', label: 'Geist' },
-    { value: 'Inter', label: 'Inter' },
-    { value: 'Roboto', label: 'Roboto' },
-    { value: 'Open Sans', label: 'Open Sans' },
-    { value: 'Lato', label: 'Lato' },
+    { value: 'geist', label: 'Geist' },
+    { value: 'open-sans', label: 'Open Sans' },
+    { value: 'inter', label: 'Inter' },
+    { value: 'poppins', label: 'Poppins' },
   ]
 
   const themeOptions = [
@@ -159,23 +158,8 @@ export function ToolCustomizationSection({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div>
         <h2 className="text-xl font-semibold">{t('SECTIONS.CUSTOMIZATION')}</h2>
-        <Button
-          onClick={() => {
-            const endUserUrl = process.env.NEXT_PUBLIC_END_USER_URL;
-            if (!endUserUrl) {
-              console.error('NEXT_PUBLIC_END_USER_URL environment variable is not configured');
-              alert('Preview URL is not configured. Please contact your administrator.');
-              return;
-            }
-            window.open(endUserUrl, '_blank');
-          }}
-          variant="outline"
-          size="sm"
-        >
-          {t('CUSTOMIZATION.PREVIEW_TOOL')}
-        </Button>
       </div>
 
       <Separator />
@@ -187,8 +171,10 @@ export function ToolCustomizationSection({
             value={customizationForm.font}
             onValueChange={(value: string) => handleCustomizationChange('font', value)}
           >
-            <SelectTrigger className="max-w-[228px]" disabled={true}>
-              <SelectValue placeholder={t('CUSTOMIZATION.FONT.PLACEHOLDER')} />
+            <SelectTrigger className="max-w-[228px]">
+              <SelectValue placeholder={t('CUSTOMIZATION.FONT.PLACEHOLDER')}>
+                {fontOptions.find(opt => opt.value === customizationForm.font)?.label || customizationForm.font}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               {fontOptions.map((option) => (
@@ -214,22 +200,20 @@ export function ToolCustomizationSection({
             onValueChange={(value: string) => handleCustomizationChange('theme', value)}
           >
             <SelectTrigger className="max-w-[228px]">
-              <div className="flex items-center gap-2">
+              <SelectValue placeholder={t('CUSTOMIZATION.THEME.PLACEHOLDER')}>
                 {(() => {
                   const selectedTheme = themeOptions.find(opt => opt.value === customizationForm.theme)
                   return selectedTheme ? (
-                    <>
+                    <div className="flex items-center gap-2">
                       <div 
-                        className="w-4 h-4 rounded-full border border-gray-300"
+                        className="w-4 h-4 rounded-full border border-gray-300" 
                         style={{ backgroundColor: selectedTheme.color }}
                       />
-                      <SelectValue placeholder={t('CUSTOMIZATION.THEME.PLACEHOLDER')} />
-                    </>
-                  ) : (
-                    <SelectValue placeholder={t('CUSTOMIZATION.THEME.PLACEHOLDER')} />
-                  )
+                      <span>{selectedTheme.label}</span>
+                    </div>
+                  ) : customizationForm.theme
                 })()}
-              </div>
+              </SelectValue>
             </SelectTrigger>
             <SelectContent className="w-[228px]">
               {themeOptions.map((option) => (

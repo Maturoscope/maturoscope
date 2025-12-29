@@ -37,6 +37,10 @@ export class ContactServicesDto {
   company?: string;
 
   @IsString()
+  @IsOptional()
+  organization?: string;
+
+  @IsString()
   @IsNotEmpty()
   firstName: string;
 

@@ -93,22 +93,10 @@ export class OrganizationsController {
     return this.organizationsService.updateLanguageByUserEmail(user?.email, updateLanguageDto.language);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.organizationsService.findOne(id);
-  }
-
+  // Specific routes must come before parameterized routes to avoid route conflicts
   @Get('key/:key')
   findByKey(@Param('key') key: string) {
     return this.organizationsService.findByKey(key);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateOrganizationDto: UpdateOrganizationDto,
-  ) {
-    return this.organizationsService.update(id, updateOrganizationDto);
   }
 
   @Auth(ValidRoles.user)
@@ -119,6 +107,21 @@ export class OrganizationsController {
   ) {
     const user = req.user as { email?: string } | undefined;
     return this.organizationsService.updateProfileByUserEmail(user?.email, updateData);
+  }
+
+  // Parameterized routes come after specific routes
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.organizationsService.findOne(id);
+  }
+
+  @Auth(ValidRoles.user)
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateOrganizationDto: UpdateOrganizationDto,
+  ) {
+    return this.organizationsService.update(id, updateOrganizationDto);
   }
 
   @Delete(':id')
