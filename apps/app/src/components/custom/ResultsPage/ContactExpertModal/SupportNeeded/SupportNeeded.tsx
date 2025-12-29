@@ -121,7 +121,7 @@ const SupportNeeded = ({
         <div className="flex gap-4 items-center">
           <div className="flex items-center gap-2">
             <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full after:content-[''] after:absolute after:left-0 after:top-0 after:h-full after:w-1/2 after:bg-primary after:rounded-full" />
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-muted-foreground hidden lg:block">
               1/2 {completedLabel}
             </span>
           </div>
@@ -140,7 +140,7 @@ const SupportNeeded = ({
         </div>
       </div>
 
-      <div className="flex flex-col gap-6 max-h-[700px] overflow-y-auto">
+      <div className="flex flex-col gap-6 max-h-[330px] lg:max-h-[700px] overflow-y-auto">
         {orderedGaps.map((scale, index) => {
           const scaleName = Object.keys(scale)[0] as StageId
           const gaps = scale[scaleName as keyof StageGapsItem] as Gap[]

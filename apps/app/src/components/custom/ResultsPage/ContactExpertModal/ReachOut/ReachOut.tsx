@@ -8,6 +8,9 @@ import { useParams } from "next/navigation"
 // Components
 import Modal from "@/components/common/Modal/Modal"
 import { Button } from "@/components/ui/button"
+import Input from "@/components/common/Input/Input"
+// Context
+import { useContactExpertContext } from "@/context/ContactExpertContext"
 // Types
 import { ModalStep } from "../ContactExpertModal"
 import { Locale } from "@/dictionaries/dictionaries"
@@ -41,9 +44,22 @@ interface ContactInfoFieldProps {
   required?: boolean,
 }
 
-type ContactInfoField = "organization" | "country" | "firstName" | "lastName" | "email" | "phone" | "additionalInformation"
+// TODO: Add country field for v2
+type ContactInfoField = "organization" | "firstName" | "lastName" | "email" | "phoneNumber" | "additionalInformation"
 
 type ContactInfoForm = Record<ContactInfoField, ContactInfoFieldProps>
+
+// Form data type - matches the structure of ContactInfoForm with field names as keys
+// Uses the 'name' property from each ContactInfoFieldProps as the key
+type ContactFormData = {
+  organization?: string
+  country?: string
+  firstName?: string
+  lastName?: string
+  email?: string
+  phoneNumber?: string // Note: field key is "phone" but name is "phoneNumber"
+  additionalInformation?: string
+}
 
 const EN_CONTACT_INFO_FIELDS: ContactInfoForm = {
   organization: {
@@ -52,13 +68,13 @@ const EN_CONTACT_INFO_FIELDS: ContactInfoForm = {
     placeholder: "Organization",
     type: "text",
   },
-  country: {
-    name: "country",
-    label: "Country",
-    placeholder: "Select",
-    type: "country",
-    required: true,
-  },
+  // country: {
+  //   name: "country",
+  //   label: "Country",
+  //   placeholder: "Select",
+  //   type: "country",
+  //   required: true,
+  // },
   firstName: {
     name: "firstName",
     label: "First Name",
@@ -80,8 +96,8 @@ const EN_CONTACT_INFO_FIELDS: ContactInfoForm = {
     type: "email",
     required: true,
   },
-  phone: {
-    name: "phone",
+  phoneNumber: {
+    name: "phoneNumber",
     label: "Phone",
     placeholder: "Phone",
     type: "phone",
@@ -101,13 +117,13 @@ const FR_CONTACT_INFO_FIELDS: ContactInfoForm = {
     placeholder: "Entreprise",
     type: "text",
   },
-  country: {
-    name: "country",
-    label: "Pays",
-    placeholder: "Sélectionner",
-    type: "country",
-    required: true,
-  },
+  // country: {
+  //   name: "country",
+  //   label: "Pays",
+  //   placeholder: "Sélectionner",
+  //   type: "country",
+  //   required: true,
+  // },
   firstName: {
     name: "firstName",
     label: "Prénom",
@@ -129,8 +145,8 @@ const FR_CONTACT_INFO_FIELDS: ContactInfoForm = {
     type: "email",
     required: true,
   },
-  phone: {
-    name: "phone",
+  phoneNumber: {
+    name: "phoneNumber",
     label: "Numéro de téléphone",
     placeholder: "Numéro de téléphone",
     type: "phone",
@@ -143,6 +159,9 @@ const FR_CONTACT_INFO_FIELDS: ContactInfoForm = {
   },
 }
 
+const EN_CLARIFICATION = "We respect your privacy. Your data is used exclusively to answer this inquiry."
+const FR_CLARIFICATION = "Nous respectons votre vie privée. Vos données sont utilisées exclusivement pour répondre à cette demande."
+
 const ReachOut = ({
   title,
   description,
@@ -153,17 +172,38 @@ const ReachOut = ({
   setIsOpen,
   setCurrentStep,
 }: ReachOutProps & ExtraProps) => {
-  const { register, handleSubmit } = useForm()
+  const { setContactInformation } = useContactExpertContext()
+  const { control, handleSubmit, formState } = useForm<ContactFormData>({
+    mode: "onChange",
+    defaultValues: {
+      organization: "",
+      // country: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      additionalInformation: "",
+    },
+  })
   const [contactInfo, setContactInfo] = useState(EN_CONTACT_INFO_FIELDS)
   const { lang } = useParams<{ lang: Locale }>()
 
-  const onSubmit = (data: any) => {
-    console.log(data)
+  const clarification = lang === "en" ? EN_CLARIFICATION : FR_CLARIFICATION
+
+  const onSubmit = (data: ContactFormData) => {
+    setContactInformation(data)
   }
+
+  // Check if required fields are filled
+  const isFormValid = formState.isValid
 
   useEffect(() => {
     setContactInfo(lang === "en" ? EN_CONTACT_INFO_FIELDS : FR_CONTACT_INFO_FIELDS)
   }, [lang])
+
+  // TODO: Add country field for v2
+  const fieldsToShow: ContactInfoField[] = ["organization", "firstName", "lastName", "email", "phoneNumber", "additionalInformation"]
+  const visibleFields = fieldsToShow.map((key) => contactInfo[key]).filter(Boolean)
 
   return (
     <Modal
@@ -181,7 +221,7 @@ const ReachOut = ({
           <div className="flex gap-4 items-center">
             <div className="flex items-center gap-2">
               <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full after:content-[''] after:absolute after:left-0 after:top-0 after:h-full after:w-full after:bg-primary after:rounded-full" />
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-muted-foreground hidden lg:block">
                 2/2 {completedLabel}
               </span>
             </div>
@@ -200,8 +240,21 @@ const ReachOut = ({
           </div>
         </div>
 
-        <div>
+        <div className="flex flex-col gap-4 max-h-[330px] overflow-y-auto lg:max-h-none">
+          <div className="flex flex-col lg:grid grid-cols-2 gap-4">
+            {visibleFields.map((field) => (
+              <Input
+                key={field.name}
+                fieldProps={field}
+                control={control}
+                rules={{
+                  required: field.required ? `${field.label} is required` : false,
+                }}
+              />
+            ))}
+          </div>
 
+          <p className="text-sm text-muted-foreground lg:mb-14">{clarification}</p>
         </div>
 
         <div className="flex justify-between w-full gap-2">
@@ -211,7 +264,7 @@ const ReachOut = ({
           >
             {secondaryButtonLabel}
           </Button>
-          <Button variant="default" accent>
+          <Button variant="default" accent disabled={!isFormValid}>
             {primaryButtonLabel}
           </Button>
         </div>

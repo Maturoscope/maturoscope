@@ -9,6 +9,16 @@ export interface SelectedGap {
   recommendedServices: string[]
 }
 
+export interface ContactInformation {
+  organization?: string
+  country?: string
+  firstName?: string
+  lastName?: string
+  email?: string
+  phoneNumber?: string
+  additionalInformation?: string
+}
+
 interface ContactExpertContextType {
   selectedGaps: SelectedGap[]
   setSelectedGaps: (gaps: SelectedGap[]) => void
@@ -18,6 +28,8 @@ interface ContactExpertContextType {
   isModalOpen: boolean
   openModal: () => void
   closeModal: () => void
+  contactInformation: ContactInformation | null
+  setContactInformation: (info: ContactInformation) => void
 }
 
 interface ContactExpertProviderProps {
@@ -33,6 +45,7 @@ export const ContactExpertProvider = ({
 }: ContactExpertProviderProps) => {
   const [selectedGaps, setSelectedGaps] = useState<SelectedGap[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [contactInformation, setContactInformation] = useState<ContactInformation | null>(null)
 
   const addGap = (gap: SelectedGap) => {
     setSelectedGaps((prev) => {
@@ -64,6 +77,8 @@ export const ContactExpertProvider = ({
         isModalOpen,
         openModal,
         closeModal,
+        contactInformation,
+        setContactInformation,
       }}
     >
       {children}

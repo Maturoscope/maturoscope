@@ -3067,7 +3067,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-compose-refs@npm:1.1.2":
+"@radix-ui/react-compose-refs@npm:1.1.2, @radix-ui/react-compose-refs@npm:^1.1.1":
   version: 1.1.2
   resolution: "@radix-ui/react-compose-refs@npm:1.1.2"
   peerDependencies:
@@ -3106,7 +3106,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-dialog@npm:1.1.15, @radix-ui/react-dialog@npm:^1.1.15":
+"@radix-ui/react-dialog@npm:1.1.15, @radix-ui/react-dialog@npm:^1.1.15, @radix-ui/react-dialog@npm:^1.1.6":
   version: 1.1.15
   resolution: "@radix-ui/react-dialog@npm:1.1.15"
   dependencies:
@@ -3233,7 +3233,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-id@npm:1.1.1":
+"@radix-ui/react-id@npm:1.1.1, @radix-ui/react-id@npm:^1.1.0":
   version: 1.1.1
   resolution: "@radix-ui/react-id@npm:1.1.1"
   dependencies:
@@ -3300,6 +3300,39 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 622f3abf8bb3c324ceb824988d7d384865191d5b09f2ddbc2a879b95d48d3e25ed9e22c4059203f4d29eaefe7d67a36e4b3cd2ce6b51596351cfd575d45d1fec
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-popover@npm:^1.1.15":
+  version: 1.1.15
+  resolution: "@radix-ui/react-popover@npm:1.1.15"
+  dependencies:
+    "@radix-ui/primitive": 1.1.3
+    "@radix-ui/react-compose-refs": 1.1.2
+    "@radix-ui/react-context": 1.1.2
+    "@radix-ui/react-dismissable-layer": 1.1.11
+    "@radix-ui/react-focus-guards": 1.1.3
+    "@radix-ui/react-focus-scope": 1.1.7
+    "@radix-ui/react-id": 1.1.1
+    "@radix-ui/react-popper": 1.2.8
+    "@radix-ui/react-portal": 1.1.9
+    "@radix-ui/react-presence": 1.1.5
+    "@radix-ui/react-primitive": 2.1.3
+    "@radix-ui/react-slot": 1.2.3
+    "@radix-ui/react-use-controllable-state": 1.2.2
+    aria-hidden: ^1.2.4
+    react-remove-scroll: ^2.6.3
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 8a9ff4c6d8755cb770bbcfa2e60c4364364ccbf57888d72ebb77d8eb73a859023d7950c125de23d29d8506b4944b2af8b8c0f59f9880768eea6b2543e66e3d36
   languageName: node
   linkType: hard
 
@@ -3390,7 +3423,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-primitive@npm:2.1.4":
+"@radix-ui/react-primitive@npm:2.1.4, @radix-ui/react-primitive@npm:^2.0.2":
   version: 2.1.4
   resolution: "@radix-ui/react-primitive@npm:2.1.4"
   dependencies:
@@ -3453,6 +3486,33 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 62af05c244803359c36beea278dac89caee37d20c31b84bcba3a20c462df33b7395c2e1b08b3a8ebb471c29cec4b3fb4f97488b6a167b1b275cedf994cf436e6
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-scroll-area@npm:^1.2.10":
+  version: 1.2.10
+  resolution: "@radix-ui/react-scroll-area@npm:1.2.10"
+  dependencies:
+    "@radix-ui/number": 1.1.1
+    "@radix-ui/primitive": 1.1.3
+    "@radix-ui/react-compose-refs": 1.1.2
+    "@radix-ui/react-context": 1.1.2
+    "@radix-ui/react-direction": 1.1.1
+    "@radix-ui/react-presence": 1.1.5
+    "@radix-ui/react-primitive": 2.1.3
+    "@radix-ui/react-use-callback-ref": 1.1.1
+    "@radix-ui/react-use-layout-effect": 1.1.1
+  peerDependencies:
+    "@types/react": "*"
+    "@types/react-dom": "*"
+    react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: da557a86de05801e276838923dc96a7715bd5982ac459b17925fae982d79c26607358f9fe7a8ef8f571f65c0c95da1427ed95a09a752493d8a81ad6d1b50f0da
   languageName: node
   linkType: hard
 
@@ -3529,7 +3589,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-slot@npm:1.2.4, @radix-ui/react-slot@npm:^1.2.3":
+"@radix-ui/react-slot@npm:1.2.4, @radix-ui/react-slot@npm:^1.2.3, @radix-ui/react-slot@npm:^1.2.4":
   version: 1.2.4
   resolution: "@radix-ui/react-slot@npm:1.2.4"
   dependencies:
@@ -5845,24 +5905,31 @@ __metadata:
   resolution: "app@workspace:apps/app"
   dependencies:
     "@eslint/eslintrc": ^3
+    "@radix-ui/react-dialog": ^1.1.15
+    "@radix-ui/react-popover": ^1.1.15
     "@radix-ui/react-progress": ^1.1.7
+    "@radix-ui/react-scroll-area": ^1.2.10
     "@radix-ui/react-select": ^2.2.6
-    "@radix-ui/react-slot": ^1.2.3
+    "@radix-ui/react-slot": ^1.2.4
     "@tailwindcss/postcss": ^4
     "@types/node": ^20
     "@types/react": ^19
     "@types/react-dom": ^19
     class-variance-authority: ^0.7.1
     clsx: ^2.1.1
+    cmdk: ^1.1.1
+    country-data-list: ^1.5.5
     eslint: ^9
     eslint-config-next: 15.4.6
     lucide-react: ^0.544.0
     motion: ^12.23.15
     next: 15.4.6
     react: 19.1.0
+    react-circle-flags: ^0.0.25
     react-circular-progressbar: ^2.2.0
     react-dom: 19.1.0
     react-hook-form: ^7.63.0
+    react-phone-number-input: ^3.4.14
     shadcn: ^3.3.1
     swiper: ^12.0.3
     tailwind-merge: ^3.3.1
@@ -6651,6 +6718,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"classnames@npm:^2.5.1":
+  version: 2.5.1
+  resolution: "classnames@npm:2.5.1"
+  checksum: da424a8a6f3a96a2e87d01a432ba19315503294ac7e025f9fece656db6b6a0f7b5003bb1fbb51cbb0d9624d964f1b9bb35a51c73af9b2434c7b292c42231c1e5
+  languageName: node
+  linkType: hard
+
 "cli-cursor@npm:^3.1.0":
   version: 3.1.0
   resolution: "cli-cursor@npm:3.1.0"
@@ -6725,6 +6799,21 @@ __metadata:
   version: 2.1.1
   resolution: "clsx@npm:2.1.1"
   checksum: acd3e1ab9d8a433ecb3cc2f6a05ab95fe50b4a3cfc5ba47abb6cbf3754585fcb87b84e90c822a1f256c4198e3b41c7f6c391577ffc8678ad587fc0976b24fd57
+  languageName: node
+  linkType: hard
+
+"cmdk@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "cmdk@npm:1.1.1"
+  dependencies:
+    "@radix-ui/react-compose-refs": ^1.1.1
+    "@radix-ui/react-dialog": ^1.1.6
+    "@radix-ui/react-id": ^1.1.0
+    "@radix-ui/react-primitive": ^2.0.2
+  peerDependencies:
+    react: ^18 || ^19 || ^19.0.0-rc
+    react-dom: ^18 || ^19 || ^19.0.0-rc
+  checksum: 063c3c66eba917c1968c278673cce17a9925cf4ea2d2da72718a7e09e2a103a4f1cb08eac8a7257b6613c8c8e0d273173f22097045b3dfaeaca0e05d3a2e81a7
   languageName: node
   linkType: hard
 
@@ -6952,6 +7041,20 @@ __metadata:
     typescript:
       optional: true
   checksum: a30c424b53d442ea0bdd24cb1b3d0d8687c8dda4a17ab6afcdc439f8964438801619cdb66e8e79f63b9caa3e6586b60d8bab9ce203e72df6c5e80179b971fe8f
+  languageName: node
+  linkType: hard
+
+"country-data-list@npm:^1.5.5":
+  version: 1.5.5
+  resolution: "country-data-list@npm:1.5.5"
+  checksum: 5ec3655ce122bac163fdaaee260ef35f023678de1ddbbe8b3ad1d2cc564f3fa69b816ba58dd74cbb22034737b1946f8f23f3697e00842d130a6539b09a330789
+  languageName: node
+  linkType: hard
+
+"country-flag-icons@npm:^1.5.17":
+  version: 1.6.4
+  resolution: "country-flag-icons@npm:1.6.4"
+  checksum: bb8bf196fac9a157f9b04110eaf55cd1aaed93960acec92052323c799d602e0b98ff974d563912af17ad3a01fd006aafc54c6bd10cb5450b18ae8e93952ee3df
   languageName: node
   linkType: hard
 
@@ -9235,6 +9338,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"input-format@npm:^0.3.14":
+  version: 0.3.14
+  resolution: "input-format@npm:0.3.14"
+  dependencies:
+    prop-types: ^15.8.1
+  peerDependencies:
+    react: ">=18.1.0"
+    react-dom: ">=18.1.0"
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 8776bd706ff86f97aa017a84bb1f1e3e48f6f60257cbf45fa6d1283f64fddbea8baac2e02f9eb85044cd25ef1a10b7d9c84c07e82f0fbed90161df183e75a460
+  languageName: node
+  linkType: hard
+
 "internal-slot@npm:^1.1.0":
   version: 1.1.0
   resolution: "internal-slot@npm:1.1.0"
@@ -10447,6 +10567,13 @@ __metadata:
   version: 1.12.31
   resolution: "libphonenumber-js@npm:1.12.31"
   checksum: 21ae24e8612414f91e722f0ecb7d12426992807ba268f4d1b864f57d20fa7cf717f41d898c1f7069a7a5ab5a38c60a83e8e233b0057c15b5a0d821d7f2d88f10
+  languageName: node
+  linkType: hard
+
+"libphonenumber-js@npm:^1.12.27":
+  version: 1.12.33
+  resolution: "libphonenumber-js@npm:1.12.33"
+  checksum: b06c1899362ce5f3810aa16e7145e8d75287a0942a8c5c39a59d99721666ffb283a0bff63e967c5aa0f0934d47eff98166602dc360e35c063e1e35950abb0858
   languageName: node
   linkType: hard
 
@@ -12324,6 +12451,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-circle-flags@npm:^0.0.25":
+  version: 0.0.25
+  resolution: "react-circle-flags@npm:0.0.25"
+  peerDependencies:
+    react: ^16.0.0 || 17.x || 18.x || 19.x
+  checksum: 8e23fab0101fd1eb2665d21b199ed28baf16d4011288ce83d9710f963f5d5dda38f10bd7fbe5c9828f17038457ba49720e96bae6c94af517001bd167a38f8a95
+  languageName: node
+  linkType: hard
+
 "react-circular-progressbar@npm:^2.2.0":
   version: 2.2.0
   resolution: "react-circular-progressbar@npm:2.2.0"
@@ -12385,6 +12521,22 @@ __metadata:
   version: 18.3.1
   resolution: "react-is@npm:18.3.1"
   checksum: e20fe84c86ff172fc8d898251b7cc2c43645d108bf96d0b8edf39b98f9a2cae97b40520ee7ed8ee0085ccc94736c4886294456033304151c3f94978cec03df21
+  languageName: node
+  linkType: hard
+
+"react-phone-number-input@npm:^3.4.14":
+  version: 3.4.14
+  resolution: "react-phone-number-input@npm:3.4.14"
+  dependencies:
+    classnames: ^2.5.1
+    country-flag-icons: ^1.5.17
+    input-format: ^0.3.14
+    libphonenumber-js: ^1.12.27
+    prop-types: ^15.8.1
+  peerDependencies:
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: bd6c8e4e4e7bb0fd18aaa17824a1dff9eb2a30025b8f86db2b5ea541cb56207ad6f35cc951820ddb72ddb9e5ae2578f8416d1f9cc6a5bf8b2f976be96ec1e9ad
   languageName: node
   linkType: hard
 

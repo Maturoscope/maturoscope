@@ -150,7 +150,7 @@ const CountryDropdownComponent = (
                 .filter((x) => x.name)
                 .map((option, key: number) => (
                   <CommandItem
-                    className="flex items-center w-full gap-2"
+                    className="flex items-center w-full gap-2 data-[selected=true]:bg-neutral-50"
                     key={key}
                     onSelect={() => handleSelect(option)}
                   >
