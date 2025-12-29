@@ -140,11 +140,10 @@ export function ToolCustomizationSection({
   }
 
   const fontOptions = [
-    { value: 'Geist', label: 'Geist' },
-    { value: 'Inter', label: 'Inter' },
-    { value: 'Roboto', label: 'Roboto' },
-    { value: 'Open Sans', label: 'Open Sans' },
-    { value: 'Lato', label: 'Lato' },
+    { value: 'geist', label: 'Geist' },
+    { value: 'open-sans', label: 'Open Sans' },
+    { value: 'inter', label: 'Inter' },
+    { value: 'poppins', label: 'Poppins' },
   ]
 
   const themeOptions = [
@@ -172,8 +171,10 @@ export function ToolCustomizationSection({
             value={customizationForm.font}
             onValueChange={(value: string) => handleCustomizationChange('font', value)}
           >
-            <SelectTrigger className="max-w-[228px]" disabled={true}>
-              <SelectValue placeholder={t('CUSTOMIZATION.FONT.PLACEHOLDER')} />
+            <SelectTrigger className="max-w-[228px]">
+              <SelectValue placeholder={t('CUSTOMIZATION.FONT.PLACEHOLDER')}>
+                {fontOptions.find(opt => opt.value === customizationForm.font)?.label || customizationForm.font}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               {fontOptions.map((option) => (
@@ -199,22 +200,20 @@ export function ToolCustomizationSection({
             onValueChange={(value: string) => handleCustomizationChange('theme', value)}
           >
             <SelectTrigger className="max-w-[228px]">
-              <div className="flex items-center gap-2">
+              <SelectValue placeholder={t('CUSTOMIZATION.THEME.PLACEHOLDER')}>
                 {(() => {
                   const selectedTheme = themeOptions.find(opt => opt.value === customizationForm.theme)
                   return selectedTheme ? (
-                    <>
+                    <div className="flex items-center gap-2">
                       <div 
-                        className="w-4 h-4 rounded-full border border-gray-300"
+                        className="w-4 h-4 rounded-full border border-gray-300" 
                         style={{ backgroundColor: selectedTheme.color }}
                       />
-                      <SelectValue placeholder={t('CUSTOMIZATION.THEME.PLACEHOLDER')} />
-                    </>
-                  ) : (
-                    <SelectValue placeholder={t('CUSTOMIZATION.THEME.PLACEHOLDER')} />
-                  )
+                      <span>{selectedTheme.label}</span>
+                    </div>
+                  ) : customizationForm.theme
                 })()}
-              </div>
+              </SelectValue>
             </SelectTrigger>
             <SelectContent className="w-[228px]">
               {themeOptions.map((option) => (

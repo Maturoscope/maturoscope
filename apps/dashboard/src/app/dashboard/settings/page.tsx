@@ -164,6 +164,8 @@ export default function SettingsPage() {
     setSuccessToastType: settingsState.setSuccessToastType,
     setShowSuccessToast: settingsState.setShowSuccessToast,
     updateSignatureVersion,
+    organizationId: user?.organization?.id,
+    refetchUser,
   });
 
   // Enhanced section change handler that manages form resets

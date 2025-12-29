@@ -1,5 +1,3 @@
-import { fetchApi } from '@/utils/fetchApi'
-
 export interface Organization {
   id: string
   key: string
@@ -31,20 +29,26 @@ export class OrganizationService {
    * @returns Updated organization data
    */
   static async updateOrganization(organizationId: string, body: UpdateOrganizationRequest): Promise<Organization> {
-    const endpoint = `/organizations/${encodeURIComponent(organizationId)}`
-    const method = 'PATCH'
-    
-    const response = await fetchApi<Organization>({ 
-      endpoint, 
-      body, 
-      method 
-    })
+    try {
+      const response = await fetch(`/api/organizations/${encodeURIComponent(organizationId)}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(body),
+      })
 
-    if (response.error) {
-      throw new Error(`${response?.message || 'Unknown error occurred while updating organization'}`)
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.message || errorData.error || `HTTP error! status: ${response.status}`)
+      }
+
+      const result = await response.json()
+      return result
+    } catch (error) {
+      throw new Error(`${error instanceof Error ? error.message : 'Unknown error occurred while updating organization'}`)
     }
-
-    return response.data!
   }
 
   /**
@@ -195,19 +199,25 @@ export class OrganizationService {
    * @returns Organization data
    */
   static async getOrganizationById(organizationId: string): Promise<Organization> {
-    const endpoint = `/organizations/${encodeURIComponent(organizationId)}`
-    const method = 'GET'
-    
-    const response = await fetchApi<Organization>({ 
-      endpoint, 
-      method 
-    })
+    try {
+      const response = await fetch(`/api/organizations/${encodeURIComponent(organizationId)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      })
 
-    if (response.error) {
-      throw new Error(`${response?.message || 'Unknown error occurred while fetching organization'}`)
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.message || errorData.error || `HTTP error! status: ${response.status}`)
+      }
+
+      const result = await response.json()
+      return result
+    } catch (error) {
+      throw new Error(`${error instanceof Error ? error.message : 'Unknown error occurred while fetching organization'}`)
     }
-
-    return response.data!
   }
 
   /**
@@ -222,19 +232,25 @@ export class OrganizationService {
     signature?: string
     language?: string
   }): Promise<Organization> {
-    const endpoint = `/organizations/${encodeURIComponent(organizationId)}`
-    const method = 'PATCH'
-    
-    const response = await fetchApi<Organization>({ 
-      endpoint, 
-      body: settings, 
-      method 
-    })
+    try {
+      const response = await fetch(`/api/organizations/${encodeURIComponent(organizationId)}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(settings),
+      })
 
-    if (response.error) {
-      throw new Error(`${response?.message || 'Unknown error occurred while updating organization settings'}`)
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.message || errorData.error || `HTTP error! status: ${response.status}`)
+      }
+
+      const result = await response.json()
+      return result
+    } catch (error) {
+      throw new Error(`${error instanceof Error ? error.message : 'Unknown error occurred while updating organization settings'}`)
     }
-
-    return response.data!
   }
 }

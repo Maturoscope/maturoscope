@@ -23,13 +23,29 @@ export function useToolSettingsState() {
   const [activeSection, setActiveSection] = useState('profile')
   
   // Customization Form
+  // Normalize font value: convert old format (e.g., 'Geist') to new format (e.g., 'geist')
+  const normalizeFont = (font: string | undefined | null): string => {
+    if (!font) return 'geist'
+    const fontMap: Record<string, string> = {
+      'Geist': 'geist',
+      'geist': 'geist',
+      'Open Sans': 'open-sans',
+      'open-sans': 'open-sans',
+      'Inter': 'inter',
+      'inter': 'inter',
+      'Poppins': 'poppins',
+      'poppins': 'poppins',
+    }
+    return fontMap[font] || 'geist'
+  }
+
   const [customizationForm, setCustomizationForm] = useState<ToolCustomizationFormData>({
-    font: user?.organization?.font || 'Geist',
+    font: normalizeFont(user?.organization?.font),
     theme: user?.organization?.theme === 'Default' ? 'default' : (user?.organization?.theme || 'default')
   })
   
   const [originalCustomizationForm, setOriginalCustomizationForm] = useState<ToolCustomizationFormData>({
-    font: user?.organization?.font || 'Geist',
+    font: normalizeFont(user?.organization?.font),
     theme: user?.organization?.theme === 'Default' ? 'default' : (user?.organization?.theme || 'default')
   })
   
@@ -58,7 +74,7 @@ export function useToolSettingsState() {
     if (user?.organization) {
       const themeValue = user.organization.theme === 'Default' ? 'default' : (user.organization.theme || 'default')
       const newCustomizationForm = {
-        font: user.organization.font || 'Geist',
+        font: normalizeFont(user.organization.font),
         theme: themeValue
       }
       const newPDFSignatureForm = {
