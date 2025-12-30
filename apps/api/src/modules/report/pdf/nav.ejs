@@ -45,6 +45,9 @@
       <%= t.header.by %>
     </span>
 
-    <img src="<%= reportData.signature %>" alt="Signature" class="h-8 max-w-[200px] object-contain" />
+    <div class="aspect-[240/80] w-[88px] h-[28px]">
+      <img src="<%= reportData.signature %>" alt="Signature" width="240" height="80"
+        class="w-full h-full object-contain" />
+    </div>
     <% } %>
 </nav>
