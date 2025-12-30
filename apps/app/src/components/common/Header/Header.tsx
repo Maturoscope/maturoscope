@@ -8,6 +8,7 @@ import { usePathname, useRouter, useParams } from "next/navigation"
 // Components
 import LanguageSelect from "@/components/common/LanguageSelect/LanguageSelect"
 import BeforeYouGoModal from "@/components/custom/ResultsPage/BeforeYouGoModal/BeforeYouGoModal"
+import LeaveQuestionnaireModal from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
 // Animations
 import { SIMPLE_FADE_VARIANT } from "@/animations/common"
 // Actions
@@ -15,12 +16,14 @@ import { clearAssessmentTracking } from "@/actions/tracking"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
 import { BeforeYouGoModalProps } from "@/components/custom/ResultsPage/BeforeYouGoModal/BeforeYouGoModal"
+import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
 // Hooks
 import { useDownloadReport } from "@/hooks/useDownloadReport"
 
 export interface HeaderProps {
   stringConnector: string
   beforeYouGoModal?: BeforeYouGoModalProps
+  leaveQuestionnaireModal?: LeaveQuestionnaireModalProps
 }
 
 interface ExtraProps {
@@ -31,8 +34,10 @@ const Header = ({
   stringConnector,
   showBackButton = false,
   beforeYouGoModal,
+  leaveQuestionnaireModal,
 }: HeaderProps & ExtraProps) => {
   const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
+  const [isLeaveQuestionnaireModalOpen, setIsLeaveQuestionnaireModalOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   const params = useParams<{ lang?: Locale }>()
@@ -43,7 +48,7 @@ const Header = ({
 
   const handleBackButtonClick = () => {
     if (isResultsPage) setIsResetFormModalOpen(true)
-    else router.push("/")
+    else setIsLeaveQuestionnaireModalOpen(true)
   }
 
   const handleResetForm = async () => {
@@ -78,6 +83,14 @@ const Header = ({
       <div className="flex items-center gap-2">
         {showBackButton && (
           <>
+            {leaveQuestionnaireModal && (
+              <LeaveQuestionnaireModal
+                {...leaveQuestionnaireModal}
+                isOpen={isLeaveQuestionnaireModalOpen}
+                setIsOpen={setIsLeaveQuestionnaireModalOpen}
+                onResetClick={handleResetButtonClick}
+              />
+            )}
             {beforeYouGoModal && (
               <BeforeYouGoModal
                 {...beforeYouGoModal}

@@ -55,6 +55,12 @@
     "buttonNextLabel": "Continue",
     "buttonPrevLabel": "Back",
     "commentPlaceholder": "Add specific notes for your final report (Optional)",
+    "leaveQuestionnaireModal": {
+      "title": "Leave questionnaire?",
+      "description": "If you leave now, your responses will be lost.",
+      "resetButtonLabel": "Leave anyway",
+      "cancelButtonLabel": "Cancel"
+    },
     "checkpoint": {
       "buttonLabel": "Back to"
     },

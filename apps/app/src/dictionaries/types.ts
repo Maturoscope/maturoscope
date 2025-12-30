@@ -17,6 +17,7 @@ import { SupportNeededProps } from "@/components/custom/ResultsPage/ContactExper
 import { ReachOutProps } from "@/components/custom/ResultsPage/ContactExpertModal/ReachOut/ReachOut"
 import { StatusProps } from "@/components/custom/ResultsPage/ContactExpertModal/Status/Status"
 import { BeforeYouGoModalProps } from "@/components/custom/ResultsPage/BeforeYouGoModal/BeforeYouGoModal"
+import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
 
 type DictionaryStage = Omit<StageType, "questions">
 
@@ -34,9 +35,10 @@ export type Dictionary = {
     buttonPrevLabel: string
     commentPlaceholder: string
     stages: DictionaryStage[]
+    leaveQuestionnaireModal: LeaveQuestionnaireModalProps
     checkpoint: {
       buttonLabel: string
-    }
+    },
   }
   review: ReviewHeroProps
   singleReview: Pick<

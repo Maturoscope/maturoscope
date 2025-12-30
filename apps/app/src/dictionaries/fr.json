@@ -55,6 +55,12 @@
     "buttonNextLabel": "Continuer",
     "buttonPrevLabel": "Retour",
     "commentPlaceholder": "Ajoutez des notes spécifiques pour votre rapport final (Optionnel)",
+    "leaveQuestionnaireModal": {
+      "title": "Quitter le questionnaire ?",
+      "description": "Si vous quittez maintenant, vos réponses seront perdues.",
+      "resetButtonLabel": "Quitter quand même",
+      "cancelButtonLabel": "Annuler"
+    },
     "checkpoint": {
       "buttonLabel": "Retour à"
     },
