@@ -4,7 +4,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import { motion } from "motion/react"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname, useRouter, useParams } from "next/navigation"
 // Components
 import LanguageSelect from "@/components/common/LanguageSelect/LanguageSelect"
 import ResetFormModal from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
@@ -13,7 +13,10 @@ import { SIMPLE_FADE_VARIANT } from "@/animations/common"
 // Actions
 import { clearAssessmentTracking } from "@/actions/tracking"
 // Types
+import { Locale } from "@/dictionaries/dictionaries"
 import { ResetFormModalProps } from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
+// Hooks
+import { useDownloadReport } from "@/hooks/useDownloadReport"
 
 export interface HeaderProps {
   stringConnector: string
@@ -32,16 +35,15 @@ const Header = ({
   const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
+  const params = useParams<{ lang?: Locale }>()
+  const lang = params.lang || "en"
+  const { downloadReport, isLoading } = useDownloadReport(lang)
 
   const isResultsPage = pathname.includes("/results")
 
   const handleBackButtonClick = () => {
-    if (isResultsPage) {
-      setIsResetFormModalOpen(true)
-      // router.push("/")
-    } else {
-      router.push("/")
-    }
+    if (isResultsPage) setIsResetFormModalOpen(true)
+    else router.push("/")
   }
 
   const handleResetForm = async () => {
@@ -59,8 +61,10 @@ const Header = ({
     router.push("/")
   }
 
-  const handleDownloadButtonClick = () => {
-    console.log("download button clicked")
+  const handleDownloadButtonClick = async () => {
+    await downloadReport()
+    handleResetForm()
+    router.push("/")
   }
 
   return (
@@ -77,6 +81,7 @@ const Header = ({
             {resetFormModal && (
               <ResetFormModal
                 {...resetFormModal}
+                downloadIsLoading={isLoading}
                 isOpen={isResetFormModalOpen}
                 setIsOpen={setIsResetFormModalOpen}
                 onDownloadClick={handleDownloadButtonClick}

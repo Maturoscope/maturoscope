@@ -13,6 +13,7 @@ export interface ResetFormModalProps {
 }
 
 interface ExtraProps {
+  downloadIsLoading: boolean
   onDownloadClick: () => void
   onResetClick: () => void
 }
@@ -23,6 +24,7 @@ const ResetFormModal = ({
   downloadButtonLabel,
   cancelButtonLabel,
   resetButtonLabel,
+  downloadIsLoading,
   isOpen,
   setIsOpen,
   onDownloadClick,
@@ -40,8 +42,8 @@ const ResetFormModal = ({
       </div>
       <div className="flex flex-col lg:flex-row-reverse gap-2 justify-between">
         <div className="flex flex-col lg:flex-row-reverse gap-2">
-          <Button accent onClick={onDownloadClick}>
-            {downloadButtonLabel}
+          <Button accent onClick={onDownloadClick} disabled={downloadIsLoading}>
+            {downloadIsLoading ? "Loading..." : downloadButtonLabel}
           </Button>
           <Button variant="ghost" onClick={() => setIsOpen(false)}>
             {cancelButtonLabel}
