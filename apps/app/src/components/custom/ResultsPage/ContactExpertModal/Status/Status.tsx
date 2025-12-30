@@ -24,6 +24,9 @@ interface ExtraProps {
   currentStep?: ModalStep
 }
 
+const EN_LOADING_BUTTON_LABEL = "Loading..."
+const FR_LOADING_BUTTON_LABEL = "Chargement..."
+
 const Status = ({
   isOpen,
   setIsOpen,
@@ -34,8 +37,9 @@ const Status = ({
   currentStep,
 }: StatusProps & ExtraProps) => {
   const { lang } = useParams<{ lang: Locale }>()
-  const isSuccess = currentStep === "successStatus"
   const { downloadReport, isLoading } = useDownloadReport(lang)
+  const loadingButtonLabel = lang === "en" ? EN_LOADING_BUTTON_LABEL : FR_LOADING_BUTTON_LABEL
+  const isSuccess = currentStep === "successStatus"
 
   const handleDownloadClick = async () => {
     await downloadReport()
@@ -65,7 +69,7 @@ const Status = ({
             accent
             disabled={isLoading}
           >
-            {isLoading ? "Loading..." : primaryButtonLabel}
+            {isLoading ? loadingButtonLabel : primaryButtonLabel}
           </Button>
         </div>
       </div>

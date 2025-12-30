@@ -162,7 +162,9 @@ const FR_CONTACT_INFO_FIELDS: ContactInfoForm = {
 }
 
 const EN_CLARIFICATION = "We respect your privacy. Your data is used exclusively to answer this inquiry."
+const EN_LOADING_BUTTON_LABEL = "Loading..."
 const FR_CLARIFICATION = "Nous respectons votre vie privée. Vos données sont utilisées exclusivement pour répondre à cette demande."
+const FR_LOADING_BUTTON_LABEL = "Chargement..."
 
 const ReachOut = ({
   title,
@@ -174,6 +176,7 @@ const ReachOut = ({
   setIsOpen,
   setCurrentStep,
 }: ReachOutProps & ExtraProps) => {
+  const [isLoading, setIsLoading] = useState(false)
   const { setContactInformation, selectedGaps } = useContactExpertContext()
   const { control, handleSubmit, formState } = useForm<ContactFormData>({
     mode: "onChange",
@@ -189,18 +192,20 @@ const ReachOut = ({
   })
   const [contactInfo, setContactInfo] = useState(EN_CONTACT_INFO_FIELDS)
   const { lang } = useParams<{ lang: Locale }>()
-
+  const loadingButtonLabel = lang === "en" ? EN_LOADING_BUTTON_LABEL : FR_LOADING_BUTTON_LABEL
   const clarification = lang === "en" ? EN_CLARIFICATION : FR_CLARIFICATION
 
   const onSubmit = async (data: ContactFormData) => {
     setContactInformation(data)
     const projectName = localStorage.getItem("projectName")
 
+    setIsLoading(true)
     const result = await requestContact({
       gaps: selectedGaps,
       contactInformation: data,
       projectName: projectName as string,
     })
+    setIsLoading(false)
 
     if (result.success) {
       setCurrentStep("successStatus")
@@ -274,7 +279,7 @@ const ReachOut = ({
             {secondaryButtonLabel}
           </Button>
           <Button variant="default" accent disabled={!isFormValid}>
-            {primaryButtonLabel}
+            {isLoading ? loadingButtonLabel : primaryButtonLabel}
           </Button>
         </div>
       </form>
