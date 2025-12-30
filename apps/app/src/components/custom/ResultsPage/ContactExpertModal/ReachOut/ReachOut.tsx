@@ -23,8 +23,8 @@ export interface ReachOutProps {
   primaryButtonLabel: string
   secondaryButtonLabel: string
   completedLabel: string
-  clarification: string
-  fields: {
+  clarification?: string
+  fields?: {
     name: string
     label: string
     placeholder: string
