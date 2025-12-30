@@ -53,8 +53,8 @@ export class ContactServicesDto {
   email: string;
 
   @IsString()
-  @IsNotEmpty()
-  phoneNumber: string;
+  @IsOptional()
+  phoneNumber?: string;
 
   @IsString()
   @IsOptional()
