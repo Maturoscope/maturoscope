@@ -1,16 +1,23 @@
 "use client"
 
 // Packages
+import { useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { motion } from "motion/react"
+import { usePathname, useRouter } from "next/navigation"
 // Components
 import LanguageSelect from "@/components/common/LanguageSelect/LanguageSelect"
+import ResetFormModal from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
 // Animations
 import { SIMPLE_FADE_VARIANT } from "@/animations/common"
+// Actions
+import { clearAssessmentTracking } from "@/actions/tracking"
+// Types
+import { ResetFormModalProps } from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
 
 export interface HeaderProps {
   stringConnector: string
+  resetFormModal?: ResetFormModalProps
 }
 
 interface ExtraProps {
@@ -20,7 +27,42 @@ interface ExtraProps {
 const Header = ({
   stringConnector,
   showBackButton = false,
+  resetFormModal,
 }: HeaderProps & ExtraProps) => {
+  const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const isResultsPage = pathname.includes("/results")
+
+  const handleBackButtonClick = () => {
+    if (isResultsPage) {
+      setIsResetFormModalOpen(true)
+      // router.push("/")
+    } else {
+      router.push("/")
+    }
+  }
+
+  const handleResetForm = async () => {
+    await clearAssessmentTracking()
+    localStorage.removeItem("form")
+    localStorage.removeItem("gaps")
+    localStorage.removeItem("level")
+    localStorage.removeItem("phases")
+    localStorage.removeItem("completedOn")
+    setIsResetFormModalOpen(false)
+  }
+
+  const handleResetButtonClick = () => {
+    handleResetForm()
+    router.push("/")
+  }
+
+  const handleDownloadButtonClick = () => {
+    console.log("download button clicked")
+  }
+
   return (
     <motion.header
       variants={SIMPLE_FADE_VARIANT}
@@ -32,9 +74,18 @@ const Header = ({
       <div className="flex items-center gap-2">
         {showBackButton && (
           <>
-            <Link
-              href="/"
+            {resetFormModal && (
+              <ResetFormModal
+                {...resetFormModal}
+                isOpen={isResetFormModalOpen}
+                setIsOpen={setIsResetFormModalOpen}
+                onDownloadClick={handleDownloadButtonClick}
+                onResetClick={handleResetButtonClick}
+              />
+            )}
+            <button
               className="w-9 h-9 cursor-pointer flex items-center justify-center"
+              onClick={handleBackButtonClick}
             >
               <Image
                 src="/icons/chevron-down.svg"
@@ -43,7 +94,7 @@ const Header = ({
                 height={16}
                 className="rotate-90"
               />
-            </Link>
+            </button>
             <div className="w-px h-9 bg-border" />
           </>
         )}

@@ -23,6 +23,7 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
 
   const {
     header: { stringConnector },
+    results: { ctaBanner: { resetFormModal } },
     homepage: { policy },
     results: { topBar, overview, unlockNextLevel, detailedReport, ctaBanner },
   } = dictionary
@@ -30,7 +31,7 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
   return (
     <main className="w-full h-full">
       <TrackCompletedAssessment />
-      <Header stringConnector={stringConnector} showBackButton />
+      <Header stringConnector={stringConnector} showBackButton resetFormModal={resetFormModal} />
       <ResultsPageWrapper dictionary={dictionary}>
         <ResultsTopBar {...topBar} lang={lang} />
         <Overview {...overview} />
