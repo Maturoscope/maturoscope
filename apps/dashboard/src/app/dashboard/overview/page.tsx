@@ -9,6 +9,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { formatKPINumber, formatYAxisLabel, formatTooltipValue, getYTickValues } from "@/utils/numberFormat";
 import { Info } from "lucide-react";
 import { Tooltip as UITooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { WelcomeModal } from "@/components/WelcomeModal";
 
 interface DashboardStatistics {
   analysisCompletionRate: number;
@@ -70,9 +71,36 @@ const CustomTooltip = ({ active, payload, label, t }: TooltipProps) => {
 
 export default function Page() {
   const { t } = useTranslation("DASHBOARD")
-  const { user } = useUserContext()
+  const { user, loading: userLoading } = useUserContext()
   const [statistics, setStatistics] = useState<DashboardStatistics | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+
+  // Check if user needs to see welcome modal
+  useEffect(() => {
+    if (userLoading || !user) return;
+
+    // Check if user has already dismissed the modal
+    const dismissedKey = `welcome_modal_dismissed_${user.organization?.id}`;
+    const dismissed = localStorage.getItem(dismissedKey);
+    
+    if (dismissed) return;
+
+    // Check if user is missing avatar or signature
+    const hasAvatar = user.organization?.avatar;
+    const hasSignature = user.organization?.signature;
+    
+    if (!hasAvatar || !hasSignature) {
+      setShowWelcomeModal(true);
+    }
+  }, [user, userLoading]);
+
+  const handleRemindLater = () => {
+    if (user?.organization?.id) {
+      const dismissedKey = `welcome_modal_dismissed_${user.organization.id}`;
+      localStorage.setItem(dismissedKey, 'true');
+    }
+  };
 
   useEffect(() => {
     const fetchStatistics = async () => {
@@ -296,6 +324,12 @@ export default function Page() {
           </>
         )}
       </div>
+      
+      <WelcomeModal
+        open={showWelcomeModal}
+        onOpenChange={setShowWelcomeModal}
+        onRemindLater={handleRemindLater}
+      />
     </>
   )
 }

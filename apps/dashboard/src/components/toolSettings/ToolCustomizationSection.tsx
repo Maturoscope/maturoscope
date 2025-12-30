@@ -1,8 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { Upload } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -11,28 +10,12 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { LanguageSelector } from '@/components/ui/language-selector'
-import { ToolCustomizationFormData, ToolPDFSignatureFormData, ToolLanguageFormData } from './useToolSettingsState'
-import Image from 'next/image'
-import { useImageVersion } from '@/hooks/useImageVersion'
-import { IMAGE_VERSION_CONSTANTS, UI_CONSTANTS } from '@/constants/imageVersion'
-import { validateFile, createPreviewUrl } from '@/utils/fileValidation'
+import { ToolCustomizationFormData, ToolLanguageFormData } from './useToolSettingsState'
 import { Separator } from '@/components/ui/separator'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
 
 interface ToolCustomizationSectionProps {
   customizationForm: ToolCustomizationFormData
   setCustomizationForm: React.Dispatch<React.SetStateAction<ToolCustomizationFormData>>
-  pdfSignatureForm: ToolPDFSignatureFormData
-  setPDFSignatureForm: React.Dispatch<React.SetStateAction<ToolPDFSignatureFormData>>
   languageForm: ToolLanguageFormData
   setLanguageForm: React.Dispatch<React.SetStateAction<ToolLanguageFormData>>
   errors: { [key: string]: string }
@@ -45,8 +28,6 @@ interface ToolCustomizationSectionProps {
 export function ToolCustomizationSection({
   customizationForm,
   setCustomizationForm,
-  pdfSignatureForm,
-  setPDFSignatureForm,
   languageForm,
   setLanguageForm,
   errors,
@@ -56,19 +37,6 @@ export function ToolCustomizationSection({
   onSaveAll,
 }: ToolCustomizationSectionProps) {
   const { t } = useTranslation('TOOL_SETTINGS')
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const [previewUrl, setPreviewUrl] = useState<string | null>(pdfSignatureForm.signatureUrl || null)
-  const [showRemoveSignatureDialog, setShowRemoveSignatureDialog] = useState(false)
-  const [signatureToRemove, setSignatureToRemove] = useState(false)
-  const { getVersionedUrl } = useImageVersion({
-    storageKey: IMAGE_VERSION_CONSTANTS.STORAGE_KEYS.SIGNATURE,
-    eventName: IMAGE_VERSION_CONSTANTS.EVENTS.SIGNATURE_UPDATED
-  });
-
-  useEffect(() => {
-    setPreviewUrl(pdfSignatureForm.signatureUrl || null)
-    setSignatureToRemove(false)
-  }, [pdfSignatureForm.signatureUrl])
 
   const handleCustomizationChange = (field: keyof ToolCustomizationFormData, value: string) => {
     setCustomizationForm(prev => ({ ...prev, [field]: value }))
@@ -92,51 +60,8 @@ export function ToolCustomizationSection({
     }
   }
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (!file) return
-
-    const validation = validateFile(file, 'signature')
-    if (!validation.isValid) {
-      setErrors(prev => ({
-        ...prev,
-        signature: validation.error!
-      }))
-      return
-    }
-
-    setErrors(prev => {
-      const newErrors = { ...prev }
-      delete newErrors.signature
-      return newErrors
-    })
-    setSignatureToRemove(false)
-
-    const url = createPreviewUrl(file)
-    setPreviewUrl(url)
-
-    setPDFSignatureForm(prev => ({
-      ...prev,
-      signatureFile: file,
-      signatureUrl: url
-    }))
-  }
-
-  const handleRemoveSignature = () => {
-    setShowRemoveSignatureDialog(true)
-  }
-
-  const confirmRemoveSignature = () => {
-    setSignatureToRemove(true)
-    setShowRemoveSignatureDialog(false)
-  }
-
-  const triggerFileInput = () => {
-    fileInputRef.current?.click()
-  }
-
   const handleSaveAll = async () => {
-    await onSaveAll(signatureToRemove)
+    await onSaveAll(false)
   }
 
   const fontOptions = [
@@ -237,79 +162,6 @@ export function ToolCustomizationSection({
           )}
         </div>
 
-        {/* PDF Signature Section */}
-        <div className="space-y-4">
-          <Label>{t('PDF_SIGNATURE.LABEL')}</Label>
-          
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div 
-                className={`${!previewUrl || signatureToRemove ? 'border' : 'border-0'} border-dashed border-gray-300 rounded-lg flex items-center justify-center relative`}
-                style={{ 
-                  width: `${UI_CONSTANTS.SIGNATURE_DIMENSIONS.WIDTH}px`, 
-                  height: `${UI_CONSTANTS.SIGNATURE_DIMENSIONS.HEIGHT}px` 
-                }}
-              >
-                {previewUrl && !signatureToRemove ? (
-                  <Image
-                    src={getVersionedUrl(previewUrl)}
-                    alt="Signature preview"
-                    className="rounded-lg"
-                    style={{
-                      maxHeight: `${UI_CONSTANTS.SIGNATURE_DIMENSIONS.MAX_DISPLAY_HEIGHT}px`,
-                      maxWidth: `${UI_CONSTANTS.SIGNATURE_DIMENSIONS.MAX_DISPLAY_WIDTH}px`,
-                      objectFit: 'contain'
-                    }}
-                    width={UI_CONSTANTS.SIGNATURE_DIMENSIONS.WIDTH}
-                    height={UI_CONSTANTS.SIGNATURE_DIMENSIONS.MAX_DISPLAY_HEIGHT}
-                    unoptimized
-                  />
-                ) : (
-                  <Upload className="h-4 w-4 text-gray-900" />
-                )}
-              </div>
-              
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={triggerFileInput}
-              >
-                {t('PDF_SIGNATURE.UPLOAD_BUTTON')}
-              </Button>
-            </div>
-
-            <Button
-              type="button"
-              variant="destructive"
-              size="sm"
-              disabled={!previewUrl && !pdfSignatureForm.signatureUrl}
-              onClick={handleRemoveSignature}
-            >
-              {t('PDF_SIGNATURE.REMOVE_BUTTON')}
-            </Button>
-          </div>
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".svg,.png,.jpg,.jpeg"
-            onChange={handleFileSelect}
-            className="hidden"
-          />
-
-          {errors.signature && (
-            <p className="text-sm text-red-600">{errors.signature}</p>
-          )}
-
-          <p className="text-xs text-gray-900 font-medium">
-            {t('PDF_SIGNATURE.REQUIREMENTS')}
-          </p>
-          <p className="text-xs text-gray-500">
-            {t('PDF_SIGNATURE.DESCRIPTION')}
-          </p>
-        </div>
-
         {/* Language Selection */}
         <div className="space-y-2">
           <LanguageSelector
@@ -342,32 +194,6 @@ export function ToolCustomizationSection({
           </Button>
         </div>
       </div>
-
-      {/* Remove Signature Confirmation Dialog */}
-      <AlertDialog open={showRemoveSignatureDialog} onOpenChange={setShowRemoveSignatureDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t('PDF_SIGNATURE.REMOVE_DIALOG.TITLE')}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {t('PDF_SIGNATURE.REMOVE_DIALOG.DESCRIPTION')}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="mt-4">
-            <AlertDialogCancel 
-              onClick={confirmRemoveSignature}
-              className="text-red-600 hover:text-red-700 border-gray-300"
-            >
-              {t('PDF_SIGNATURE.REMOVE_DIALOG.CONFIRM')}
-            </AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={() => setShowRemoveSignatureDialog(false)}
-              className="bg-gray-900 hover:bg-gray-800 text-white"
-            >
-              {t('PDF_SIGNATURE.REMOVE_DIALOG.CANCEL')}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   )
 }

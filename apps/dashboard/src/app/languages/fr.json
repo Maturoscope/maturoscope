@@ -115,6 +115,7 @@
     "REPORTS": "Rapports",
     "ORGANIZATIONS": "Organisations",
     "LOG_OUT": "Se déconnecter",
+    "NEED_HELP_CONTACT_US": "Besoin d'aide ? Contactez-nous",
     "KPIS": {
       "ANALYSIS_COMPLETION_RATE": "Taux de complétion de l'analyse",
       "CONTACT_RATE": "Taux de contact",
@@ -756,5 +757,11 @@
       "LOAD_FAILED": "Échec du chargement des organisations.",
       "LOAD_ERROR": "Erreur inattendue lors de la récupération des organisations."
     }
+  },
+  "WELCOME_MODAL": {
+    "TITLE": "Bienvenue ! Configurons votre organisation.",
+    "DESCRIPTION": "Aidez vos utilisateurs à reconnaître votre organisation en ajoutant votre logo et votre avatar. Ils apparaîtront sur tous les questionnaires, e-mails et PDF.",
+    "REMIND_LATER": "Me le rappeler plus tard",
+    "GO_TO_SETTINGS": "Aller aux paramètres"
   }
 }

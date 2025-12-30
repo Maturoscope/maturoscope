@@ -27,9 +27,12 @@ import { OrganizationService } from "@/services/organization.service";
 import { Input } from "@/components/ui/input";
 import { useImageVersion } from "@/hooks/useImageVersion";
 import { IMAGE_VERSION_CONSTANTS } from "@/constants/imageVersion";
-import { revokePreviewUrl, clearFileInput } from "@/utils/fileValidation";
+import { revokePreviewUrl, clearFileInput, validateFile, createPreviewUrl } from "@/utils/fileValidation";
 import { AvatarUploadSection } from "@/components/profile";
-import { Copy } from "lucide-react";
+import { Copy, Upload } from "lucide-react";
+import Image from "next/image";
+import { Label } from "@/components/ui/label";
+import { UI_CONSTANTS } from "@/constants/imageVersion";
 
 export default function SettingsPage() {
   const { t } = useTranslation("TOOL_SETTINGS");
@@ -65,6 +68,8 @@ export default function SettingsPage() {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [avatarError, setAvatarError] = useState<string>('');
   const [showCopyMessage, setShowCopyMessage] = useState(false);
+  const [showRemoveSignatureDialog, setShowRemoveSignatureDialog] = useState(false);
+  const [signatureToRemove, setSignatureToRemove] = useState(false);
 
   // Use the custom hook for state management
   const settingsState = useToolSettingsState();
@@ -103,11 +108,10 @@ export default function SettingsPage() {
   // Profile changes tracking
   const hasProfileChanges = avatarFile !== null || avatarToRemove;
 
-  // Customization changes tracking
+  // Customization changes tracking (PDF Signature moved to Profile)
   const hasCustomizationChanges = 
     settingsState.customizationForm.font !== settingsState.originalCustomizationForm.font ||
     settingsState.customizationForm.theme !== settingsState.originalCustomizationForm.theme ||
-    settingsState.pdfSignatureForm.signatureFile !== null ||
     settingsState.languageForm.language !== settingsState.originalLanguageForm.language;
 
   // Intercept navigation when there are unsaved changes
@@ -237,8 +241,53 @@ export default function SettingsPage() {
     setShowRemoveAvatarDialog(false);
   };
 
+  const handleRemoveSignatureClick = () => {
+    setShowRemoveSignatureDialog(true);
+  };
+
+  const confirmRemoveSignature = () => {
+    setSignatureToRemove(true);
+    setShowRemoveSignatureDialog(false);
+  };
+
+  const triggerSignatureFileInput = () => {
+    const input = document.getElementById("signature-upload") as HTMLInputElement;
+    input?.click();
+  };
+
+  const handleSignatureFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const validation = validateFile(file, 'signature');
+    if (!validation.isValid) {
+      settingsState.setErrors(prev => ({
+        ...prev,
+        signature: validation.error!
+      }));
+      return;
+    }
+
+    settingsState.setErrors(prev => {
+      const newErrors = { ...prev };
+      delete newErrors.signature;
+      return newErrors;
+    });
+    setSignatureToRemove(false);
+
+    const url = createPreviewUrl(file);
+    settingsState.setPDFSignatureForm(prev => ({
+      ...prev,
+      signatureFile: file,
+      signatureUrl: url
+    }));
+  };
+
   const handleUpdateProfile = async () => {
-    if (!avatarFile && !avatarToRemove) {
+    const hasAvatarChanges = avatarFile || avatarToRemove;
+    const hasSignatureChanges = settingsState.pdfSignatureForm.signatureFile || signatureToRemove;
+    
+    if (!hasAvatarChanges && !hasSignatureChanges) {
       setErrorMessage("No changes to save.");
       setShowErrorToast(true);
       setTimeout(() => setShowErrorToast(false), 3000);
@@ -253,6 +302,7 @@ export default function SettingsPage() {
       setErrorMessage('');
       setAvatarError('');
 
+      // Handle avatar
       if (avatarToRemove) {
         await OrganizationService.removeAvatar();
         setAvatarToRemove(false);
@@ -266,6 +316,29 @@ export default function SettingsPage() {
         setAvatarFile(null);
         
         const input = document.getElementById("avatar-upload") as HTMLInputElement;
+        if (input) {
+          input.value = "";
+        }
+      }
+
+      // Handle PDF signature
+      if (signatureToRemove) {
+        await OrganizationService.removeSignature();
+        settingsState.setPDFSignatureForm({
+          signatureFile: null,
+          signatureUrl: ''
+        });
+        setSignatureToRemove(false);
+        updateSignatureVersion();
+      } else if (settingsState.pdfSignatureForm.signatureFile) {
+        const result = await OrganizationService.uploadSignature(settingsState.pdfSignatureForm.signatureFile);
+        settingsState.setPDFSignatureForm({
+          signatureFile: null,
+          signatureUrl: result.signature
+        });
+        updateSignatureVersion();
+        
+        const input = document.getElementById("signature-upload") as HTMLInputElement;
         if (input) {
           input.value = "";
         }
@@ -304,17 +377,33 @@ export default function SettingsPage() {
            
             <Separator />
             <div className="space-y-6">
-              {/* Organization Name */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
-                  {tp("NAME.LABEL")}
-                </label>
-                <Input
-                  type="text"
-                  value={user?.organization?.name || tp("NAME.VALUE")}
-                  disabled
-                  className="bg-muted"
-                />
+              {/* Name and Email in two columns */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Organization Name */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    {tp("NAME.LABEL")}
+                  </label>
+                  <Input
+                    type="text"
+                    value={user?.organization?.name || tp("NAME.VALUE")}
+                    disabled
+                    className="bg-muted"
+                  />
+                </div>
+
+                {/* Email */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    {tp("EMAIL.LABEL")}
+                  </label>
+                  <Input
+                    type="email"
+                    value={user?.organization?.email || tp("EMAIL.VALUE")}
+                    disabled
+                    className="bg-muted"
+                  />
+                </div>
               </div>
 
               {/* Maturoscope Link */}
@@ -375,36 +464,87 @@ export default function SettingsPage() {
                 getVersionedUrl={getVersionedUrl}
               />
 
-              {/* Username */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
-                  {tp("USERNAME.LABEL")}
-                </label>
-                <Input
-                  type="text"
-                  value={user?.organization?.key || tp("USERNAME.VALUE")}
-                  disabled
-                  className="bg-muted"
-                />
-              </div>
+              {/* PDF Signature */}
+              <div className="space-y-4">
+                <Label>{t('PDF_SIGNATURE.LABEL')}</Label>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div 
+                      className={`${!settingsState.pdfSignatureForm.signatureUrl || signatureToRemove ? 'border' : 'border-0'} border-dashed border-gray-300 rounded-lg flex items-center justify-center relative`}
+                      style={{ 
+                        width: `${UI_CONSTANTS.SIGNATURE_DIMENSIONS.WIDTH}px`, 
+                        height: `${UI_CONSTANTS.SIGNATURE_DIMENSIONS.HEIGHT}px` 
+                      }}
+                    >
+                      {settingsState.pdfSignatureForm.signatureUrl && !signatureToRemove ? (
+                        <Image
+                          src={getVersionedUrl(settingsState.pdfSignatureForm.signatureUrl)}
+                          alt="Signature preview"
+                          className="rounded-lg"
+                          style={{
+                            maxHeight: `${UI_CONSTANTS.SIGNATURE_DIMENSIONS.MAX_DISPLAY_HEIGHT}px`,
+                            maxWidth: `${UI_CONSTANTS.SIGNATURE_DIMENSIONS.MAX_DISPLAY_WIDTH}px`,
+                            objectFit: 'contain'
+                          }}
+                          width={UI_CONSTANTS.SIGNATURE_DIMENSIONS.WIDTH}
+                          height={UI_CONSTANTS.SIGNATURE_DIMENSIONS.MAX_DISPLAY_HEIGHT}
+                          unoptimized
+                        />
+                      ) : (
+                        <Upload className="h-4 w-4 text-gray-900" />
+                      )}
+                    </div>
+                    
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={triggerSignatureFileInput}
+                    >
+                      {t('PDF_SIGNATURE.UPLOAD_BUTTON')}
+                    </Button>
+                  </div>
 
-              {/* Email */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-700">
-                  {tp("EMAIL.LABEL")}
-                </label>
-                <Input
-                  type="email"
-                  value={user?.organization?.email || tp("EMAIL.VALUE")}
-                  disabled
-                  className="bg-muted"
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="sm"
+                    disabled={!settingsState.pdfSignatureForm.signatureUrl}
+                    onClick={handleRemoveSignatureClick}
+                  >
+                    {t('PDF_SIGNATURE.REMOVE_BUTTON')}
+                  </Button>
+                </div>
+
+                <input
+                  id="signature-upload"
+                  type="file"
+                  accept=".svg,.png,.jpg,.jpeg"
+                  onChange={handleSignatureFileSelect}
+                  className="hidden"
                 />
+
+                {settingsState.errors.signature && (
+                  <p className="text-sm text-red-600">{settingsState.errors.signature}</p>
+                )}
+
+                <p className="text-xs text-gray-900 font-medium">
+                  {t('PDF_SIGNATURE.REQUIREMENTS')}
+                </p>
+                <p className="text-xs text-gray-500">
+                  {t('PDF_SIGNATURE.DESCRIPTION')}
+                </p>
               </div>
 
               {/* Save Button */}
               <div className="flex justify-start">
                 <Button
-                  disabled={isUploadingAvatar || (!avatarFile && !avatarToRemove)}
+                  disabled={
+                    isUploadingAvatar || 
+                    ((!avatarFile && !avatarToRemove) && 
+                     (!settingsState.pdfSignatureForm.signatureFile && !signatureToRemove))
+                  }
                   onClick={handleUpdateProfile}
                   className={'px-6'}
                 >
@@ -419,15 +559,12 @@ export default function SettingsPage() {
           <ToolCustomizationSection
             customizationForm={settingsState.customizationForm}
             setCustomizationForm={settingsState.setCustomizationForm}
-            pdfSignatureForm={settingsState.pdfSignatureForm}
-            setPDFSignatureForm={settingsState.setPDFSignatureForm}
             languageForm={settingsState.languageForm}
             setLanguageForm={settingsState.setLanguageForm}
             errors={settingsState.errors}
             setErrors={settingsState.setErrors}
             isUpdating={
               settingsState.isUpdatingCustomization ||
-              settingsState.isUpdatingPDFSignature ||
               settingsState.isUpdatingLanguage
             }
             hasChanges={hasCustomizationChanges}
@@ -552,6 +689,32 @@ export default function SettingsPage() {
               className="bg-gray-900 hover:bg-gray-800 text-white"
             >
               {tp("AVATAR.REMOVE_DIALOG.CANCEL")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Remove Signature Confirmation Dialog */}
+      <AlertDialog open={showRemoveSignatureDialog} onOpenChange={setShowRemoveSignatureDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('PDF_SIGNATURE.REMOVE_DIALOG.TITLE')}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t('PDF_SIGNATURE.REMOVE_DIALOG.DESCRIPTION')}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-4">
+            <AlertDialogCancel 
+              onClick={confirmRemoveSignature}
+              className="text-red-600 hover:text-red-700 border-gray-300"
+            >
+              {t('PDF_SIGNATURE.REMOVE_DIALOG.CONFIRM')}
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={() => setShowRemoveSignatureDialog(false)}
+              className="bg-gray-900 hover:bg-gray-800 text-white"
+            >
+              {t('PDF_SIGNATURE.REMOVE_DIALOG.CANCEL')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

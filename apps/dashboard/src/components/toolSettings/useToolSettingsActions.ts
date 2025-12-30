@@ -124,7 +124,6 @@ export function useToolSettingsActions({
 
   const handleSaveAll = async (signatureToRemove: boolean = false) => {
     setIsUpdatingCustomization(true)
-    setIsUpdatingPDFSignature(true)
     setIsUpdatingLanguage(true)
     setErrors({})
 
@@ -133,31 +132,7 @@ export function useToolSettingsActions({
         throw new Error('Organization ID is required')
       }
 
-      // Handle PDF signature first
-      if (pdfSignatureForm.signatureFile || signatureToRemove) {
-        if (signatureToRemove) {
-          await OrganizationService.removeSignature()
-          const updatedForm = {
-            signatureFile: null,
-            signatureUrl: ''
-          }
-          setOriginalPDFSignatureForm(updatedForm)
-          setPDFSignatureForm(updatedForm)
-          updateSignatureVersion()
-        } else if (pdfSignatureForm.signatureFile) {
-          const result = await OrganizationService.uploadSignature(pdfSignatureForm.signatureFile)
-          await new Promise(resolve => setTimeout(resolve, 100))
-          const updatedForm = {
-            signatureFile: null,
-            signatureUrl: result.signature
-          }
-          setOriginalPDFSignatureForm(updatedForm)
-          setPDFSignatureForm(updatedForm)
-          updateSignatureVersion()
-        }
-      }
-
-      // Update font, theme, and language together
+      // Update font, theme, and language together (PDF Signature moved to Profile)
       await OrganizationService.updateSettings(organizationId, {
         font: customizationForm.font,
         theme: customizationForm.theme,
@@ -186,7 +161,6 @@ export function useToolSettingsActions({
       })
     } finally {
       setIsUpdatingCustomization(false)
-      setIsUpdatingPDFSignature(false)
       setIsUpdatingLanguage(false)
     }
   }

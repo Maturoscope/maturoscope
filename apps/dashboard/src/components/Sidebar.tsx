@@ -1,7 +1,7 @@
 "use client"
 
 import type * as React from "react"
-import { ChevronDown, LayoutDashboard, Users, Settings, File, SquareUser, LineChart } from "lucide-react"
+import { ChevronDown, LayoutDashboard, Users, Settings, File, SquareUser, LineChart, HelpCircle } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
@@ -13,6 +13,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -160,6 +161,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </Collapsible>
         ))}
       </SidebarContent>
+      <SidebarFooter className="p-4">
+        <SidebarMenuButton
+          asChild
+          className="w-full justify-start gap-3 px-6"
+        >
+          <a href="mailto:admin@synopp.io" className="flex items-center gap-3">
+            <HelpCircle className="h-4 w-4" />
+            <span>{t('NEED_HELP_CONTACT_US')}</span>
+          </a>
+        </SidebarMenuButton>
+      </SidebarFooter>
     </Sidebar>
   )
 }

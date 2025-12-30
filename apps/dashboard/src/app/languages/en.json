@@ -115,6 +115,7 @@
     "REPORTS": "Reports",
     "ORGANIZATIONS": "Organizations",
     "LOG_OUT": "Log Out",
+    "NEED_HELP_CONTACT_US": "Need help? Contact us",
     "KPIS": {
       "ANALYSIS_COMPLETION_RATE": "Analysis completion rate",
       "CONTACT_RATE": "Contact rate",
@@ -756,5 +757,11 @@
       "LOAD_FAILED": "Failed to load organizations.",
       "LOAD_ERROR": "Unexpected error fetching organizations."
     }
+  },
+  "WELCOME_MODAL": {
+    "TITLE": "Welcome! Let's set up your organization.",
+    "DESCRIPTION": "Help your users recognize your organization by adding your logo and avatar. They'll appear on all questionnaires, e-mails and PDFs.",
+    "REMIND_LATER": "Remind me later",
+    "GO_TO_SETTINGS": "Go to settings"
   }
 }
