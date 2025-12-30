@@ -34,6 +34,8 @@ interface ScalePayload {
 
 export interface ReportPayload {
   completedOn: string
+  projectName?: string
+  signature?: string
   trl: ScalePayload
   mkrl: ScalePayload
   mfrl: ScalePayload
@@ -52,7 +54,7 @@ export const generateReport = async (
   try {
     const organizationKey = await getOrganizationKeyFromCookies()
     const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/report/${lang}${organizationKey ? `?organizationKey=${organizationKey}` : ""}`
-    
+
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {

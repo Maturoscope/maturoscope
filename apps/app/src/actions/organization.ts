@@ -209,4 +209,23 @@ export const requestContact = async ({
   }
 }
 
+export const getOrganizationSignature = async (): Promise<string | null> => {
+  try {
+    const organizationKey = await getOrganizationKeyFromCookies()
+    if (!organizationKey) {
+      return null
+    }
+
+    const organization = await getOrganizationByKey(organizationKey)
+    if (!organization || typeof organization !== 'object') {
+      return null
+    }
+
+    return organization.signature || null
+  } catch (error) {
+    console.error("Error fetching organization signature:", error)
+    return null
+  }
+}
+
 export { getOrganizationByKey }

@@ -1,7 +1,7 @@
 "use client"
 
 // Packages
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { motion } from "motion/react"
 import { usePathname, useRouter, useParams } from "next/navigation"
@@ -13,6 +13,7 @@ import LeaveQuestionnaireModal from "@/components/custom/FormPage/LeaveQuestionn
 import { SIMPLE_FADE_VARIANT } from "@/animations/common"
 // Actions
 import { clearAssessmentTracking } from "@/actions/tracking"
+import { getOrganizationSignature } from "@/actions/organization"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
 import { BeforeYouGoModalProps } from "@/components/custom/ResultsPage/BeforeYouGoModal/BeforeYouGoModal"
@@ -38,11 +39,28 @@ const Header = ({
 }: HeaderProps & ExtraProps) => {
   const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
   const [isLeaveQuestionnaireModalOpen, setIsLeaveQuestionnaireModalOpen] = useState(false)
+  const [signature, setSignature] = useState<string | null>(null)
   const router = useRouter()
   const pathname = usePathname()
   const params = useParams<{ lang?: Locale }>()
   const lang = params.lang || "en"
   const { downloadReport, isLoading } = useDownloadReport(lang)
+
+  useEffect(() => {
+    // Try to get signature from localStorage first
+    const storedSignature = localStorage.getItem("signature")
+    if (storedSignature) {
+      setSignature(storedSignature)
+    } else {
+      // If not in localStorage, fetch it
+      getOrganizationSignature().then((sig) => {
+        if (sig) {
+          localStorage.setItem("signature", sig)
+          setSignature(sig)
+        }
+      })
+    }
+  }, [])
 
   const isResultsPage = pathname.includes("/results")
 
@@ -136,12 +154,21 @@ const Header = ({
 
           <span className="text-sm font-medium">{stringConnector}</span>
 
-          <Image
-            src="/icons/nobatek.svg"
-            alt="Nobatek"
-            width={64}
-            height={20}
-          />
+          {signature ? (
+            <Image
+              src={signature}
+              alt="Signature"
+              width={64}
+              height={20}
+            />
+          ) : (
+            <Image
+              src="/icons/nobatek.svg"
+              alt="Nobatek"
+              width={64}
+              height={20}
+            />
+          )}
         </div>
       </div>
       <LanguageSelect />
