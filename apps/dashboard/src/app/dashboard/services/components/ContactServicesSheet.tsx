@@ -75,9 +75,6 @@ export function ContactServicesSheet({
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = t("CONTACT.INVALID_EMAIL");
     }
-    if (!formData.phoneNumber.trim()) {
-      newErrors.phoneNumber = t("CONTACT.PHONE_REQUIRED");
-    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -238,7 +235,7 @@ export function ContactServicesSheet({
 
           <div className="space-y-2">
             <Label htmlFor="phoneNumber">
-              {t("CONTACT.PHONE.LABEL")} *
+              {t("CONTACT.PHONE.LABEL")}
             </Label>
             <Input
               id="phoneNumber"

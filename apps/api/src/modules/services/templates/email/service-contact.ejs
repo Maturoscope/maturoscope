@@ -126,10 +126,12 @@
                         <div style="color:#0A0A0A;font-size:14px;font-weight:600;line-height:20px;"><%= clientData.email %></div>
                       </div>
 
-                      <div style="border-top:1px solid #E5E7EB;padding:18px 0;">
-                        <div style="color:#737373;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;"><%= content.phoneLabel %></div>
-                        <div style="color:#0A0A0A;font-size:14px;font-weight:600;line-height:20px;"><%= clientData.phoneNumber %></div>
-                      </div>
+                      <% if (clientData.phoneNumber) { %>
+                        <div style="border-top:1px solid #E5E7EB;padding:18px 0;">
+                          <div style="color:#737373;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;"><%= content.phoneLabel %></div>
+                          <div style="color:#0A0A0A;font-size:14px;font-weight:600;line-height:20px;"><%= clientData.phoneNumber %></div>
+                        </div>
+                      <% } %>
 
                       <% if (clientData.additionalInformation) { %>
                         <div style="border-top:1px solid #E5E7EB;padding:18px 0 0 0;">

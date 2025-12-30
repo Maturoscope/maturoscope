@@ -23,7 +23,7 @@ interface ServiceContactEmailPayload {
     firstName: string;
     lastName: string;
     email: string;
-    phoneNumber: string;
+    phoneNumber?: string;
     additionalInformation?: string;
   };
   projectData: {
@@ -259,7 +259,7 @@ export class ServiceContactMailService extends BaseMailService implements OnModu
             '', // extra blank line after "Category & level ..."
             `${content.forwardClientLabel}: ${clientFullName}`,
             `${content.forwardClientEmailLabel}: ${clientData.email}`,
-            `${content.forwardClientPhoneLabel}: ${clientData.phoneNumber}`,
+            clientData.phoneNumber ? `${content.forwardClientPhoneLabel}: ${clientData.phoneNumber}` : null,
             '',
             '', // extra blank line after client phone
             `${content.forwardThanksLabel},`,
