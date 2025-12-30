@@ -1,5 +1,3 @@
-// Actions
-import { getOrganizationByKey } from "@/actions/organization"
 // Components
 import Header from "@/components/common/Header/Header"
 import Hero from "@/components/custom/Homepage/Hero/Hero"
@@ -10,17 +8,12 @@ import FormRedirectHandler from "@/components/common/FormRedirectHandler/FormRed
 import { getDictionary, Locale } from "@/dictionaries/dictionaries"
 
 type HomePageProps = {
-  searchParams: Promise<{ key?: string }>
   params: Promise<{ lang: Locale }>
 }
 
-const HomePage = async ({ searchParams, params }: HomePageProps) => {
-  const { key } = await searchParams
+const HomePage = async ({ params }: HomePageProps) => {
   const { lang } = await params
   const dictionary = await getDictionary(lang)
-  const organization = await getOrganizationByKey(key)
-
-  console.log({ organization })
 
   const {
     header: { stringConnector },

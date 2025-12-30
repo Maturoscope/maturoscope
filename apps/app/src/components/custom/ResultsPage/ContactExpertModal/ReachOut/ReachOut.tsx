@@ -195,15 +195,12 @@ const ReachOut = ({
   const onSubmit = async (data: ContactFormData) => {
     setContactInformation(data)
     const projectName = localStorage.getItem("projectName")
-    console.log("🔍 Project name: ", projectName)
 
     const result = await requestContact({
       gaps: selectedGaps,
       contactInformation: data,
       projectName: projectName as string,
     })
-
-    console.log("🔍 Request contact result: ", result)
 
     if (result.success) {
       setCurrentStep("successStatus")

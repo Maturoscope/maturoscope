@@ -175,8 +175,6 @@ export const requestContact = async ({
 
   const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/services/contact?organizationKey=${organizationKey}`
 
-  console.log("🔍 Request contact endpoint: ", endpoint)
-
   const body = {
     gaps,
     company: contactInformation.organization,
@@ -188,8 +186,6 @@ export const requestContact = async ({
     projectName,
   }
 
-  console.log("🔍 Request contact body: ", body)
-
   try {
     const response = await fetch(endpoint, {
       method: "POST",
@@ -198,8 +194,6 @@ export const requestContact = async ({
       },
       body: JSON.stringify(body),
     })
-
-    console.log("🔍 Request contact response: ", response)
 
     if (!response.ok) {
       return { success: false, error: `API error: ${response.statusText}` }
