@@ -8,6 +8,7 @@ import { Country } from "./CountrySelect/CountrySelect"
 import PhoneInput from "./PhoneInput/PhoneInput"
 import { TextArea } from "./TextArea/TextArea"
 import * as RPNInput from "react-phone-number-input"
+import { cn } from "@/lib/utils"
 
 export interface ContactInfoFieldProps {
   name: string
@@ -21,19 +22,21 @@ interface InputProps<T extends FieldValues> {
   fieldProps: ContactInfoFieldProps
   control: Control<T>
   rules?: RegisterOptions<T>
+  className?: string
 }
 
 const Input = <T extends FieldValues>({
   fieldProps,
   control,
   rules,
+  className,
 }: InputProps<T>) => {
   const { name, label, placeholder, type, required } = fieldProps
 
   // For text and email inputs, we can use register
   if (type === "text" || type === "email") {
     return (
-      <div className="flex flex-col gap-2">
+      <div className={cn("flex flex-col gap-2", className)}>
         <label htmlFor={name} className="text-sm font-medium">
           {label}
           {required && <span className="text-destructive"> *</span>}
@@ -61,7 +64,7 @@ const Input = <T extends FieldValues>({
   // For country select
   if (type === "country") {
     return (
-      <div className="flex flex-col gap-2">
+      <div className={cn("flex flex-col gap-2", className)}>
         <label htmlFor={name} className="text-sm font-medium">
           {label}
           {required && <span className="text-destructive"> *</span>}
@@ -87,7 +90,7 @@ const Input = <T extends FieldValues>({
   // For phone input
   if (type === "phone") {
     return (
-      <div className="flex flex-col gap-2">
+      <div className={cn("flex flex-col gap-2", className)}>
         <label htmlFor={name} className="text-sm font-medium">
           {label}
           {required && <span className="text-destructive"> *</span>}
@@ -111,7 +114,7 @@ const Input = <T extends FieldValues>({
   // For textarea
   if (type === "textarea") {
     return (
-      <div className="flex flex-col gap-2">
+      <div className={cn("flex flex-col gap-2", className)}>
         <label htmlFor={name} className="text-sm font-medium">
           {label}
           {required && <span className="text-destructive"> *</span>}
@@ -124,13 +127,16 @@ const Input = <T extends FieldValues>({
             <TextArea
               id={name}
               placeholder={placeholder}
+              maxLength={280}
               value={field.value ?? ""}
               onChange={field.onChange}
               onBlur={field.onBlur}
               ref={field.ref}
+              className={cn("resize-none", className)}
             />
           )}
         />
+        <p className="text-sm text-muted-foreground w-full text-right">0/280</p>
       </div>
     )
   }

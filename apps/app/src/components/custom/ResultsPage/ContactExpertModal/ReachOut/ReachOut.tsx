@@ -216,10 +216,6 @@ const ReachOut = ({
     setContactInfo(lang === "en" ? EN_CONTACT_INFO_FIELDS : FR_CONTACT_INFO_FIELDS)
   }, [lang])
 
-  // TODO: Add country field for v2
-  const fieldsToShow: ContactInfoField[] = ["organization", "firstName", "lastName", "email", "phoneNumber", "additionalInformation"]
-  const visibleFields = fieldsToShow.map((key) => contactInfo[key]).filter(Boolean)
-
   return (
     <Modal
       isOpen={isOpen}
@@ -256,17 +252,15 @@ const ReachOut = ({
         </div>
 
         <div className="flex flex-col gap-4 max-h-[330px] overflow-y-auto lg:max-h-none">
-          <div className="flex flex-col lg:grid grid-cols-2 gap-4">
-            {visibleFields.map((field) => (
-              <Input
-                key={field.name}
-                fieldProps={field}
-                control={control}
-                rules={{
-                  required: field.required ? `${field.label} is required` : false,
-                }}
-              />
-            ))}
+          <div className="flex flex-col gap-4">
+            <Input fieldProps={contactInfo.organization} control={control} />
+            <div className="flex flex-col gap-2 lg:grid grid-cols-2">
+              <Input fieldProps={contactInfo.firstName} control={control} rules={{ required: true }} />
+              <Input fieldProps={contactInfo.lastName} control={control} rules={{ required: true }} />
+              <Input fieldProps={contactInfo.email} control={control} rules={{ required: true }} />
+              <Input fieldProps={contactInfo.phoneNumber} control={control} />
+            </div>
+            <Input fieldProps={contactInfo.additionalInformation} control={control} />
           </div>
 
           <p className="text-sm text-muted-foreground lg:mb-14">{clarification}</p>
