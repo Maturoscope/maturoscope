@@ -64,8 +64,8 @@
   --accent: #9D174D;
 }
 
-/* Theme 5: Teal */
-[data-accent-theme="purple"] {
+/* Theme 5: Violet */
+[data-accent-theme="violet"] {
   --accent: #5B21B6;
 }
 
@@ -119,11 +119,13 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
