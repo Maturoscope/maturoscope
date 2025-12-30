@@ -103,6 +103,13 @@
       "downloadButtonLabel": "Download report",
       "talkButtonLabel": "Talk to an expert"
     },
+    "beforeYouGoModal": {
+      "title": "Before you go...",
+      "description": "Since we don't save your responses, make sure you've downloaded your assessment report. You won't be able to access it later.",
+      "downloadButtonLabel": "Download and leave",
+      "cancelButtonLabel": "Cancel",
+      "resetButtonLabel": "Leave anyway"
+    },
     "overview": {
       "title": "Overview",
       "learnMoreButtonLabel": "Learn more",

@@ -7,20 +7,20 @@ import { motion } from "motion/react"
 import { usePathname, useRouter, useParams } from "next/navigation"
 // Components
 import LanguageSelect from "@/components/common/LanguageSelect/LanguageSelect"
-import ResetFormModal from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
+import BeforeYouGoModal from "@/components/custom/ResultsPage/BeforeYouGoModal/BeforeYouGoModal"
 // Animations
 import { SIMPLE_FADE_VARIANT } from "@/animations/common"
 // Actions
 import { clearAssessmentTracking } from "@/actions/tracking"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
-import { ResetFormModalProps } from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
+import { BeforeYouGoModalProps } from "@/components/custom/ResultsPage/BeforeYouGoModal/BeforeYouGoModal"
 // Hooks
 import { useDownloadReport } from "@/hooks/useDownloadReport"
 
 export interface HeaderProps {
   stringConnector: string
-  resetFormModal?: ResetFormModalProps
+  beforeYouGoModal?: BeforeYouGoModalProps
 }
 
 interface ExtraProps {
@@ -30,7 +30,7 @@ interface ExtraProps {
 const Header = ({
   stringConnector,
   showBackButton = false,
-  resetFormModal,
+  beforeYouGoModal,
 }: HeaderProps & ExtraProps) => {
   const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
   const router = useRouter()
@@ -78,9 +78,9 @@ const Header = ({
       <div className="flex items-center gap-2">
         {showBackButton && (
           <>
-            {resetFormModal && (
-              <ResetFormModal
-                {...resetFormModal}
+            {beforeYouGoModal && (
+              <BeforeYouGoModal
+                {...beforeYouGoModal}
                 downloadIsLoading={isLoading}
                 isOpen={isResetFormModalOpen}
                 setIsOpen={setIsResetFormModalOpen}

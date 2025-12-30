@@ -16,6 +16,7 @@ import { CTABannerProps } from "@/components/custom/ResultsPage/CTABanner/CTABan
 import { SupportNeededProps } from "@/components/custom/ResultsPage/ContactExpertModal/SupportNeeded/SupportNeeded"
 import { ReachOutProps } from "@/components/custom/ResultsPage/ContactExpertModal/ReachOut/ReachOut"
 import { StatusProps } from "@/components/custom/ResultsPage/ContactExpertModal/Status/Status"
+import { BeforeYouGoModalProps } from "@/components/custom/ResultsPage/BeforeYouGoModal/BeforeYouGoModal"
 
 type DictionaryStage = Omit<StageType, "questions">
 
@@ -44,6 +45,7 @@ export type Dictionary = {
   >
   results: {
     topBar: Omit<ResultsTopBarProps, "lang">
+    beforeYouGoModal: BeforeYouGoModalProps
     overview: OverviewProps
     unlockNextLevel: UnlockNextLevelProps
     detailedReport: DetailedReportProps
