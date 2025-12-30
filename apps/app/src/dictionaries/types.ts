@@ -5,7 +5,6 @@ import { BackToHomeBarProps } from "@/components/common/BackBar/BackBar"
 import { HeroProps as HomepageHeroProps } from "@/components/custom/Homepage/Hero/Hero"
 import { PrivacyPolicyProps } from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
 import { SimpleFormProps } from "@/components/custom/BeginPage/SimpleForm/SimpleForm"
-import { HeroProps as WhyHeroProps } from "@/components/custom/WhyPage/Hero/Hero"
 import { StageType } from "@/components/custom/FormPage/Form/Form"
 import { HeroProps as ReviewHeroProps } from "@/components/custom/ReviewPage/Hero/Hero"
 import { QuestionEditorProps } from "@/components/custom/ReviewPage/QuestionEditor/QuestionEditor"
@@ -14,14 +13,11 @@ import { OverviewProps } from "@/components/custom/ResultsPage/Overview/Overview
 import { UnlockNextLevelProps } from "@/components/custom/ResultsPage/UnlockNextLevel/UnlockNextLevel"
 import { DetailedReportProps } from "@/components/custom/ResultsPage/DetailedReport/DetailedReport"
 import { CTABannerProps } from "@/components/custom/ResultsPage/CTABanner/CTABanner"
-import { ResetFormModalProps } from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
-import { CommonModalStepProps } from "@/components/custom/ResultsPage/ContactExpertModal/ContactExpertModal"
+import { SupportNeededProps } from "@/components/custom/ResultsPage/ContactExpertModal/SupportNeeded/SupportNeeded"
+import { ReachOutProps } from "@/components/custom/ResultsPage/ContactExpertModal/ReachOut/ReachOut"
+import { StatusProps } from "@/components/custom/ResultsPage/ContactExpertModal/Status/Status"
 
 type DictionaryStage = Omit<StageType, "questions">
-type ContactExpertModalStepProps = Pick<
-  CommonModalStepProps,
-  "title" | "description" | "primaryButtonLabel" | "secondaryButtonLabel"
->
 
 export type Dictionary = {
   lang: Locale
@@ -32,9 +28,6 @@ export type Dictionary = {
     policy: PrivacyPolicyProps
   }
   begin: SimpleFormProps
-  why: {
-    hero: WhyHeroProps
-  }
   form: {
     buttonNextLabel: string
     buttonPrevLabel: string
@@ -50,17 +43,16 @@ export type Dictionary = {
     "saveButtonLabel" | "cancelButtonLabel" | "commentPlaceholder"
   >
   results: {
-    topBar: ResultsTopBarProps
+    topBar: Omit<ResultsTopBarProps, "lang">
     overview: OverviewProps
     unlockNextLevel: UnlockNextLevelProps
     detailedReport: DetailedReportProps
     ctaBanner: CTABannerProps
-    resetFormModal: ResetFormModalProps
     contactExpertModal: {
-      supportNeeded: ContactExpertModalStepProps
-      reachOut: ContactExpertModalStepProps
-      successStatus: ContactExpertModalStepProps
-      failedStatus: ContactExpertModalStepProps
+      supportNeeded: SupportNeededProps
+      reachOut: Omit<ReachOutProps, "fields" | "clarification">
+      successStatus: StatusProps
+      failedStatus: StatusProps
     }
   }
 }
