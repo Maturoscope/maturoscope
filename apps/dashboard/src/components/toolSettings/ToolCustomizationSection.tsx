@@ -22,7 +22,7 @@ interface ToolCustomizationSectionProps {
   setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>
   isUpdating: boolean
   hasChanges: boolean
-  onSaveAll: (signatureToRemove?: boolean) => Promise<void>
+  onSaveAll: () => Promise<void>
 }
 
 export function ToolCustomizationSection({
@@ -61,7 +61,7 @@ export function ToolCustomizationSection({
   }
 
   const handleSaveAll = async () => {
-    await onSaveAll(false)
+    await onSaveAll()
   }
 
   const fontOptions = [

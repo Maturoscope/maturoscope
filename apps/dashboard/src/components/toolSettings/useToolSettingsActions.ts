@@ -122,7 +122,7 @@ export function useToolSettingsActions({
     }
   }
 
-  const handleSaveAll = async (signatureToRemove: boolean = false) => {
+  const handleSaveAll = async () => {
     setIsUpdatingCustomization(true)
     setIsUpdatingLanguage(true)
     setErrors({})
