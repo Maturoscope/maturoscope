@@ -78,6 +78,14 @@ export class ReportDataDto {
   @IsString()
   completedOn: string;
 
+  @IsString()
+  @IsOptional()
+  projectName?: string;
+
+  @IsString()
+  @IsOptional()
+  signature?: string;
+
   @ValidateNested()
   @Type(() => ScaleDataDto)
   trl: ScaleDataDto;

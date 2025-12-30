@@ -10,6 +10,7 @@ import { ReportPayload } from "@/actions/report"
 // Actions
 import { getQuestions, getRisks, RiskData } from "@/actions/questions"
 import { generateReport } from "@/actions/report"
+import { getOrganizationSignature } from "@/actions/organization"
 
 // Storage types
 export interface FormStorage {
@@ -171,9 +172,24 @@ export const useDownloadReport = (lang: Locale) => {
         { year: "numeric", month: "long", day: "numeric" }
       )
 
+      // Get projectName from localStorage
+      const projectName = localStorage.getItem("projectName") || undefined
+
+      // Get signature from localStorage or fetch it
+      let signature = localStorage.getItem("signature")
+      if (!signature) {
+        signature = await getOrganizationSignature()
+        if (signature) {
+          localStorage.setItem("signature", signature)
+        }
+      }
+      const signatureUrl = signature || undefined
+
       // Build the payload
       const payload: ReportPayload = {
         completedOn,
+        projectName,
+        signature: signatureUrl,
         trl: buildScalePayload(
           "trl",
           lang,
