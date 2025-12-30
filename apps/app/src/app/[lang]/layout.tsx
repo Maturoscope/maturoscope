@@ -51,9 +51,7 @@ export default async function RootLayout({
 
   const organizationKey = await getOrganizationKeyFromCookies()
   const { accentColor, font } = (await getOrganizationTheme(organizationKey)) ?? { accentColor: DEFAULT_ACCENT_THEME, font: DEFAULT_FONT_THEME }
-
   const fontClassName = FONTS_CLASSNAMES[font]
-  console.log("🔍 Font class name: ", fontClassName)
 
   return (
     <html

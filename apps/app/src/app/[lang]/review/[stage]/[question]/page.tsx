@@ -18,6 +18,7 @@ const QuestionPage = async ({ params }: QuestionPageProps) => {
   const dictionary = await getDictionary(lang)
   const {
     header: { stringConnector },
+    form: { leaveQuestionnaireModal },
     singleReview,
   } = dictionary
 
@@ -41,7 +42,7 @@ const QuestionPage = async ({ params }: QuestionPageProps) => {
 
   return (
     <main className="w-full h-full flex flex-col items-center justify-start pb-16">
-      <Header stringConnector={stringConnector} showBackButton />
+      <Header stringConnector={stringConnector} showBackButton leaveQuestionnaireModal={leaveQuestionnaireModal} />
       <QuestionEditor
         stageName={stage}
         lang={lang}

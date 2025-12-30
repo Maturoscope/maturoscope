@@ -1,16 +1,29 @@
 "use client"
 
 // Packages
+import { useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { motion } from "motion/react"
+import { usePathname, useRouter, useParams } from "next/navigation"
 // Components
 import LanguageSelect from "@/components/common/LanguageSelect/LanguageSelect"
+import BeforeYouGoModal from "@/components/custom/ResultsPage/BeforeYouGoModal/BeforeYouGoModal"
+import LeaveQuestionnaireModal from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
 // Animations
 import { SIMPLE_FADE_VARIANT } from "@/animations/common"
+// Actions
+import { clearAssessmentTracking } from "@/actions/tracking"
+// Types
+import { Locale } from "@/dictionaries/dictionaries"
+import { BeforeYouGoModalProps } from "@/components/custom/ResultsPage/BeforeYouGoModal/BeforeYouGoModal"
+import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
+// Hooks
+import { useDownloadReport } from "@/hooks/useDownloadReport"
 
 export interface HeaderProps {
   stringConnector: string
+  beforeYouGoModal?: BeforeYouGoModalProps
+  leaveQuestionnaireModal?: LeaveQuestionnaireModalProps
 }
 
 interface ExtraProps {
@@ -20,7 +33,45 @@ interface ExtraProps {
 const Header = ({
   stringConnector,
   showBackButton = false,
+  beforeYouGoModal,
+  leaveQuestionnaireModal,
 }: HeaderProps & ExtraProps) => {
+  const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
+  const [isLeaveQuestionnaireModalOpen, setIsLeaveQuestionnaireModalOpen] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname()
+  const params = useParams<{ lang?: Locale }>()
+  const lang = params.lang || "en"
+  const { downloadReport, isLoading } = useDownloadReport(lang)
+
+  const isResultsPage = pathname.includes("/results")
+
+  const handleBackButtonClick = () => {
+    if (isResultsPage) setIsResetFormModalOpen(true)
+    else setIsLeaveQuestionnaireModalOpen(true)
+  }
+
+  const handleResetForm = async () => {
+    await clearAssessmentTracking()
+    localStorage.removeItem("form")
+    localStorage.removeItem("gaps")
+    localStorage.removeItem("level")
+    localStorage.removeItem("phases")
+    localStorage.removeItem("completedOn")
+    setIsResetFormModalOpen(false)
+  }
+
+  const handleResetButtonClick = () => {
+    handleResetForm()
+    router.push("/")
+  }
+
+  const handleDownloadButtonClick = async () => {
+    await downloadReport()
+    handleResetForm()
+    router.push("/")
+  }
+
   return (
     <motion.header
       variants={SIMPLE_FADE_VARIANT}
@@ -32,9 +83,27 @@ const Header = ({
       <div className="flex items-center gap-2">
         {showBackButton && (
           <>
-            <Link
-              href="/"
+            {leaveQuestionnaireModal && (
+              <LeaveQuestionnaireModal
+                {...leaveQuestionnaireModal}
+                isOpen={isLeaveQuestionnaireModalOpen}
+                setIsOpen={setIsLeaveQuestionnaireModalOpen}
+                onResetClick={handleResetButtonClick}
+              />
+            )}
+            {beforeYouGoModal && (
+              <BeforeYouGoModal
+                {...beforeYouGoModal}
+                downloadIsLoading={isLoading}
+                isOpen={isResetFormModalOpen}
+                setIsOpen={setIsResetFormModalOpen}
+                onDownloadClick={handleDownloadButtonClick}
+                onResetClick={handleResetButtonClick}
+              />
+            )}
+            <button
               className="w-9 h-9 cursor-pointer flex items-center justify-center"
+              onClick={handleBackButtonClick}
             >
               <Image
                 src="/icons/chevron-down.svg"
@@ -43,7 +112,7 @@ const Header = ({
                 height={16}
                 className="rotate-90"
               />
-            </Link>
+            </button>
             <div className="w-px h-9 bg-border" />
           </>
         )}

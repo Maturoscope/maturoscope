@@ -55,6 +55,12 @@
     "buttonNextLabel": "Continuer",
     "buttonPrevLabel": "Retour",
     "commentPlaceholder": "Ajoutez des notes spécifiques pour votre rapport final (Optionnel)",
+    "leaveQuestionnaireModal": {
+      "title": "Quitter le questionnaire ?",
+      "description": "Si vous quittez maintenant, vos réponses seront perdues.",
+      "resetButtonLabel": "Quitter quand même",
+      "cancelButtonLabel": "Annuler"
+    },
     "checkpoint": {
       "buttonLabel": "Retour à"
     },
@@ -103,6 +109,13 @@
       "downloadButtonLabel": "Télécharger le rapport",
       "talkButtonLabel": "Parler à un expert"
     },
+    "beforeYouGoModal": {
+      "title": "Avant de partir...",
+      "description": "Puisque nous ne stockons pas vos réponses, assurez-vous de télécharger votre rapport d'évaluation. Vous ne pourrez pas y accéder plus tard.",
+      "downloadButtonLabel": "Télécharger et quitter",
+      "cancelButtonLabel": "Annuler",
+      "resetButtonLabel": "Quitter quand même"
+    },
     "overview": {
       "title": "Aperçu",
       "learnMoreButtonLabel": "En savoir plus",
@@ -122,7 +135,7 @@
         }
       ]
     },
-    "unlockNextLevel": {  
+    "unlockNextLevel": {
       "title": "Débloquez votre prochain niveau",
       "steps": [
         "Voir les résultats détaillés ci-dessous.",
@@ -147,7 +160,6 @@
       "or": "ou",
       "talkButtonLabel": "Parler à un expert",
       "resetButtonLabel": "Réinitialiser le questionnaire",
-
       "resetFormModal": {
         "title": "Réinitialiser le questionnaire",
         "description": "Cette action supprimera toutes vos réponses. Nous ne stockons pas vos réponses. Téléchargez votre rapport maintenant pour conserver un enregistrement de vos résultats.",

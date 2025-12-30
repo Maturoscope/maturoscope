@@ -4,7 +4,7 @@ import { ModalProps } from "@/components/common/Modal/Modal"
 import Modal from "@/components/common/Modal/Modal"
 import { Button } from "@/components/ui/button"
 
-export interface ResetFormModalProps {
+export interface BeforeYouGoModalProps {
   title: string
   description: string
   downloadButtonLabel: string
@@ -18,7 +18,7 @@ interface ExtraProps {
   onResetClick: () => void
 }
 
-const ResetFormModal = ({
+const BeforeYouGoModal = ({
   title,
   description,
   downloadButtonLabel,
@@ -29,7 +29,7 @@ const ResetFormModal = ({
   setIsOpen,
   onDownloadClick,
   onResetClick,
-}: ResetFormModalProps & Omit<ModalProps, "children"> & ExtraProps) => {
+}: BeforeYouGoModalProps & Omit<ModalProps, "children"> & ExtraProps) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -49,7 +49,7 @@ const ResetFormModal = ({
             {cancelButtonLabel}
           </Button>
         </div>
-        <Button variant="destructive" onClick={onResetClick}>
+        <Button variant="outline" onClick={onResetClick}>
           {resetButtonLabel}
         </Button>
       </div>
@@ -57,4 +57,4 @@ const ResetFormModal = ({
   )
 }
 
-export default ResetFormModal
+export default BeforeYouGoModal

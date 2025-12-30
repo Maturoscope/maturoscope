@@ -18,13 +18,14 @@ const ReviewPage = async ({ params }: ReviewPageProps) => {
   const dictionary = await getDictionary(lang)
   const {
     header: { stringConnector },
+    form: { leaveQuestionnaireModal },
     review,
     backBar,
   } = dictionary
 
   return (
     <main className="w-full flex flex-col items-center justify-start h-full">
-      <Header showBackButton stringConnector={stringConnector} />
+      <Header showBackButton stringConnector={stringConnector} leaveQuestionnaireModal={leaveQuestionnaireModal} />
       <BackBar buttonLabel={backBar.buttonLabel} />
       <Hero {...review} stageName={stage} />
       <AnswersGroup stageName={stage} lang={lang} />

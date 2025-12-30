@@ -162,7 +162,9 @@ const FR_CONTACT_INFO_FIELDS: ContactInfoForm = {
 }
 
 const EN_CLARIFICATION = "We respect your privacy. Your data is used exclusively to answer this inquiry."
+const EN_LOADING_BUTTON_LABEL = "Loading..."
 const FR_CLARIFICATION = "Nous respectons votre vie privée. Vos données sont utilisées exclusivement pour répondre à cette demande."
+const FR_LOADING_BUTTON_LABEL = "Chargement..."
 
 const ReachOut = ({
   title,
@@ -174,6 +176,7 @@ const ReachOut = ({
   setIsOpen,
   setCurrentStep,
 }: ReachOutProps & ExtraProps) => {
+  const [isLoading, setIsLoading] = useState(false)
   const { setContactInformation, selectedGaps } = useContactExpertContext()
   const { control, handleSubmit, formState } = useForm<ContactFormData>({
     mode: "onChange",
@@ -189,21 +192,20 @@ const ReachOut = ({
   })
   const [contactInfo, setContactInfo] = useState(EN_CONTACT_INFO_FIELDS)
   const { lang } = useParams<{ lang: Locale }>()
-
+  const loadingButtonLabel = lang === "en" ? EN_LOADING_BUTTON_LABEL : FR_LOADING_BUTTON_LABEL
   const clarification = lang === "en" ? EN_CLARIFICATION : FR_CLARIFICATION
 
   const onSubmit = async (data: ContactFormData) => {
     setContactInformation(data)
     const projectName = localStorage.getItem("projectName")
-    console.log("🔍 Project name: ", projectName)
 
+    setIsLoading(true)
     const result = await requestContact({
       gaps: selectedGaps,
       contactInformation: data,
       projectName: projectName as string,
     })
-
-    console.log("🔍 Request contact result: ", result)
+    setIsLoading(false)
 
     if (result.success) {
       setCurrentStep("successStatus")
@@ -218,10 +220,6 @@ const ReachOut = ({
   useEffect(() => {
     setContactInfo(lang === "en" ? EN_CONTACT_INFO_FIELDS : FR_CONTACT_INFO_FIELDS)
   }, [lang])
-
-  // TODO: Add country field for v2
-  const fieldsToShow: ContactInfoField[] = ["organization", "firstName", "lastName", "email", "phoneNumber", "additionalInformation"]
-  const visibleFields = fieldsToShow.map((key) => contactInfo[key]).filter(Boolean)
 
   return (
     <Modal
@@ -259,17 +257,15 @@ const ReachOut = ({
         </div>
 
         <div className="flex flex-col gap-4 max-h-[330px] overflow-y-auto lg:max-h-none">
-          <div className="flex flex-col lg:grid grid-cols-2 gap-4">
-            {visibleFields.map((field) => (
-              <Input
-                key={field.name}
-                fieldProps={field}
-                control={control}
-                rules={{
-                  required: field.required ? `${field.label} is required` : false,
-                }}
-              />
-            ))}
+          <div className="flex flex-col gap-4">
+            <Input fieldProps={contactInfo.organization} control={control} />
+            <div className="flex flex-col gap-2 lg:grid grid-cols-2">
+              <Input fieldProps={contactInfo.firstName} control={control} rules={{ required: true }} />
+              <Input fieldProps={contactInfo.lastName} control={control} rules={{ required: true }} />
+              <Input fieldProps={contactInfo.email} control={control} rules={{ required: true }} />
+              <Input fieldProps={contactInfo.phoneNumber} control={control} />
+            </div>
+            <Input fieldProps={contactInfo.additionalInformation} control={control} />
           </div>
 
           <p className="text-sm text-muted-foreground lg:mb-14">{clarification}</p>
@@ -283,7 +279,7 @@ const ReachOut = ({
             {secondaryButtonLabel}
           </Button>
           <Button variant="default" accent disabled={!isFormValid}>
-            {primaryButtonLabel}
+            {isLoading ? loadingButtonLabel : primaryButtonLabel}
           </Button>
         </div>
       </form>

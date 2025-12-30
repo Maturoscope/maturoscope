@@ -55,6 +55,12 @@
     "buttonNextLabel": "Continue",
     "buttonPrevLabel": "Back",
     "commentPlaceholder": "Add specific notes for your final report (Optional)",
+    "leaveQuestionnaireModal": {
+      "title": "Leave questionnaire?",
+      "description": "If you leave now, your responses will be lost.",
+      "resetButtonLabel": "Leave anyway",
+      "cancelButtonLabel": "Cancel"
+    },
     "checkpoint": {
       "buttonLabel": "Back to"
     },
@@ -102,6 +108,13 @@
       "subtitle": "Completed on ",
       "downloadButtonLabel": "Download report",
       "talkButtonLabel": "Talk to an expert"
+    },
+    "beforeYouGoModal": {
+      "title": "Before you go...",
+      "description": "Since we don't save your responses, make sure you've downloaded your assessment report. You won't be able to access it later.",
+      "downloadButtonLabel": "Download and leave",
+      "cancelButtonLabel": "Cancel",
+      "resetButtonLabel": "Leave anyway"
     },
     "overview": {
       "title": "Overview",

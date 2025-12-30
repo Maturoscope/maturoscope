@@ -2,7 +2,7 @@
 
 // Packages
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 // Components
 import { Button } from "@/components/ui/button"
 import ResetFormModal from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
@@ -14,8 +14,11 @@ import { cn } from "@/lib/utils"
 import { ResetIcon } from "@/components/icons"
 // Types
 import { ResetFormModalProps } from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
+import { Locale } from "@/dictionaries/dictionaries"
 // Actions
 import { clearAssessmentTracking } from "@/actions/tracking"
+// Hooks
+import { useDownloadReport } from "@/hooks/useDownloadReport"
 
 export interface CTABannerProps {
   title: string
@@ -40,8 +43,11 @@ const CTABanner = ({
   className,
 }: CTABannerProps & ExtraProps) => {
   const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
-  const { openModal } = useContactExpertContext()
   const router = useRouter()
+  const params = useParams<{ lang?: Locale }>()
+  const lang = params.lang || "en"
+  const { downloadReport, isLoading } = useDownloadReport(lang)
+  const { openModal } = useContactExpertContext()
 
   const handleResetForm = async () => {
     await clearAssessmentTracking()
@@ -62,14 +68,16 @@ const CTABanner = ({
     router.push("/")
   }
 
-  const handleDownloadButtonClick = () => {
-    console.log("download button clicked")
+  const handleDownloadButtonClick = async () => {
+    await downloadReport()
+    router.push("/")
   }
 
   return (
     <div className="w-full flex flex-col items-center justify-center mt-11 px-4 lg:px-6 mb-8">
       <ResetFormModal
         {...resetFormModal}
+        downloadIsLoading={isLoading}
         isOpen={isResetFormModalOpen}
         setIsOpen={setIsResetFormModalOpen}
         onDownloadClick={handleDownloadButtonClick}
