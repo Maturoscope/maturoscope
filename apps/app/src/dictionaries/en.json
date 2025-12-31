@@ -101,7 +101,13 @@
   "singleReview": {
     "cancelButtonLabel": "Cancel",
     "saveButtonLabel": "Save",
-    "commentPlaceholder": "Add specific notes for your final report (Optional)"
+    "commentPlaceholder": "Add specific notes for your final report (Optional)",
+    "unsavedChangesModal": {
+      "title": "Unsaved changes",
+      "description": "You have unsaved changes. If you leave now, your latest updates will be lost.",
+      "cancelButtonLabel": "Cancel",
+      "resetButtonLabel": "Leave Anyway"
+    }
   },
   "results": {
     "topBar": {

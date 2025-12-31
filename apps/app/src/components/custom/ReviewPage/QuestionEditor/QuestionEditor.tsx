@@ -6,14 +6,17 @@ import { useRouter } from "next/navigation"
 // Components
 import { Button } from "@/components/ui/button"
 import { CheckedIcon, UncheckedIcon } from "@/components/icons"
+import UnsavedChangesModal from "@/components/custom/ReviewPage/UnsavedChangesModal/UnsavedChangesModal"
 // Types
 import { StageId, QuestionData } from "@/components/custom/FormPage/Form/Form"
 import { Locale } from "@/dictionaries/dictionaries"
 import { DefaultValues } from "@/components/custom/FormPage/Form/default"
+import { UnsavedChangesModalProps } from "@/components/custom/ReviewPage/UnsavedChangesModal/UnsavedChangesModal"
 // Utils
 import { cn } from "@/lib/utils"
 // Actions
 import { submitAssessment, ScaleType } from "@/actions/organization"
+import { clearAssessmentTracking } from "@/actions/tracking"
 
 const STAGE_TO_SCALE: Record<StageId, ScaleType> = {
   trl: "TRL",
@@ -25,6 +28,10 @@ export interface QuestionEditorProps {
   saveButtonLabel: string
   cancelButtonLabel: string
   commentPlaceholder: string
+  unsavedChangesModal: UnsavedChangesModalProps
+}
+
+export interface ExtraProps {
   stageName: StageId
   lang: Locale
   question: QuestionData
@@ -34,13 +41,17 @@ const QuestionEditor = ({
   saveButtonLabel,
   cancelButtonLabel,
   commentPlaceholder,
+  unsavedChangesModal,
   stageName,
   lang,
   question,
-}: QuestionEditorProps) => {
+}: QuestionEditorProps & ExtraProps) => {
   const router = useRouter()
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null)
   const [comment, setComment] = useState<string>("")
+  const [isUnsavedChangesModalOpen, setIsUnsavedChangesModalOpen] = useState<boolean>(false)
+  const [initialOptionId, setInitialOptionId] = useState<string | null>(null)
+  const [initialComment, setInitialComment] = useState<string>("")
 
   useEffect(() => {
     // Read selected answer and comment from localStorage
@@ -52,10 +63,20 @@ const QuestionEditor = ({
     const savedComment = savedForm[stageName]?.comments?.[question.id] || ""
     setSelectedOptionId(answerId)
     setComment(savedComment)
+    // Store initial values for comparison
+    setInitialOptionId(answerId)
+    setInitialComment(savedComment)
   }, [stageName, question.id])
+
+  // Check if there are unsaved changes
+  const hasUnsavedChanges = () => {
+    return selectedOptionId !== initialOptionId || comment !== initialComment
+  }
 
   const handleOptionChange = (optionId: string) => {
     setSelectedOptionId(optionId)
+    // Clear comment when option changes
+    setComment("")
   }
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -99,6 +120,17 @@ const QuestionEditor = ({
   }
 
   const handleCancelClick = () => {
+    // If there are unsaved changes, show the modal
+    if (hasUnsavedChanges()) {
+      setIsUnsavedChangesModalOpen(true)
+    } else {
+      // No changes, navigate directly
+      router.push(`/${lang}/review/${stageName}`)
+    }
+  }
+
+  const handleResetClick = () => {
+    // Navigate away and discard changes (called from modal)
     router.push(`/${lang}/review/${stageName}`)
   }
 
@@ -106,6 +138,13 @@ const QuestionEditor = ({
 
   return (
     <div className="w-full max-w-[750px] flex-1 min-h-0 px-4 flex flex-col items-start mt-7 lg:box-content">
+      <UnsavedChangesModal
+        {...unsavedChangesModal}
+        isOpen={isUnsavedChangesModalOpen}
+        setIsOpen={setIsUnsavedChangesModalOpen}
+        onResetClick={handleResetClick}
+      />
+
       <div className="w-full flex flex-col items-start justify-start gap-2 mb-4 lg:mb-6">
         <h1 className="text-xl lg:text-3xl font-semibold">{question.title}</h1>
       </div>
@@ -176,7 +215,7 @@ const QuestionEditor = ({
         </Button>
         <Button
           onClick={handleSaveClick}
-          disabled={!selectedOptionId}
+          disabled={!selectedOptionId || !hasUnsavedChanges()}
           className="w-full lg:w-auto"
           accent
         >

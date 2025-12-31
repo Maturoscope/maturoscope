@@ -101,7 +101,13 @@
   "singleReview": {
     "cancelButtonLabel": "Annuler",
     "saveButtonLabel": "Enregistrer",
-    "commentPlaceholder": "Ajoutez des notes spécifiques pour votre rapport final (Optionnel)"
+    "commentPlaceholder": "Ajoutez des notes spécifiques pour votre rapport final (Optionnel)",
+    "unsavedChangesModal": {
+      "title": "Changements non enregistrés",
+      "description": "Vous avez des changements non enregistrés. Si vous quittez maintenant, vos dernières mises à jour seront perdues.",
+      "cancelButtonLabel": "Annuler",
+      "saveButtonLabel": "Quitter quand même"
+    }
   },
   "results": {
     "topBar": {
