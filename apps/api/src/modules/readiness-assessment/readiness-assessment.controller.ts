@@ -10,14 +10,12 @@ import {
   RiskAnalysisResultI18nDto,
 } from './dto/readiness-assessment.dto';
 import { OrganizationsService } from '../organizations/organizations.service';
-import { StatisticsService } from '../statistics/statistics.service';
 
 @Controller('readiness-assessment')
 export class ReadinessAssessmentController {
   constructor(
     private readonly readinessAssessmentService: ReadinessAssessmentService,
     private readonly organizationsService: OrganizationsService,
-    private readonly statisticsService: StatisticsService,
   ) {}
 
   /**
@@ -57,16 +55,6 @@ export class ReadinessAssessmentController {
     // Find organization by key
     const organization = await this.organizationsService.findByKey(organizationKey);
     const result = await this.readinessAssessmentService.assessScale(assessScaleDto, organization.id);
-    
-    // Track user by category and level
-    this.statisticsService.incrementUserByCategoryAndLevel(
-      organizationKey,
-      assessScaleDto.scale,
-      result.readinessLevel,
-    ).catch((error) => {
-      // Log error but don't fail the request
-      console.error('Failed to track user by category and level:', error);
-    });
     
     return result;
   }

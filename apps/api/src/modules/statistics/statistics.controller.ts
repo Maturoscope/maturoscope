@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Query } from '@nestjs/common';
+import { Controller, Get, Post, Req, Query, Body } from '@nestjs/common';
 import { StatisticsService } from './statistics.service';
 import { Auth } from '../../common/decorators/auth.decorator';
 import { Request } from 'express';
@@ -7,6 +7,7 @@ import { UsersService } from '../users/users.service';
 import { ForbiddenException } from '@nestjs/common';
 import { OrganizationsService } from '../organizations/organizations.service';
 import { ValidRoles } from 'src/common/auth-module/interfaces/valid-roles';
+import { IncrementUserStatisticsDto } from './dto/increment-user-statistics.dto';
 
 @Controller('statistics')
 export class StatisticsController {
@@ -202,6 +203,34 @@ export class StatisticsController {
 
     await this.statisticsService.incrementCompletedAssessments(organizationKey);
     return { success: true, message: 'Completed assessment tracked successfully' };
+  }
+
+  /**
+   * POST /statistics/track-category?organizationKey=hogwarts
+   * Track user count for a specific category and level
+   * PUBLIC endpoint - No authentication required
+   * @param organizationKey - Query parameter with organization key (e.g., "hogwarts")
+   * @param incrementUserDto - Contains category (TRL, MkRL, MfRL) and level (1-9)
+   */
+  @Post('track-category')
+  async incrementUserStatistics(
+    @Query('organizationKey') organizationKey: string,
+    @Body() incrementUserDto: IncrementUserStatisticsDto,
+  ) {
+    if (!organizationKey) {
+      throw new ForbiddenException('organizationKey query parameter is required');
+    }
+
+    await this.statisticsService.incrementUserByCategoryAndLevel(
+      organizationKey,
+      incrementUserDto.category,
+      incrementUserDto.level,
+    );
+
+    return {
+      success: true,
+      message: `User count incremented for category ${incrementUserDto.category} at level ${incrementUserDto.level}`,
+    };
   }
 }
 
