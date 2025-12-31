@@ -15,6 +15,7 @@
       "information": {
         "noAccount": "No account required",
         "noStored": "We don't store your information",
+        "tooltip": "We do not store, retain, or reuse any of the information you enter. All data is processed temporarily and automatically discarded to ensure complete confidentiality.",
         "buttonLabel": "Let's begin",
         "estimatedTime": "5 minutes"
       },

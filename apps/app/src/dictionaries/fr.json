@@ -15,6 +15,7 @@
       "information": {
         "noAccount": "Aucun compte requis",
         "noStored": "Nous ne stockons pas vos informations",
+        "tooltip": "Nous ne stockons, ne conservons ni ne réutilisons aucune des informations que vous entrez. Tous les données sont traitées temporairement et automatiquement supprimées pour garantir la confidentialité complète.",
         "buttonLabel": "Commençons",
         "estimatedTime": "5 minutes"
       },
