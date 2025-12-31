@@ -53,7 +53,7 @@ const AccordionTrigger = ({
           hasServices && "cursor-pointer"
         )}
       >
-        <div className="flex items-center gap-2 text-foreground font-semibold">
+        <div className="flex items-start lg:items-center gap-2 text-foreground font-semibold">
           <span className={cn("rounded-full w-6 h-6 shrink-0", indexColor)}>
             {index + 1}
           </span>
