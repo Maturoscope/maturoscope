@@ -64,6 +64,7 @@ const DetailedScale = ({
 
   return (
     <div
+      id={`scale-${id}`}
       className={cn(
         "w-full flex flex-col lg:flex-row gap-3.5 md:gap-6",
         className

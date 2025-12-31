@@ -20,6 +20,7 @@ interface OverviewCardProps {
   maxValue: number
   phase: DevelopmentPhase
   icon: React.ReactNode
+  stageKey?: string
 }
 
 const COLOR_TO_KEY: Record<string, string> = {
@@ -37,10 +38,20 @@ const OverviewCard = ({
   maxValue,
   phase,
   icon,
+  stageKey,
 }: OverviewCardProps) => {
   const { lang } = useParams<{ lang: Locale }>()
   const phaseName = phase?.phaseName?.[lang]
   const focusGoal = phase?.focusGoal?.[lang]
+
+  const handleLearnMoreClick = () => {
+    if (stageKey) {
+      const targetElement = document.getElementById(`scale-${stageKey}`)
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth", block: "start" })
+      }
+    }
+  }
 
   return (
     <div className="w-full flex flex-col bg-white rounded-2xl shadow-xs">
@@ -51,7 +62,9 @@ const OverviewCard = ({
             {label} {resultsSufixLabel}
           </h2>
         </div>
-        <span className="underline cursor-pointer">{learnMoreButtonLabel}</span>
+        <span className="underline cursor-pointer" onClick={handleLearnMoreClick}>
+          {learnMoreButtonLabel}
+        </span>
       </div>
 
       <div className="w-full flex flex-col items-center gap-6 pb-9 p-6 lg:pb-6">
