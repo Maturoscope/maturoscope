@@ -129,9 +129,10 @@ const Overview = ({
       </div>
 
       <div className="w-full gap-6 mt-4 hidden lg:flex px-4 lg:px-6">
-        {formattedStages.map((stage) => (
-          <OverviewCard key={stage.label} {...stage} />
-        ))}
+        {formattedStages.map((stage) => {
+          const stageKey = LABEL_TO_KEY[stage.label]
+          return <OverviewCard key={stage.label} {...stage} stageKey={stageKey} />
+        })}
       </div>
 
       <div className="w-full mt-4 lg:hidden flex flex-col gap-4 items-center">
@@ -144,11 +145,14 @@ const Overview = ({
             onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
             centeredSlides
           >
-            {formattedStages.map((stage) => (
-              <SwiperSlide key={stage.label}>
-                <OverviewCard {...stage} />
-              </SwiperSlide>
-            ))}
+            {formattedStages.map((stage) => {
+              const stageKey = LABEL_TO_KEY[stage.label]
+              return (
+                <SwiperSlide key={stage.label}>
+                  <OverviewCard {...stage} stageKey={stageKey} />
+                </SwiperSlide>
+              )
+            })}
           </Swiper>
         </div>
 
