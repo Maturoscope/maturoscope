@@ -16,7 +16,6 @@ import { UnsavedChangesModalProps } from "@/components/custom/ReviewPage/Unsaved
 import { cn } from "@/lib/utils"
 // Actions
 import { submitAssessment, ScaleType } from "@/actions/organization"
-import { clearAssessmentTracking } from "@/actions/tracking"
 
 const STAGE_TO_SCALE: Record<StageId, ScaleType> = {
   trl: "TRL",
