@@ -16,6 +16,8 @@ export interface DetailedReportProps {
   description: string
   copyPreLevel: string
   copyPostLevel: string
+  copyHighestLevel: string
+  copyLevelLabel: string
   serviceLabel: string
   comingSoonLabel: string
   focusLabel: string
@@ -56,6 +58,8 @@ const DetailedReport = ({
   description,
   copyPreLevel,
   copyPostLevel,
+  copyHighestLevel,
+  copyLevelLabel,
   serviceLabel,
   comingSoonLabel,
   focusLabel,
@@ -139,6 +143,8 @@ const DetailedReport = ({
             level={levelData[stageKey as keyof LevelStorage] ?? 0}
             copyPreLevel={copyPreLevel}
             copyPostLevel={copyPostLevel}
+            copyHighestLevel={copyHighestLevel}
+            copyLevelLabel={copyLevelLabel}
             serviceLabel={serviceLabel}
             comingSoonLabel={comingSoonLabel}
             focusLabel={focusLabel}

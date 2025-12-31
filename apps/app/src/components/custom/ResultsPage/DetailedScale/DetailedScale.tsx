@@ -14,6 +14,8 @@ interface DetailedScaleProps {
   level: number
   copyPreLevel: string
   copyPostLevel: string
+  copyHighestLevel: string
+  copyLevelLabel: string
   serviceLabel: string
   comingSoonLabel: string
   focusLabel: string
@@ -46,6 +48,8 @@ const DetailedScale = ({
   level,
   copyPreLevel,
   copyPostLevel,
+  copyHighestLevel,
+  copyLevelLabel,
   serviceLabel,
   comingSoonLabel,
   focusLabel,
@@ -56,6 +60,7 @@ const DetailedScale = ({
   className,
 }: DetailedScaleProps & ExtraProps) => {
   const { lang } = useParams<{ lang: Locale }>()
+  const levelSummary = level === 9 ? `${copyLevelLabel} ${level}: ${copyHighestLevel}` : `${copyPreLevel} ${level + 1}: ${copyPostLevel}`
 
   return (
     <div
@@ -113,7 +118,7 @@ const DetailedScale = ({
 
       <div className="w-full flex flex-col gap-2.5 p-6 rounded-3xl bg-white h-min">
         <span className="font-semibold text-base lg:text-xl">
-          {copyPreLevel} {level + 1}: {copyPostLevel}
+          {levelSummary}
         </span>
         <div className="flex flex-col">
           {gaps.map((gap, index) => (

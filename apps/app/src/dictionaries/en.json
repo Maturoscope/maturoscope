@@ -150,6 +150,8 @@
       "description": "Look for the \"Service available\" tags below to see where our experts can accelerate your progress.",
       "copyPreLevel": "To reach Level ",
       "copyPostLevel": "Complete the gaps below",
+      "copyLevelLabel": "Level",
+      "copyHighestLevel": "Highest level achieved",
       "serviceLabel": "Service available",
       "comingSoonLabel": "Coming soon",
       "focusLabel": "Current focus",

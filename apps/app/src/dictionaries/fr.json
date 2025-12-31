@@ -150,6 +150,8 @@
       "description": "Recherchez les étiquettes \"Service disponible\" ci-dessous pour voir où nos experts peuvent accélérer votre progression.",
       "copyPreLevel": "Pour atteindre le niveau ",
       "copyPostLevel": "Complétez les lacunes ci-dessous",
+      "copyLevelLabel": "Niveau",
+      "copyHighestLevel": "Niveau le plus élevé atteint",
       "serviceLabel": "Service disponible",
       "comingSoonLabel": "Bientôt disponible",
       "focusLabel": "Focus actuel",
