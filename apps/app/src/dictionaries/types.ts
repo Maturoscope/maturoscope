@@ -18,7 +18,6 @@ import { ReachOutProps } from "@/components/custom/ResultsPage/ContactExpertModa
 import { StatusProps } from "@/components/custom/ResultsPage/ContactExpertModal/Status/Status"
 import { BeforeYouGoModalProps } from "@/components/custom/ResultsPage/BeforeYouGoModal/BeforeYouGoModal"
 import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
-import { UnsavedChangesModalProps } from "@/components/custom/ReviewPage/UnsavedChangesModal/UnsavedChangesModal"
 
 type DictionaryStage = Omit<StageType, "questions">
 
@@ -42,7 +41,12 @@ export type Dictionary = {
     },
   }
   review: ReviewHeroProps
-  singleReview: QuestionEditorProps,
+  singleReview: QuestionEditorProps & {
+    toast: {
+      title: string
+      description: string
+    }
+  },
   results: {
     topBar: Omit<ResultsTopBarProps, "lang">
     beforeYouGoModal: BeforeYouGoModalProps

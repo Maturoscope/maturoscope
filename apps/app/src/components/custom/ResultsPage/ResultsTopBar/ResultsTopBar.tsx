@@ -62,11 +62,11 @@ const ResultsTopBar = ({
     const storedGaps = localStorage.getItem("gaps")
     if (storedGaps) {
       try {
-        const gaps = JSON.parse(storedGaps)
+        const gaps = JSON.parse(storedGaps) as Record<string, unknown>
         // Check if there's at least one gap with hasServices: true across all categories
-        const hasAnyService = Object.values(gaps).some((categoryGaps: any) => {
+        const hasAnyService = Object.values(gaps).some((categoryGaps: unknown) => {
           if (Array.isArray(categoryGaps)) {
-            return categoryGaps.some((gap: any) => gap.hasServices === true)
+            return categoryGaps.some((gap: { hasServices?: boolean }) => gap.hasServices === true)
           }
           return false
         })
