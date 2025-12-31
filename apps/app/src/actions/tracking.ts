@@ -53,10 +53,42 @@ const trackCompletedAssessment = async () => {
   return response.json()
 }
 
+const trackCompletedCategory = async (category: "TRL" | "MkRL" | "MfRL", level: number) => {
+  const cookieStore = await cookies()
+  const cookieKey = `tracked-category-${category}`
+  const trackedCategory = cookieStore.get(cookieKey)?.value
+
+  if (trackedCategory) {
+    return { success: false, error: `Category ${category} already tracked` }
+  }
+
+  const organizationKey = await getOrganizationKeyFromCookies()
+
+  if (!organizationKey) {
+    return { success: false, error: "Organization key not found" }
+  }
+
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/statistics/track-category?organizationKey=${organizationKey}`
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      category,
+      level,
+    }),
+  })
+
+  cookieStore.set(cookieKey, "true")
+
+  return response.json()
+}
+
 const clearAssessmentTracking = async () => {
   const cookieStore = await cookies()
   cookieStore.delete("started-assessment")
   cookieStore.delete("completed-assessment")
 }
 
-export { trackStartedAssessment, trackCompletedAssessment, clearAssessmentTracking }
+export { trackStartedAssessment, trackCompletedAssessment, trackCompletedCategory, clearAssessmentTracking }

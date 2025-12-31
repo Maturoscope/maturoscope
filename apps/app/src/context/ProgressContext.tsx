@@ -24,6 +24,7 @@ import {
   Gap,
   DevelopmentPhase,
 } from "@/actions/organization"
+import { trackCompletedCategory } from "@/actions/tracking"
 
 interface ProgressContextType {
   stages: StageType[]
@@ -198,7 +199,14 @@ export const ProgressProvider = ({
       answers: stageData.questions,
     })
 
-    if (result?.data) saveAssessmentToLocalStorage(currStageId, result.data)
+    if (result?.data) {
+      saveAssessmentToLocalStorage(currStageId, result.data)
+
+      // Track the completed category
+      const category = scale // scale is already "TRL" | "MkRL" | "MfRL"
+      const level = result.data.readinessLevel
+      await trackCompletedCategory(category, level)
+    }
 
     const nextStage = stages[currStageIndex + 1]
     const isLastCheckpoint = !nextStage?.id
