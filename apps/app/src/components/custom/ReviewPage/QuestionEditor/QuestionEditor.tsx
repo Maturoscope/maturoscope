@@ -157,7 +157,7 @@ const QuestionEditor = ({
                         onChange={handleCommentChange}
                         value={comment}
                         placeholder={commentPlaceholder}
-                        className="bg-white w-full h-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none"
+                        className="bg-white w-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none h-[130px] lg:h-[76px]"
                         aria-label="Add comment"
                       />
                       <span className="text-xs text-muted-foreground">

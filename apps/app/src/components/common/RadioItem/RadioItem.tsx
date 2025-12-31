@@ -78,7 +78,7 @@ const RadioItem = ({
             value={commentField.value || ""}
             placeholder={commentPlaceholder}
             disabled={disabled}
-            className={`bg-white w-full h-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none ${disabled ? "cursor-not-allowed" : ""}`}
+            className={`bg-white w-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none h-[130px] lg:h-[76px] ${disabled ? "cursor-not-allowed" : ""}`}
           />
           <span className="text-xs text-muted-foreground">
             <span className="text-foreground">{charCount}</span>/280

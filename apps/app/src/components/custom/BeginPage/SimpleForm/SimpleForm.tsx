@@ -53,7 +53,7 @@ const SimpleForm = ({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="h-full w-full max-w-[750px] flex flex-col px-4 lg:px-0">
+      className="h-full w-full max-w-[750px] flex flex-col px-4 lg:box-content">
       <div className="w-full h-full flex flex-col gap-4 justify-center">
         <motion.h1
           variants={STAGGERED_LIST_ITEM_VARIANT}

@@ -61,7 +61,7 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
     const minLevel =
       isCompleted && answeredLevels.length > 0 ?
         Math.min(...answeredLevels)
-      : null
+        : null
 
     return { answered, total, percentage, isCompleted, minLevel }
   }
@@ -73,7 +73,7 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
         className
       )}
     >
-      <div className="w-full flex gap-3 lg:gap-8 max-w-[750px] px-4">
+      <div className="w-full flex gap-3 lg:gap-8 max-w-[750px] px-4 lg:box-content">
         {stages.map((stage) => {
           const progress = calculateStageProgress(stage.id)
           const isCurrentStage = stage.id === currStage.id
@@ -90,10 +90,10 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
                 {(() => {
                   const StageIconComponent = getIconComponent(stageIcon)
                   return StageIconComponent ?
-                      <StageIconComponent
-                        accent={isCurrentStage}
-                        className={`w-[15px] h-[15px] ${progress.isCompleted && "text-white"}`}
-                      />
+                    <StageIconComponent
+                      accent={isCurrentStage}
+                      className={`w-[15px] h-[15px] ${progress.isCompleted && "text-white"}`}
+                    />
                     : null
                 })()}
               </div>
@@ -127,16 +127,14 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
                 </div>
                 <Progress
                   value={progress.percentage}
-                  className={`h-[3px] ${
-                    progress.isCompleted ? "bg-accent!"
+                  className={`h-[3px] ${progress.isCompleted ? "bg-accent!"
                     : isCurrentStage ? "bg-accent/20!"
-                    : "bg-primary/20"
-                  }`}
-                  progressClassName={`${
-                    progress.isCompleted ? "!bg-accent"
+                      : "bg-primary/20"
+                    }`}
+                  progressClassName={`${progress.isCompleted ? "!bg-accent"
                     : isCurrentStage ? "!bg-accent"
-                    : "!bg-primary"
-                  }`}
+                      : "!bg-primary"
+                    }`}
                 />
               </div>
             </div>
