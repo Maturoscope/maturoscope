@@ -115,8 +115,12 @@ const QuestionEditor = ({
     const answers = updatedForm[stageName].questions
     await submitAssessment({ scale, answers })
 
-    // Navigate back to review page
-    router.push(`/${lang}/review/${stageName}`)
+    // Update initial values to reflect saved state
+    setInitialOptionId(selectedOptionId)
+    setInitialComment(comment)
+
+    // Navigate back to review page with saved flag to show toast
+    router.push(`/${lang}/review/${stageName}?saved=true`)
   }
 
   const handleCancelClick = () => {

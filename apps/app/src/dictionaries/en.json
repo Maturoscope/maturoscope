@@ -107,6 +107,10 @@
       "description": "You have unsaved changes. If you leave now, your latest updates will be lost.",
       "cancelButtonLabel": "Cancel",
       "resetButtonLabel": "Leave Anyway"
+    },
+    "toast": {
+      "title": "Answer Updated",
+      "description": "Your updates have been saved successfully"
     }
   },
   "results": {

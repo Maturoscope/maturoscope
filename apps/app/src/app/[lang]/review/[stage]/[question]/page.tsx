@@ -47,7 +47,10 @@ const QuestionPage = async ({ params }: QuestionPageProps) => {
         stageName={stage}
         lang={lang}
         question={question}
-        {...singleReview}
+        saveButtonLabel={singleReview.saveButtonLabel}
+        cancelButtonLabel={singleReview.cancelButtonLabel}
+        commentPlaceholder={singleReview.commentPlaceholder}
+        unsavedChangesModal={singleReview.unsavedChangesModal}
       />
     </main>
   )

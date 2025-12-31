@@ -107,6 +107,10 @@
       "description": "Vous avez des changements non enregistrés. Si vous quittez maintenant, vos dernières mises à jour seront perdues.",
       "cancelButtonLabel": "Annuler",
       "saveButtonLabel": "Quitter quand même"
+    },
+    "toast": {
+      "title": "Réponse mise à jour",
+      "description": "Vos mises à jour ont été enregistrées avec succès"
     }
   },
   "results": {
