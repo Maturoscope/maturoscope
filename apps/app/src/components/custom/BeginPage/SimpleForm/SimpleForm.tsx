@@ -1,12 +1,16 @@
 "use client"
 
+// Packages
 import { useState } from "react"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
+import { motion } from "motion/react"
 // Components
 import { Button } from "@/components/ui/button"
 // Dictionaries
 import { Locale } from "@/dictionaries/dictionaries"
+// Animations
+import { STAGGERED_LIST_ITEM_VARIANT, STAGGERED_LIST_VARIANT } from "@/animations/common"
 
 export interface SimpleFormProps {
   title: string
@@ -38,13 +42,27 @@ const SimpleForm = ({
   }
 
   return (
-    <div className="h-full w-full max-w-[750px] flex flex-col px-4 lg:px-0">
+    <motion.div
+      variants={STAGGERED_LIST_VARIANT}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="h-full w-full max-w-[750px] flex flex-col px-4 lg:px-0">
       <div className="w-full h-full flex flex-col gap-4 justify-center">
-        <h1 className="text-3xl lg:text-4xl font-bold mb-2 text-foreground">
+        <motion.h1
+          variants={STAGGERED_LIST_ITEM_VARIANT}
+          className="text-3xl lg:text-4xl font-bold mb-2 text-foreground"
+        >
           {title}
-        </h1>
-        <p className="text-2xl text-foreground font-semibold">{label}</p>
-        <input
+        </motion.h1>
+        <motion.p
+          variants={STAGGERED_LIST_ITEM_VARIANT}
+          className="text-2xl text-foreground font-semibold"
+        >
+          {label}
+        </motion.p>
+        <motion.input
+          variants={STAGGERED_LIST_ITEM_VARIANT}
           placeholder={placeholder}
           value={projectName}
           onChange={(e) => setProjectName(e.target.value)}
@@ -53,7 +71,9 @@ const SimpleForm = ({
         />
       </div>
 
-      <div className="w-full mb-4 lg:mb-8 flex items-center justify-between gap-3">
+      <motion.div
+        variants={STAGGERED_LIST_ITEM_VARIANT}
+        className="w-full mb-4 lg:mb-8 flex items-center justify-between gap-3">
         <Button variant="outline" size="lg" className="w-max" onClick={handleBackButtonClick}>
           <Image
             src="/icons/form/arrow-prev.svg"
@@ -80,8 +100,8 @@ const SimpleForm = ({
             height={16}
           />
         </Button>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
 
