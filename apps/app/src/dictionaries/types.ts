@@ -41,7 +41,12 @@ export type Dictionary = {
     },
   }
   review: ReviewHeroProps
-  singleReview: QuestionEditorProps,
+  singleReview: QuestionEditorProps & {
+    toast: {
+      title: string
+      description: string
+    }
+  },
   results: {
     topBar: Omit<ResultsTopBarProps, "lang">
     beforeYouGoModal: BeforeYouGoModalProps
