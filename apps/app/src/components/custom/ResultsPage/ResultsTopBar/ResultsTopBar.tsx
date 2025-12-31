@@ -10,6 +10,8 @@ import { useContactExpertContext } from "@/context/ContactExpertContext"
 import { cn } from "@/lib/utils"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
+import { Gap } from "@/actions/organization"
+import { StageId } from "@/components/custom/FormPage/Form/Form"
 // Hooks
 import { useDownloadReport } from "@/hooks/useDownloadReport"
 
@@ -62,11 +64,11 @@ const ResultsTopBar = ({
     const storedGaps = localStorage.getItem("gaps")
     if (storedGaps) {
       try {
-        const gaps = JSON.parse(storedGaps) as Record<string, unknown>
+        const gaps = JSON.parse(storedGaps) as Partial<Record<StageId, Gap[]>>
         // Check if there's at least one gap with hasServices: true across all categories
-        const hasAnyService = Object.values(gaps).some((categoryGaps: unknown) => {
+        const hasAnyService = Object.values(gaps).some((categoryGaps: Gap[] | undefined) => {
           if (Array.isArray(categoryGaps)) {
-            return categoryGaps.some((gap: { hasServices?: boolean }) => gap.hasServices === true)
+            return categoryGaps.some((gap: Gap) => gap.hasServices === true)
           }
           return false
         })
