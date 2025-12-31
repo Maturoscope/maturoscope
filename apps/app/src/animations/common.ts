@@ -35,3 +35,14 @@ export const STAGGERED_LIST_ITEM_VARIANT = {
     y: 0,
   },
 }
+
+export const SIMPLE_FADE_DOWN_VARIANT = {
+  hidden: {
+    opacity: 0,
+    y: "-100%",
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+  },
+}

@@ -96,7 +96,7 @@ const Header = ({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="w-full pl-0.5 pr-4 lg:pl-2 lg:pr-6 h-14 flex items-center justify-between bg-white border border-b border-border shadow-sm shrink-0"
+      className="z-50 w-full pl-0.5 pr-4 lg:pl-2 lg:pr-6 h-14 flex items-center justify-between bg-white border border-b border-border shadow-sm shrink-0"
     >
       <div className="flex items-center gap-2">
         {showBackButton && (
