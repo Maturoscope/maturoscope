@@ -56,6 +56,8 @@ const CTABanner = ({
     localStorage.removeItem("level")
     localStorage.removeItem("phases")
     localStorage.removeItem("completedOn")
+    localStorage.removeItem("signature")
+    localStorage.removeItem("projectName")
     setIsResetFormModalOpen(false)
   }
 
