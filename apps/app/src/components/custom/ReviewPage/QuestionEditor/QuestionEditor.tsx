@@ -105,87 +105,83 @@ const QuestionEditor = ({
   const radioGroupName = `${stageName}.questions.${question.id}`
 
   return (
-    <div className="w-full max-w-[750px] px-4 flex flex-col items-start justify-start mt-7">
+    <div className="w-full max-w-[750px] flex-1 min-h-0 px-4 flex flex-col items-start mt-7 lg:box-content">
       <div className="w-full flex flex-col items-start justify-start gap-2 mb-4 lg:mb-6">
         <h1 className="text-xl lg:text-3xl font-semibold">{question.title}</h1>
       </div>
-      <div className="w-full flex items-end justify-between gap-8 flex-wrap">
-        <div className="w-full flex flex-col gap-7 lg:gap-[70px]">
-          <div
-            className={cn(
-              "w-full flex flex-col items-start justify-start gap-1.5 min-h-[480px]"
-            )}
-          >
-            {question.options.map((option) => {
-              const isChecked = selectedOptionId === option.id
-              return (
-                <label
-                  key={option.id}
-                  className="relative w-full flex flex-col items-center justify-start rounded-lg border border-input cursor-pointer bg-white"
-                >
-                  <div className="flex items-start justify-start gap-3 w-full z-20 -mt-px p-3">
-                    <input
-                      type="radio"
-                      name={radioGroupName}
-                      value={option.id}
-                      checked={isChecked}
-                      onChange={() => handleOptionChange(option.id)}
-                      className="peer appearance-none absolute outline-none"
-                    />
-                    <div className="absolute top-0 left-0 w-full h-full rounded-[10px] bg-accent/10 border border-accent hidden peer-checked:block" />
-                    <CheckedIcon
-                      accent
-                      className={cn(
-                        "relative w-4 h-4",
-                        isChecked ? "block" : "hidden"
-                      )}
-                    />
-                    <UncheckedIcon
-                      className={cn(
-                        "relative w-4 h-4",
-                        isChecked ? "hidden" : "block"
-                      )}
-                    />
-                    <span className="text-sm font-medium leading-none">
-                      {option.title}
-                    </span>
-                  </div>
-                  {isChecked && (
-                    <div className="w-[calc(100%-56px)] p-3 pt-0 flex flex-col items-end gap-2 relative z-20">
-                      <textarea
-                        maxLength={280}
-                        onChange={handleCommentChange}
-                        value={comment}
-                        placeholder={commentPlaceholder}
-                        className="bg-white w-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none h-[130px] lg:h-[76px]"
-                        aria-label="Add comment"
-                      />
-                      <span className="text-xs text-muted-foreground">
-                        <span className="text-foreground">
-                          {comment.length}
-                        </span>
-                        /280
-                      </span>
-                    </div>
-                  )}
-                </label>
-              )
-            })}
-          </div>
-          <div className="w-full flex items-center justify-end gap-3">
-            <Button variant="outline" onClick={handleCancelClick}>
-              {cancelButtonLabel}
-            </Button>
-            <Button
-              onClick={handleSaveClick}
-              disabled={!selectedOptionId}
-              className="w-full lg:w-auto"
-              accent
+      <div
+        className={cn(
+          "w-full flex flex-col items-start justify-start gap-1.5 flex-1 min-h-0 overflow-y-auto"
+        )}
+      >
+        {question.options.map((option) => {
+          const isChecked = selectedOptionId === option.id
+          return (
+            <label
+              key={option.id}
+              className="relative w-full flex flex-col items-center justify-start rounded-lg border border-input cursor-pointer bg-white"
             >
-              {saveButtonLabel}
-            </Button>
-          </div>
-        </div>
+              <div className="flex items-start justify-start gap-3 w-full z-20 -mt-px p-3">
+                <input
+                  type="radio"
+                  name={radioGroupName}
+                  value={option.id}
+                  checked={isChecked}
+                  onChange={() => handleOptionChange(option.id)}
+                  className="peer appearance-none absolute outline-none"
+                />
+                <div className="absolute top-0 left-0 w-full h-full rounded-[10px] bg-accent/10 border border-accent hidden peer-checked:block" />
+                <CheckedIcon
+                  accent
+                  className={cn(
+                    "relative w-4 h-4",
+                    isChecked ? "block" : "hidden"
+                  )}
+                />
+                <UncheckedIcon
+                  className={cn(
+                    "relative w-4 h-4",
+                    isChecked ? "hidden" : "block"
+                  )}
+                />
+                <span className="text-sm font-medium leading-none">
+                  {option.title}
+                </span>
+              </div>
+              {isChecked && (
+                <div className="w-[calc(100%-56px)] p-3 pt-0 flex flex-col items-end gap-2 relative z-20">
+                  <textarea
+                    maxLength={280}
+                    onChange={handleCommentChange}
+                    value={comment}
+                    placeholder={commentPlaceholder}
+                    className="bg-white w-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none h-[130px] lg:h-[76px]"
+                    aria-label="Add comment"
+                  />
+                  <span className="text-xs text-muted-foreground">
+                    <span className="text-foreground">
+                      {comment.length}
+                    </span>
+                    /280
+                  </span>
+                </div>
+              )}
+            </label>
+          )
+        })}
+      </div>
+      <div className="w-full flex items-center justify-end gap-3 bg-background lg:bg-none py-4 lg:pt-6 lg:pb-8">
+        <Button variant="outline" onClick={handleCancelClick}>
+          {cancelButtonLabel}
+        </Button>
+        <Button
+          onClick={handleSaveClick}
+          disabled={!selectedOptionId}
+          className="w-full lg:w-auto"
+          accent
+        >
+          {saveButtonLabel}
+        </Button>
       </div>
     </div>
   )
