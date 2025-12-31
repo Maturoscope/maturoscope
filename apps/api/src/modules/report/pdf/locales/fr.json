@@ -31,6 +31,8 @@
     "currentFocus": "Focus actuel",
     "primaryRiskToMitigate": "Risque principal à mitiger",
     "toReachLevel": "Pour atteindre le niveau",
+    "copyLevelLabel": "Niveau",
+    "copyHighestLevel": "Niveau le plus élevé atteint",
     "completeTheGapsBelow": "Complétez les lacunes ci-dessous",
     "serviceAvailable": "Service disponible",
     "comingSoon": "Bientôt disponible"
