@@ -1,7 +1,7 @@
 "use client"
 
 // Packages
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { motion } from "motion/react"
@@ -40,6 +40,12 @@ const SimpleForm = ({
     localStorage.setItem("projectName", projectName)
     router.push(`/${lang}/form`)
   }
+
+  useEffect(() => {
+    const savedProjectName = localStorage.getItem("projectName")
+    if (savedProjectName) setProjectName(savedProjectName)
+  }, [])
+
 
   return (
     <motion.div
