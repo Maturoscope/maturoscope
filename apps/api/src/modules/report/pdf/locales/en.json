@@ -31,6 +31,8 @@
     "currentFocus": "Current focus",
     "primaryRiskToMitigate": "Primary risk to mitigate",
     "toReachLevel": "To reach Level",
+    "copyLevelLabel": "Level",
+    "copyHighestLevel": "Highest level achieved",
     "completeTheGapsBelow": "Complete the gaps below",
     "serviceAvailable": "Service available",
     "comingSoon": "Coming soon"

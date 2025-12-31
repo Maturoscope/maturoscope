@@ -15,6 +15,7 @@
       "information": {
         "noAccount": "No account required",
         "noStored": "We don't store your information",
+        "tooltip": "We do not store, retain, or reuse any of the information you enter. All data is processed temporarily and automatically discarded to ensure complete confidentiality.",
         "buttonLabel": "Let's begin",
         "estimatedTime": "5 minutes"
       },
@@ -100,11 +101,21 @@
   "singleReview": {
     "cancelButtonLabel": "Cancel",
     "saveButtonLabel": "Save",
-    "commentPlaceholder": "Add specific notes for your final report (Optional)"
+    "commentPlaceholder": "Add specific notes for your final report (Optional)",
+    "unsavedChangesModal": {
+      "title": "Unsaved changes",
+      "description": "You have unsaved changes. If you leave now, your latest updates will be lost.",
+      "cancelButtonLabel": "Cancel",
+      "resetButtonLabel": "Leave Anyway"
+    },
+    "toast": {
+      "title": "Answer Updated",
+      "description": "Your updates have been saved successfully"
+    }
   },
   "results": {
     "topBar": {
-      "title": "Your Innovation Maturity Profile",
+      "title": "Your Innovation Profile",
       "subtitle": "Completed on ",
       "downloadButtonLabel": "Download report",
       "talkButtonLabel": "Talk to an expert"
@@ -149,6 +160,8 @@
       "description": "Look for the \"Service available\" tags below to see where our experts can accelerate your progress.",
       "copyPreLevel": "To reach Level ",
       "copyPostLevel": "Complete the gaps below",
+      "copyLevelLabel": "Level",
+      "copyHighestLevel": "Highest level achieved",
       "serviceLabel": "Service available",
       "comingSoonLabel": "Coming soon",
       "focusLabel": "Current focus",

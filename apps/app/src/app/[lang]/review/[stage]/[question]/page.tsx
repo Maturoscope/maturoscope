@@ -41,13 +41,16 @@ const QuestionPage = async ({ params }: QuestionPageProps) => {
   // Since we can't access localStorage in server components, we'll handle it in the client component
 
   return (
-    <main className="w-full h-full flex flex-col items-center justify-start pb-16">
+    <main className="w-full h-full flex flex-col items-center justify-start lg:pb-16">
       <Header stringConnector={stringConnector} showBackButton leaveQuestionnaireModal={leaveQuestionnaireModal} />
       <QuestionEditor
         stageName={stage}
         lang={lang}
         question={question}
-        {...singleReview}
+        saveButtonLabel={singleReview.saveButtonLabel}
+        cancelButtonLabel={singleReview.cancelButtonLabel}
+        commentPlaceholder={singleReview.commentPlaceholder}
+        unsavedChangesModal={singleReview.unsavedChangesModal}
       />
     </main>
   )

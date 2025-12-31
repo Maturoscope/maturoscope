@@ -15,6 +15,7 @@
       "information": {
         "noAccount": "Aucun compte requis",
         "noStored": "Nous ne stockons pas vos informations",
+        "tooltip": "Nous ne stockons, ne conservons ni ne réutilisons aucune des informations que vous entrez. Tous les données sont traitées temporairement et automatiquement supprimées pour garantir la confidentialité complète.",
         "buttonLabel": "Commençons",
         "estimatedTime": "5 minutes"
       },
@@ -100,11 +101,21 @@
   "singleReview": {
     "cancelButtonLabel": "Annuler",
     "saveButtonLabel": "Enregistrer",
-    "commentPlaceholder": "Ajoutez des notes spécifiques pour votre rapport final (Optionnel)"
+    "commentPlaceholder": "Ajoutez des notes spécifiques pour votre rapport final (Optionnel)",
+    "unsavedChangesModal": {
+      "title": "Changements non enregistrés",
+      "description": "Vous avez des changements non enregistrés. Si vous quittez maintenant, vos dernières mises à jour seront perdues.",
+      "cancelButtonLabel": "Annuler",
+      "saveButtonLabel": "Quitter quand même"
+    },
+    "toast": {
+      "title": "Réponse mise à jour",
+      "description": "Vos mises à jour ont été enregistrées avec succès"
+    }
   },
   "results": {
     "topBar": {
-      "title": "Votre profil de maturité de l'innovation",
+      "title": "Votre profil d'innovation",
       "subtitle": "Complété le ",
       "downloadButtonLabel": "Télécharger le rapport",
       "talkButtonLabel": "Parler à un expert"
@@ -149,6 +160,8 @@
       "description": "Recherchez les étiquettes \"Service disponible\" ci-dessous pour voir où nos experts peuvent accélérer votre progression.",
       "copyPreLevel": "Pour atteindre le niveau ",
       "copyPostLevel": "Complétez les lacunes ci-dessous",
+      "copyLevelLabel": "Niveau",
+      "copyHighestLevel": "Niveau le plus élevé atteint",
       "serviceLabel": "Service disponible",
       "comingSoonLabel": "Bientôt disponible",
       "focusLabel": "Focus actuel",

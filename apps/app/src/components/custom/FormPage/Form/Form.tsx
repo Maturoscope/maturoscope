@@ -76,7 +76,7 @@ const Form = ({
   }
 
   return (
-    <div className="w-full max-w-[750px] flex-1 min-h-0 px-4 flex flex-col items-start mt-7">
+    <div className="w-full max-w-[750px] flex-1 min-h-0 px-4 flex flex-col items-start mt-7 lg:box-content">
       <h1 className="text-xl lg:text-3xl font-semibold mb-4">
         {currQuestion.title}
       </h1>

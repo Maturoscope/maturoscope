@@ -34,6 +34,7 @@ const ResultsTopBar = ({
   className,
 }: ResultsTopBarProps & ExtraProps) => {
   const [completedOnDate, setCompletedOnDate] = useState<string>("")
+  const [isTalkToExpertButtonDisabled, setIsTalkToExpertButtonDisabled] = useState<boolean>(false)
   const { openModal } = useContactExpertContext()
   const { downloadReport, isLoading } = useDownloadReport(lang)
 
@@ -57,6 +58,31 @@ const ResultsTopBar = ({
     await downloadReport()
   }
 
+  useEffect(() => {
+    const storedGaps = localStorage.getItem("gaps")
+    if (storedGaps) {
+      try {
+        const gaps = JSON.parse(storedGaps)
+        // Check if there's at least one gap with hasServices: true across all categories
+        const hasAnyService = Object.values(gaps).some((categoryGaps: any) => {
+          if (Array.isArray(categoryGaps)) {
+            return categoryGaps.some((gap: any) => gap.hasServices === true)
+          }
+          return false
+        })
+        // Disable button if no gaps have services
+        setIsTalkToExpertButtonDisabled(!hasAnyService)
+      } catch (error) {
+        console.error("Error parsing gaps from localStorage:", error)
+        // On error, disable the button to be safe
+        setIsTalkToExpertButtonDisabled(true)
+      }
+    } else {
+      // If no gaps data, disable the button
+      setIsTalkToExpertButtonDisabled(true)
+    }
+  }, [])
+
   return (
     <div
       className={cn(
@@ -79,7 +105,12 @@ const ResultsTopBar = ({
         >
           {isLoading ? "Loading..." : downloadButtonLabel}
         </Button>
-        <Button variant="default" accent onClick={handleTalkButtonClick}>
+        <Button
+          variant="default"
+          accent
+          onClick={handleTalkButtonClick}
+          disabled={isTalkToExpertButtonDisabled}
+        >
           {talkButtonLabel}
         </Button>
       </div>

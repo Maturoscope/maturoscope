@@ -16,6 +16,8 @@ export interface DetailedReportProps {
   description: string
   copyPreLevel: string
   copyPostLevel: string
+  copyHighestLevel: string
+  copyLevelLabel: string
   serviceLabel: string
   comingSoonLabel: string
   focusLabel: string
@@ -56,6 +58,8 @@ const DetailedReport = ({
   description,
   copyPreLevel,
   copyPostLevel,
+  copyHighestLevel,
+  copyLevelLabel,
   serviceLabel,
   comingSoonLabel,
   focusLabel,
@@ -123,9 +127,9 @@ const DetailedReport = ({
     <div
       className={cn("w-full flex flex-col gap-6 px-4 lg:px-6 mt-11", className)}
     >
-      <div>
+      <div className="flex flex-col gap-1.5">
         <h2 className="text-2xl font-medium">{title}</h2>
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <p className="text-sm text-[#171717]">{description}</p>
       </div>
 
       {Object.entries(gapsData).map(([stageKey, gaps]) => {
@@ -139,6 +143,8 @@ const DetailedReport = ({
             level={levelData[stageKey as keyof LevelStorage] ?? 0}
             copyPreLevel={copyPreLevel}
             copyPostLevel={copyPostLevel}
+            copyHighestLevel={copyHighestLevel}
+            copyLevelLabel={copyLevelLabel}
             serviceLabel={serviceLabel}
             comingSoonLabel={comingSoonLabel}
             focusLabel={focusLabel}
