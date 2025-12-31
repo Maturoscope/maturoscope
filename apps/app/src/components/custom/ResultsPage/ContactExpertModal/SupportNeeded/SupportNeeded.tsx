@@ -115,7 +115,7 @@ const SupportNeeded = ({
       setIsOpen={setIsOpen}
       className="p-6 flex flex-col gap-4 max-w-[740px] w-full"
     >
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center gap-1.5">
         <div className="flex flex-col gap-1.5">
           <h1 className="text-base font-semibold">{title}</h1>
           <p className="text-sm text-muted-foreground">{description}</p>

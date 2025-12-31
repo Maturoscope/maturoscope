@@ -229,7 +229,7 @@ const ReachOut = ({
     >
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
 
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center gap-1.5">
           <div className="flex flex-col gap-1.5">
             <h1 className="text-base font-semibold">{title}</h1>
             <p className="text-sm text-muted-foreground">{description}</p>
