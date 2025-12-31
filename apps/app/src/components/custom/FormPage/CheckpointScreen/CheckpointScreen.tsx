@@ -10,7 +10,7 @@ interface CheckpointScreenProps {
   description: string
   reviewLabel: string
   buttonLabel: string
-  onButtonClick: () => void
+  onButtonClick: () => void | Promise<void>
   onReviewClick: () => void
 }
 
