@@ -36,18 +36,25 @@ const nextConfig: NextConfig = {
     // Disable server components cache to prevent stale Server Actions
     // This helps with hot reload issues in development
     optimizePackageImports: [],
+    // Disable static page generation for pages with Server Actions
+    // This prevents the server from caching Server Actions incorrectly
+    serverComponentsHmrCache: false,
   },
   // Moved from experimental - external packages for server components
   serverExternalPackages: [],
-  // Improve hot reload stability (only relevant in development)
+  // Improve hot reload stability and prevent Server Action cache issues
   onDemandEntries: {
     // Period (in ms) where the server will keep pages in the buffer
-    maxInactiveAge: 60 * 1000, // Increased to 60 seconds
+    // Reduced to prevent stale Server Actions from being cached
+    maxInactiveAge: 30 * 1000, // 30 seconds (reduced from 60)
     // Number of pages that should be kept simultaneously without being disposed
-    pagesBufferLength: 5, // Increased buffer
+    pagesBufferLength: 3, // Reduced buffer to prevent memory issues
   },
   // Disable static optimization for pages with Server Actions to prevent caching issues
   reactStrictMode: true,
+  
+  // Production optimizations to prevent Server Action issues
+  swcMinify: true, // Enable SWC minification for better performance
 }
 
 export default nextConfig

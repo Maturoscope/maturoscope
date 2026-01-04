@@ -30,17 +30,27 @@ export async function withServerActionRetry<T>(
         lastError.message.includes("Server Action returned undefined")
 
       if (isServerActionError) {
-        // If it's the last attempt, throw the error
+        // CRITICAL: If we detect "Failed to find Server Action", reload immediately
+        // This prevents the server from entering an inconsistent state that causes 403 errors
+        if (typeof window !== 'undefined') {
+          console.error(
+            `CRITICAL: Server Action error detected - reloading page immediately to prevent 403 cascade`,
+            lastError.message
+          )
+          // Store flag and reload immediately - don't wait for retries
+          sessionStorage.setItem('server-action-failed', 'true')
+          // Reload immediately to prevent server from entering inconsistent state
+          window.location.reload()
+          // This will never execute, but TypeScript needs it
+          throw lastError
+        }
+        
+        // If it's the last attempt and we're on server, throw the error
         if (attempt === maxRetries) {
           console.warn(
             `Server Action error after ${attempt + 1} attempts:`,
             lastError.message
           )
-          // Mark that we should reload the page to prevent 403 errors
-          if (typeof window !== 'undefined') {
-            // Store a flag to indicate Server Action failure
-            sessionStorage.setItem('server-action-failed', 'true')
-          }
           throw lastError
         }
 

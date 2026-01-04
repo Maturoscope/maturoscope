@@ -11,6 +11,8 @@ import { ReportPayload } from "@/actions/report"
 import { getQuestions, getRisks, RiskData } from "@/actions/questions"
 import { generateReport } from "@/actions/report"
 import { getOrganizationSignature } from "@/actions/organization"
+// Utils
+import { withServerActionRetry } from "@/utils/serverActionRetry"
 
 // Storage types
 export interface FormStorage {
@@ -118,8 +120,12 @@ export const useDownloadReport = (lang: Locale) => {
     setIsLoading(true)
 
     try {
-      // Get questions data with translated text
-      const questionsData = await getQuestions(lang)
+      // Get questions data with translated text (with retry)
+      const questionsData = await withServerActionRetry(
+        () => getQuestions(lang),
+        1, // 1 retry for questions
+        200 // 200ms delay
+      )
 
       // Read data from localStorage
       const formData: FormStorage = JSON.parse(
@@ -147,18 +153,22 @@ export const useDownloadReport = (lang: Locale) => {
         phasesData.mfrl?.phase !== undefined
 
       if (hasAllLevels && hasAllPhases) {
-        risksData = await getRisks({
-          levels: {
-            trl: levelData.trl as number,
-            mkrl: levelData.mkrl as number,
-            mfrl: levelData.mfrl as number,
-          },
-          phases: {
-            trl: phasesData.trl!.phase,
-            mkrl: phasesData.mkrl!.phase,
-            mfrl: phasesData.mfrl!.phase,
-          },
-        })
+        risksData = await withServerActionRetry(
+          () => getRisks({
+            levels: {
+              trl: levelData.trl as number,
+              mkrl: levelData.mkrl as number,
+              mfrl: levelData.mfrl as number,
+            },
+            phases: {
+              trl: phasesData.trl!.phase,
+              mkrl: phasesData.mkrl!.phase,
+              mfrl: phasesData.mfrl!.phase,
+            },
+          }),
+          1, // 1 retry for risks
+          200 // 200ms delay
+        )
       }
 
       // Get completion date from localStorage or use current date
@@ -175,10 +185,14 @@ export const useDownloadReport = (lang: Locale) => {
       // Get projectName from localStorage
       const projectName = localStorage.getItem("projectName") || undefined
 
-      // Get signature from localStorage or fetch it
+      // Get signature from localStorage or fetch it (with retry)
       let signature = localStorage.getItem("signature")
       if (!signature) {
-        signature = await getOrganizationSignature()
+        signature = await withServerActionRetry(
+          () => getOrganizationSignature(),
+          1, // 1 retry for signature
+          200 // 200ms delay
+        )
         if (signature) {
           localStorage.setItem("signature", signature)
         }
@@ -222,11 +236,27 @@ export const useDownloadReport = (lang: Locale) => {
         ),
       }
 
-      // Generate the PDF using server action
-      const result = await generateReport(lang, payload)
+      // Generate the PDF using server action with retry wrapper
+      const result = await withServerActionRetry(
+        () => generateReport(lang, payload),
+        2, // Max 2 retries
+        500 // 500ms delay between retries
+      )
 
-      if (!result.success || !result.data) {
-        throw new Error(result.error || "Failed to generate PDF")
+      if (!result || !result.success || !result.data) {
+        const errorMessage = result?.error || "Failed to generate PDF"
+        
+        // Check if it's a 403 error
+        if (errorMessage.includes("403") || errorMessage.includes("Forbidden")) {
+          console.error("403 Forbidden when generating PDF - reloading page")
+          // Reload page to restore state
+          if (typeof window !== 'undefined') {
+            window.location.reload()
+            return
+          }
+        }
+        
+        throw new Error(errorMessage)
       }
 
       // Convert base64 to blob and download
@@ -248,6 +278,35 @@ export const useDownloadReport = (lang: Locale) => {
       window.URL.revokeObjectURL(url)
     } catch (error) {
       console.error("Error downloading PDF:", error)
+      
+      // CRITICAL: If it's a Server Action error, reload immediately
+      // This prevents the server from entering an inconsistent state
+      if (
+        error instanceof Error &&
+        (error.message.includes("Failed to find Server Action") ||
+          error.message.includes("Server Action returned undefined"))
+      ) {
+        console.error("CRITICAL: Server Action error in PDF download - reloading immediately")
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('server-action-failed', 'true')
+          window.location.reload()
+          return
+        }
+      }
+      
+      // Check for 403 errors - also reload immediately
+      if (
+        error instanceof Error &&
+        (error.message.includes("403") || error.message.includes("Forbidden"))
+      ) {
+        console.error("CRITICAL: 403 error in PDF download - reloading immediately")
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('server-action-failed', 'true')
+          window.location.reload()
+          return
+        }
+      }
+      
       throw error
     } finally {
       setIsLoading(false)

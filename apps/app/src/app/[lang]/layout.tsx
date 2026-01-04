@@ -12,6 +12,8 @@ import {
 import { DEFAULT_ACCENT_THEME, DEFAULT_FONT_THEME, ThemeProvider } from "@/context/ThemeContext"
 // Types
 import { FontTheme } from "@/actions/organization"
+// Components
+import ServerActionErrorHandler from "@/components/common/ServerActionErrorHandler/ServerActionErrorHandler"
 // Styles
 import "../globals.css"
 
@@ -61,6 +63,7 @@ export default async function RootLayout({
       data-font-theme={font}
     >
       <body className="flex flex-col items-center justify-start w-full lg:h-svh bg-background">
+        <ServerActionErrorHandler />
         <ThemeProvider
           initialTheme={accentColor}
           initialFont={font}
