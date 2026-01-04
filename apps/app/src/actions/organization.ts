@@ -19,12 +19,21 @@ const getOrganizationByKey = async (key: string | undefined) => {
   const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/organizations/key/${key}`
   
   try {
+    // Add timeout and better error handling
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout
+
     const response = await fetch(endpoint, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
+      signal: controller.signal,
+      // Ensure fresh connection
+      cache: "no-store",
     })
+
+    clearTimeout(timeoutId)
 
     if (!response.ok) {
       throw new Error(`Failed to fetch organization: ${response.status} ${response.statusText}`)
@@ -201,24 +210,46 @@ export const requestContact = async ({
   }
 
   try {
+    // Add timeout and better error handling
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
+      signal: controller.signal,
+      // Ensure fresh connection
+      cache: "no-store",
     })
 
+    clearTimeout(timeoutId)
+
     if (!response.ok) {
-      return { success: false, error: `API error: ${response.statusText}` }
+      const errorText = await response.text().catch(() => response.statusText)
+      return { success: false, error: `API error: ${response.status} ${errorText}` }
     }
 
     return { success: true }
   } catch (error) {
     console.error("Error requesting contact:", error)
+    
+    // Handle specific error types
+    if (error instanceof Error) {
+      if (error.name === 'AbortError') {
+        return { success: false, error: "Request timeout - please try again" }
+      }
+      if (error.message.includes('fetch')) {
+        return { success: false, error: "Network error - please check your connection" }
+      }
+      return { success: false, error: error.message }
+    }
+    
     return {
       success: false,
-      error: error instanceof Error ? error.message : "Unknown error",
+      error: "Unknown error occurred",
     }
   }
 }

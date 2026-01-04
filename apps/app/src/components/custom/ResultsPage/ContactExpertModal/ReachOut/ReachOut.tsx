@@ -200,17 +200,29 @@ const ReachOut = ({
     const projectName = localStorage.getItem("projectName")
 
     setIsLoading(true)
-    const result = await requestContact({
-      gaps: selectedGaps,
-      contactInformation: data,
-      projectName: projectName as string,
-    })
-    setIsLoading(false)
-
-    if (result.success) {
-      setCurrentStep("successStatus")
-    } else {
+    try {
+      const result = await requestContact({
+        gaps: selectedGaps,
+        contactInformation: data,
+        projectName: projectName as string,
+      })
+      
+      if (result.success) {
+        setCurrentStep("successStatus")
+      } else {
+        setCurrentStep("failedStatus")
+      }
+    } catch (error) {
+      console.error("Error in requestContact:", error)
+      // If it's a Server Action error, try to reload the page
+      if (error instanceof Error && error.message.includes("Failed to find Server Action")) {
+        // Reload the page to refresh Server Actions
+        window.location.reload()
+        return
+      }
       setCurrentStep("failedStatus")
+    } finally {
+      setIsLoading(false)
     }
   }
 
