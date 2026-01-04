@@ -72,8 +72,20 @@ export const getOrganizationTheme = async (
 export const getOrganizationKeyFromCookies = async (): Promise<
   string | null
 > => {
-  const cookieStore = await cookies()
-  return cookieStore.get("organization-key")?.value || null
+  try {
+    const cookieStore = await cookies()
+    const key = cookieStore.get("organization-key")?.value || null
+    
+    if (!key) {
+      console.warn("Organization key not found in cookies")
+    }
+    
+    return key
+  } catch (error) {
+    console.error("Error reading organization key from cookies:", error)
+    // Return null instead of throwing to allow graceful degradation
+    return null
+  }
 }
 
 export type ScaleType = "TRL" | "MkRL" | "MfRL"
@@ -190,7 +202,19 @@ export const requestContact = async ({
   contactInformation,
   projectName,
 }: RequestContactParams): Promise<RequestContactResult> => {
-  const organizationKey = await getOrganizationKeyFromCookies()
+  // Validate API URL is available
+  if (!process.env.NEXT_PUBLIC_API_URL) {
+    console.error("NEXT_PUBLIC_API_URL is not defined")
+    return { success: false, error: "API configuration error" }
+  }
+
+  let organizationKey: string | null = null
+  try {
+    organizationKey = await getOrganizationKeyFromCookies()
+  } catch (error) {
+    console.error("Error getting organization key from cookies:", error)
+    return { success: false, error: "Failed to read organization key" }
+  }
 
   if (!organizationKey) {
     return { success: false, error: "Organization key not found" }
@@ -229,6 +253,17 @@ export const requestContact = async ({
 
     if (!response.ok) {
       const errorText = await response.text().catch(() => response.statusText)
+      
+      // Log 403 errors with more context for debugging
+      if (response.status === 403) {
+        console.error("403 Forbidden error:", {
+          endpoint,
+          organizationKey: organizationKey ? "present" : "missing",
+          status: response.status,
+          errorText: errorText.substring(0, 200), // Limit log size
+        })
+      }
+      
       return { success: false, error: `API error: ${response.status} ${errorText}` }
     }
 

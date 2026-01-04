@@ -16,14 +16,18 @@ const nextConfig: NextConfig = {
       // Allow server actions to be called from client
       allowedOrigins: ['localhost:3000', 'app.staging.synopp.io'],
     },
+    // Disable server components cache to prevent stale Server Actions
+    serverComponentsExternalPackages: [],
   },
   // Improve hot reload stability
   onDemandEntries: {
     // Period (in ms) where the server will keep pages in the buffer
-    maxInactiveAge: 25 * 1000,
+    maxInactiveAge: 60 * 1000, // Increased to 60 seconds
     // Number of pages that should be kept simultaneously without being disposed
-    pagesBufferLength: 2,
+    pagesBufferLength: 5, // Increased buffer
   },
+  // Disable static optimization for pages with Server Actions to prevent caching issues
+  reactStrictMode: true,
 }
 
 export default nextConfig

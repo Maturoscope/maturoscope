@@ -16,6 +16,8 @@ import { UnsavedChangesModalProps } from "@/components/custom/ReviewPage/Unsaved
 import { cn } from "@/lib/utils"
 // Actions
 import { submitAssessment, ScaleType } from "@/actions/organization"
+// Utils
+import { withServerActionRetry } from "@/utils/serverActionRetry"
 
 const STAGE_TO_SCALE: Record<StageId, ScaleType> = {
   trl: "TRL",
@@ -109,10 +111,25 @@ const QuestionEditor = ({
     // Save back to localStorage
     localStorage.setItem("form", JSON.stringify(updatedForm))
 
-    // Submit assessment to the backend
+    // Submit assessment to the backend with retry
     const scale = STAGE_TO_SCALE[stageName]
     const answers = updatedForm[stageName].questions
-    await submitAssessment({ scale, answers })
+    
+    try {
+      await withServerActionRetry(
+        () => submitAssessment({ scale, answers }),
+        2, // Max 2 retries
+        500 // 500ms delay
+      )
+    } catch (error) {
+      console.error("Error submitting assessment:", error)
+      // If it's a Server Action error, reload the page
+      if (error instanceof Error && error.message.includes("Failed to find Server Action")) {
+        window.location.reload()
+        return
+      }
+      // For other errors, continue anyway (data is saved in localStorage)
+    }
 
     // Update initial values to reflect saved state
     setInitialOptionId(selectedOptionId)

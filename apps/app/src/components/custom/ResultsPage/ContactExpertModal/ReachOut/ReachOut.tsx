@@ -13,6 +13,8 @@ import Input from "@/components/common/Input/Input"
 import { useContactExpertContext } from "@/context/ContactExpertContext"
 // Actions
 import { requestContact } from "@/actions/organization"
+// Utils
+import { withServerActionRetry } from "@/utils/serverActionRetry"
 // Types
 import { ModalStep } from "../ContactExpertModal"
 import { Locale } from "@/dictionaries/dictionaries"
@@ -200,38 +202,78 @@ const ReachOut = ({
     const projectName = localStorage.getItem("projectName")
 
     setIsLoading(true)
+    
+    // Check if there was a previous Server Action failure
+    const previousFailure = sessionStorage.getItem('server-action-failed')
+    if (previousFailure === 'true') {
+      console.warn("Previous Server Action failure detected - reloading page to prevent 403 errors")
+      sessionStorage.removeItem('server-action-failed')
+      window.location.reload()
+      return
+    }
+    
     try {
-      const result = await requestContact({
-        gaps: selectedGaps,
-        contactInformation: data,
-        projectName: projectName as string,
-      })
-      
+      // Use retry wrapper to handle Server Action errors
+      const result = await withServerActionRetry(
+        () =>
+          requestContact({
+            gaps: selectedGaps,
+            contactInformation: data,
+            projectName: projectName as string,
+          }),
+        2, // Max 2 retries
+        500 // 500ms delay between retries
+      )
+
       // Check if result exists (might be undefined if Server Action fails)
       if (!result) {
         console.error("requestContact returned undefined - Server Action may have failed")
         setCurrentStep("failedStatus")
         return
       }
-      
+
       if (result.success) {
+        // Clear any previous failure flags on success
+        sessionStorage.removeItem('server-action-failed')
         setCurrentStep("successStatus")
       } else {
         // Log the error for debugging
         console.error("requestContact failed:", result.error)
+        
+        // Check if it's a 403 error in the result
+        if (result.error?.includes("403") || result.error?.includes("Forbidden")) {
+          console.error("403 Forbidden in result - reloading page to restore state")
+          sessionStorage.removeItem('server-action-failed')
+          window.location.reload()
+          return
+        }
+        
         setCurrentStep("failedStatus")
       }
     } catch (error) {
       console.error("Error in requestContact:", error)
-      
-      // If it's a Server Action error, try to reload the page
-      if (error instanceof Error && error.message.includes("Failed to find Server Action")) {
-        console.warn("Server Action error detected - reloading page")
-        // Reload the page to refresh Server Actions
+
+      // If it's still a Server Action error after retries, reload the page
+      if (
+        error instanceof Error &&
+        (error.message.includes("Failed to find Server Action") ||
+          error.message.includes("Server Action returned undefined"))
+      ) {
+        console.warn("Server Action error persists after retries - reloading page")
+        // Reload the page to refresh Server Actions and cookies
         window.location.reload()
         return
       }
-      
+
+      // Check if it's a 403 error (might be related to missing organization key or Server Action failure)
+      if (error instanceof Error && (error.message.includes("403") || error.message.includes("Forbidden"))) {
+        console.error("403 Forbidden error - organization key may be missing or Server Action corrupted state")
+        // Clear the failure flag and reload to restore state
+        sessionStorage.removeItem('server-action-failed')
+        window.location.reload()
+        return
+      }
+
       // For any other error, show failed status
       setCurrentStep("failedStatus")
     } finally {
