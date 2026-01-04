@@ -22,7 +22,7 @@ async function bootstrap() {
   );
 
   // Configure CORS
-
+  // Allow all origins for public endpoints (including api.staging.synopp.io)
   app.enableCors({
     origin: true, // Allow all origins for public endpoints
     credentials: true,
