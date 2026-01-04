@@ -22,15 +22,9 @@ async function bootstrap() {
   );
 
   // Configure CORS
+
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'https://app.staging.synopp.io',
-      'https://staging.synopp.io',
-      process.env.FRONTEND_URL,
-      process.env.APP_URL,
-    ].filter(Boolean) as string[],
+    origin: true, // Allow all origins for public endpoints
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],

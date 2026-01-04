@@ -16,12 +16,26 @@ export type AccentTheme =
 const getOrganizationByKey = async (key: string | undefined) => {
   if (!key) return false
 
-  const organizationKey = await getOrganizationKeyFromCookies()
-  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/organizations/key/${key}${organizationKey ? `?organizationKey=${organizationKey}` : ""}`
-  const response = await fetch(endpoint)
-  const organization = await response.json()
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/organizations/key/${key}`
+  
+  try {
+    const response = await fetch(endpoint, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
 
-  return organization
+    if (!response.ok) {
+      throw new Error(`Failed to fetch organization: ${response.status} ${response.statusText}`)
+    }
+
+    const organization = await response.json()
+    return organization
+  } catch (error) {
+    console.error('Error fetching organization by key:', error)
+    throw error
+  }
 }
 
 export const getOrganizationTheme = async (
