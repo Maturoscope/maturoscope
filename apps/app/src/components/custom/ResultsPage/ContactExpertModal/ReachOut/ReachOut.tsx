@@ -207,19 +207,32 @@ const ReachOut = ({
         projectName: projectName as string,
       })
       
+      // Check if result exists (might be undefined if Server Action fails)
+      if (!result) {
+        console.error("requestContact returned undefined - Server Action may have failed")
+        setCurrentStep("failedStatus")
+        return
+      }
+      
       if (result.success) {
         setCurrentStep("successStatus")
       } else {
+        // Log the error for debugging
+        console.error("requestContact failed:", result.error)
         setCurrentStep("failedStatus")
       }
     } catch (error) {
       console.error("Error in requestContact:", error)
+      
       // If it's a Server Action error, try to reload the page
       if (error instanceof Error && error.message.includes("Failed to find Server Action")) {
+        console.warn("Server Action error detected - reloading page")
         // Reload the page to refresh Server Actions
         window.location.reload()
         return
       }
+      
+      // For any other error, show failed status
       setCurrentStep("failedStatus")
     } finally {
       setIsLoading(false)
