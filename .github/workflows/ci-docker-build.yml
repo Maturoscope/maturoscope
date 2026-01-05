@@ -178,12 +178,27 @@ jobs:
 
       - name: Build & Push App Image
         run: |
+          echo "🚀 Building App for ${{ steps.vars.outputs.environment }} environment..."
+          
+          # Set environment-specific variables
+          if [[ "${{ steps.vars.outputs.environment }}" == "production" ]]; then
+            NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}"
+            NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}"
+            NEXT_SERVER_ACTIONS_ENCRYPTION_KEY="${{ secrets.PROD_NEXT_SERVER_ACTIONS_ENCRYPTION_KEY }}"
+            echo "🔧 Using PRODUCTION secrets"
+          else
+            NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.STAGING_GOOGLE_MAPS_API_KEY || secrets.PROD_GOOGLE_MAPS_API_KEY || 'staging-key' }}"
+            NEXT_PUBLIC_GATEWAY_URL="${{ secrets.STAGING_GATEWAY_URL || secrets.PROD_GATEWAY_URL || 'https://api.staging.yourapp.com' }}"
+            NEXT_SERVER_ACTIONS_ENCRYPTION_KEY="${{ secrets.STAGING_NEXT_SERVER_ACTIONS_ENCRYPTION_KEY }}"
+            echo "🔧 Using STAGING secrets"
+          fi
+          
           docker build \
             --file apps/app/Dockerfile \
             --tag ${{ env.REGISTRY }}/maturoscope-app/app:${{ steps.vars.outputs.TAG }} \
-            --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
-            --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
-            --build-arg NEXT_SERVER_ACTIONS_ENCRYPTION_KEY="${{ secrets.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY }}" \
+            --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY" \
+            --build-arg NEXT_PUBLIC_GATEWAY_URL="$NEXT_PUBLIC_GATEWAY_URL" \
+            --build-arg NEXT_SERVER_ACTIONS_ENCRYPTION_KEY="$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY" \
             .
           docker push ${{ env.REGISTRY }}/maturoscope-app/app:${{ steps.vars.outputs.TAG }}
 
