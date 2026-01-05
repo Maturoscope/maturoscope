@@ -18,13 +18,13 @@ import { Locale } from "@/dictionaries/dictionaries"
 import { calcCheckpoint } from "@/lib/calcCheckpoint"
 // Actions
 import {
-  submitAssessment,
   ScaleType,
   AssessmentResponse,
   Gap,
   DevelopmentPhase,
 } from "@/actions/organization"
-import { trackCompletedCategory } from "@/actions/tracking"
+// Utils
+import { submitAssessmentApi, trackCompletedCategoryApi } from "@/utils/apiClient"
 
 interface ProgressContextType {
   stages: StageType[]
@@ -194,18 +194,17 @@ export const ProgressProvider = ({
     // Submit current stage assessment to the backend
     const scale = STAGE_TO_SCALE[currStageId]
     const stageData = getValues()[currStageId]
-    const result = await submitAssessment({
-      scale,
-      answers: stageData.questions,
-    })
+    const result = await submitAssessmentApi(scale, stageData.questions)
 
-    if (result?.data) {
-      saveAssessmentToLocalStorage(currStageId, result.data)
+    if (result?.success && result?.data) {
+      // result.data from API Route has the same structure as the Server Action response
+      const assessmentData = result.data as AssessmentResponse
+      saveAssessmentToLocalStorage(currStageId, assessmentData)
 
       // Track the completed category
       const category = scale // scale is already "TRL" | "MkRL" | "MfRL"
-      const level = result.data.readinessLevel
-      await trackCompletedCategory(category, level)
+      const level = assessmentData.readinessLevel
+      await trackCompletedCategoryApi(category, level)
     }
 
     const nextStage = stages[currStageIndex + 1]
