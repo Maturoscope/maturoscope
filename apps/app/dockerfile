@@ -63,8 +63,10 @@
     # Variables de entorno para Next.js (ejemplo)
     ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
     ARG NEXT_PUBLIC_GATEWAY_URL
+    ARG NEXT_SERVER_ACTIONS_ENCRYPTION_KEY
     ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
     ENV NEXT_PUBLIC_GATEWAY_URL=$NEXT_PUBLIC_GATEWAY_URL
+    ENV NEXT_SERVER_ACTIONS_ENCRYPTION_KEY=$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY
     
     # Construir solo el servicio de app
     RUN yarn turbo run build --filter=app
@@ -76,6 +78,10 @@
     
     ARG NODE_ENV=production
     ENV NODE_ENV=${NODE_ENV}
+    
+    # CRITICAL: Server Actions encryption key - must be the same across all instances
+    ARG NEXT_SERVER_ACTIONS_ENCRYPTION_KEY
+    ENV NEXT_SERVER_ACTIONS_ENCRYPTION_KEY=$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY
     
     # Crear usuario no root
     RUN addgroup --system --gid 1001 app \
