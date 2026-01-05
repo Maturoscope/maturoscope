@@ -183,6 +183,7 @@ jobs:
             --tag ${{ env.REGISTRY }}/maturoscope-app/app:${{ steps.vars.outputs.TAG }} \
             --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
             --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
+            --build-arg NEXT_SERVER_ACTIONS_ENCRYPTION_KEY="${{ secrets.NEXT_SERVER_ACTIONS_ENCRYPTION_KEY }}" \
             .
           docker push ${{ env.REGISTRY }}/maturoscope-app/app:${{ steps.vars.outputs.TAG }}
 
