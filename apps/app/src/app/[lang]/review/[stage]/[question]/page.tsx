@@ -1,13 +1,14 @@
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
 import { StageId } from "@/components/custom/FormPage/Form/Form"
+import { StageData } from "@/types/shared"
 // Dictionaries
 import { getDictionary } from "@/dictionaries/dictionaries"
 // Components
 import Header from "@/components/common/Header/Header"
 import QuestionEditor from "@/components/custom/ReviewPage/QuestionEditor/QuestionEditor"
-// Actions
-import { getQuestions } from "@/actions/questions"
+// Next
+import { cookies } from "next/headers"
 
 interface QuestionPageProps {
   params: Promise<{ lang: Locale; stage: StageId; question: string }>
@@ -22,8 +23,28 @@ const QuestionPage = async ({ params }: QuestionPageProps) => {
     singleReview,
   } = dictionary
 
-  // Fetch questions for the stage
-  const questionsStages = await getQuestions(lang)
+  // Fetch questions from internal API Route
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL?.includes('localhost')
+    ? 'http://localhost:3000'
+    : (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+  
+  const response = await fetch(`${baseUrl}/api/questions?lang=${lang}`, {
+    headers: {
+      'Cookie': (await cookies()).toString(),
+    },
+    cache: 'no-store',
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to load questions')
+  }
+
+  const result = await response.json()
+  if (!result.success || !result.data) {
+    throw new Error('Failed to load questions')
+  }
+
+  const questionsStages: StageData[] = result.data
   const stageQuestions = questionsStages.find((qs) => qs.id === stage)
 
   if (!stageQuestions) {

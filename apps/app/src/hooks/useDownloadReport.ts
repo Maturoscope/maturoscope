@@ -5,8 +5,7 @@ import { useCallback, useState } from "react"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
 import { StageId, QuestionData } from "@/components/custom/FormPage/Form/Form"
-import { DevelopmentPhase, Gap, LocalizedText } from "@/actions/organization"
-import { ReportPayload } from "@/actions/report"
+import { DevelopmentPhase, Gap, LocalizedText, ReportPayload } from "@/types/shared"
 // API Client
 import { 
   generateReportApi, 

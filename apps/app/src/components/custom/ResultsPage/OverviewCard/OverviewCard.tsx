@@ -5,7 +5,7 @@ import "react-circular-progressbar/dist/styles.css"
 // Packages
 import { CircularProgressbarWithChildren } from "react-circular-progressbar"
 // Types
-import { DevelopmentPhase } from "@/actions/organization"
+import { DevelopmentPhase } from "@/types/shared"
 // Packages
 import { useParams } from "next/navigation"
 // Dictionaries

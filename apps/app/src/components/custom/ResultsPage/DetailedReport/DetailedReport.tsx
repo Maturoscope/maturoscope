@@ -7,9 +7,10 @@ import { cn } from "@/lib/utils"
 // Components
 import DetailedScale from "@/components/custom/ResultsPage/DetailedScale/DetailedScale"
 // Types
-import { Gap, DevelopmentPhase } from "@/actions/organization"
+import { Gap, DevelopmentPhase, RisksRecord } from "@/types/shared"
 import { StageId } from "@/components/custom/FormPage/Form/Form"
-import { getRisks, RisksRecord } from "@/actions/questions"
+// API Client
+import { getRisksApi } from "@/utils/apiClient"
 
 export interface DetailedReportProps {
   title: string
@@ -85,18 +86,25 @@ const DetailedReport = ({
 
       try {
         // Extract the phase number from each DevelopmentPhase object
-        const risks = await getRisks({
+        const result = await getRisksApi({
           levels: {
             trl: levels.trl as number,
             mkrl: levels.mkrl as number,
             mfrl: levels.mfrl as number,
           },
           phases: {
-            trl: phases.trl!.phase,
-            mkrl: phases.mkrl!.phase,
-            mfrl: phases.mfrl!.phase,
+            trl: String(phases.trl!.phase),
+            mkrl: String(phases.mkrl!.phase),
+            mfrl: String(phases.mfrl!.phase),
           },
         })
+
+        if (!result.success || !result.data) {
+          console.error('Failed to fetch risks')
+          return
+        }
+
+        const risks = result.data as RisksRecord
 
         setRisksData(risks)
       } catch (error) {

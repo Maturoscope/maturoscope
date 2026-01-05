@@ -4,7 +4,7 @@ import { CircularProgressbarWithChildren } from "react-circular-progressbar"
 // Utils
 import { cn } from "@/lib/utils"
 // Types
-import { Gap, LocalizedText } from "@/actions/organization"
+import { Gap, LocalizedText } from "@/types/shared"
 import { Locale } from "@/dictionaries/dictionaries"
 // Components
 import ServiceAccordion from "@/components/custom/ResultsPage/ServiceAccordion/ServiceAccordion"

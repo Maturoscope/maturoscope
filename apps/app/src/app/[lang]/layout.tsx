@@ -3,17 +3,12 @@ import type { Metadata } from "next"
 import { Geist, Inter, Open_Sans, Poppins } from "next/font/google"
 // Dictionaries
 import { DEFAULT_LANGUAGE, Locale } from "@/dictionaries/dictionaries"
-// Actions
-import {
-  getOrganizationKeyFromCookies,
-  getOrganizationTheme
-} from "@/actions/organization"
 // Context
 import { DEFAULT_ACCENT_THEME, DEFAULT_FONT_THEME, ThemeProvider } from "@/context/ThemeContext"
 // Types
-import { FontTheme } from "@/actions/organization"
-// Components
-import ServerActionErrorHandler from "@/components/common/ServerActionErrorHandler/ServerActionErrorHandler"
+import { FontTheme } from "@/types/shared"
+// Next
+import { cookies } from "next/headers"
 // Styles
 import "../globals.css"
 
@@ -51,8 +46,33 @@ export default async function RootLayout({
 }: RootLayoutProps) {
   const { lang = DEFAULT_LANGUAGE } = await params
 
-  const organizationKey = await getOrganizationKeyFromCookies()
-  const { accentColor, font } = (await getOrganizationTheme(organizationKey)) ?? { accentColor: DEFAULT_ACCENT_THEME, font: DEFAULT_FONT_THEME }
+  // Fetch organization theme from internal API Route
+  let accentColor = DEFAULT_ACCENT_THEME
+  let font = DEFAULT_FONT_THEME
+
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL?.includes('localhost')
+      ? 'http://localhost:3000'
+      : (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+    
+    const response = await fetch(`${baseUrl}/api/organization/theme`, {
+      headers: {
+        'Cookie': (await cookies()).toString(),
+      },
+      cache: 'no-store',
+    })
+
+    if (response.ok) {
+      const result = await response.json()
+      if (result.success && result.data) {
+        accentColor = result.data.accentColor || DEFAULT_ACCENT_THEME
+        font = result.data.font || DEFAULT_FONT_THEME
+      }
+    }
+  } catch {
+    // Use defaults on error
+  }
+
   const fontClassName = FONTS_CLASSNAMES[font]
 
   return (
@@ -63,7 +83,6 @@ export default async function RootLayout({
       data-font-theme={font}
     >
       <body className="flex flex-col items-center justify-start w-full lg:h-svh bg-background">
-        <ServerActionErrorHandler />
         <ThemeProvider
           initialTheme={accentColor}
           initialFont={font}

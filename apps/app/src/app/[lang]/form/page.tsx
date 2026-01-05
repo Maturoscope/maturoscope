@@ -10,8 +10,9 @@ import { ProgressProvider } from "@/context/ProgressContext"
 import { getDictionary } from "@/dictionaries/dictionaries"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
-// Actions
-import { getQuestions } from "@/actions/questions"
+import { StageData } from "@/types/shared"
+// Next
+import { cookies } from "next/headers"
 
 interface FormPageProps {
   params: Promise<{ lang: Locale }>
@@ -25,7 +26,28 @@ const FormPage = async ({ params }: FormPageProps) => {
     header: { stringConnector },
   } = dictionary
 
-  const questionsStages = await getQuestions(lang)
+  // Fetch questions from internal API Route
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL?.includes('localhost')
+    ? 'http://localhost:3000'
+    : (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+  
+  const response = await fetch(`${baseUrl}/api/questions?lang=${lang}`, {
+    headers: {
+      'Cookie': (await cookies()).toString(),
+    },
+    cache: 'no-store',
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to load questions')
+  }
+
+  const result = await response.json()
+  if (!result.success || !result.data) {
+    throw new Error('Failed to load questions')
+  }
+
+  const questionsStages: StageData[] = result.data
 
   const stages = form.stages.map((stage) => {
     const questionsStage = questionsStages.find((qs) => qs.id === stage.id)

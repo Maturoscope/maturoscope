@@ -12,7 +12,7 @@ import { useContactExpertContext } from "@/context/ContactExpertContext"
 // Utils
 import { cn } from "@/lib/utils"
 // Types
-import { Gap } from "@/actions/organization"
+import { Gap } from "@/types/shared"
 import { StageId } from "@/components/custom/FormPage/Form/Form"
 import { Locale } from "@/dictionaries/dictionaries"
 import { ModalStep } from "../ContactExpertModal"

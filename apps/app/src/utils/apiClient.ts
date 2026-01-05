@@ -263,3 +263,33 @@ export async function trackCompletedCategoryApi(
   })
 }
 
+/**
+ * Track started assessment
+ */
+export async function trackStartedAssessmentApi(): Promise<ApiResponse> {
+  return apiClient('/api/statistics/track-started', {
+    method: 'POST',
+  })
+}
+
+/**
+ * Clear all assessment tracking cookies
+ */
+export async function clearAssessmentTrackingApi(): Promise<ApiResponse> {
+  return apiClient('/api/statistics/clear-tracking', {
+    method: 'POST',
+  })
+}
+
+/**
+ * Get organization theme
+ */
+export async function getOrganizationThemeApi(): Promise<ApiResponse<{
+  accentColor: string
+  font: string
+}>> {
+  return apiClient('/api/organization/theme', {
+    method: 'GET',
+  })
+}
+

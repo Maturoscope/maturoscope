@@ -10,7 +10,7 @@ import { useContactExpertContext } from "@/context/ContactExpertContext"
 import { cn } from "@/lib/utils"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
-import { Gap } from "@/actions/organization"
+import { Gap } from "@/types/shared"
 import { StageId } from "@/components/custom/FormPage/Form/Form"
 // Hooks
 import { useDownloadReport } from "@/hooks/useDownloadReport"

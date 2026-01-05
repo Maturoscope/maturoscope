@@ -12,8 +12,8 @@ import {
 } from "@/components/icons"
 // Dictionaries
 import { Locale } from "@/dictionaries/dictionaries"
-// Actions
-import { trackStartedAssessment } from "@/actions/tracking"
+// API Client
+import { trackStartedAssessmentApi } from "@/utils/apiClient"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { InfoIcon } from "lucide-react"
 
@@ -52,7 +52,7 @@ const Information = ({
   }, [])
 
   const handleLetsBeginClick = async () => {
-    await trackStartedAssessment()
+    await trackStartedAssessmentApi()
     router.push(nextPage)
   }
 

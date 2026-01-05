@@ -11,9 +11,8 @@ import BeforeYouGoModal from "@/components/custom/ResultsPage/BeforeYouGoModal/B
 import LeaveQuestionnaireModal from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
 // Animations
 import { SIMPLE_FADE_VARIANT } from "@/animations/common"
-// Actions
-import { clearAssessmentTracking } from "@/actions/tracking"
-import { getOrganizationSignature } from "@/actions/organization"
+// API Client
+import { clearAssessmentTrackingApi, getOrganizationSignatureApi } from "@/utils/apiClient"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
 import { BeforeYouGoModalProps } from "@/components/custom/ResultsPage/BeforeYouGoModal/BeforeYouGoModal"
@@ -53,10 +52,10 @@ const Header = ({
       setSignature(storedSignature)
     } else {
       // If not in localStorage, fetch it
-      getOrganizationSignature().then((sig) => {
-        if (sig) {
-          localStorage.setItem("signature", sig)
-          setSignature(sig)
+      getOrganizationSignatureApi().then((result) => {
+        if (result.success && result.data) {
+          localStorage.setItem("signature", result.data)
+          setSignature(result.data)
         }
       })
     }
@@ -70,7 +69,7 @@ const Header = ({
   }
 
   const handleResetForm = async () => {
-    await clearAssessmentTracking()
+    await clearAssessmentTrackingApi()
     localStorage.removeItem("form")
     localStorage.removeItem("gaps")
     localStorage.removeItem("level")

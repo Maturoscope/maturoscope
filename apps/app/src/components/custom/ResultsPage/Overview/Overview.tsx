@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button"
 import OverviewCard from "@/components/custom/ResultsPage/OverviewCard/OverviewCard"
 // Types
 import { StageId } from "@/components/custom/FormPage/Form/Form"
-import { DevelopmentPhase } from "@/actions/organization"
+import { DevelopmentPhase } from "@/types/shared"
 
 export interface OverviewProps {
   title: string

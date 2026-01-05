@@ -5,7 +5,7 @@ import Accordion from "@/components/common/Accordion/Accordion"
 // Utils
 import { cn } from "@/lib/utils"
 // Types
-import { RecommendedService } from "@/actions/organization"
+import { RecommendedService } from "@/types/shared"
 import { Locale } from "@/dictionaries/dictionaries"
 
 interface AccordionTriggerProps {

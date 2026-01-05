@@ -15,8 +15,8 @@ import { ResetIcon } from "@/components/icons"
 // Types
 import { ResetFormModalProps } from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
 import { Locale } from "@/dictionaries/dictionaries"
-// Actions
-import { clearAssessmentTracking } from "@/actions/tracking"
+// API Client
+import { clearAssessmentTrackingApi } from "@/utils/apiClient"
 // Hooks
 import { useDownloadReport } from "@/hooks/useDownloadReport"
 
@@ -50,7 +50,7 @@ const CTABanner = ({
   const { openModal } = useContactExpertContext()
 
   const handleResetForm = async () => {
-    await clearAssessmentTracking()
+    await clearAssessmentTrackingApi()
     localStorage.removeItem("form")
     localStorage.removeItem("gaps")
     localStorage.removeItem("level")

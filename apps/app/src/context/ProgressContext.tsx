@@ -22,7 +22,7 @@ import {
   AssessmentResponse,
   Gap,
   DevelopmentPhase,
-} from "@/actions/organization"
+} from "@/types/shared"
 // Utils
 import { submitAssessmentApi, trackCompletedCategoryApi } from "@/utils/apiClient"
 

@@ -6,8 +6,8 @@ import { useState, useEffect } from "react"
 import { StageId } from "@/components/custom/FormPage/Form/Form"
 import { Locale } from "@/dictionaries/dictionaries"
 import { DefaultValues } from "@/components/custom/FormPage/Form/default"
-// Actions
-import { getQuestions } from "@/actions/questions"
+// API Client
+import { getQuestionsApi } from "@/utils/apiClient"
 
 export interface QuestionAnswer {
   questionId: string
@@ -24,7 +24,14 @@ const useStageAnswers = (stageName: StageId, lang: Locale) => {
   useEffect(() => {
     const fetchQuestionsAndAnswers = async () => {
       // Fetch questions for the stage
-      const questionsStages = await getQuestions(lang)
+      const result = await getQuestionsApi()
+      
+      if (!result.success || !result.data) {
+        console.error('Failed to fetch questions')
+        return
+      }
+      
+      const questionsStages = result.data
       const stageQuestions = questionsStages.find(
         (stage) => stage.id === stageName
       )

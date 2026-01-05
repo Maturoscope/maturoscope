@@ -15,7 +15,7 @@ import { UnsavedChangesModalProps } from "@/components/custom/ReviewPage/Unsaved
 // Utils
 import { cn } from "@/lib/utils"
 // Actions
-import { ScaleType, AssessmentResponse } from "@/actions/organization"
+import { ScaleType, AssessmentResponse } from "@/types/shared"
 // Utils
 import { submitAssessmentApi, trackCompletedCategoryApi } from "@/utils/apiClient"
 

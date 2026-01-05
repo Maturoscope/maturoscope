@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useEffect, useState } from "react"
-import { AccentTheme, FontTheme } from "@/actions/organization"
+import { AccentTheme, FontTheme } from "@/types/shared"
 
 interface ThemeContextType {
   accentTheme: AccentTheme
