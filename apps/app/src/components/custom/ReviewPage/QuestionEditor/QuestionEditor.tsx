@@ -15,9 +15,9 @@ import { UnsavedChangesModalProps } from "@/components/custom/ReviewPage/Unsaved
 // Utils
 import { cn } from "@/lib/utils"
 // Actions
-import { submitAssessment, ScaleType } from "@/actions/organization"
+import { ScaleType, AssessmentResponse } from "@/actions/organization"
 // Utils
-import { withServerActionRetry } from "@/utils/serverActionRetry"
+import { submitAssessmentApi, trackCompletedCategoryApi } from "@/utils/apiClient"
 
 const STAGE_TO_SCALE: Record<StageId, ScaleType> = {
   trl: "TRL",
@@ -111,24 +111,28 @@ const QuestionEditor = ({
     // Save back to localStorage
     localStorage.setItem("form", JSON.stringify(updatedForm))
 
-    // Submit assessment to the backend with retry
+    // Submit assessment to the backend using API Route
     const scale = STAGE_TO_SCALE[stageName]
     const answers = updatedForm[stageName].questions
     
     try {
-      await withServerActionRetry(
-        () => submitAssessment({ scale, answers }),
-        2, // Max 2 retries
-        500 // 500ms delay
-      )
+      const result = await submitAssessmentApi(scale, answers)
+      
+      if (result.success && result.data) {
+        const assessmentData = result.data as AssessmentResponse
+        
+        // Track the completed category
+        const level = assessmentData.readinessLevel
+        if (level !== undefined && level !== null) {
+          await trackCompletedCategoryApi(scale, level)
+        }
+      } else {
+        console.error("Error submitting assessment:", result.error)
+        // Continue anyway (data is saved in localStorage)
+      }
     } catch (error) {
       console.error("Error submitting assessment:", error)
-      // If it's a Server Action error, reload the page
-      if (error instanceof Error && error.message.includes("Failed to find Server Action")) {
-        window.location.reload()
-        return
-      }
-      // For other errors, continue anyway (data is saved in localStorage)
+      // Continue anyway (data is saved in localStorage)
     }
 
     // Update initial values to reflect saved state

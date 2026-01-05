@@ -7,15 +7,9 @@ import { NextResponse } from 'next/server'
  */
 export async function GET() {
   try {
-    // Try to import a Server Action to verify they're available
-    // This is a simple check to see if Server Actions are accessible
-    const testAction = async () => {
-      'use server'
-      return { status: 'ok', timestamp: new Date().toISOString() }
-    }
-
-    // If we can create a Server Action function, the server is likely healthy
-    // Note: This is a basic check - in production, you might want more sophisticated checks
+    // Basic health check - if we can respond, the server is running
+    // Server Actions availability is checked by attempting to use them in the app
+    // This endpoint serves as a basic health indicator
     
     return NextResponse.json(
       {
