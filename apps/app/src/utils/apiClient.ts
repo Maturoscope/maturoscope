@@ -139,7 +139,15 @@ export async function generateReportApi(
 /**
  * Get questions with translations
  */
-export async function getQuestionsApi(lang: string): Promise<ApiResponse<unknown>> {
+export async function getQuestionsApi(lang: string): Promise<ApiResponse<Array<{
+  id: string
+  name: string
+  questions: Array<{
+    id: string
+    title: string
+    options: Array<{ id: string; title: string }>
+  }>
+}>>> {
   try {
     const response = await fetch(`/api/questions?lang=${lang}`, {
       method: 'GET',

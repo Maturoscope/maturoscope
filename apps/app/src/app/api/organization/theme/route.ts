@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 
 const DEFAULT_ACCENT_THEME = 'default'
 const DEFAULT_FONT_THEME = 'geist'
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const cookieStore = await cookies()
     const organizationKey = cookieStore.get('organization-key')?.value
@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
         font: font || DEFAULT_FONT_THEME,
       },
     })
-  } catch (error) {
+  } catch {
     return NextResponse.json({
       success: true,
       data: {

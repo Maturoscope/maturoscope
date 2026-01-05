@@ -24,7 +24,7 @@ const useStageAnswers = (stageName: StageId, lang: Locale) => {
   useEffect(() => {
     const fetchQuestionsAndAnswers = async () => {
       // Fetch questions for the stage
-      const result = await getQuestionsApi()
+      const result = await getQuestionsApi(lang)
       
       if (!result.success || !result.data) {
         console.error('Failed to fetch questions')

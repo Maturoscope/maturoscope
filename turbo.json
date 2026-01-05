@@ -6,7 +6,7 @@
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**"],
-      "env": ["NEXT_SERVER_ACTIONS_ENCRYPTION_KEY", "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY", "NEXT_PUBLIC_GATEWAY_URL"]
+      "env": ["NEXT_PUBLIC_GOOGLE_MAPS_API_KEY", "NEXT_PUBLIC_GATEWAY_URL"]
     },
     "lint": {
       "dependsOn": ["^lint"]
