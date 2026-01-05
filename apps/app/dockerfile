@@ -64,12 +64,15 @@
     ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
     ARG NEXT_PUBLIC_GATEWAY_URL
     ARG NEXT_SERVER_ACTIONS_ENCRYPTION_KEY
+    
+    # Set env vars BEFORE build
     ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
     ENV NEXT_PUBLIC_GATEWAY_URL=$NEXT_PUBLIC_GATEWAY_URL
     ENV NEXT_SERVER_ACTIONS_ENCRYPTION_KEY=$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY
     
     # Construir solo el servicio de app
-    RUN yarn turbo run build --filter=app
+    # Explicitly pass NEXT_SERVER_ACTIONS_ENCRYPTION_KEY to the build
+    RUN NEXT_SERVER_ACTIONS_ENCRYPTION_KEY=$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY yarn turbo run build --filter=app
     
     # --------------------------------------------------------------------------------------------------------------------
     # RUNNER (Ejecución final)
