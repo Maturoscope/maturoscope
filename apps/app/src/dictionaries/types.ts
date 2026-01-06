@@ -18,6 +18,7 @@ import { ReachOutProps } from "@/components/custom/ResultsPage/ContactExpertModa
 import { StatusProps } from "@/components/custom/ResultsPage/ContactExpertModal/Status/Status"
 import { BeforeYouGoModalProps } from "@/components/custom/ResultsPage/BeforeYouGoModal/BeforeYouGoModal"
 import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
+import { NotFoundProps } from "@/components/custom/NotFoundPage/NotFound/NotFound"
 
 type DictionaryStage = Omit<StageType, "questions">
 
@@ -29,6 +30,7 @@ export type Dictionary = {
     hero: HomepageHeroProps
     policy: PrivacyPolicyProps
   }
+  notFound: NotFoundProps
   begin: SimpleFormProps
   form: {
     buttonNextLabel: string

@@ -45,6 +45,10 @@
       "copyright": "Conçu et développé par"
     }
   },
+  "notFound": {
+    "title": "Page non trouvée",
+    "description": "Désolé, nous n'avons pas trouvé la page que vous cherchez."
+  },
   "begin": {
     "title": "Qu'évaluons-nous aujourd'hui ?",
     "label": "Nommez votre projet",
