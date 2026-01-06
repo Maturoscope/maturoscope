@@ -153,22 +153,17 @@ const Header = ({
             />
           </div>
 
-          <span className="text-sm font-medium">{stringConnector}</span>
 
-          {signature ? (
-            <Image
-              src={signature}
-              alt="Signature"
-              width={64}
-              height={20}
-            />
-          ) : (
-            <Image
-              src="/icons/nobatek.svg"
-              alt="Nobatek"
-              width={64}
-              height={20}
-            />
+          {signature && (
+            <>
+              <span className="text-sm font-medium">{stringConnector}</span>
+              <Image
+                src={signature}
+                alt="Signature"
+                width={64}
+                height={20}
+              />
+            </>
           )}
         </div>
       </div>
