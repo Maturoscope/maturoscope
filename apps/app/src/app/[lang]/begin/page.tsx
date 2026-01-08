@@ -7,11 +7,12 @@ import FormRedirectHandler from "@/components/common/FormRedirectHandler/FormRed
 import { getDictionary, Locale } from "@/dictionaries/dictionaries"
 
 type BeginPageProps = {
-  params: Promise<{ lang: Locale }>
+  params: Promise<{ lang: string }>
 }
 
 const BeginPage = async ({ params }: BeginPageProps) => {
-  const { lang } = await params
+  const { lang: langParam } = await params
+  const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
   const dictionary = await getDictionary(lang)
 
   const {

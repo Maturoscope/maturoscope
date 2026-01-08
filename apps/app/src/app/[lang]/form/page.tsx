@@ -14,11 +14,12 @@ import { Locale } from "@/dictionaries/dictionaries"
 import { getQuestions } from "@/actions/questions"
 
 interface FormPageProps {
-  params: Promise<{ lang: Locale }>
+  params: Promise<{ lang: string }>
 }
 
 const FormPage = async ({ params }: FormPageProps) => {
-  const { lang } = await params
+  const { lang: langParam } = await params
+  const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
   const dictionary = await getDictionary(lang)
   const {
     form,

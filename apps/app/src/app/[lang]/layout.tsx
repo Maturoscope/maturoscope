@@ -17,7 +17,7 @@ import "../globals.css"
 
 interface RootLayoutProps {
   children: React.ReactNode
-  params: Promise<{ lang: Locale }>
+  params: Promise<{ lang: string }>
 }
 
 export const metadata: Metadata = {
@@ -47,7 +47,9 @@ export default async function RootLayout({
   children,
   params,
 }: RootLayoutProps) {
-  const { lang = DEFAULT_LANGUAGE } = await params
+  const { lang: langParam = DEFAULT_LANGUAGE } = await params
+  // Validate and ensure lang is a valid Locale
+  const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : DEFAULT_LANGUAGE
 
   const organizationKey = await getOrganizationKeyFromCookies()
   const { accentColor, font } = (await getOrganizationTheme(organizationKey)) ?? { accentColor: DEFAULT_ACCENT_THEME, font: DEFAULT_FONT_THEME }

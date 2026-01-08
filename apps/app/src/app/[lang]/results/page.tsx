@@ -14,11 +14,12 @@ import PrivacyPolicy from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPol
 import TrackCompletedAssessment from "@/components/common/TrackCompletedAssessment/TrackCompletedAssessment"
 
 type ResultsPageProps = {
-  params: Promise<{ lang: Locale }>
+  params: Promise<{ lang: string }>
 }
 
 const ResultsPage = async ({ params }: ResultsPageProps) => {
-  const { lang } = await params
+  const { lang: langParam } = await params
+  const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
   const dictionary = await getDictionary(lang)
 
   const {

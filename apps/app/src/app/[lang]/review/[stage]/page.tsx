@@ -12,11 +12,12 @@ import BackBar from "@/components/common/BackBar/BackBar"
 import { ReviewPageWrapper } from "@/components/custom/ReviewPage/ReviewPageWrapper"
 
 interface ReviewPageProps {
-  params: Promise<{ lang: Locale; stage: StageId }>
+  params: Promise<{ lang: string; stage: StageId }>
 }
 
 const ReviewPage = async ({ params }: ReviewPageProps) => {
-  const { lang, stage } = await params
+  const { lang: langParam, stage } = await params
+  const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
   const dictionary = await getDictionary(lang)
   const {
     header: { stringConnector },

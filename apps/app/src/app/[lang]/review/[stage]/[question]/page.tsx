@@ -10,11 +10,12 @@ import QuestionEditor from "@/components/custom/ReviewPage/QuestionEditor/Questi
 import { getQuestions } from "@/actions/questions"
 
 interface QuestionPageProps {
-  params: Promise<{ lang: Locale; stage: StageId; question: string }>
+  params: Promise<{ lang: string; stage: StageId; question: string }>
 }
 
 const QuestionPage = async ({ params }: QuestionPageProps) => {
-  const { lang, stage, question: questionId } = await params
+  const { lang: langParam, stage, question: questionId } = await params
+  const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
   const dictionary = await getDictionary(lang)
   const {
     header: { stringConnector },
