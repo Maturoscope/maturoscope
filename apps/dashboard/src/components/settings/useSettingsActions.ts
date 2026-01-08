@@ -28,7 +28,7 @@ interface UseSettingsActionsProps {
   originalCustomizationForm: CustomizationFormData
   pendingSection: string | null
   pendingNavigation: (() => void) | null
-  user: { email?: string; } | null
+  user: { email?: string; organization?: { email?: string } } | null
   updateUser: (updates: Partial<{ firstName?: string; lastName?: string; name?: string; [key: string]: unknown }>) => void
   t: (key: string) => string
 }
@@ -115,6 +115,20 @@ export function useSettingsActions({
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Check if user is the first admin member (email matches organization email)
+    const isFirstAdminMember = Boolean(
+      user?.email && 
+      user?.organization?.email && 
+      user.email.toLowerCase() === user.organization.email.toLowerCase()
+    )
+    
+    if (isFirstAdminMember) {
+      setErrors({ 
+        general: 'Cannot update profile: You are the first admin member of this organization.' 
+      })
+      return
+    }
     
     const validation = validateProfileForm(profileForm, t)
     if (!validation.isValid) {

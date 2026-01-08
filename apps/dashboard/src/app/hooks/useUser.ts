@@ -21,6 +21,7 @@ export interface User {
     language?: string;
   };
   termsAccepted: boolean;
+  isActive?: boolean;
 }
 
 export const useUser = () => {

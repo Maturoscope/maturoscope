@@ -145,7 +145,7 @@ export function Step2CategoryScale({
               </button>
 
               {isExpanded && (
-                <div className="px-4 pb-4 space-y-6 border-t border-[#E5E5E5] pt-4">
+                <div className="px-4 pb-4 space-y-0 border-t border-[#E5E5E5] pt-4">
                   {questions.length === 0 ? (
                     <p className="text-sm text-gray-500">
                       {t("MODAL.STEP_2.NO_QUESTIONS")}

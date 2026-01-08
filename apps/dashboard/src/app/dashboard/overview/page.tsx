@@ -95,13 +95,6 @@ export default function Page() {
     }
   }, [user, userLoading]);
 
-  const handleRemindLater = () => {
-    if (user?.organization?.id) {
-      const dismissedKey = `welcome_modal_dismissed_${user.organization.id}`;
-      localStorage.setItem(dismissedKey, 'true');
-    }
-  };
-
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
@@ -272,7 +265,7 @@ export default function Page() {
                   {t('CHART.DESCRIPTION')}
                 </p>
               </div>
-              <ResponsiveContainer width="100%" height={355}>
+              <ResponsiveContainer width="100%" height={360}>
                 <LineChart data={statistics.chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
                   <XAxis 
@@ -293,7 +286,7 @@ export default function Page() {
                     allowDecimals={false}
                   />
                   <Tooltip content={<CustomTooltip t={t} />} />
-                  <Legend height={2}/>
+                  <Legend wrapperStyle={{ bottom: -20, right: 0 }} />
                   <Line 
                     type="monotone" 
                     dataKey="TRL" 
@@ -328,7 +321,6 @@ export default function Page() {
       <WelcomeModal
         open={showWelcomeModal}
         onOpenChange={setShowWelcomeModal}
-        onRemindLater={handleRemindLater}
       />
     </>
   )

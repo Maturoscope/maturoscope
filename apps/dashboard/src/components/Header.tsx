@@ -27,7 +27,7 @@ import { UserDropdown } from "./DropdownMenu"
           <Breadcrumb>
             <BreadcrumbList>
               {breadcrumbs.map((item, index) => (
-                <div key={index} className="flex items-center">
+                <React.Fragment key={index}>
                   {index > 0 && <BreadcrumbSeparator />}
                   <BreadcrumbItemComponent>
                     {item.href ? (
@@ -36,7 +36,7 @@ import { UserDropdown } from "./DropdownMenu"
                       <BreadcrumbPage>{item.label}</BreadcrumbPage>
                     )}
                   </BreadcrumbItemComponent>
-                </div>
+                </React.Fragment>
               ))}
             </BreadcrumbList>
           </Breadcrumb>

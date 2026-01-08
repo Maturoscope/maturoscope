@@ -337,14 +337,14 @@
       "UPLOAD_INSTRUCTIONS": "Cliquez pour télécharger votre signature ou glissez-déposez",
       "UPLOAD_BUTTON": "Télécharger la signature",
       "REMOVE_BUTTON": "Supprimer la signature",
-      "REQUIREMENTS": "Ratio recommandé 21:9. Types supportés : SVG, PNG ou JPG. Taille max : 4Mo",
-      "DESCRIPTION": "Cette signature sera affichée sur vos PDF.",
+      "REQUIREMENTS": "Dimensions recommandées 240x80px. Types supportés : SVG, PNG ou JPG. Taille max : 4Mo",
+      "DESCRIPTION": "Ceci est le logo qui sera affiché sur votre questionnaire et vos PDF.",
       "ERRORS": {
         "FILE_TOO_LARGE": "Le fichier est trop volumineux. Taille max : 4Mo."
       },
       "REMOVE_DIALOG": {
         "TITLE": "Supprimer la signature",
-        "DESCRIPTION": "Vous êtes sur le point de supprimer la signature de l'organisation. Cette action est irréversible. Une fois supprimée, elle sera définitivement retirée.",
+        "DESCRIPTION": "Vous êtes sur le point de supprimer la signature de l'organisation. Cette action est irréversible.",
         "CANCEL": "Annuler",
         "CONFIRM": "Oui, supprimer"
       }
@@ -399,7 +399,7 @@
       "LABEL": "Avatar",
       "UPLOAD_BUTTON": "Télécharger avatar",
       "REMOVE_BUTTON": "Supprimer avatar",
-      "REQUIREMENTS": "Ratio recommandé 1:1. Types supportés: SVG, PNG ou JPG. Taille max: 4MB",
+      "REQUIREMENTS": "Dimensions recommandées 48x48px. Types supportés: SVG, PNG ou JPG. Taille max: 4MB",
       "REMOVE_DIALOG": {
         "TITLE": "Supprimer l'avatar",
         "DESCRIPTION": "Vous êtes sur le point de supprimer l'avatar de l'organisation. Cette action est irréversible.",
@@ -533,7 +533,7 @@
           }
         },
         "SECONDARY_CONTACT": {
-          "TITLE": "Contact secondaire (Optionnel)",
+          "TITLE": "Contact secondaire",
           "FIRST_NAME": {
             "LABEL": "Prénom",
             "PLACEHOLDER": "Entrez le prénom"

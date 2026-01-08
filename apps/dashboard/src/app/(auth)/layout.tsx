@@ -18,13 +18,6 @@ export default function LoginPage({children}: Readonly<{
                 height={18}
               />
             </div>
-            <span className="text-xs text-gray-400">by</span>
-            <Image
-              src="/icons/nobatek.svg"
-              alt="Nobatek"
-              width={64}
-              height={20}
-            />
           </div>
           <LanguageButton />
         </header>

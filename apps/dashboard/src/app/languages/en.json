@@ -337,14 +337,14 @@
       "UPLOAD_INSTRUCTIONS": "Click to upload your signature or drag and drop",
       "UPLOAD_BUTTON": "Upload Signature",
       "REMOVE_BUTTON": "Remove signature",
-      "REQUIREMENTS": "Recommended ratio 21:9. Supported types: SVG, PNG or JPG. Max file size: 4MB",
-      "DESCRIPTION": "This is the signature that will be displayed on your PDFs.",
+      "REQUIREMENTS": "Recommended dimensions 240x80px. Supported types: SVG, PNG or JPG. Max file size: 4MB",
+      "DESCRIPTION": "This is the logo that will be displayed on your questionnaire and PDFs.",
       "ERRORS": {
         "FILE_TOO_LARGE": "File is too large. Max size is 4MB."
       },
       "REMOVE_DIALOG": {
         "TITLE": "Remove signature",
-        "DESCRIPTION": "You're about to delete the organization's signature. This action is irreversible. Once deleted, it will be permanently removed.",
+        "DESCRIPTION": "You're about to delete the organization's signature. This action is irreversible.",
         "CANCEL": "Cancel",
         "CONFIRM": "Yes, remove"
       }
@@ -399,7 +399,7 @@
       "LABEL": "Avatar",
       "UPLOAD_BUTTON": "Upload avatar",
       "REMOVE_BUTTON": "Remove avatar",
-      "REQUIREMENTS": "Recommended ratio 1:1. Supported types: SVG, PNG or JPG. Max file size: 4MB",
+      "REQUIREMENTS": "Recommended dimensions 48x48px. Supported types: SVG, PNG or JPG. Max file size: 4MB",
       "REMOVE_DIALOG": {
         "TITLE": "Remove avatar",
         "DESCRIPTION": "You're about to delete the organization's avatar. This action is irreversible.",
@@ -533,7 +533,7 @@
           }
         },
         "SECONDARY_CONTACT": {
-          "TITLE": "Secondary Contact (Optional)",
+          "TITLE": "Secondary Contact",
           "FIRST_NAME": {
             "LABEL": "First Name",
             "PLACEHOLDER": "Enter first name"
