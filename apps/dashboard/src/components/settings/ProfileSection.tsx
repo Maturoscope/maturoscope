@@ -11,6 +11,7 @@ interface User {
   email?: string
   organization?: {
     name?: string
+    email?: string
   }
 }
 
@@ -38,7 +39,19 @@ export function ProfileSection({
   t
 }: ProfileSectionProps) {
   
+  // Check if user is the first admin member (email matches organization email)
+  const isFirstAdminMember = Boolean(
+    user?.email && 
+    user?.organization?.email && 
+    user.email.toLowerCase() === user.organization.email.toLowerCase()
+  )
+
   const handleFieldChange = (fieldName: keyof ProfileFormData, value: string) => {
+    // Prevent changes if user is the first admin member
+    if (isFirstAdminMember) {
+      return
+    }
+    
     setForm(prev => ({ ...prev, [fieldName]: value }))
     
     // Real-time validation
@@ -76,8 +89,8 @@ export function ProfileSection({
               type="text"
               value={form.firstName}
               onChange={(e) => handleFieldChange('firstName', e.target.value)}
-              className={errors.firstName ? "border-red-500" : ""}
-              disabled={isUpdating}
+              className={errors.firstName ? "border-red-500" : (isUpdating || isFirstAdminMember) ? "bg-muted" : ""}
+              disabled={isUpdating || isFirstAdminMember}
               required
             />
             {errors.firstName && (
@@ -92,8 +105,8 @@ export function ProfileSection({
               type="text"
               value={form.lastName}
               onChange={(e) => handleFieldChange('lastName', e.target.value)}
-              className={errors.lastName ? "border-red-500" : ""}
-              disabled={isUpdating}
+              className={errors.lastName ? "border-red-500" : (isUpdating || isFirstAdminMember) ? "bg-muted" : ""}
+              disabled={isUpdating || isFirstAdminMember}
               required
             />
             {errors.lastName && (
@@ -127,7 +140,7 @@ export function ProfileSection({
         <Button 
           type="submit" 
           className="w-full sm:w-auto sm:min-w-[150px]" 
-          disabled={isUpdating || !hasChanges || Object.keys(errors).length > 0}
+          disabled={isUpdating || !hasChanges || Object.keys(errors).length > 0 || isFirstAdminMember}
         >
           {isUpdating ? <Loader2 className="size-4 animate-spin" /> : t('PROFILE.UPDATE_PROFILE')}
         </Button>

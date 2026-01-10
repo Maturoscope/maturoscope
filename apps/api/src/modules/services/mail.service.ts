@@ -40,7 +40,7 @@ interface EmailContent {
   subject: string;
         greeting: string;
         introMessage: string;
-  instructionMessage: (clientName: string, serviceName: string) => string;
+  instructionMessage: string;
         projectDetailsTitle: string;
   clientInformationTitle: string;
   projectNameLabel: string;
@@ -105,8 +105,8 @@ export class ServiceContactMailService extends BaseMailService implements OnModu
         greeting: 'Hi',
         introMessage:
           'A new <strong>qualified lead</strong> has requested your expertise through Maturoscope.',
-        instructionMessage: (clientName: string, serviceName: string) =>
-          `The <strong>potential client</strong> (${clientName}) has been matched with your service (${serviceName}). Review the details below and reach out to get started:`,
+        instructionMessage:
+          'A <strong>potential client</strong> has been matched with your service. Review the details below and reach out to get started:',
         projectDetailsTitle: 'Project details',
         clientInformationTitle: 'Client Information',
         projectNameLabel: 'Project name',
@@ -144,8 +144,8 @@ export class ServiceContactMailService extends BaseMailService implements OnModu
         greeting: 'Bonjour',
         introMessage:
           'Un nouveau <strong>lead qualifié</strong> a demandé votre expertise via Maturoscope.',
-        instructionMessage: (clientName: string, serviceName: string) =>
-          `Le <strong>client potentiel</strong> (${clientName}) a été mis en relation avec votre service (${serviceName}). Consultez les détails ci-dessous et contactez-nous pour commencer :`,
+        instructionMessage:
+          'Un <strong>client potentiel</strong> a été mis en relation avec votre service. Consultez les détails ci-dessous et contactez-nous pour commencer :',
         projectDetailsTitle: 'Détails du projet',
         clientInformationTitle: 'Informations client',
         projectNameLabel: 'Nom du projet',
@@ -229,7 +229,7 @@ export class ServiceContactMailService extends BaseMailService implements OnModu
     const finalSupportEmail = supportEmail || this.configService.get<string>('SUPPORT_EMAIL') || 'support@maturoscope.com';
 
     // Build instruction message with client name and service name
-    const instructionMessage = content.instructionMessage(clientFullName, projectData.serviceTitle);
+    const instructionMessage = content.instructionMessage;
 
     // Build contact subject for "Contact Lead Now" button
     const contactSubject = content.contactSubject(projectData.projectName || projectData.serviceTitle);

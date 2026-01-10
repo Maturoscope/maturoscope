@@ -64,6 +64,19 @@ export function PasswordSection({
     })
   }
 
+  // Prevent copy and paste on confirm password field
+  const handleConfirmPasswordPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault()
+  }
+
+  const handleConfirmPasswordCopy = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault()
+  }
+
+  const handleConfirmPasswordContextMenu = (e: React.MouseEvent<HTMLInputElement>) => {
+    e.preventDefault()
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -156,6 +169,9 @@ export function PasswordSection({
               id="confirmPassword"
               value={form.confirmPassword}
               onChange={(e) => handleFieldChange('confirmPassword', e.target.value)}
+              onPaste={handleConfirmPasswordPaste}
+              onCopy={handleConfirmPasswordCopy}
+              onContextMenu={handleConfirmPasswordContextMenu}
               className={errors.confirmPassword ? "border-red-500" : ""}
               disabled={isUpdating}
               placeholder="Confirm new password"

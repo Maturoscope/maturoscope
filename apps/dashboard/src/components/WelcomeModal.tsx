@@ -15,21 +15,15 @@ import { Button } from '@/components/ui/button'
 interface WelcomeModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  onRemindLater: () => void
 }
 
-export function WelcomeModal({ open, onOpenChange, onRemindLater }: WelcomeModalProps) {
+export function WelcomeModal({ open, onOpenChange }: WelcomeModalProps) {
   const { t } = useTranslation('WELCOME_MODAL')
   const router = useRouter()
 
   const handleGoToSettings = () => {
     onOpenChange(false)
     router.push('/dashboard/settings')
-  }
-
-  const handleRemindLater = () => {
-    onRemindLater()
-    onOpenChange(false)
   }
 
   return (
@@ -44,13 +38,6 @@ export function WelcomeModal({ open, onOpenChange, onRemindLater }: WelcomeModal
           </DialogDescription>
         </DialogHeader>
         <div className="flex justify-end gap-3 mt-auto">
-          <Button
-            variant="outline"
-            onClick={handleRemindLater}
-            className="border-gray-300 text-[14px]"
-          >
-            {t('REMIND_LATER')}
-          </Button>
           <Button
             onClick={handleGoToSettings}
             className="bg-gray-900 hover:bg-gray-800 text-white text-[14px]"

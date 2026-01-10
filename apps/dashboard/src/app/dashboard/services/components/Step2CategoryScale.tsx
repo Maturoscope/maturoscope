@@ -112,6 +112,15 @@ export function Step2CategoryScale({
         </div>
       )}
 
+      <div className="space-y-2">
+        <h3 className="text-base font-semibold text-[#0A0A0A]">
+          {t("MODAL.STEP_2.HEADING")}
+        </h3>
+        <p className="text-sm text-[#0A0A0A]">
+          {t("MODAL.STEP_2.SUBTITLE")}
+        </p>
+      </div>
+
       <div className="space-y-4">
         {SCALES.map((scale) => {
           const isExpanded = expandedCategories.has(scale.type);
@@ -145,7 +154,7 @@ export function Step2CategoryScale({
               </button>
 
               {isExpanded && (
-                <div className="px-4 pb-4 space-y-6 border-t border-[#E5E5E5] pt-4">
+                <div className="px-4 pb-4 space-y-0 border-t border-[#E5E5E5] pt-4">
                   {questions.length === 0 ? (
                     <p className="text-sm text-gray-500">
                       {t("MODAL.STEP_2.NO_QUESTIONS")}

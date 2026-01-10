@@ -314,7 +314,7 @@
     "ORGANIZATION_SETTINGS": "Paramètres de l'organisation",
     "SECTIONS": {
       "CUSTOMIZATION": "Personnalisation",
-      "PDF_SIGNATURE": "Signature PDF",
+      "PDF_SIGNATURE": "Logo",
       "LANGUAGE": "Langue"
     },
     "CUSTOMIZATION": {
@@ -333,18 +333,18 @@
       "SAVING": "Enregistrement..."
     },
     "PDF_SIGNATURE": {
-      "LABEL": "Signature PDF",
-      "UPLOAD_INSTRUCTIONS": "Cliquez pour télécharger votre signature ou glissez-déposez",
-      "UPLOAD_BUTTON": "Télécharger la signature",
-      "REMOVE_BUTTON": "Supprimer la signature",
-      "REQUIREMENTS": "Ratio recommandé 21:9. Types supportés : SVG, PNG ou JPG. Taille max : 4Mo",
-      "DESCRIPTION": "Cette signature sera affichée sur vos PDF.",
+      "LABEL": "Logo",
+      "UPLOAD_INSTRUCTIONS": "Cliquez pour télécharger votre logo ou glissez-déposez",
+      "UPLOAD_BUTTON": "Télécharger le logo",
+      "REMOVE_BUTTON": "Supprimer le logo",
+      "REQUIREMENTS": "Dimensions recommandées 240x80px. Types supportés : SVG, PNG ou JPG. Taille max : 4Mo",
+      "DESCRIPTION": "Ceci est le logo qui sera affiché sur votre questionnaire et vos PDF.",
       "ERRORS": {
         "FILE_TOO_LARGE": "Le fichier est trop volumineux. Taille max : 4Mo."
       },
       "REMOVE_DIALOG": {
-        "TITLE": "Supprimer la signature",
-        "DESCRIPTION": "Vous êtes sur le point de supprimer la signature de l'organisation. Cette action est irréversible. Une fois supprimée, elle sera définitivement retirée.",
+        "TITLE": "Supprimer le logo",
+        "DESCRIPTION": "Vous êtes sur le point de supprimer le logo de l'organisation. Cette action est irréversible.",
         "CANCEL": "Annuler",
         "CONFIRM": "Oui, supprimer"
       }
@@ -371,8 +371,8 @@
         "DESCRIPTION": "Vos paramètres de personnalisation ont été sauvegardés avec succès."
       },
       "PDF_SIGNATURE_SUCCESS": {
-        "TITLE": "Signature PDF mise à jour",
-        "DESCRIPTION": "Votre signature PDF a été mise à jour avec succès."
+        "TITLE": "Logo mis à jour",
+        "DESCRIPTION": "Le nouveau logo de votre organisation a été téléchargé avec succès."
       },
       "LANGUAGE_SUCCESS": {
         "TITLE": "Langue mise à jour",
@@ -399,7 +399,7 @@
       "LABEL": "Avatar",
       "UPLOAD_BUTTON": "Télécharger avatar",
       "REMOVE_BUTTON": "Supprimer avatar",
-      "REQUIREMENTS": "Ratio recommandé 1:1. Types supportés: SVG, PNG ou JPG. Taille max: 4MB",
+      "REQUIREMENTS": "Dimensions recommandées 48x48px. Types supportés: SVG, PNG ou JPG. Taille max: 4MB",
       "REMOVE_DIALOG": {
         "TITLE": "Supprimer l'avatar",
         "DESCRIPTION": "Vous êtes sur le point de supprimer l'avatar de l'organisation. Cette action est irréversible.",
@@ -474,7 +474,7 @@
       "VIEW_TITLE": "Voir le service",
       "STEPS": {
         "SERVICE_INFO": "Informations sur le service",
-        "CATEGORY_SCALE": "Catégorie et échelle",
+        "CATEGORY_SCALE": "Catégories et écarts",
         "CONTACTS": "Informations de contact"
       },
       "STEP_1": {
@@ -504,6 +504,8 @@
       },
       "STEP_2": {
         "TITLE": "Sélectionner les catégories et les niveaux de satisfaction",
+        "HEADING": "Quels écarts le service couvre-t-il ?",
+        "SUBTITLE": "Identifiez une ou plusieurs catégories (TRL, MkRL, MfRL) qui s'appliquent au service, puis sélectionnez tous les écarts qu'il couvre dans celles-ci.",
         "DESCRIPTION": "Activez les catégories que ce service aborde et sélectionnez les niveaux de satisfaction pour chaque question.",
         "NO_CATEGORIES": "Veuillez activer au moins une catégorie pour continuer.",
         "SELECT_ALL_THAT_APPLY": "(sélectionner tout ce qui s'applique)",
@@ -533,7 +535,7 @@
           }
         },
         "SECONDARY_CONTACT": {
-          "TITLE": "Contact secondaire (Optionnel)",
+          "TITLE": "Contact secondaire",
           "FIRST_NAME": {
             "LABEL": "Prénom",
             "PLACEHOLDER": "Entrez le prénom"
