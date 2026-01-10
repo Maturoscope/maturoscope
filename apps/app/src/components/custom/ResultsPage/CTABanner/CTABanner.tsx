@@ -1,7 +1,7 @@
 "use client"
 
 // Packages
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 // Components
 import { Button } from "@/components/ui/button"
@@ -15,6 +15,8 @@ import { ResetIcon } from "@/components/icons"
 // Types
 import { ResetFormModalProps } from "@/components/custom/ResultsPage/ResetFormModal/ResetFormModal"
 import { Locale } from "@/dictionaries/dictionaries"
+import { Gap } from "@/actions/organization"
+import { StageId } from "@/components/custom/FormPage/Form/Form"
 // Actions
 import { clearAssessmentTracking } from "@/actions/tracking"
 // Hooks
@@ -43,6 +45,7 @@ const CTABanner = ({
   className,
 }: CTABannerProps & ExtraProps) => {
   const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
+  const [isTalkToExpertButtonDisabled, setIsTalkToExpertButtonDisabled] = useState<boolean>(false)
   const router = useRouter()
   const params = useParams<{ lang?: Locale }>()
   const lang = params.lang || "en"
@@ -61,9 +64,7 @@ const CTABanner = ({
     setIsResetFormModalOpen(false)
   }
 
-  const handleTalkButtonClick = () => {
-    openModal()
-  }
+  const handleTalkButtonClick = () => openModal()
 
   const handleResetButtonClick = () => {
     handleResetForm()
@@ -74,6 +75,31 @@ const CTABanner = ({
     await downloadReport()
     router.push("/")
   }
+
+  useEffect(() => {
+    const storedGaps = localStorage.getItem("gaps")
+    if (storedGaps) {
+      try {
+        const gaps = JSON.parse(storedGaps) as Partial<Record<StageId, Gap[]>>
+        // Check if there's at least one gap with hasServices: true across all categories
+        const hasAnyService = Object.values(gaps).some((categoryGaps: Gap[] | undefined) => {
+          if (Array.isArray(categoryGaps)) {
+            return categoryGaps.some((gap: Gap) => gap.hasServices === true)
+          }
+          return false
+        })
+        // Disable button if no gaps have services
+        setIsTalkToExpertButtonDisabled(!hasAnyService)
+      } catch (error) {
+        console.error("Error parsing gaps from localStorage:", error)
+        // On error, disable the button to be safe
+        setIsTalkToExpertButtonDisabled(true)
+      }
+    } else {
+      // If no gaps data, disable the button
+      setIsTalkToExpertButtonDisabled(true)
+    }
+  }, [])
 
   return (
     <div className="w-full flex flex-col items-center justify-center mt-11 px-4 lg:px-6 mb-8">
@@ -100,7 +126,11 @@ const CTABanner = ({
             {description}
           </p>
           <div className="flex gap-2">
-            <Button onClick={handleTalkButtonClick} variant="outline">
+            <Button 
+              onClick={handleTalkButtonClick} 
+              variant="outline"
+              disabled={isTalkToExpertButtonDisabled}
+            >
               {talkButtonLabel}
             </Button>
           </div>

@@ -40,9 +40,9 @@ const ResultsTopBar = ({
   const { openModal } = useContactExpertContext()
   const { downloadReport, isLoading } = useDownloadReport(lang)
 
-  const handleTalkButtonClick = () => {
-    openModal()
-  }
+  const handleTalkButtonClick = () => openModal()
+
+  const handleDownloadClick = async () => await downloadReport()
 
   useEffect(() => {
     const storedCompletedOn = localStorage.getItem("completedOn")
@@ -55,10 +55,6 @@ const ResultsTopBar = ({
       setCompletedOnDate(formattedDate)
     }
   }, [lang])
-
-  const handleDownloadClick = async () => {
-    await downloadReport()
-  }
 
   useEffect(() => {
     const storedGaps = localStorage.getItem("gaps")
