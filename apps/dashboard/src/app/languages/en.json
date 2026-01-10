@@ -314,7 +314,7 @@
     "ORGANIZATION_SETTINGS": "Organization Settings",
     "SECTIONS": {
       "CUSTOMIZATION": "Customization",
-      "PDF_SIGNATURE": "PDF Signature",
+      "PDF_SIGNATURE": "Logo",
       "LANGUAGE": "Language"
     },
     "CUSTOMIZATION": {
@@ -333,18 +333,18 @@
       "SAVING": "Saving..."
     },
     "PDF_SIGNATURE": {
-      "LABEL": "PDF Signature",
-      "UPLOAD_INSTRUCTIONS": "Click to upload your signature or drag and drop",
-      "UPLOAD_BUTTON": "Upload Signature",
-      "REMOVE_BUTTON": "Remove signature",
+      "LABEL": "Logo",
+      "UPLOAD_INSTRUCTIONS": "Click to upload your logo or drag and drop",
+      "UPLOAD_BUTTON": "Upload logo",
+      "REMOVE_BUTTON": "Remove logo",
       "REQUIREMENTS": "Recommended dimensions 240x80px. Supported types: SVG, PNG or JPG. Max file size: 4MB",
       "DESCRIPTION": "This is the logo that will be displayed on your questionnaire and PDFs.",
       "ERRORS": {
         "FILE_TOO_LARGE": "File is too large. Max size is 4MB."
       },
       "REMOVE_DIALOG": {
-        "TITLE": "Remove signature",
-        "DESCRIPTION": "You're about to delete the organization's signature. This action is irreversible.",
+        "TITLE": "Remove logo",
+        "DESCRIPTION": "You're about to delete the organization's logo. This action is irreversible.",
         "CANCEL": "Cancel",
         "CONFIRM": "Yes, remove"
       }
@@ -371,8 +371,8 @@
         "DESCRIPTION": "Your customization settings have been saved successfully."
       },
       "PDF_SIGNATURE_SUCCESS": {
-        "TITLE": "PDF Signature Updated", 
-        "DESCRIPTION": "Your PDF signature has been updated successfully."
+        "TITLE": "Logo Updated", 
+        "DESCRIPTION": "Your organization's new logo has been uploaded successfully."
       },
       "LANGUAGE_SUCCESS": {
         "TITLE": "Language Updated",
@@ -504,6 +504,8 @@
       },
       "STEP_2": {
         "TITLE": "Select Categories and Satisfaction Levels",
+        "HEADING": "Which gaps does the service address?",
+        "SUBTITLE": "Identify one or more categories (TRL, MkRL, MfRL) that apply to the service, then select all the gaps it covers within them.",
         "DESCRIPTION": "Activate the categories this service addresses and select the satisfaction levels for each question.",
         "NO_CATEGORIES": "Please activate at least one category to continue.",
         "SELECT_ALL_THAT_APPLY": "(select all that apply)",
