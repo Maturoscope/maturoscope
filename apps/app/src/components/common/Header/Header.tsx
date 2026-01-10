@@ -78,6 +78,7 @@ const Header = ({
     localStorage.removeItem("completedOn")
     localStorage.removeItem("signature")
     localStorage.removeItem("projectName")
+    localStorage.removeItem("hasRequestedContact")
     setIsResetFormModalOpen(false)
   }
 
