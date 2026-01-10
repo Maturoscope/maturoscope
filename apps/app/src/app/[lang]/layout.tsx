@@ -10,6 +10,8 @@ import {
 } from "@/actions/organization"
 // Context
 import { DEFAULT_ACCENT_THEME, DEFAULT_FONT_THEME, ThemeProvider } from "@/context/ThemeContext"
+// Components
+import OrganizationKeyHandler from "@/components/common/OrganizationKeyHandler/OrganizationKeyHandler"
 // Types
 import { FontTheme } from "@/actions/organization"
 // Styles
@@ -63,6 +65,7 @@ export default async function RootLayout({
       data-font-theme={font}
     >
       <body className="flex flex-col items-center justify-start w-full lg:h-svh bg-background">
+        <OrganizationKeyHandler />
         <ThemeProvider
           initialTheme={accentColor}
           initialFont={font}
