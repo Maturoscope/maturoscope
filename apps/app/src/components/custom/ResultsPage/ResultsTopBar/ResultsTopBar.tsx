@@ -2,6 +2,7 @@
 
 // Packages
 import { useState, useEffect } from "react"
+import { usePathname } from "next/navigation"
 // Components
 import { Button } from "@/components/ui/button"
 // Context
@@ -39,6 +40,8 @@ const ResultsTopBar = ({
   const [isTalkToExpertButtonDisabled, setIsTalkToExpertButtonDisabled] = useState<boolean>(false)
   const { openModal } = useContactExpertContext()
   const { downloadReport, isLoading } = useDownloadReport(lang)
+  const pathname = usePathname()
+  const isResultsPage = pathname.includes("/results")
 
   const handleTalkButtonClick = () => openModal()
 
@@ -86,6 +89,7 @@ const ResultsTopBar = ({
     <div
       className={cn(
         "w-full flex items-center flex-wrap gap-y-4 justify-between p-4 lg:px-6 py-4 bg-white border-b border-border",
+        isResultsPage && "fixed top-14 left-0 right-0 z-40 bg-white",
         className
       )}
     >
