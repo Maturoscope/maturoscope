@@ -44,6 +44,7 @@ interface ContactInfoFieldProps {
   placeholder: string,
   type: "text" | "email" | "phone" | "textarea" | "country",
   required?: boolean,
+  defaultCountry?: string,
 }
 
 // TODO: Add country field for v2
@@ -103,6 +104,7 @@ const EN_CONTACT_INFO_FIELDS: ContactInfoForm = {
     label: "Phone",
     placeholder: "Phone",
     type: "phone",
+    defaultCountry: "FR",
   },
   additionalInformation: {
     name: "additionalInformation",
@@ -152,6 +154,7 @@ const FR_CONTACT_INFO_FIELDS: ContactInfoForm = {
     label: "Numéro de téléphone",
     placeholder: "Numéro de téléphone",
     type: "phone",
+    defaultCountry: "FR",
   },
   additionalInformation: {
     name: "additionalInformation",
