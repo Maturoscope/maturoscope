@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useParams } from "next/navigation"
+import * as RPNInput from "react-phone-number-input"
 // Components
 import Modal from "@/components/common/Modal/Modal"
 import { Button } from "@/components/ui/button"
@@ -169,6 +170,46 @@ const EN_LOADING_BUTTON_LABEL = "Loading..."
 const FR_CLARIFICATION = "Nous respectons votre vie privée. Vos données sont utilisées exclusivement pour répondre à cette demande."
 const FR_LOADING_BUTTON_LABEL = "Chargement..."
 
+/**
+ * Removes duplicate country code from phone number if present.
+ * Example: "+54+543512425044" -> "+543512425044"
+ * Handles patterns like: +XX+XX... where XX is a country code (1-3 digits)
+ */
+const removeDuplicateCountryCode = (phoneNumber: string): string => {
+  if (!phoneNumber || !phoneNumber.startsWith("+")) {
+    return phoneNumber
+  }
+
+  // Check if phone number contains multiple "+" signs (indicating possible duplicate)
+  const plusCount = (phoneNumber.match(/\+/g) || []).length
+  if (plusCount < 2) {
+    return phoneNumber
+  }
+
+  // Pattern to detect duplicate country codes: +XX+XX... where XX is 1-3 digits
+  // This matches cases like: +54+543512425044, +1+1234567890, etc.
+  const duplicatePattern = /^\+(\d{1,3})\+\1(\d+)/
+  const match = phoneNumber.match(duplicatePattern)
+  
+  if (match) {
+    // Found duplicate country code, remove the first occurrence
+    // match[1] is the country code, match[2] is the rest of the number
+    return `+${match[1]}${match[2]}`
+  }
+
+  // Also check for pattern where there might be extra characters between duplicates
+  // Pattern: +XX+XX... (with possible spacing or formatting)
+  const looseDuplicatePattern = /^\+(\d{1,3})\+(\d*)\1(\d+)/
+  const looseMatch = phoneNumber.match(looseDuplicatePattern)
+  
+  if (looseMatch && looseMatch[2].length === 0) {
+    // Found duplicate with no characters in between
+    return `+${looseMatch[1]}${looseMatch[3]}`
+  }
+
+  return phoneNumber
+}
+
 const ReachOut = ({
   title,
   description,
@@ -199,13 +240,19 @@ const ReachOut = ({
   const clarification = lang === "en" ? EN_CLARIFICATION : FR_CLARIFICATION
 
   const onSubmit = async (data: ContactFormData) => {
-    setContactInformation(data)
+    // Clean phone number to remove duplicate country codes if present
+    const cleanedData = {
+      ...data,
+      phoneNumber: data.phoneNumber ? removeDuplicateCountryCode(data.phoneNumber) : data.phoneNumber,
+    }
+
+    setContactInformation(cleanedData)
     const projectName = localStorage.getItem("projectName")
 
     setIsLoading(true)
     const result = await requestContact({
       gaps: selectedGaps,
-      contactInformation: data,
+      contactInformation: cleanedData,
       projectName: projectName as string,
     })
     setIsLoading(false)
