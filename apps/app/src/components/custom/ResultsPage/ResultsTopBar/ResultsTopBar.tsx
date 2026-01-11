@@ -16,6 +16,12 @@ import { StageId } from "@/components/custom/FormPage/Form/Form"
 // Hooks
 import { useDownloadReport } from "@/hooks/useDownloadReport"
 
+interface LevelStorage {
+  trl?: number
+  mkrl?: number
+  mfrl?: number
+}
+
 export interface ResultsTopBarProps {
   title: string
   subtitle: string
@@ -38,6 +44,7 @@ const ResultsTopBar = ({
 }: ResultsTopBarProps & ExtraProps) => {
   const [completedOnDate, setCompletedOnDate] = useState<string>("")
   const [isTalkToExpertButtonDisabled, setIsTalkToExpertButtonDisabled] = useState<boolean>(false)
+  const [isAllLevelsMax, setIsAllLevelsMax] = useState<boolean>(false)
   const { openModal } = useContactExpertContext()
   const { downloadReport, isLoading } = useDownloadReport(lang)
   const pathname = usePathname()
@@ -61,6 +68,22 @@ const ResultsTopBar = ({
 
   useEffect(() => {
     const storedGaps = localStorage.getItem("gaps")
+    const storedLevel = localStorage.getItem("level")
+    
+    // Check if all levels are at maximum (9)
+    if (storedLevel) {
+      try {
+        const levelData: LevelStorage = JSON.parse(storedLevel)
+        const allAtMaxLevel = 
+          levelData.trl === 9 && 
+          levelData.mkrl === 9 && 
+          levelData.mfrl === 9
+        setIsAllLevelsMax(allAtMaxLevel)
+      } catch (error) {
+        console.error("Error parsing level data:", error)
+        setIsAllLevelsMax(false)
+      }
+    }
     
     if (storedGaps) {
       try {
@@ -108,14 +131,16 @@ const ResultsTopBar = ({
         >
           {isLoading ? "Loading..." : downloadButtonLabel}
         </Button>
-        <Button
-          variant="default"
-          accent
-          onClick={handleTalkButtonClick}
-          disabled={isTalkToExpertButtonDisabled}
-        >
-          {talkButtonLabel}
-        </Button>
+        {!isAllLevelsMax && (
+          <Button
+            variant="default"
+            accent
+            onClick={handleTalkButtonClick}
+            disabled={isTalkToExpertButtonDisabled}
+          >
+            {talkButtonLabel}
+          </Button>
+        )}
       </div>
     </div>
   )
