@@ -16,6 +16,7 @@ export interface ContactInfoFieldProps {
   placeholder: string
   type: "text" | "email" | "phone" | "textarea" | "country"
   required?: boolean
+  defaultCountry?: string
 }
 
 interface InputProps<T extends FieldValues> {
@@ -89,6 +90,7 @@ const Input = <T extends FieldValues>({
 
   // For phone input
   if (type === "phone") {
+    const { defaultCountry } = fieldProps
     return (
       <div className={cn("flex flex-col gap-2", className)}>
         <label htmlFor={name} className="text-sm font-medium">
@@ -104,6 +106,7 @@ const Input = <T extends FieldValues>({
               value={(field.value ? field.value : undefined) as RPNInput.Value | undefined}
               onChange={(value) => field.onChange(value || "")}
               placeholder={placeholder}
+              defaultCountry={defaultCountry as RPNInput.Country | undefined}
             />
           )}
         />
@@ -123,20 +126,30 @@ const Input = <T extends FieldValues>({
           name={name as Path<T>}
           control={control}
           rules={rules}
-          render={({ field }) => (
-            <TextArea
-              id={name}
-              placeholder={placeholder}
-              maxLength={280}
-              value={field.value ?? ""}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              ref={field.ref}
-              className={cn("resize-none", className)}
-            />
-          )}
+          render={({ field }) => {
+            const currentLength = (field.value ?? "").length
+            return (
+              <>
+                <TextArea
+                  id={name}
+                  placeholder={placeholder}
+                  maxLength={280}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
+                  className={cn("resize-none", className)}
+                />
+                <p className="text-sm text-muted-foreground w-full text-right">
+                  <span className="text-foreground">
+                    {currentLength}
+                  </span>
+                  /280
+                </p>
+              </>
+            )
+          }}
         />
-        <p className="text-sm text-muted-foreground w-full text-right">0/280</p>
       </div>
     )
   }

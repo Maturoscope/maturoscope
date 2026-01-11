@@ -35,11 +35,13 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
       <Header stringConnector={stringConnector} showBackButton beforeYouGoModal={beforeYouGoModal} />
       <ResultsPageWrapper dictionary={dictionary}>
         <ResultsTopBar {...topBar} lang={lang} />
-        <Overview {...overview} />
-        <UnlockNextLevel {...unlockNextLevel} />
-        <DetailedReport {...detailedReport} />
-        <CTABanner {...ctaBanner} />
-        <PrivacyPolicy {...policy} />
+        <div className="pt-[195px] lg:pt-[142px]">
+          <Overview {...overview} />
+          <UnlockNextLevel {...unlockNextLevel} />
+          <DetailedReport {...detailedReport} />
+          <CTABanner {...ctaBanner} />
+          <PrivacyPolicy {...policy} />
+        </div>
       </ResultsPageWrapper>
     </main>
   )

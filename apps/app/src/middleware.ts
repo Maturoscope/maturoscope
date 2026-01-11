@@ -28,14 +28,26 @@ export const middleware = (request: NextRequest) => {
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   )
 
-  if (pathnameHasLocale) return
+  // Check for organization key in query params and set it in cookies
+  const key = request.nextUrl.searchParams.get("key")
+  const response = pathnameHasLocale
+    ? NextResponse.next()
+    : pathname === "/"
+    ? NextResponse.redirect(new URL(`/${getLocale(request)}`, request.url))
+    : NextResponse.redirect(new URL(`/${DEFAULT_LOCALE}/404`, request.url))
 
-  if (pathname === "/") {
-    const locale = getLocale(request)
-    return NextResponse.redirect(new URL(`/${locale}`, request.url))
+  if (key) {
+    // Set organization key in cookie (expires in 7 days)
+    const expires = new Date()
+    expires.setTime(expires.getTime() + 7 * 24 * 60 * 60 * 1000)
+    response.cookies.set("organization-key", key, {
+      expires: expires,
+      path: "/",
+      sameSite: "lax",
+    })
   }
 
-  return NextResponse.redirect(new URL(`/${DEFAULT_LOCALE}/404`, request.url))
+  return response
 }
 
 export const config = {

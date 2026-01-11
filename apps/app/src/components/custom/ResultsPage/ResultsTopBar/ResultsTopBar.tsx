@@ -2,6 +2,7 @@
 
 // Packages
 import { useState, useEffect } from "react"
+import { usePathname } from "next/navigation"
 // Components
 import { Button } from "@/components/ui/button"
 // Context
@@ -14,6 +15,12 @@ import { Gap } from "@/actions/organization"
 import { StageId } from "@/components/custom/FormPage/Form/Form"
 // Hooks
 import { useDownloadReport } from "@/hooks/useDownloadReport"
+
+interface LevelStorage {
+  trl?: number
+  mkrl?: number
+  mfrl?: number
+}
 
 export interface ResultsTopBarProps {
   title: string
@@ -37,12 +44,15 @@ const ResultsTopBar = ({
 }: ResultsTopBarProps & ExtraProps) => {
   const [completedOnDate, setCompletedOnDate] = useState<string>("")
   const [isTalkToExpertButtonDisabled, setIsTalkToExpertButtonDisabled] = useState<boolean>(false)
+  const [isAllLevelsMax, setIsAllLevelsMax] = useState<boolean>(false)
   const { openModal } = useContactExpertContext()
   const { downloadReport, isLoading } = useDownloadReport(lang)
+  const pathname = usePathname()
+  const isResultsPage = pathname.includes("/results")
 
-  const handleTalkButtonClick = () => {
-    openModal()
-  }
+  const handleTalkButtonClick = () => openModal()
+
+  const handleDownloadClick = async () => await downloadReport()
 
   useEffect(() => {
     const storedCompletedOn = localStorage.getItem("completedOn")
@@ -56,12 +66,25 @@ const ResultsTopBar = ({
     }
   }, [lang])
 
-  const handleDownloadClick = async () => {
-    await downloadReport()
-  }
-
   useEffect(() => {
     const storedGaps = localStorage.getItem("gaps")
+    const storedLevel = localStorage.getItem("level")
+    
+    // Check if all levels are at maximum (9)
+    if (storedLevel) {
+      try {
+        const levelData: LevelStorage = JSON.parse(storedLevel)
+        const allAtMaxLevel = 
+          levelData.trl === 9 && 
+          levelData.mkrl === 9 && 
+          levelData.mfrl === 9
+        setIsAllLevelsMax(allAtMaxLevel)
+      } catch (error) {
+        console.error("Error parsing level data:", error)
+        setIsAllLevelsMax(false)
+      }
+    }
+    
     if (storedGaps) {
       try {
         const gaps = JSON.parse(storedGaps) as Partial<Record<StageId, Gap[]>>
@@ -89,6 +112,7 @@ const ResultsTopBar = ({
     <div
       className={cn(
         "w-full flex items-center flex-wrap gap-y-4 justify-between p-4 lg:px-6 py-4 bg-white border-b border-border",
+        isResultsPage && "fixed top-14 left-0 right-0 z-40 bg-white",
         className
       )}
     >
@@ -107,14 +131,16 @@ const ResultsTopBar = ({
         >
           {isLoading ? "Loading..." : downloadButtonLabel}
         </Button>
-        <Button
-          variant="default"
-          accent
-          onClick={handleTalkButtonClick}
-          disabled={isTalkToExpertButtonDisabled}
-        >
-          {talkButtonLabel}
-        </Button>
+        {!isAllLevelsMax && (
+          <Button
+            variant="default"
+            accent
+            onClick={handleTalkButtonClick}
+            disabled={isTalkToExpertButtonDisabled}
+          >
+            {talkButtonLabel}
+          </Button>
+        )}
       </div>
     </div>
   )

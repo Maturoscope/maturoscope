@@ -174,7 +174,6 @@ export const requestContact = async ({
   }
 
   const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/services/contact?organizationKey=${organizationKey}`
-
   const body = {
     gaps,
     company: contactInformation.organization,

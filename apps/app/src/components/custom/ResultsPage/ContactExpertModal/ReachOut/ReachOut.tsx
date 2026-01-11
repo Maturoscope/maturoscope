@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useParams } from "next/navigation"
+import * as RPNInput from "react-phone-number-input"
 // Components
 import Modal from "@/components/common/Modal/Modal"
 import { Button } from "@/components/ui/button"
@@ -44,6 +45,7 @@ interface ContactInfoFieldProps {
   placeholder: string,
   type: "text" | "email" | "phone" | "textarea" | "country",
   required?: boolean,
+  defaultCountry?: string,
 }
 
 // TODO: Add country field for v2
@@ -103,6 +105,7 @@ const EN_CONTACT_INFO_FIELDS: ContactInfoForm = {
     label: "Phone",
     placeholder: "Phone",
     type: "phone",
+    defaultCountry: "FR",
   },
   additionalInformation: {
     name: "additionalInformation",
@@ -152,6 +155,7 @@ const FR_CONTACT_INFO_FIELDS: ContactInfoForm = {
     label: "Numéro de téléphone",
     placeholder: "Numéro de téléphone",
     type: "phone",
+    defaultCountry: "FR",
   },
   additionalInformation: {
     name: "additionalInformation",
@@ -165,6 +169,46 @@ const EN_CLARIFICATION = "We respect your privacy. Your data is used exclusively
 const EN_LOADING_BUTTON_LABEL = "Loading..."
 const FR_CLARIFICATION = "Nous respectons votre vie privée. Vos données sont utilisées exclusivement pour répondre à cette demande."
 const FR_LOADING_BUTTON_LABEL = "Chargement..."
+
+/**
+ * Removes duplicate country code from phone number if present.
+ * Example: "+54+543512425044" -> "+543512425044"
+ * Handles patterns like: +XX+XX... where XX is a country code (1-3 digits)
+ */
+const removeDuplicateCountryCode = (phoneNumber: string): string => {
+  if (!phoneNumber || !phoneNumber.startsWith("+")) {
+    return phoneNumber
+  }
+
+  // Check if phone number contains multiple "+" signs (indicating possible duplicate)
+  const plusCount = (phoneNumber.match(/\+/g) || []).length
+  if (plusCount < 2) {
+    return phoneNumber
+  }
+
+  // Pattern to detect duplicate country codes: +XX+XX... where XX is 1-3 digits
+  // This matches cases like: +54+543512425044, +1+1234567890, etc.
+  const duplicatePattern = /^\+(\d{1,3})\+\1(\d+)/
+  const match = phoneNumber.match(duplicatePattern)
+  
+  if (match) {
+    // Found duplicate country code, remove the first occurrence
+    // match[1] is the country code, match[2] is the rest of the number
+    return `+${match[1]}${match[2]}`
+  }
+
+  // Also check for pattern where there might be extra characters between duplicates
+  // Pattern: +XX+XX... (with possible spacing or formatting)
+  const looseDuplicatePattern = /^\+(\d{1,3})\+(\d*)\1(\d+)/
+  const looseMatch = phoneNumber.match(looseDuplicatePattern)
+  
+  if (looseMatch && looseMatch[2].length === 0) {
+    // Found duplicate with no characters in between
+    return `+${looseMatch[1]}${looseMatch[3]}`
+  }
+
+  return phoneNumber
+}
 
 const ReachOut = ({
   title,
@@ -196,18 +240,26 @@ const ReachOut = ({
   const clarification = lang === "en" ? EN_CLARIFICATION : FR_CLARIFICATION
 
   const onSubmit = async (data: ContactFormData) => {
-    setContactInformation(data)
+    // Clean phone number to remove duplicate country codes if present
+    const cleanedData = {
+      ...data,
+      phoneNumber: data.phoneNumber ? removeDuplicateCountryCode(data.phoneNumber) : data.phoneNumber,
+    }
+
+    setContactInformation(cleanedData)
     const projectName = localStorage.getItem("projectName")
 
     setIsLoading(true)
     const result = await requestContact({
       gaps: selectedGaps,
-      contactInformation: data,
+      contactInformation: cleanedData,
       projectName: projectName as string,
     })
     setIsLoading(false)
 
     if (result.success) {
+      // Set flag to indicate user has successfully completed the contact expert flow
+      localStorage.setItem("contactRequestSuccess", "true")
       setCurrentStep("successStatus")
     } else {
       setCurrentStep("failedStatus")
@@ -216,6 +268,10 @@ const ReachOut = ({
 
   // Check if required fields are filled
   const isFormValid = formState.isValid
+  // Progress: 1/2 when form is not valid, 2/2 when all required fields are filled
+  const currentStep = isFormValid ? 2 : 1
+  const totalSteps = 2
+  const progressPercentage = (currentStep / totalSteps) * 100
 
   useEffect(() => {
     setContactInfo(lang === "en" ? EN_CONTACT_INFO_FIELDS : FR_CONTACT_INFO_FIELDS)
@@ -236,9 +292,14 @@ const ReachOut = ({
           </div>
           <div className="flex gap-4 items-center">
             <div className="flex items-center gap-2">
-              <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full after:content-[''] after:absolute after:left-0 after:top-0 after:h-full after:w-full after:bg-primary after:rounded-full" />
+              <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full overflow-hidden">
+                <div 
+                  className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all duration-200"
+                  style={{ width: `${progressPercentage}%` }}
+                />
+              </div>
               <span className="text-sm text-muted-foreground hidden lg:block">
-                2/2 {completedLabel}
+                {currentStep}/{totalSteps} {completedLabel}
               </span>
             </div>
 
