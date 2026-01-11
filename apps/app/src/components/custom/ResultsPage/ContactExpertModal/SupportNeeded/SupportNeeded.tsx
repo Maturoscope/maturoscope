@@ -60,6 +60,10 @@ const SupportNeeded = ({
   const { addGap, removeGap, isGapSelected, selectedGaps } =
     useContactExpertContext()
   const isButtonDisabled = selectedGaps.length === 0
+  // Progress: 0/2 when no services selected, 1/2 when at least one is selected
+  const currentStep = selectedGaps.length > 0 ? 1 : 0
+  const totalSteps = 2
+  const progressPercentage = (currentStep / totalSteps) * 100
 
   const handleGapToggle = (gap: Gap, isChecked: boolean) => {
     if (isChecked) {
@@ -122,9 +126,14 @@ const SupportNeeded = ({
         </div>
         <div className="flex gap-4 items-center">
           <div className="flex items-center gap-2">
-            <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full after:content-[''] after:absolute after:left-0 after:top-0 after:h-full after:w-1/2 after:bg-accent after:rounded-full" />
+            <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full overflow-hidden">
+              <div 
+                className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all duration-200"
+                style={{ width: `${progressPercentage}%` }}
+              />
+            </div>
             <span className="text-sm text-muted-foreground hidden lg:block">
-              1/2 {completedLabel}
+              {currentStep}/{totalSteps} {completedLabel}
             </span>
           </div>
 

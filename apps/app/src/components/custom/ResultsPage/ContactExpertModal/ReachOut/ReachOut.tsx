@@ -222,6 +222,10 @@ const ReachOut = ({
 
   // Check if required fields are filled
   const isFormValid = formState.isValid
+  // Progress: 1/2 when form is not valid, 2/2 when all required fields are filled
+  const currentStep = isFormValid ? 2 : 1
+  const totalSteps = 2
+  const progressPercentage = (currentStep / totalSteps) * 100
 
   useEffect(() => {
     setContactInfo(lang === "en" ? EN_CONTACT_INFO_FIELDS : FR_CONTACT_INFO_FIELDS)
@@ -242,9 +246,14 @@ const ReachOut = ({
           </div>
           <div className="flex gap-4 items-center">
             <div className="flex items-center gap-2">
-              <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full after:content-[''] after:absolute after:left-0 after:top-0 after:h-full after:w-full after:bg-accent after:rounded-full" />
+              <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full overflow-hidden">
+                <div 
+                  className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all duration-200"
+                  style={{ width: `${progressPercentage}%` }}
+                />
+              </div>
               <span className="text-sm text-muted-foreground hidden lg:block">
-                2/2 {completedLabel}
+                {currentStep}/{totalSteps} {completedLabel}
               </span>
             </div>
 
