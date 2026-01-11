@@ -1,5 +1,5 @@
 // Packages
-import { useState } from "react"
+import { useState, useEffect } from "react"
 // Components
 import SupportNeeded from "./SupportNeeded/SupportNeeded"
 import ReachOut from "./ReachOut/ReachOut"
@@ -22,6 +22,20 @@ export type ModalStep =
 const ContactExpertModal = ({ dictionary }: ContactExpertModalProps) => {
   const { isModalOpen, closeModal } = useContactExpertContext()
   const [currentStep, setCurrentStep] = useState<ModalStep>("supportNeeded")
+
+  // Check when modal opens if user has already successfully completed the flow
+  useEffect(() => {
+    if (isModalOpen) {
+      const contactRequestSuccess = localStorage.getItem("contactRequestSuccess") === "true"
+      if (contactRequestSuccess) {
+        // If user has previously succeeded, show success modal
+        setCurrentStep("successStatus")
+      } else {
+        // Reset to first step if modal is opened fresh
+        setCurrentStep("supportNeeded")
+      }
+    }
+  }, [isModalOpen])
 
   const {
     results: { contactExpertModal },

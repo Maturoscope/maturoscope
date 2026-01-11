@@ -58,14 +58,7 @@ const ResultsTopBar = ({
 
   useEffect(() => {
     const storedGaps = localStorage.getItem("gaps")
-    const hasRequestedContact = localStorage.getItem("hasRequestedContact") === "true"
     
-    // Disable button if user has already requested contact
-    if (hasRequestedContact) {
-      setIsTalkToExpertButtonDisabled(true)
-      return
-    }
-
     if (storedGaps) {
       try {
         const gaps = JSON.parse(storedGaps) as Partial<Record<StageId, Gap[]>>

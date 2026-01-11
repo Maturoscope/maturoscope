@@ -257,10 +257,9 @@ const ReachOut = ({
     })
     setIsLoading(false)
 
-    // Set flag to indicate user has completed the contact expert flow
-    localStorage.setItem("hasRequestedContact", "true")
-
     if (result.success) {
+      // Set flag to indicate user has successfully completed the contact expert flow
+      localStorage.setItem("contactRequestSuccess", "true")
       setCurrentStep("successStatus")
     } else {
       setCurrentStep("failedStatus")

@@ -61,7 +61,7 @@ const CTABanner = ({
     localStorage.removeItem("completedOn")
     localStorage.removeItem("signature")
     localStorage.removeItem("projectName")
-    localStorage.removeItem("hasRequestedContact")
+    localStorage.removeItem("contactRequestSuccess")
     setIsResetFormModalOpen(false)
   }
 
@@ -79,14 +79,7 @@ const CTABanner = ({
 
   useEffect(() => {
     const storedGaps = localStorage.getItem("gaps")
-    const hasRequestedContact = localStorage.getItem("hasRequestedContact") === "true"
     
-    // Disable button if user has already requested contact
-    if (hasRequestedContact) {
-      setIsTalkToExpertButtonDisabled(true)
-      return
-    }
-
     if (storedGaps) {
       try {
         const gaps = JSON.parse(storedGaps) as Partial<Record<StageId, Gap[]>>
