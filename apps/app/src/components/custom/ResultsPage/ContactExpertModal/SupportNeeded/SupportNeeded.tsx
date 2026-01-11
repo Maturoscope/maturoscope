@@ -122,7 +122,7 @@ const SupportNeeded = ({
         </div>
         <div className="flex gap-4 items-center">
           <div className="flex items-center gap-2">
-            <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full after:content-[''] after:absolute after:left-0 after:top-0 after:h-full after:w-1/2 after:bg-primary after:rounded-full" />
+            <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full after:content-[''] after:absolute after:left-0 after:top-0 after:h-full after:w-1/2 after:bg-accent after:rounded-full" />
             <span className="text-sm text-muted-foreground hidden lg:block">
               1/2 {completedLabel}
             </span>
