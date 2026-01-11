@@ -22,6 +22,12 @@ import { clearAssessmentTracking } from "@/actions/tracking"
 // Hooks
 import { useDownloadReport } from "@/hooks/useDownloadReport"
 
+interface LevelStorage {
+  trl?: number
+  mkrl?: number
+  mfrl?: number
+}
+
 export interface CTABannerProps {
   title: string
   description: string
@@ -46,6 +52,7 @@ const CTABanner = ({
 }: CTABannerProps & ExtraProps) => {
   const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
   const [isTalkToExpertButtonDisabled, setIsTalkToExpertButtonDisabled] = useState<boolean>(false)
+  const [isAllLevelsMax, setIsAllLevelsMax] = useState<boolean>(false)
   const router = useRouter()
   const params = useParams<{ lang?: Locale }>()
   const lang = params.lang || "en"
@@ -79,6 +86,22 @@ const CTABanner = ({
 
   useEffect(() => {
     const storedGaps = localStorage.getItem("gaps")
+    const storedLevel = localStorage.getItem("level")
+    
+    // Check if all levels are at maximum (9)
+    if (storedLevel) {
+      try {
+        const levelData: LevelStorage = JSON.parse(storedLevel)
+        const allAtMaxLevel = 
+          levelData.trl === 9 && 
+          levelData.mkrl === 9 && 
+          levelData.mfrl === 9
+        setIsAllLevelsMax(allAtMaxLevel)
+      } catch (error) {
+        console.error("Error parsing level data:", error)
+        setIsAllLevelsMax(false)
+      }
+    }
     
     if (storedGaps) {
       try {
@@ -114,45 +137,50 @@ const CTABanner = ({
         onResetClick={handleResetButtonClick}
       />
 
-      <div
-        className={cn(
-          "w-full flex items-center justify-center py-11 px-8 bg-accent rounded-xl",
-          className
-        )}
-      >
-        <div className="w-full max-w-2xl flex flex-col items-center justify-center">
-          <h2 className="text-center lg:text-left text-4xl font-semibold text-neutral-50 mb-3">
-            {title}
-          </h2>
-          <p className="text-center lg:text-left text-sm text-neutral-50 mb-8">
-            {description}
-          </p>
-          <div className="flex gap-2">
-            <Button 
-              onClick={handleTalkButtonClick} 
-              variant="outline"
-              disabled={isTalkToExpertButtonDisabled}
-            >
-              {talkButtonLabel}
-            </Button>
+      {!isAllLevelsMax && (
+        <>
+          <div
+            className={cn(
+              "w-full flex items-center justify-center py-11 px-8 bg-accent rounded-xl",
+              className
+            )}
+          >
+            <div className="w-full max-w-2xl flex flex-col items-center justify-center">
+              <h2 className="text-center lg:text-left text-4xl font-semibold text-neutral-50 mb-3">
+                {title}
+              </h2>
+              <p className="text-center lg:text-left text-sm text-neutral-50 mb-8">
+                {description}
+              </p>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={handleTalkButtonClick} 
+                  variant="outline"
+                  disabled={isTalkToExpertButtonDisabled}
+                >
+                  {talkButtonLabel}
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div className="w-full flex items-center justify-center flex-col">
-        <div className="flex items-center justify-center gap-6 my-4 w-full">
-          <div className="w-full h-px bg-border max-w-[340px]" />
-          <span className="text-sm text-foreground/80">{or}</span>
-          <div className="w-full h-px bg-border max-w-[340px]" />
-        </div>
-        <Button
-          onClick={() => setIsResetFormModalOpen(true)}
-          variant="outline"
-          icon={<ResetIcon />}
-        >
-          {resetButtonLabel}
-        </Button>
-      </div>
+          <div className="w-full flex items-center justify-center flex-col">
+            <div className="flex items-center justify-center gap-6 my-4 w-full">
+              <div className="w-full h-px bg-border max-w-[340px]" />
+              <span className="text-sm text-foreground/80">{or}</span>
+              <div className="w-full h-px bg-border max-w-[340px]" />
+            </div>
+          </div>
+        </>
+      )}
+
+      <Button
+        onClick={() => setIsResetFormModalOpen(true)}
+        variant="outline"
+        icon={<ResetIcon />}
+      >
+        {resetButtonLabel}
+      </Button>
     </div>
   )
 }
