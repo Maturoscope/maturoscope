@@ -7,7 +7,7 @@
           <%= stageTranslation.label %>
         </span>
         <%- include(baseDir + '/pdf/circle-progress.ejs' , { percentage: percentage, size: '115px' , color: color,
-          level: scale.level, showMaxLevel: false }) %>
+          level: scale.level, showMaxLevel: false, strokeWidthParam: 8 }) %>
       </div>
 
       <div class="flex flex-col gap-5 mb-5">
