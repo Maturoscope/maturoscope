@@ -718,7 +718,7 @@
           "LABEL": "Email",
           "PLACEHOLDER": "Email",
           "REQUIRED": "*",
-          "HELPER_TEXT": "This email address cannot be modified once the organization is created."
+          "HELPER_TEXT": "This email address cannot be modified once the organization is created. For continued access, we suggest using a shared organizational email (e.g., admin@maturoscope.com) rather than a personal one."
         },
         "CONFIRM_EMAIL": {
           "LABEL": "Confirm email",

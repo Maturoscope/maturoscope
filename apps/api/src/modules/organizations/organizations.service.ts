@@ -30,12 +30,19 @@ export class OrganizationsService {
       throw new ConflictException('Organization key is already registered');
     }
 
+    // Check if email already exists in organizations
     const existingByEmail = await this.organizationRepository.findOne({
       where: { email: createOrganizationDto.email },
     });
 
     if (existingByEmail) {
-      throw new ConflictException('Organization email is already registered');
+      throw new ConflictException('This email address is already registered in our database. Please use a different one.');
+    }
+
+    // Check if email exists in users
+    const existingUser = await this.usersService.findByEmail(createOrganizationDto.email);
+    if (existingUser) {
+      throw new ConflictException('This email address is already registered in our database. Please use a different one.');
     }
 
     const organization = this.organizationRepository.create(createOrganizationDto);
@@ -151,7 +158,12 @@ export class OrganizationsService {
     if (updateOrganizationDto.email && updateOrganizationDto.email !== organization.email) {
       const existingByEmail = await this.findByEmail(updateOrganizationDto.email);
       if (existingByEmail) {
-        throw new ConflictException('Organization email is already registered');
+        throw new ConflictException('This email address is already registered in our database. Please use a different one.');
+      }
+      // Check if email exists in users
+      const existingUser = await this.usersService.findByEmail(updateOrganizationDto.email);
+      if (existingUser) {
+        throw new ConflictException('This email address is already registered in our database. Please use a different one.');
       }
     }
 
@@ -331,7 +343,12 @@ export class OrganizationsService {
     if (newEmail !== organization.email) {
       const existingByEmail = await this.organizationRepository.findOne({ where: { email: newEmail } });
       if (existingByEmail && existingByEmail.id !== organization.id) {
-        throw new ConflictException('Organization email is already registered');
+        throw new ConflictException('This email address is already registered in our database. Please use a different one.');
+      }
+      // Check if email exists in users
+      const existingUser = await this.usersService.findByEmail(newEmail);
+      if (existingUser) {
+        throw new ConflictException('This email address is already registered in our database. Please use a different one.');
       }
     }
 

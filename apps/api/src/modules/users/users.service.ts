@@ -111,13 +111,22 @@ export class UsersService {
       throw new NotFoundException(`Organization with ID ${createUserDto.organizationId} not found`);
     }
 
-    // Check if email already exists
+    // Check if email already exists in users or organizations
     const existingUser = await this.userRepository.findOne({
       where: { email: createUserDto.email },
     });
 
     if (existingUser) {
-      throw new ConflictException('Email is already registered');
+      throw new ConflictException('This email address is already registered in our database. Please use a different one.');
+    }
+
+    // Check if email exists in organizations
+    const existingOrganization = await this.organizationRepository.findOne({
+      where: { email: createUserDto.email },
+    });
+
+    if (existingOrganization) {
+      throw new ConflictException('This email address is already registered in our database. Please use a different one.');
     }
 
     // Create user in local database
@@ -201,7 +210,14 @@ export class UsersService {
     if (updateData.email && updateData.email !== user.email) {
       const existingUser = await this.findByUserEmail(updateData.email);
       if (existingUser) {
-        throw new ConflictException('Email is already registered');
+        throw new ConflictException('This email address is already registered in our database. Please use a different one.');
+      }
+      // Check if email exists in organizations
+      const existingOrganization = await this.organizationRepository.findOne({
+        where: { email: updateData.email },
+      });
+      if (existingOrganization) {
+        throw new ConflictException('This email address is already registered in our database. Please use a different one.');
       }
     }
     
@@ -244,7 +260,14 @@ export class UsersService {
     if (updateUserDto.email && updateUserDto.email !== user.email) {
       const existingUserResponse = await this.findByEmail(updateUserDto.email);
       if (existingUserResponse) {
-        throw new ConflictException('Email is already registered');
+        throw new ConflictException('This email address is already registered in our database. Please use a different one.');
+      }
+      // Check if email exists in organizations
+      const existingOrganization = await this.organizationRepository.findOne({
+        where: { email: updateUserDto.email },
+      });
+      if (existingOrganization) {
+        throw new ConflictException('This email address is already registered in our database. Please use a different one.');
       }
     }
 
@@ -278,7 +301,14 @@ export class UsersService {
     if (updateUserDto.email && updateUserDto.email !== user.email) {
       const existingUser = await this.findByEmail(updateUserDto.email);
       if (existingUser) {
-        throw new ConflictException('Email is already registered');
+        throw new ConflictException('This email address is already registered in our database. Please use a different one.');
+      }
+      // Check if email exists in organizations
+      const existingOrganization = await this.organizationRepository.findOne({
+        where: { email: updateUserDto.email },
+      });
+      if (existingOrganization) {
+        throw new ConflictException('This email address is already registered in our database. Please use a different one.');
       }
     }
 
@@ -296,7 +326,14 @@ export class UsersService {
     if (updateData.email && updateData.email !== user.email) {
       const existingUser = await this.findByUserEmail(updateData.email);
       if (existingUser) {
-        throw new ConflictException('Email is already registered');
+        throw new ConflictException('This email address is already registered in our database. Please use a different one.');
+      }
+      // Check if email exists in organizations
+      const existingOrganization = await this.organizationRepository.findOne({
+        where: { email: updateData.email },
+      });
+      if (existingOrganization) {
+        throw new ConflictException('This email address is already registered in our database. Please use a different one.');
       }
     }
     

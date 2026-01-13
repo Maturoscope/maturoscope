@@ -176,11 +176,17 @@ export class UserInvitationService {
   async inviteUser(createUserInvitationDto: CreateUserInvitationDto, invitedBy?: { email?: string; name?: string }) {
     const { email, firstName, lastName, roles, organizationId } = createUserInvitationDto;
 
+    // Check if email exists in organizations
+    const existingOrganization = await this.organizationsService.findByEmail(email);
+    if (existingOrganization) {
+      throw new BadRequestException('This email address is already registered in our database. Please use a different one.');
+    }
+
     const existingUser = await this.usersService.findByEmail(email);
 
     if (existingUser) {
       if (existingUser.authId) {
-        throw new BadRequestException('User already exists and has completed registration.');
+        throw new BadRequestException('This email address is already registered in our database. Please use a different one.');
       }
 
       await this.usersService.updateByEmail(email, {
