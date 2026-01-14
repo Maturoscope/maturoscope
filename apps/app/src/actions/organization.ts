@@ -155,6 +155,7 @@ interface RequestContactParams {
   gaps: SelectedGap[]
   contactInformation: ContactInformation
   projectName: string
+  pdfCacheId?: string // Optional PDF cache ID
 }
 
 interface RequestContactResult {
@@ -166,6 +167,7 @@ export const requestContact = async ({
   gaps,
   contactInformation,
   projectName,
+  pdfCacheId,
 }: RequestContactParams): Promise<RequestContactResult> => {
   const organizationKey = await getOrganizationKeyFromCookies()
 
@@ -183,6 +185,7 @@ export const requestContact = async ({
     phoneNumber: contactInformation.phoneNumber,
     additionalInformation: contactInformation.additionalInformation,
     projectName,
+    pdfCacheId, // Include PDF cache ID if provided
   }
 
   try {

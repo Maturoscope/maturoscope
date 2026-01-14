@@ -63,5 +63,9 @@ export class ContactServicesDto {
   @IsString()
   @IsOptional()
   projectName?: string;
+
+  @IsString()
+  @IsOptional()
+  pdfCacheId?: string; // Optional PDF cache ID to attach to emails
 }
 

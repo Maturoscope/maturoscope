@@ -54,6 +54,7 @@ const Form = ({
     isCheckpoint,
     isFormCompleted,
     isNextButtonEnabled,
+    isGeneratingPDF,
     handleReviewClick,
     handleCheckpointButtonClick,
     handleQuestionClick,
@@ -69,6 +70,7 @@ const Form = ({
         description={currStage.description}
         reviewLabel={currStage.reviewLabel}
         buttonLabel={currStage.buttonLabel}
+        isLoading={isGeneratingPDF}
         onReviewClick={handleReviewClick}
         onButtonClick={handleCheckpointButtonClick}
       />

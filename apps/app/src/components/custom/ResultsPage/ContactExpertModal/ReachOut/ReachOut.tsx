@@ -248,12 +248,25 @@ const ReachOut = ({
 
     setContactInformation(cleanedData)
     const projectName = localStorage.getItem("projectName")
+    
+    // Get cached PDF ID if available
+    const cachedPdfInfo = sessionStorage.getItem("cached_pdf_info")
+    let pdfCacheId: string | undefined
+    if (cachedPdfInfo) {
+      try {
+        const info = JSON.parse(cachedPdfInfo)
+        pdfCacheId = info.pdfId
+      } catch (error) {
+        console.error("Error parsing cached PDF info:", error)
+      }
+    }
 
     setIsLoading(true)
     const result = await requestContact({
       gaps: selectedGaps,
       contactInformation: cleanedData,
       projectName: projectName as string,
+      pdfCacheId, // Include cached PDF ID
     })
     setIsLoading(false)
 

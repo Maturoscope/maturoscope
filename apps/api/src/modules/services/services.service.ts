@@ -540,6 +540,7 @@ export class ServicesService {
               companyLogoUrl,
               supportEmail,
               language: organizationLanguage,
+              pdfCacheId: contactServicesDto.pdfCacheId, // Pass the PDF cache ID if provided
               reassignmentContact,
               clientData: {
                 company: contactServicesDto.organization || contactServicesDto.company,

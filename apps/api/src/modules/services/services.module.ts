@@ -10,6 +10,7 @@ import { IntegrationAuth0Module } from '../integration-auth0/integration-auth0.m
 import { ServiceContactMailService } from './mail.service';
 import { OrganizationsModule } from '../organizations/organizations.module';
 import { StatisticsModule } from '../statistics/statistics.module';
+import { ReportModule } from '../report/report.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { StatisticsModule } from '../statistics/statistics.module';
     IntegrationAuth0Module,
     OrganizationsModule,
     StatisticsModule,
+    ReportModule,
   ],
   controllers: [ServicesController],
   providers: [ServicesService, ServiceContactMailService],

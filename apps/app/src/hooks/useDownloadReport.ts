@@ -6,11 +6,13 @@ import { useCallback, useState } from "react"
 import { Locale } from "@/dictionaries/dictionaries"
 import { StageId, QuestionData } from "@/components/custom/FormPage/Form/Form"
 import { DevelopmentPhase, Gap, LocalizedText } from "@/actions/organization"
-import { ReportPayload } from "@/actions/report"
 // Actions
 import { getQuestions, getRisks, RiskData } from "@/actions/questions"
-import { generateReport } from "@/actions/report"
+import { generateReport, type ReportPayload } from "@/actions/report"
 import { getOrganizationSignature } from "@/actions/organization"
+
+// Export ReportPayload type for use in other files
+export type { ReportPayload } from "@/actions/report"
 
 // Storage types
 export interface FormStorage {
@@ -59,7 +61,7 @@ interface ScalePayload {
   answers: AnswerPayload[]
 }
 
-const buildScalePayload = (
+export const buildScalePayload = (
   stageId: StageId,
   lang: Locale,
   questionsData: { id: StageId; name: string; questions: QuestionData[] }[],
@@ -92,10 +94,12 @@ const buildScalePayload = (
   const gapsPayload: GapPayload[] = gaps.map((gap) => ({
     gapDescription: gap.gapDescription[lang],
     hasServices: gap.hasServices,
-    recommendedServices: gap.recommendedServices.map((service) => ({
-      name: service.name[lang],
-      description: service.description[lang],
-    })),
+    recommendedServices: gap.recommendedServices
+      .filter((service) => service.name?.[lang] && service.description?.[lang]) // Filter out services with missing translations
+      .map((service) => ({
+        name: service.name[lang],
+        description: service.description[lang],
+      })),
   }))
 
   return {

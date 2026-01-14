@@ -1,6 +1,7 @@
-import { Injectable, Logger, type OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, type OnModuleInit, Inject, Optional } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { BaseMailService } from '../../common/mail/mail.service';
+import { ReportCacheService } from '../report/report-cache.service';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as ejs from 'ejs';
@@ -14,6 +15,7 @@ interface ServiceContactEmailPayload {
   companyLogoUrl?: string;
   supportEmail?: string;
   language?: string;
+  pdfCacheId?: string; // Optional PDF cache ID to attach
   reassignmentContact?: {
     name: string;
     email: string;
@@ -78,7 +80,10 @@ export class ServiceContactMailService extends BaseMailService implements OnModu
   protected maturoscopeLogoPath: string;
   private readonly logger = new Logger(ServiceContactMailService.name);
 
-  constructor(configService: ConfigService) {
+  constructor(
+    configService: ConfigService,
+    @Optional() @Inject(ReportCacheService) private readonly reportCacheService: ReportCacheService | null,
+  ) {
     super(configService);
     this.maturoscopeLogoPath = path.join(process.cwd(), 'public', 'image', 'maturoscope-logo.png');
   }
@@ -191,6 +196,7 @@ export class ServiceContactMailService extends BaseMailService implements OnModu
     companyLogoUrl,
     supportEmail,
     language = 'EN',
+    pdfCacheId,
     reassignmentContact,
     clientData,
     projectData,
@@ -224,6 +230,28 @@ export class ServiceContactMailService extends BaseMailService implements OnModu
     } else {
       maturoscopeSignature = `<strong style="font-size:18px;color:#1F2937;font-weight:600;">Maturoscope.</strong>`;
       this.logger.warn(`Maturoscope logo file not found at: ${this.maturoscopeLogoPath}`);
+    }
+
+    // Attach cached PDF if available
+    if (pdfCacheId && this.reportCacheService) {
+      try {
+        this.logger.log(`[PERFORMANCE] Starting to fetch PDF from cache: ${pdfCacheId}`);
+        const startTime = Date.now();
+        const pdfBuffer = await this.reportCacheService.getCachedPdf(pdfCacheId);
+        const fetchTime = Date.now() - startTime;
+        this.logger.log(`[PERFORMANCE] PDF fetched from cache in ${fetchTime}ms`);
+        
+        attachments.push({
+          filename: `${projectData.projectName || 'maturity-report'}.pdf`,
+          content: pdfBuffer,
+          contentType: 'application/pdf',
+        });
+        this.logger.log(`Attached PDF from cache: ${pdfCacheId} (size: ${pdfBuffer?.length || 0} bytes)`);
+      } catch (error) {
+        this.logger.warn(`Could not attach PDF from cache ${pdfCacheId}:`, error);
+      }
+    } else if (pdfCacheId && !this.reportCacheService) {
+      this.logger.warn(`PDF cache ID provided but ReportCacheService not available!`);
     }
 
     const finalSupportEmail = supportEmail || this.configService.get<string>('SUPPORT_EMAIL') || 'support@maturoscope.com';
@@ -291,12 +319,18 @@ export class ServiceContactMailService extends BaseMailService implements OnModu
       maturoscopeSignature,
     });
 
+    this.logger.log(`[PERFORMANCE] Starting to send email to: ${expertEmail}`);
+    const emailStartTime = Date.now();
+    
     await this.sendEmail({
       to: expertEmail,
       subject: content.subject,
       html,
       attachments,
     });
+    
+    const emailTime = Date.now() - emailStartTime;
+    this.logger.log(`[PERFORMANCE] Email sent successfully in ${emailTime}ms`);
   }
 }
 

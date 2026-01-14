@@ -45,7 +45,7 @@ export function ProfileSection({
     user?.organization?.email && 
     user.email.toLowerCase() === user.organization.email.toLowerCase()
   )
-
+  
   const handleFieldChange = (fieldName: keyof ProfileFormData, value: string) => {
     // Prevent changes if user is the first admin member
     if (isFirstAdminMember) {

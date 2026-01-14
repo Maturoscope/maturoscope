@@ -81,6 +81,7 @@ const Header = ({
     localStorage.removeItem("signature")
     localStorage.removeItem("projectName")
     localStorage.removeItem("contactRequestSuccess")
+    sessionStorage.removeItem("cached_pdf_info")
     setIsResetFormModalOpen(false)
   }
 
@@ -90,6 +91,33 @@ const Header = ({
   }
 
   const handleDownloadButtonClick = async () => {
+    // Check if we have a cached PDF first
+    const cachedPdfInfo = sessionStorage.getItem("cached_pdf_info")
+    if (cachedPdfInfo) {
+      try {
+        const info = JSON.parse(cachedPdfInfo)
+        // Download from cache
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+        const response = await fetch(`${apiUrl}/report/cached/${info.pdfId}`)
+        if (response.ok) {
+          const blob = await response.blob()
+          const url = window.URL.createObjectURL(blob)
+          const link = document.createElement('a')
+          link.href = url
+          link.download = 'maturity-report.pdf'
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          window.URL.revokeObjectURL(url)
+          handleResetForm()
+          router.push("/")
+          return
+        }
+      } catch (error) {
+        console.error('Error downloading cached PDF:', error)
+      }
+    }
+    // Fallback to generating a new PDF
     await downloadReport()
     handleResetForm()
     router.push("/")

@@ -10,6 +10,7 @@ import {
   ForbiddenException,
   Query,
   BadRequestException,
+  Logger,
 } from '@nestjs/common';
 import { ServicesService } from './services.service';
 import { CreateServiceDto, UpdateServiceDto, ContactServicesDto } from './dto';
@@ -20,6 +21,8 @@ import { UsersService } from '../users/users.service';
 
 @Controller('services')
 export class ServicesController {
+  private readonly logger = new Logger(ServicesController.name);
+
   constructor(
     private readonly servicesService: ServicesService,
     private readonly usersService: UsersService,
@@ -103,7 +106,15 @@ export class ServicesController {
       throw new BadRequestException('organizationKey query parameter is required');
     }
 
-    return this.servicesService.contactServices(organizationKey, contactServicesDto);
+    this.logger.log(`[PERFORMANCE] Contact request received with pdfCacheId: ${contactServicesDto.pdfCacheId || 'none'}`);
+    const startTime = Date.now();
+    
+    const result = await this.servicesService.contactServices(organizationKey, contactServicesDto);
+    
+    const totalTime = Date.now() - startTime;
+    this.logger.log(`[PERFORMANCE] Contact request completed in ${totalTime}ms`);
+    
+    return result;
   }
 }
 

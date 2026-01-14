@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
 import { UsersModule } from './modules/users/users.module';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
 import { ReportModule } from './modules/report/report.module';
@@ -20,6 +21,7 @@ import { SchemaInitService } from './common/schema-init/schema-init.service';
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,

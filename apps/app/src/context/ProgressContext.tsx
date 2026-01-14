@@ -25,6 +25,19 @@ import {
   DevelopmentPhase,
 } from "@/actions/organization"
 import { trackCompletedCategory } from "@/actions/tracking"
+import { getQuestions, getRisks } from "@/actions/questions"
+import { getOrganizationSignature } from "@/actions/organization"
+// Hooks
+import { useCachedReport } from "@/hooks/useCachedReport"
+import { 
+  buildScalePayload,
+  type FormStorage,
+  type LevelStorage,
+  type PhasesStorage,
+  type GapsStorage,
+  type RisksStorage,
+  type ReportPayload,
+} from "@/hooks/useDownloadReport"
 
 interface ProgressContextType {
   stages: StageType[]
@@ -35,6 +48,7 @@ interface ProgressContextType {
   isFormCompleted: boolean
   stageStepNumber: number
   isNextButtonEnabled: boolean
+  isGeneratingPDF: boolean
   handlePrevButtonClick: () => void
   handleNextButtonClick: () => void
   handleReviewClick: () => void
@@ -126,10 +140,12 @@ export const ProgressProvider = ({
   const [isCheckpoint, setIsCheckpoint] = useState(false)
   const [isFormCompleted, setIsFormCompleted] = useState(false)
   const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false)
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
   const [currStageId, setCurrStageId] = useState<StageId>(DEFAULT_STAGE_ID)
   const [currQuestionId, setCurrQuestionId] = useState(
     stages[0].questions[0].id
   )
+  const { generateAndCachePdf } = useCachedReport()
   const { getValues } = useFormContext()
   const router = useRouter()
 
@@ -213,12 +229,138 @@ export const ProgressProvider = ({
 
     if (isLastCheckpoint) {
       localStorage.setItem("completedOn", new Date().toISOString())
+      
+      // Generate and cache the PDF before redirecting
+      setIsGeneratingPDF(true)
+      try {
+        await generatePDFBeforeRedirect()
+      } catch (error) {
+        console.error("Error generating PDF before redirect:", error)
+        // Still redirect even if PDF generation fails
+      } finally {
+        setIsGeneratingPDF(false)
+      }
+      
       return router.push(`/${lang}/results`)
     }
 
     setCurrStageId(nextStage.id)
     setCurrQuestionId(nextStage.questions[0].id)
     setIsCheckpoint(false)
+  }
+
+  const generatePDFBeforeRedirect = async () => {
+    try {
+      // Get questions data
+      const questionsData = await getQuestions(lang)
+
+      // Read data from localStorage
+      const formData: FormStorage = JSON.parse(
+        localStorage.getItem("form") || "{}"
+      )
+      const levelData: LevelStorage = JSON.parse(
+        localStorage.getItem("level") || "{}"
+      )
+      const phasesData: PhasesStorage = JSON.parse(
+        localStorage.getItem("phases") || "{}"
+      )
+      const gapsData: GapsStorage = JSON.parse(
+        localStorage.getItem("gaps") || "{}"
+      )
+
+      // Fetch risks data if we have all levels and phases
+      let risksData: RisksStorage | null = null
+      const hasAllLevels =
+        levelData.trl !== undefined &&
+        levelData.mkrl !== undefined &&
+        levelData.mfrl !== undefined
+      const hasAllPhases =
+        phasesData.trl?.phase !== undefined &&
+        phasesData.mkrl?.phase !== undefined &&
+        phasesData.mfrl?.phase !== undefined
+
+      if (hasAllLevels && hasAllPhases) {
+        risksData = await getRisks({
+          levels: {
+            trl: levelData.trl as number,
+            mkrl: levelData.mkrl as number,
+            mfrl: levelData.mfrl as number,
+          },
+          phases: {
+            trl: phasesData.trl!.phase,
+            mkrl: phasesData.mkrl!.phase,
+            mfrl: phasesData.mfrl!.phase,
+          },
+        })
+      }
+
+      // Get completion date
+      const storedCompletedOn = localStorage.getItem("completedOn")
+      const completedOnDate = storedCompletedOn
+        ? new Date(storedCompletedOn)
+        : new Date()
+
+      const completedOn = completedOnDate.toLocaleDateString(
+        lang === "fr" ? "fr-FR" : "en-US",
+        { year: "numeric", month: "long", day: "numeric" }
+      )
+
+      // Get projectName
+      const projectName = localStorage.getItem("projectName") || undefined
+
+      // Get signature
+      let signature = localStorage.getItem("signature")
+      if (!signature) {
+        signature = await getOrganizationSignature()
+        if (signature) {
+          localStorage.setItem("signature", signature)
+        }
+      }
+      const signatureUrl = signature || undefined
+
+      // Build the payload
+      const payload: ReportPayload = {
+        completedOn,
+        projectName,
+        signature: signatureUrl,
+        trl: buildScalePayload(
+          "trl",
+          lang,
+          questionsData,
+          formData,
+          levelData,
+          phasesData,
+          gapsData,
+          risksData
+        ),
+        mkrl: buildScalePayload(
+          "mkrl",
+          lang,
+          questionsData,
+          formData,
+          levelData,
+          phasesData,
+          gapsData,
+          risksData
+        ),
+        mfrl: buildScalePayload(
+          "mfrl",
+          lang,
+          questionsData,
+          formData,
+          levelData,
+          phasesData,
+          gapsData,
+          risksData
+        ),
+      }
+
+      // Generate and cache the PDF
+      await generateAndCachePdf(payload, lang)
+    } catch (error) {
+      console.error("Error in generatePDFBeforeRedirect:", error)
+      throw error
+    }
   }
 
   const handleQuestionClick = () => setIsNextButtonEnabled(true)
@@ -274,6 +416,7 @@ export const ProgressProvider = ({
         isFormCompleted,
         stageStepNumber,
         isNextButtonEnabled,
+        isGeneratingPDF,
         handlePrevButtonClick,
         handleNextButtonClick,
         handleReviewClick,
