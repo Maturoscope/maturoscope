@@ -11,6 +11,7 @@ import {
   Max,
   MinLength,
   MaxLength,
+  IsOptional,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -34,62 +35,75 @@ export class GapCoverageDto {
 }
 
 export class CreateServiceDto {
+  @IsOptional()
   @IsString()
   @MaxLength(255)
   name?: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(1)
   @MaxLength(255)
-  nameEn: string;
+  nameEn?: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(1)
   @MaxLength(255)
-  nameFr: string;
+  nameFr?: string;
 
+  @IsOptional()
   @IsString()
   description?: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(1)
-  descriptionEn: string;
+  descriptionEn?: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(1)
-  descriptionFr: string;
+  descriptionFr?: string;
 
+  @IsOptional()
   @IsUrl()
   @MaxLength(500)
-  url: string;
+  url?: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(1)
   @MaxLength(100)
-  mainContactFirstName: string;
+  mainContactFirstName?: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(1)
   @MaxLength(100)
-  mainContactLastName: string;
+  mainContactLastName?: string;
 
+  @IsOptional()
   @IsEmail()
   @MaxLength(255)
-  mainContactEmail: string;
+  mainContactEmail?: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(1)
   @MaxLength(100)
-  secondaryContactFirstName: string;
+  secondaryContactFirstName?: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(1)
   @MaxLength(100)
-  secondaryContactLastName: string;
+  secondaryContactLastName?: string;
 
+  @IsOptional()
   @IsEmail()
   @MaxLength(255)
-  secondaryContactEmail: string;
+  secondaryContactEmail?: string;
 
   @IsArray()
   @ArrayMinSize(1)

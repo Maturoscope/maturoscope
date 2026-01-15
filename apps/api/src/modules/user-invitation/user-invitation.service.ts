@@ -179,7 +179,11 @@ export class UserInvitationService {
     // Check if email exists in organizations
     const existingOrganization = await this.organizationsService.findByEmail(email);
     if (existingOrganization) {
-      throw new BadRequestException('This email address is already registered in our database. Please use a different one.');
+      // Allow the email if it's the organization's own email and it's for the same organization
+      if (existingOrganization.id !== organizationId) {
+        throw new BadRequestException('This email address is already registered in our database. Please use a different one.');
+      }
+      // If it's the same organization, we allow it (it's the first user being created for this org)
     }
 
     const existingUser = await this.usersService.findByEmail(email);
