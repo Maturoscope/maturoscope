@@ -715,14 +715,14 @@
           "REQUIRED": "*"
         },
         "EMAIL": {
-          "LABEL": "E-mail",
-          "PLACEHOLDER": "E-mail",
+          "LABEL": "E-mail de l'organisation",
+          "PLACEHOLDER": "E-mail de l'organisation",
           "REQUIRED": "*",
           "HELPER_TEXT": "Cette adresse e-mail ne peut pas être modifiée une fois l'organisation créée. Pour un accès continu, nous suggérons d'utiliser un e-mail organisationnel partagé (par exemple, admin@maturoscope.com) plutôt qu'un e-mail personnel."
         },
         "CONFIRM_EMAIL": {
-          "LABEL": "Confirmer l'e-mail",
-          "PLACEHOLDER": "Confirmer l'e-mail",
+          "LABEL": "Confirmer l'e-mail de l'organisation",
+          "PLACEHOLDER": "Confirmer l'e-mail de l'organisation",
           "REQUIRED": "*"
         }
       },

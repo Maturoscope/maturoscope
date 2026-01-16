@@ -15,7 +15,7 @@
       "information": {
         "noAccount": "Aucun compte requis",
         "noStored": "Nous ne stockons pas vos informations",
-        "tooltip": "Nous ne stockons, ne conservons ni ne réutilisons aucune des informations que vous entrez. Tous les données sont traitées temporairement et automatiquement supprimées pour garantir la confidentialité complète.",
+        "tooltip": "Nous ne stockons, ne conservons ni ne réutilisons aucune des informations que vous entrez. Toutes les données sont traitées temporairement et automatiquement supprimées pour garantir une confidentialité complète.",
         "buttonLabel": "Commençons",
         "estimatedTime": "5 minutes"
       },
@@ -86,7 +86,7 @@
         "icon": "/icons/form/mkrl.svg",
         "name": "MkRL",
         "title": "Contexte de marché validé",
-        "description": "Vous avez couvert le « Quoi » et le « Qui ». Passons maintenant à la dernière pièce : le « Comment ».",
+        "description": "Vous avez couvert le « Quoi? » et le « Qui? ». Passons maintenant à la dernière pièce : le « Comment? ».",
         "reviewLabel": "Voir les réponses",
         "buttonLabel": "Continuer à MfRL"
       },
@@ -159,7 +159,7 @@
         "Connectez-vous avec les experts recommandés pour accélérer votre succès.",
         "Téléchargez votre rapport et conservez-le pour vos futurs jalons."
       ],
-      "clarification": "Après avoir examiné vos résultats, enregistrez-les et contactez les services recommandés. Ils vous aideront à combler les lacunes nécessaires pour améliorer votre niveau de maturité."
+      "clarification": "Après avoir examiné vos résultats, enregistrez-les et contactez les services recommandés. Ils vous aideront à identifier les étapes suivantes pour améliorer votre niveau de maturité."
     },
     "detailedReport": {
       "title": "Rapport détaillé",
