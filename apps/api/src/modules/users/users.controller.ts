@@ -53,7 +53,8 @@ export class UsersController {
       throw new ForbiddenException('You do not have access to this organization');
     }
 
-    return this.usersService.findByOrganization(organizationId, requesterEmail);
+    // Return all users including the admin (user with same email as organization)
+    return this.usersService.findByOrganization(organizationId);
   }
 
   @Get('email/:email')

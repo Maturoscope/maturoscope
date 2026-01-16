@@ -193,9 +193,9 @@ export class UsersService {
       organizationId 
     };
     
-    if (excludeEmail) {
-      whereCondition.email = Not(excludeEmail);
-    }
+    // Note: excludeEmail parameter is kept for backward compatibility but not used
+    // We want to show all users including the admin (user with same email as organization)
+    // The admin's switch will be disabled in the frontend instead
 
     const users = await this.userRepository.find({
       where: whereCondition,
