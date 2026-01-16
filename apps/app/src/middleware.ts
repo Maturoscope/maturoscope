@@ -30,11 +30,12 @@ export const middleware = (request: NextRequest) => {
 
   // Check for organization key in query params and set it in cookies
   const key = request.nextUrl.searchParams.get("key")
+  const locale = getLocale(request)
   const response = pathnameHasLocale
     ? NextResponse.next()
     : pathname === "/"
-    ? NextResponse.redirect(new URL(`/${getLocale(request)}`, request.url))
-    : NextResponse.redirect(new URL(`/${DEFAULT_LOCALE}/404`, request.url))
+    ? NextResponse.redirect(new URL(`/${locale}`, request.url))
+    : NextResponse.redirect(new URL(`/${locale}${pathname}`, request.url))
 
   if (key) {
     // Set organization key in cookie (expires in 7 days)
