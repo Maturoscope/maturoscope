@@ -333,7 +333,7 @@ export default function ReportsPage() {
                     allowDecimals={false}
                   />
                   <Tooltip content={<CustomTooltip t={t} />} />
-                  <Legend height={2}/>
+                  <Legend wrapperStyle={{ bottom: -20, right: 0 }} />
                   <Line 
                     type="monotone" 
                     dataKey="TRL" 
@@ -345,7 +345,7 @@ export default function ReportsPage() {
                   <Line 
                     type="monotone" 
                     dataKey="MkRL" 
-                    stroke="#7C3AED" 
+                    stroke="#0D9488" 
                     strokeWidth={2}
                     dot={false}
                     name="MkRL"
