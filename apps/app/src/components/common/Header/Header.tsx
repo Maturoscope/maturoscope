@@ -86,13 +86,13 @@ const Header = ({
 
   const handleResetButtonClick = () => {
     handleResetForm()
-    router.push("/")
+    router.push(`/${lang}`)
   }
 
   const handleDownloadButtonClick = async () => {
     await downloadReport()
     handleResetForm()
-    router.push("/")
+    router.push(`/${lang}`)
   }
 
   return (

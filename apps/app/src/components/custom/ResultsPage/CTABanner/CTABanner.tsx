@@ -76,12 +76,12 @@ const CTABanner = ({
 
   const handleResetButtonClick = () => {
     handleResetForm()
-    router.push("/")
+    router.push(`/${lang}`)
   }
 
   const handleDownloadButtonClick = async () => {
     await downloadReport()
-    router.push("/")
+    router.push(`/${lang}`)
   }
 
   useEffect(() => {
