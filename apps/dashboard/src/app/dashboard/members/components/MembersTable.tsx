@@ -30,6 +30,7 @@ interface MembersTableProps {
   onToggleActive: (member: Member, value: boolean) => void;
   onResendInvitation: (member: Member) => void;
   organizationEmail?: string;
+  currentUserEmail?: string;
 }
 
 export function MembersTable({
@@ -42,6 +43,7 @@ export function MembersTable({
   onToggleActive,
   onResendInvitation,
   organizationEmail,
+  currentUserEmail,
 }: MembersTableProps) {
   const { t } = useTranslation("MEMBERS");
   const [showDeactivateDialog, setShowDeactivateDialog] = useState(false);
@@ -86,8 +88,16 @@ export function MembersTable({
     return organizationEmail ? member.email.toLowerCase() === organizationEmail.toLowerCase() : false;
   };
 
+  const isCurrentUser = (member: Member): boolean => {
+    return currentUserEmail ? member.email.toLowerCase() === currentUserEmail.toLowerCase() : false;
+  };
+
+  const isSwitchDisabled = (member: Member): boolean => {
+    return isAdmin(member) || isCurrentUser(member);
+  };
+
   const handleSwitchChange = (member: Member, value: boolean) => {
-    if (!value && isAdmin(member)) {
+    if (!value && isSwitchDisabled(member)) {
       return;
     }
     
@@ -200,7 +210,7 @@ export function MembersTable({
                     <Switch
                       checked={member.isActive}
                       onCheckedChange={(value) => handleSwitchChange(member, value)}
-                      disabled={isAdmin(member)}
+                      disabled={isSwitchDisabled(member)}
                       aria-label={`Toggle active status for ${member.firstName} ${member.lastName}`}
                     />
                   </td>
