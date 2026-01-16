@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { useEffect, useRef } from "react"
 import { useController } from "react-hook-form"
 // Components
 import { CheckedIcon, UncheckedIcon } from "@/components/icons"
@@ -16,6 +17,8 @@ export interface RadioItemProps {
   onClick: () => void
   commentPlaceholder?: string
   disabled?: boolean
+  getCommentForOption?: (optionId: string) => string
+  setCommentForOption?: (optionId: string, comment: string) => void
 }
 
 const RadioItem = ({
@@ -25,26 +28,52 @@ const RadioItem = ({
   onClick,
   commentPlaceholder,
   disabled = false,
+  getCommentForOption,
+  setCommentForOption,
 }: RadioItemProps) => {
   const { control } = useFormContext()
   const { field } = useController({ control, name })
   const isChecked = field.value === id
+  const wasCheckedRef = useRef(isChecked)
 
   // Extract stage ID and question ID from name (e.g., "trl.questions.TRL_Q1")
   const [stageId, , questionId] = name.split(".") as [StageId, string, string]
   const commentName =
     `${stageId}.comments.${questionId}` as `${StageId}.comments.${string}`
   const { field: commentField } = useController({ control, name: commentName })
-  const charCount = commentField.value?.length || 0
+
+  // Get the comment for this option from the parent's state
+  const optionComment = getCommentForOption ? getCommentForOption(id) : ""
+  const charCount = optionComment.length
+
+  // When this option becomes checked, load its comment into the form field
+  useEffect(() => {
+    if (isChecked && !wasCheckedRef.current && getCommentForOption) {
+      const savedComment = getCommentForOption(id)
+      commentField.onChange(savedComment)
+    }
+    wasCheckedRef.current = isChecked
+  }, [isChecked, id, getCommentForOption, commentField])
 
   const handleChange = () => {
     if (disabled) return
     field.onChange(id)
+    // Load this option's comment into the form field
+    if (getCommentForOption) {
+      const savedComment = getCommentForOption(id)
+      commentField.onChange(savedComment)
+    }
     onClick()
   }
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    commentField.onChange(e.target.value)
+    const newValue = e.target.value
+    // Update the form field
+    commentField.onChange(newValue)
+    // Also save to the per-option state
+    if (setCommentForOption) {
+      setCommentForOption(id, newValue)
+    }
   }
 
   return (
@@ -75,7 +104,7 @@ const RadioItem = ({
           <textarea
             maxLength={280}
             onChange={handleCommentChange}
-            value={commentField.value || ""}
+            value={optionComment}
             placeholder={commentPlaceholder}
             disabled={disabled}
             className={`bg-white w-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none h-[130px] lg:h-[76px] ${disabled ? "cursor-not-allowed" : ""}`}
