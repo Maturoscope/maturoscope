@@ -61,6 +61,13 @@ export const middleware = async (request: NextRequest) => {
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   )
 
+  // Skip key validation for 404 page to prevent redirect loops
+  // The 404 page is the ONLY page that doesn't require a key
+  const is404Page = pathname.endsWith("/404")
+  if (is404Page) {
+    return NextResponse.next()
+  }
+
   // Get organization key from URL query params
   const keyFromUrl = request.nextUrl.searchParams.get("key")
   // Get organization key from cookies
