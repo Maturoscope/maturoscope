@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { useEffect } from "react"
 import Image from "next/image"
 import { AnimatePresence, motion } from "framer-motion"
 import ReactMarkdown from "react-markdown"
@@ -25,6 +26,15 @@ const PrivacyPolicyModal = ({ isOpen, setIsOpen, lang, title, lastUpdatedLabel }
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) =>
     e.stopPropagation()
+
+  useEffect(() => {
+    if (isOpen) document.body.style.overflowY = "hidden"
+    else document.body.style.overflowY = ""
+
+    return () => {
+      document.body.style.overflowY = ""
+    }
+  }, [isOpen])
 
   return (
     <AnimatePresence>

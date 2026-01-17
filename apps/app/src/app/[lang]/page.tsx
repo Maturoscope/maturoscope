@@ -27,7 +27,11 @@ const HomePage = async ({ params }: HomePageProps) => {
       <Header stringConnector={stringConnector} />
       <Hero {...hero} />
       <PrivacyPolicy {...policy} />
-      <GdprModal {...gdprModal} />
+      <GdprModal
+        {...gdprModal}
+        lang={lang}
+        privacyPolicyModal={policy.privacyPolicyModal}
+      />
     </main>
   )
 }
