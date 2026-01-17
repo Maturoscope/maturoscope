@@ -44,7 +44,15 @@
       "description": "Le projet METABUILDING LABS a reçu un financement de la part de la Commission européenne dans le cadre du Programme européen de recherche et d'innovation Horizon 2020 sous le numéro de convention No. 953193. La responsabilité exclusive du contenu de ce document repose entièrement sur l'avis du déposant. La Commission européenne n'est pas responsable de l'utilisation qui peut en être faite.",
       "copyright": "Conçu et développé par",
       "contactUsLabel": "Contactez-nous",
-      "privacyPolicyLabel": "Politique de confidentialité"
+      "privacyPolicyLabel": "Politique de confidentialité",
+      "privacyPolicyModal": {
+        "title": "Politique de Confidentialité",
+        "lastUpdatedLabel": "Dernière version : [12/01/2026]"
+      }
+    },
+    "gdprModal": {
+      "message": "Ce questionnaire utilise des cookies nécessaires et le stockage local pour sauvegarder temporairement votre progression. Nous n'utilisons pas de cookies de suivi ou publicitaires et nous ne collectons pas d'informations personnelles.",
+      "learnMoreLabel": "En savoir plus"
     }
   },
   "notFound": {
@@ -177,6 +185,7 @@
       "title": "Transformez ce plan en réalité.",
       "description": "Ne vous engagez pas seuls. Nos experts sont prêts à vous aider à atteindre le prochain niveau de maturité.",
       "or": "ou",
+      "disclaimer": "Bien que l'outil ait été conçu par des professionnels du secteur du bâtiment, les résultats de ce test ne constituent pas un certificat officiel et sont fournis à des fins informatifess uniquement.",
       "talkButtonLabel": "Parler à un expert",
       "resetButtonLabel": "Réinitialiser le questionnaire",
       "resetFormModal": {
@@ -193,7 +202,7 @@
         "description": "Sélectionnez les lacunes spécifiques que vous aimeriez que nous vous aidions à résoudre.",
         "primaryButtonLabel": "Continuer",
         "completedLabel": "complété",
-        "chipLabel": "Highest Priority for Growth"
+        "chipLabel": "Recommandé pour votre innovation"
       },
       "reachOut": {
         "title": "Comment pouvons-nous vous contacter ?",

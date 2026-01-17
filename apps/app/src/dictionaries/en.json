@@ -44,7 +44,15 @@
       "description": "METABUILDING LABS Project has received funding from the European Union's Horizon 2020 Research and Innovation Programme under Grant Agreement No. 953193. The sole responsibility for the content of this document lies entirely with the author's view. The European Commission is not responsible for any use that may be made of the information it contains.",
       "copyright": "Designed and developed by",
       "contactUsLabel": "Contact us",
-      "privacyPolicyLabel": "Privacy policy"
+      "privacyPolicyLabel": "Privacy policy",
+      "privacyPolicyModal": {
+        "title": "Privacy Policy",
+        "lastUpdatedLabel": "Last updated: [17/01/2026]"
+      }
+    },
+    "gdprModal": {
+      "message": "This questionnaire uses necessary cookies and local storage to save your progress temporarily. We don't use tracking or advertising cookies, and we don't collect personal information.",
+      "learnMoreLabel": "Learn more"
     }
   },
   "notFound": {
@@ -77,7 +85,7 @@
         "icon": "/icons/form/trl.svg",
         "name": "TRL",
         "title": "Technology Analysis Complete",
-        "description": "One step down. Now, let’s see if the market is ready for it.",
+        "description": "One step down. Now, let's see if the market is ready for it.",
         "reviewLabel": "Review answers",
         "buttonLabel": "Continue to MkRL"
       },
@@ -177,6 +185,7 @@
       "title": "Turn this plan into reality.",
       "description": "Don't tackle these gaps alone. Our experts are ready to help you reach the next maturity level.",
       "or": "or",
+      "disclaimer": "Although the tool was designed by professionals from the building sector, the results of this test do not constitute a formal certificate and are provided for informational purposes only.",
       "talkButtonLabel": "Talk to an Expert",
       "resetButtonLabel": "Reset questionnaire",
       "resetFormModal": {

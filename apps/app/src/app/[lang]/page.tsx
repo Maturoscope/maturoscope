@@ -2,6 +2,7 @@
 import Header from "@/components/common/Header/Header"
 import Hero from "@/components/custom/Homepage/Hero/Hero"
 import PrivacyPolicy from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
+import GdprModal from "@/components/custom/Homepage/GdprModal/GdprModal"
 import FormRedirectHandler from "@/components/common/FormRedirectHandler/FormRedirectHandler"
 // Dictionaries
 import { getDictionary, Locale } from "@/dictionaries/dictionaries"
@@ -17,7 +18,7 @@ const HomePage = async ({ params }: HomePageProps) => {
 
   const {
     header: { stringConnector },
-    homepage: { hero, policy },
+    homepage: { hero, policy, gdprModal },
   } = dictionary
 
   return (
@@ -26,6 +27,11 @@ const HomePage = async ({ params }: HomePageProps) => {
       <Header stringConnector={stringConnector} />
       <Hero {...hero} />
       <PrivacyPolicy {...policy} />
+      <GdprModal
+        {...gdprModal}
+        lang={lang}
+        privacyPolicyModal={policy.privacyPolicyModal}
+      />
     </main>
   )
 }

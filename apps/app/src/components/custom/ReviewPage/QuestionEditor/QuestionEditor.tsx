@@ -47,10 +47,13 @@ const QuestionEditor = ({
 }: QuestionEditorProps & ExtraProps) => {
   const router = useRouter()
   const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null)
-  const [comment, setComment] = useState<string>("")
+  const [commentsPerOption, setCommentsPerOption] = useState<Record<string, string>>({})
   const [isUnsavedChangesModalOpen, setIsUnsavedChangesModalOpen] = useState<boolean>(false)
   const [initialOptionId, setInitialOptionId] = useState<string | null>(null)
   const [initialComment, setInitialComment] = useState<string>("")
+
+  // Get the current comment for the selected option
+  const comment = selectedOptionId ? (commentsPerOption[selectedOptionId] || "") : ""
 
   useEffect(() => {
     // Read selected answer and comment from localStorage
@@ -61,7 +64,10 @@ const QuestionEditor = ({
     const answerId = savedForm[stageName]?.questions?.[question.id] || null
     const savedComment = savedForm[stageName]?.comments?.[question.id] || ""
     setSelectedOptionId(answerId)
-    setComment(savedComment)
+    // Initialize the comments map with the saved comment for the saved option
+    if (answerId) {
+      setCommentsPerOption({ [answerId]: savedComment })
+    }
     // Store initial values for comparison
     setInitialOptionId(answerId)
     setInitialComment(savedComment)
@@ -74,12 +80,16 @@ const QuestionEditor = ({
 
   const handleOptionChange = (optionId: string) => {
     setSelectedOptionId(optionId)
-    // Clear comment when option changes
-    setComment("")
+    // Comments are now stored per option, no need to clear
   }
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(e.target.value)
+    if (!selectedOptionId) return
+    // Store the comment for the currently selected option
+    setCommentsPerOption(prev => ({
+      ...prev,
+      [selectedOptionId]: e.target.value
+    }))
   }
 
   const handleSaveClick = async () => {
@@ -212,7 +222,7 @@ const QuestionEditor = ({
           )
         })}
       </div>
-      <div className="w-full flex items-center justify-end gap-3 bg-background lg:bg-none py-4 lg:pt-6 lg:pb-8">
+      <div className="w-full flex items-center justify-between gap-3 bg-background lg:bg-none py-4 lg:pt-6 lg:pb-8">
         <Button variant="outline" onClick={handleCancelClick}>
           {cancelButtonLabel}
         </Button>

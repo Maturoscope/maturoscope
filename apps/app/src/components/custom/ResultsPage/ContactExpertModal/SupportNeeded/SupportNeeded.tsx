@@ -117,99 +117,110 @@ const SupportNeeded = ({
     <Modal
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      className="p-6 flex flex-col gap-4 max-w-[740px] w-full"
+      className="p-6 flex flex-col justify-between gap-4 max-w-[740px] h-[650px]"
     >
-      <div className="flex justify-between items-center gap-1.5">
-        <div className="flex flex-col gap-1.5">
-          <h1 className="text-base font-semibold">{title}</h1>
-          <p className="text-sm text-muted-foreground">{description}</p>
-        </div>
-        <div className="flex gap-4 items-center">
-          <div className="flex items-center gap-2">
-            <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full overflow-hidden">
-              <div 
-                className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all duration-200"
-                style={{ width: `${progressPercentage}%` }}
-              />
-            </div>
-            <span className="text-sm text-muted-foreground hidden lg:block">
-              {currentStep}/{totalSteps} {completedLabel}
-            </span>
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between items-start lg:items-center gap-1.5 lg:gap-4">
+          <div className="flex flex-col gap-1.5">
+            <h1 className="text-base font-semibold">{title}</h1>
+            <p className="text-sm text-muted-foreground">{description}</p>
           </div>
+          <div className="flex gap-4 items-center">
+            <div className="flex items-center gap-2">
+              <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full overflow-hidden">
+                <div
+                  className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all duration-200"
+                  style={{ width: `${progressPercentage}%` }}
+                />
+              </div>
+              <span className="text-sm text-muted-foreground hidden lg:block whitespace-nowrap">
+                {currentStep}/{totalSteps} {completedLabel}
+              </span>
+            </div>
 
-          <div className="flex items-center gap-1.5">
-            <div className="bg-border w-px h-3.5" />
-            <div className="cursor-pointer size-8 flex items-center justify-center hover:bg-neutral-100 rounded-sm transition-all duration-200" onClick={() => setIsOpen(false)}>
-              <Image
-                src="/icons/common/cross.svg"
-                alt="Close"
-                width={16}
-                height={16}
-              />
+            <div className="flex items-center gap-1.5">
+              <div className="bg-border w-px h-3.5" />
+              <div className="cursor-pointer size-8 flex items-center justify-center hover:bg-neutral-100 rounded-sm transition-all duration-200" onClick={() => setIsOpen(false)}>
+                <Image
+                  src="/icons/common/cross.svg"
+                  alt="Close"
+                  width={16}
+                  height={16}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="flex flex-col gap-6 max-h-[330px] lg:max-h-[700px] overflow-y-auto">
-        {orderedGaps.map((scale, index) => {
-          const scaleName = Object.keys(scale)[0] as StageId
-          const gaps = scale[scaleName as keyof StageGapsItem] as Gap[]
+        <div className="flex flex-col gap-6 max-h-[330px] lg:max-h-[700px] overflow-y-auto">
+          {orderedGaps
+            .map((scale) => {
+              const scaleName = Object.keys(scale)[0] as StageId
+              const gaps = scale[scaleName as keyof StageGapsItem] as Gap[]
+              const availableGaps = gaps.filter((gap) => gap.hasServices)
 
-          return (
-            <div key={index}>
-              <div className="flex items-center gap-2 border-b border-border pb-2.5">
-                <h3 className="text-sm font-medium uppercase w-full">
-                  {scaleName}
-                </h3>
-                {index === 0 && (
-                  <div className="bg-[#0D9488] py-0.5 px-2 rounded-md text-xs font-semibold text-white shrink-0">
-                    {chipLabel}
+              // Only return categories that have available services
+              if (availableGaps.length === 0) {
+                return null
+              }
+
+              return { scaleName, availableGaps }
+            })
+            .filter((item): item is { scaleName: StageId; availableGaps: Gap[] } => item !== null)
+            .map(({ scaleName, availableGaps }, index) => {
+              return (
+                <div key={scaleName}>
+                  <div className="flex items-center gap-2 border-b border-border pb-2.5">
+                    <h3 className="text-sm font-medium uppercase w-full">
+                      {scaleName}
+                    </h3>
+                    {index === 0 && (
+                      <div className="bg-[#0D9488] py-0.5 px-2 rounded-md text-xs font-semibold text-white shrink-0">
+                        {chipLabel}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
 
-              <div className="flex flex-col gap-3 pt-3">
-                {gaps.map((gap) => {
-                  const isChecked = isGapSelected(gap.questionId)
-                  const { hasServices } = gap
+                  <div className="flex flex-col gap-3 pt-3">
+                    {availableGaps.map((gap) => {
+                      const isChecked = isGapSelected(gap.questionId)
 
-                  return (
-                    <label
-                      key={gap.questionId}
-                      className={cn("flex items-start gap-2 cursor-pointer", !hasServices && "pointer-events-none opacity-50")}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={(e) => handleGapToggle(gap, e.target.checked)}
-                        className="peer appearance-none absolute outline-none"
-                        disabled={!hasServices}
-                      />
-                      <Image
-                        src="/icons/common/checkbox-unchecked.svg"
-                        alt="Checkbox"
-                        width={16}
-                        height={16}
-                        className="peer-checked:hidden mt-0.5"
-                      />
-                      <Image
-                        src="/icons/common/checkbox-checked.svg"
-                        alt="Checkbox"
-                        width={16}
-                        height={16}
-                        className="hidden peer-checked:block mt-0.5"
-                      />
-                      <h4 className="text-sm font-medium">
-                        {gap.gapDescription[lang]}
-                      </h4>
-                    </label>
-                  )
-                })}
-              </div>
-            </div>
-          )
-        })}
+                      return (
+                        <label
+                          key={gap.questionId}
+                          className="flex items-start gap-2 cursor-pointer"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={(e) => handleGapToggle(gap, e.target.checked)}
+                            className="peer appearance-none absolute outline-none"
+                          />
+                          <Image
+                            src="/icons/common/checkbox-unchecked.svg"
+                            alt="Checkbox"
+                            width={16}
+                            height={16}
+                            className="peer-checked:hidden mt-0.5"
+                          />
+                          <Image
+                            src="/icons/common/checkbox-checked.svg"
+                            alt="Checkbox"
+                            width={16}
+                            height={16}
+                            className="hidden peer-checked:block mt-0.5"
+                          />
+                          <h4 className="text-sm font-medium">
+                            {gap.gapDescription[lang]}
+                          </h4>
+                        </label>
+                      )
+                    })}
+                  </div>
+                </div>
+              )
+            })}
+        </div>
       </div>
 
       <div className="flex justify-end">

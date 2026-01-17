@@ -3,7 +3,7 @@
 // Packages
 import Image from "next/image"
 import { useState, useEffect } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { useParams } from "next/navigation"
 import * as RPNInput from "react-phone-number-input"
 // Components
@@ -63,6 +63,7 @@ type ContactFormData = {
   email?: string
   phoneNumber?: string // Note: field key is "phone" but name is "phoneNumber"
   additionalInformation?: string
+  consent: boolean
 }
 
 const EN_CONTACT_INFO_FIELDS: ContactInfoForm = {
@@ -165,9 +166,9 @@ const FR_CONTACT_INFO_FIELDS: ContactInfoForm = {
   },
 }
 
-const EN_CLARIFICATION = "We respect your privacy. Your data is used exclusively to answer this inquiry."
+const EN_CLARIFICATION = "I agree to share my name, email, project details, and questionnaire responses with experts to receive personalized guidance on improving my TRL/MKRL/MFRL level. I understand my data will be used exclusively for this inquiry and will not be stored by the platform."
 const EN_LOADING_BUTTON_LABEL = "Loading..."
-const FR_CLARIFICATION = "Nous respectons votre vie privée. Vos données sont utilisées exclusivement pour répondre à cette demande."
+const FR_CLARIFICATION = "Je consens à partager mon nom, mon email, les détails de mon projet, et les réponses du questionnaire avec des experts pour recevoir une guidance personnalisée sur l'amélioration de mon niveau TRL/MkRL/MfRL. Je comprends que mes données seront utilisées exclusivement pour cette demande et ne seront pas stockées par la plateforme."
 const FR_LOADING_BUTTON_LABEL = "Chargement..."
 
 /**
@@ -190,7 +191,7 @@ const removeDuplicateCountryCode = (phoneNumber: string): string => {
   // This matches cases like: +54+543512425044, +1+1234567890, etc.
   const duplicatePattern = /^\+(\d{1,3})\+\1(\d+)/
   const match = phoneNumber.match(duplicatePattern)
-  
+
   if (match) {
     // Found duplicate country code, remove the first occurrence
     // match[1] is the country code, match[2] is the rest of the number
@@ -201,7 +202,7 @@ const removeDuplicateCountryCode = (phoneNumber: string): string => {
   // Pattern: +XX+XX... (with possible spacing or formatting)
   const looseDuplicatePattern = /^\+(\d{1,3})\+(\d*)\1(\d+)/
   const looseMatch = phoneNumber.match(looseDuplicatePattern)
-  
+
   if (looseMatch && looseMatch[2].length === 0) {
     // Found duplicate with no characters in between
     return `+${looseMatch[1]}${looseMatch[3]}`
@@ -232,6 +233,7 @@ const ReachOut = ({
       email: "",
       phoneNumber: "",
       additionalInformation: "",
+      consent: false,
     },
   })
   const [contactInfo, setContactInfo] = useState(EN_CONTACT_INFO_FIELDS)
@@ -281,58 +283,88 @@ const ReachOut = ({
     <Modal
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      className="p-6 max-w-[740px] w-full"
+      className="p-6 max-w-[740px] w-full h-[650px]"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between gap-4 h-full">
+        <div className="flex flex-col gap-4 flex-1 min-h-0">
+          <div className="flex justify-between items-start lg:items-center gap-1.5 lg:gap-4 shrink-0">
+            <div className="flex flex-col gap-1.5">
+              <h1 className="text-base font-semibold">{title}</h1>
+              <p className="text-sm text-muted-foreground">{description}</p>
+            </div>
+            <div className="flex gap-4 items-center">
+              <div className="flex items-center gap-2">
+                <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full overflow-hidden">
+                  <div
+                    className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all duration-200"
+                    style={{ width: `${progressPercentage}%` }}
+                  />
+                </div>
+                <span className="text-sm text-muted-foreground hidden lg:block whitespace-nowrap">
+                  {currentStep}/{totalSteps} {completedLabel}
+                </span>
+              </div>
 
-        <div className="flex justify-between items-center gap-1.5">
-          <div className="flex flex-col gap-1.5">
-            <h1 className="text-base font-semibold">{title}</h1>
-            <p className="text-sm text-muted-foreground">{description}</p>
+              <div className="flex items-center gap-1.5">
+                <div className="bg-border w-px h-3.5" />
+                <div className="cursor-pointer size-8 flex items-center justify-center hover:bg-neutral-100 rounded-sm transition-all duration-200" onClick={() => setIsOpen(false)}>
+                  <Image
+                    src="/icons/common/cross.svg"
+                    alt="Close"
+                    width={16}
+                    height={16}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex gap-4 items-center">
-            <div className="flex items-center gap-2">
-              <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full overflow-hidden">
-                <div 
-                  className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all duration-200"
-                  style={{ width: `${progressPercentage}%` }}
-                />
+
+          <div className="flex flex-col gap-4 flex-1 min-h-0 overflow-y-auto lg:overflow-y-hidden">
+            <div className="flex flex-col gap-4">
+              <Input fieldProps={contactInfo.organization} control={control} />
+              <div className="flex flex-col gap-2 lg:grid grid-cols-2">
+                <Input fieldProps={contactInfo.firstName} control={control} rules={{ required: true }} />
+                <Input fieldProps={contactInfo.lastName} control={control} rules={{ required: true }} />
+                <Input fieldProps={contactInfo.email} control={control} rules={{ required: true }} />
+                <Input fieldProps={contactInfo.phoneNumber} control={control} />
               </div>
-              <span className="text-sm text-muted-foreground hidden lg:block">
-                {currentStep}/{totalSteps} {completedLabel}
-              </span>
+              <Input fieldProps={contactInfo.additionalInformation} control={control} />
             </div>
 
-            <div className="flex items-center gap-1.5">
-              <div className="bg-border w-px h-3.5" />
-              <div className="cursor-pointer size-8 flex items-center justify-center hover:bg-neutral-100 rounded-sm transition-all duration-200" onClick={() => setIsOpen(false)}>
-                <Image
-                  src="/icons/common/cross.svg"
-                  alt="Close"
-                  width={16}
-                  height={16}
-                />
-              </div>
-            </div>
+            <Controller
+              control={control}
+              name="consent"
+              rules={{ required: true }}
+              render={({ field }) => (
+                <label className="flex items-start gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={field.value}
+                    onChange={field.onChange}
+                    className="peer appearance-none absolute outline-none"
+                  />
+                  <Image
+                    src="/icons/common/checkbox-unchecked.svg"
+                    alt="Checkbox"
+                    width={16}
+                    height={16}
+                    className="peer-checked:hidden mt-0.5 shrink-0"
+                  />
+                  <Image
+                    src="/icons/common/checkbox-checked.svg"
+                    alt="Checkbox"
+                    width={16}
+                    height={16}
+                    className="hidden peer-checked:block mt-0.5 shrink-0"
+                  />
+                  <p className="text-sm text-muted-foreground lg:mb-14">{clarification}</p>
+                </label>
+              )}
+            />
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 max-h-[330px] overflow-y-auto lg:max-h-none">
-          <div className="flex flex-col gap-4">
-            <Input fieldProps={contactInfo.organization} control={control} />
-            <div className="flex flex-col gap-2 lg:grid grid-cols-2">
-              <Input fieldProps={contactInfo.firstName} control={control} rules={{ required: true }} />
-              <Input fieldProps={contactInfo.lastName} control={control} rules={{ required: true }} />
-              <Input fieldProps={contactInfo.email} control={control} rules={{ required: true }} />
-              <Input fieldProps={contactInfo.phoneNumber} control={control} />
-            </div>
-            <Input fieldProps={contactInfo.additionalInformation} control={control} />
-          </div>
-
-          <p className="text-sm text-muted-foreground lg:mb-14">{clarification}</p>
-        </div>
-
-        <div className="flex justify-between w-full gap-2">
+        <div className="flex justify-between w-full gap-2 shrink-0">
           <Button
             variant="outline"
             onClick={() => setCurrentStep("supportNeeded")}
