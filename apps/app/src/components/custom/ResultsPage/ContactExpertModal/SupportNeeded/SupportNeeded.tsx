@@ -119,7 +119,7 @@ const SupportNeeded = ({
       setIsOpen={setIsOpen}
       className="p-6 flex flex-col gap-4 max-w-[740px] w-full"
     >
-      <div className="flex justify-between items-center gap-1.5">
+      <div className="flex justify-between items-start lg:items-center gap-1.5 lg:gap-4">
         <div className="flex flex-col gap-1.5">
           <h1 className="text-base font-semibold">{title}</h1>
           <p className="text-sm text-muted-foreground">{description}</p>
@@ -127,12 +127,12 @@ const SupportNeeded = ({
         <div className="flex gap-4 items-center">
           <div className="flex items-center gap-2">
             <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full overflow-hidden">
-              <div 
+              <div
                 className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all duration-200"
                 style={{ width: `${progressPercentage}%` }}
               />
             </div>
-            <span className="text-sm text-muted-foreground hidden lg:block">
+            <span className="text-sm text-muted-foreground hidden lg:block whitespace-nowrap">
               {currentStep}/{totalSteps} {completedLabel}
             </span>
           </div>

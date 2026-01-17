@@ -190,7 +190,7 @@ const removeDuplicateCountryCode = (phoneNumber: string): string => {
   // This matches cases like: +54+543512425044, +1+1234567890, etc.
   const duplicatePattern = /^\+(\d{1,3})\+\1(\d+)/
   const match = phoneNumber.match(duplicatePattern)
-  
+
   if (match) {
     // Found duplicate country code, remove the first occurrence
     // match[1] is the country code, match[2] is the rest of the number
@@ -201,7 +201,7 @@ const removeDuplicateCountryCode = (phoneNumber: string): string => {
   // Pattern: +XX+XX... (with possible spacing or formatting)
   const looseDuplicatePattern = /^\+(\d{1,3})\+(\d*)\1(\d+)/
   const looseMatch = phoneNumber.match(looseDuplicatePattern)
-  
+
   if (looseMatch && looseMatch[2].length === 0) {
     // Found duplicate with no characters in between
     return `+${looseMatch[1]}${looseMatch[3]}`
@@ -285,7 +285,7 @@ const ReachOut = ({
     >
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
 
-        <div className="flex justify-between items-center gap-1.5">
+        <div className="flex justify-between items-start lg:items-center gap-1.5 lg:gap-4">
           <div className="flex flex-col gap-1.5">
             <h1 className="text-base font-semibold">{title}</h1>
             <p className="text-sm text-muted-foreground">{description}</p>
@@ -293,12 +293,12 @@ const ReachOut = ({
           <div className="flex gap-4 items-center">
             <div className="flex items-center gap-2">
               <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full overflow-hidden">
-                <div 
+                <div
                   className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all duration-200"
                   style={{ width: `${progressPercentage}%` }}
                 />
               </div>
-              <span className="text-sm text-muted-foreground hidden lg:block">
+              <span className="text-sm text-muted-foreground hidden lg:block whitespace-nowrap">
                 {currentStep}/{totalSteps} {completedLabel}
               </span>
             </div>
