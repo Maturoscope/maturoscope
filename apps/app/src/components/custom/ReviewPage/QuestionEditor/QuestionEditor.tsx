@@ -222,7 +222,7 @@ const QuestionEditor = ({
           )
         })}
       </div>
-      <div className="w-full flex items-center justify-end gap-3 bg-background lg:bg-none py-4 lg:pt-6 lg:pb-8">
+      <div className="w-full flex items-center justify-between gap-3 bg-background lg:bg-none py-4 lg:pt-6 lg:pb-8">
         <Button variant="outline" onClick={handleCancelClick}>
           {cancelButtonLabel}
         </Button>

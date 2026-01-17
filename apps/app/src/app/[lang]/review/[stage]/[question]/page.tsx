@@ -42,7 +42,7 @@ const QuestionPage = async ({ params }: QuestionPageProps) => {
   // Since we can't access localStorage in server components, we'll handle it in the client component
 
   return (
-    <main className="w-full h-full flex flex-col items-center justify-start lg:pb-16">
+    <main className="w-full h-full flex flex-col items-center justify-start">
       <Header stringConnector={stringConnector} showBackButton leaveQuestionnaireModal={leaveQuestionnaireModal} />
       <QuestionEditor
         stageName={stage}
