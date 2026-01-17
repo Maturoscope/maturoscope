@@ -152,64 +152,73 @@ const SupportNeeded = ({
       </div>
 
       <div className="flex flex-col gap-6 max-h-[330px] lg:max-h-[700px] overflow-y-auto">
-        {orderedGaps.map((scale, index) => {
-          const scaleName = Object.keys(scale)[0] as StageId
-          const gaps = scale[scaleName as keyof StageGapsItem] as Gap[]
+        {orderedGaps
+          .map((scale) => {
+            const scaleName = Object.keys(scale)[0] as StageId
+            const gaps = scale[scaleName as keyof StageGapsItem] as Gap[]
+            const availableGaps = gaps.filter((gap) => gap.hasServices)
 
-          return (
-            <div key={index}>
-              <div className="flex items-center gap-2 border-b border-border pb-2.5">
-                <h3 className="text-sm font-medium uppercase w-full">
-                  {scaleName}
-                </h3>
-                {index === 0 && (
-                  <div className="bg-[#0D9488] py-0.5 px-2 rounded-md text-xs font-semibold text-white shrink-0">
-                    {chipLabel}
-                  </div>
-                )}
+            // Only return categories that have available services
+            if (availableGaps.length === 0) {
+              return null
+            }
+
+            return { scaleName, availableGaps }
+          })
+          .filter((item): item is { scaleName: StageId; availableGaps: Gap[] } => item !== null)
+          .map(({ scaleName, availableGaps }, index) => {
+            return (
+              <div key={scaleName}>
+                <div className="flex items-center gap-2 border-b border-border pb-2.5">
+                  <h3 className="text-sm font-medium uppercase w-full">
+                    {scaleName}
+                  </h3>
+                  {index === 0 && (
+                    <div className="bg-[#0D9488] py-0.5 px-2 rounded-md text-xs font-semibold text-white shrink-0">
+                      {chipLabel}
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex flex-col gap-3 pt-3">
+                  {availableGaps.map((gap) => {
+                    const isChecked = isGapSelected(gap.questionId)
+
+                    return (
+                      <label
+                        key={gap.questionId}
+                        className="flex items-start gap-2 cursor-pointer"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={(e) => handleGapToggle(gap, e.target.checked)}
+                          className="peer appearance-none absolute outline-none"
+                        />
+                        <Image
+                          src="/icons/common/checkbox-unchecked.svg"
+                          alt="Checkbox"
+                          width={16}
+                          height={16}
+                          className="peer-checked:hidden mt-0.5"
+                        />
+                        <Image
+                          src="/icons/common/checkbox-checked.svg"
+                          alt="Checkbox"
+                          width={16}
+                          height={16}
+                          className="hidden peer-checked:block mt-0.5"
+                        />
+                        <h4 className="text-sm font-medium">
+                          {gap.gapDescription[lang]}
+                        </h4>
+                      </label>
+                    )
+                  })}
+                </div>
               </div>
-
-              <div className="flex flex-col gap-3 pt-3">
-                {gaps.map((gap) => {
-                  const isChecked = isGapSelected(gap.questionId)
-                  const { hasServices } = gap
-
-                  return (
-                    <label
-                      key={gap.questionId}
-                      className={cn("flex items-start gap-2 cursor-pointer", !hasServices && "pointer-events-none opacity-50")}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={(e) => handleGapToggle(gap, e.target.checked)}
-                        className="peer appearance-none absolute outline-none"
-                        disabled={!hasServices}
-                      />
-                      <Image
-                        src="/icons/common/checkbox-unchecked.svg"
-                        alt="Checkbox"
-                        width={16}
-                        height={16}
-                        className="peer-checked:hidden mt-0.5"
-                      />
-                      <Image
-                        src="/icons/common/checkbox-checked.svg"
-                        alt="Checkbox"
-                        width={16}
-                        height={16}
-                        className="hidden peer-checked:block mt-0.5"
-                      />
-                      <h4 className="text-sm font-medium">
-                        {gap.gapDescription[lang]}
-                      </h4>
-                    </label>
-                  )
-                })}
-              </div>
-            </div>
-          )
-        })}
+            )
+          })}
       </div>
 
       <div className="flex justify-end">
