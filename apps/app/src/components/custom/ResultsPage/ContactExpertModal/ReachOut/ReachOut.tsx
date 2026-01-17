@@ -283,9 +283,9 @@ const ReachOut = ({
       setIsOpen={setIsOpen}
       className="p-6 max-w-[740px] w-full h-[650px]"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between gap-4">
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-between items-start lg:items-center gap-1.5 lg:gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between gap-4 h-full">
+        <div className="flex flex-col gap-4 flex-1 min-h-0">
+          <div className="flex justify-between items-start lg:items-center gap-1.5 lg:gap-4 shrink-0">
             <div className="flex flex-col gap-1.5">
               <h1 className="text-base font-semibold">{title}</h1>
               <p className="text-sm text-muted-foreground">{description}</p>
@@ -317,7 +317,7 @@ const ReachOut = ({
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 max-h-[330px] overflow-y-auto lg:max-h-none">
+          <div className="flex flex-col gap-4 flex-1 min-h-0 overflow-y-auto lg:overflow-y-hidden">
             <div className="flex flex-col gap-4">
               <Input fieldProps={contactInfo.organization} control={control} />
               <div className="flex flex-col gap-2 lg:grid grid-cols-2">
@@ -333,7 +333,7 @@ const ReachOut = ({
           </div>
         </div>
 
-        <div className="flex justify-between w-full gap-2">
+        <div className="flex justify-between w-full gap-2 shrink-0">
           <Button
             variant="outline"
             onClick={() => setCurrentStep("supportNeeded")}
