@@ -70,7 +70,6 @@ const CTABanner = ({
     localStorage.removeItem("completedOn")
     localStorage.removeItem("signature")
     localStorage.removeItem("projectName")
-    localStorage.removeItem("contactRequestSuccess")
     setIsResetFormModalOpen(false)
   }
 

@@ -23,17 +23,10 @@ const ContactExpertModal = ({ dictionary }: ContactExpertModalProps) => {
   const { isModalOpen, closeModal } = useContactExpertContext()
   const [currentStep, setCurrentStep] = useState<ModalStep>("supportNeeded")
 
-  // Check when modal opens if user has already successfully completed the flow
+  // Reset to first step when modal opens
   useEffect(() => {
     if (isModalOpen) {
-      const contactRequestSuccess = localStorage.getItem("contactRequestSuccess") === "true"
-      if (contactRequestSuccess) {
-        // If user has previously succeeded, show success modal
-        setCurrentStep("successStatus")
-      } else {
-        // Reset to first step if modal is opened fresh
-        setCurrentStep("supportNeeded")
-      }
+      setCurrentStep("supportNeeded")
     }
   }, [isModalOpen])
 
