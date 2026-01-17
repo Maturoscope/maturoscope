@@ -281,55 +281,56 @@ const ReachOut = ({
     <Modal
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      className="p-6 max-w-[740px] w-full"
+      className="p-6 max-w-[740px] w-full h-[650px]"
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-
-        <div className="flex justify-between items-start lg:items-center gap-1.5 lg:gap-4">
-          <div className="flex flex-col gap-1.5">
-            <h1 className="text-base font-semibold">{title}</h1>
-            <p className="text-sm text-muted-foreground">{description}</p>
-          </div>
-          <div className="flex gap-4 items-center">
-            <div className="flex items-center gap-2">
-              <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full overflow-hidden">
-                <div
-                  className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all duration-200"
-                  style={{ width: `${progressPercentage}%` }}
-                />
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col justify-between gap-4">
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-between items-start lg:items-center gap-1.5 lg:gap-4">
+            <div className="flex flex-col gap-1.5">
+              <h1 className="text-base font-semibold">{title}</h1>
+              <p className="text-sm text-muted-foreground">{description}</p>
+            </div>
+            <div className="flex gap-4 items-center">
+              <div className="flex items-center gap-2">
+                <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full overflow-hidden">
+                  <div
+                    className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all duration-200"
+                    style={{ width: `${progressPercentage}%` }}
+                  />
+                </div>
+                <span className="text-sm text-muted-foreground hidden lg:block whitespace-nowrap">
+                  {currentStep}/{totalSteps} {completedLabel}
+                </span>
               </div>
-              <span className="text-sm text-muted-foreground hidden lg:block whitespace-nowrap">
-                {currentStep}/{totalSteps} {completedLabel}
-              </span>
-            </div>
 
-            <div className="flex items-center gap-1.5">
-              <div className="bg-border w-px h-3.5" />
-              <div className="cursor-pointer size-8 flex items-center justify-center hover:bg-neutral-100 rounded-sm transition-all duration-200" onClick={() => setIsOpen(false)}>
-                <Image
-                  src="/icons/common/cross.svg"
-                  alt="Close"
-                  width={16}
-                  height={16}
-                />
+              <div className="flex items-center gap-1.5">
+                <div className="bg-border w-px h-3.5" />
+                <div className="cursor-pointer size-8 flex items-center justify-center hover:bg-neutral-100 rounded-sm transition-all duration-200" onClick={() => setIsOpen(false)}>
+                  <Image
+                    src="/icons/common/cross.svg"
+                    alt="Close"
+                    width={16}
+                    height={16}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex flex-col gap-4 max-h-[330px] overflow-y-auto lg:max-h-none">
-          <div className="flex flex-col gap-4">
-            <Input fieldProps={contactInfo.organization} control={control} />
-            <div className="flex flex-col gap-2 lg:grid grid-cols-2">
-              <Input fieldProps={contactInfo.firstName} control={control} rules={{ required: true }} />
-              <Input fieldProps={contactInfo.lastName} control={control} rules={{ required: true }} />
-              <Input fieldProps={contactInfo.email} control={control} rules={{ required: true }} />
-              <Input fieldProps={contactInfo.phoneNumber} control={control} />
+          <div className="flex flex-col gap-4 max-h-[330px] overflow-y-auto lg:max-h-none">
+            <div className="flex flex-col gap-4">
+              <Input fieldProps={contactInfo.organization} control={control} />
+              <div className="flex flex-col gap-2 lg:grid grid-cols-2">
+                <Input fieldProps={contactInfo.firstName} control={control} rules={{ required: true }} />
+                <Input fieldProps={contactInfo.lastName} control={control} rules={{ required: true }} />
+                <Input fieldProps={contactInfo.email} control={control} rules={{ required: true }} />
+                <Input fieldProps={contactInfo.phoneNumber} control={control} />
+              </div>
+              <Input fieldProps={contactInfo.additionalInformation} control={control} />
             </div>
-            <Input fieldProps={contactInfo.additionalInformation} control={control} />
-          </div>
 
-          <p className="text-sm text-muted-foreground lg:mb-14">{clarification}</p>
+            <p className="text-sm text-muted-foreground lg:mb-14">{clarification}</p>
+          </div>
         </div>
 
         <div className="flex justify-between w-full gap-2">
