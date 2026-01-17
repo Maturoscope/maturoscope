@@ -227,4 +227,23 @@ export const getOrganizationSignature = async (): Promise<string | null> => {
   }
 }
 
+export const getOrganizationName = async (): Promise<string> => {
+  try {
+    const organizationKey = await getOrganizationKeyFromCookies()
+    if (!organizationKey) {
+      return "Maturoscope"
+    }
+
+    const organization = await getOrganizationByKey(organizationKey)
+    if (!organization || typeof organization !== 'object') {
+      return "Maturoscope"
+    }
+
+    return organization.name || "Maturoscope"
+  } catch (error) {
+    console.error("Error fetching organization name:", error)
+    return "Maturoscope"
+  }
+}
+
 export { getOrganizationByKey }
