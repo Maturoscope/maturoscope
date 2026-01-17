@@ -3,7 +3,7 @@
 // Packages
 import Image from "next/image"
 import { useState, useEffect } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { useParams } from "next/navigation"
 import * as RPNInput from "react-phone-number-input"
 // Components
@@ -63,6 +63,7 @@ type ContactFormData = {
   email?: string
   phoneNumber?: string // Note: field key is "phone" but name is "phoneNumber"
   additionalInformation?: string
+  consent: boolean
 }
 
 const EN_CONTACT_INFO_FIELDS: ContactInfoForm = {
@@ -165,9 +166,9 @@ const FR_CONTACT_INFO_FIELDS: ContactInfoForm = {
   },
 }
 
-const EN_CLARIFICATION = "We respect your privacy. Your data is used exclusively to answer this inquiry."
+const EN_CLARIFICATION = "I agree to share my name, email, project details, and questionnaire responses with experts to receive personalized guidance on improving my TRL/MKRL/MFRL level. I understand my data will be used exclusively for this inquiry and will not be stored by the platform."
 const EN_LOADING_BUTTON_LABEL = "Loading..."
-const FR_CLARIFICATION = "Nous respectons votre vie privée. Vos données sont utilisées exclusivement pour répondre à cette demande."
+const FR_CLARIFICATION = "Je consens à partager mon nom, mon email, les détails de mon projet, et les réponses du questionnaire avec des experts pour recevoir une guidance personnalisée sur l'amélioration de mon niveau TRL/MkRL/MfRL. Je comprends que mes données seront utilisées exclusivement pour cette demande et ne seront pas stockées par la plateforme."
 const FR_LOADING_BUTTON_LABEL = "Chargement..."
 
 /**
@@ -232,6 +233,7 @@ const ReachOut = ({
       email: "",
       phoneNumber: "",
       additionalInformation: "",
+      consent: false,
     },
   })
   const [contactInfo, setContactInfo] = useState(EN_CONTACT_INFO_FIELDS)
@@ -329,7 +331,36 @@ const ReachOut = ({
               <Input fieldProps={contactInfo.additionalInformation} control={control} />
             </div>
 
-            <p className="text-sm text-muted-foreground lg:mb-14">{clarification}</p>
+            <Controller
+              control={control}
+              name="consent"
+              rules={{ required: true }}
+              render={({ field }) => (
+                <label className="flex items-start gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={field.value}
+                    onChange={field.onChange}
+                    className="peer appearance-none absolute outline-none"
+                  />
+                  <Image
+                    src="/icons/common/checkbox-unchecked.svg"
+                    alt="Checkbox"
+                    width={16}
+                    height={16}
+                    className="peer-checked:hidden mt-0.5 shrink-0"
+                  />
+                  <Image
+                    src="/icons/common/checkbox-checked.svg"
+                    alt="Checkbox"
+                    width={16}
+                    height={16}
+                    className="hidden peer-checked:block mt-0.5 shrink-0"
+                  />
+                  <p className="text-sm text-muted-foreground lg:mb-14">{clarification}</p>
+                </label>
+              )}
+            />
           </div>
         </div>
 
