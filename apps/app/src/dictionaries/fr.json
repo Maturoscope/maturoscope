@@ -45,6 +45,10 @@
       "copyright": "Conçu et développé par",
       "contactUsLabel": "Contactez-nous",
       "privacyPolicyLabel": "Politique de confidentialité"
+    },
+    "gdprModal": {
+      "message": "Ce questionnaire utilise des cookies nécessaires et le stockage local pour sauvegarder temporairement votre progression. Nous n'utilisons pas de cookies de suivi ou publicitaires et nous ne collectons pas d'informations personnelles.",
+      "learnMoreLabel": "En savoir plus"
     }
   },
   "notFound": {

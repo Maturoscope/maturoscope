@@ -4,6 +4,7 @@ import { HeaderProps } from "@/components/common/Header/Header"
 import { BackToHomeBarProps } from "@/components/common/BackBar/BackBar"
 import { HeroProps as HomepageHeroProps } from "@/components/custom/Homepage/Hero/Hero"
 import { PrivacyPolicyProps } from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
+import { GdprModalProps } from "@/components/custom/Homepage/GdprModal/GdprModal"
 import { SimpleFormProps } from "@/components/custom/BeginPage/SimpleForm/SimpleForm"
 import { StageType } from "@/components/custom/FormPage/Form/Form"
 import { HeroProps as ReviewHeroProps } from "@/components/custom/ReviewPage/Hero/Hero"
@@ -29,6 +30,7 @@ export type Dictionary = {
   homepage: {
     hero: HomepageHeroProps
     policy: PrivacyPolicyProps
+    gdprModal: GdprModalProps
   }
   notFound: NotFoundProps
   begin: SimpleFormProps
