@@ -77,7 +77,7 @@
         "icon": "/icons/form/trl.svg",
         "name": "TRL",
         "title": "Technology Analysis Complete",
-        "description": "One step down. Now, let’s see if the market is ready for it.",
+        "description": "One step down. Now, let's see if the market is ready for it.",
         "reviewLabel": "Review answers",
         "buttonLabel": "Continue to MkRL"
       },
@@ -177,6 +177,7 @@
       "title": "Turn this plan into reality.",
       "description": "Don't tackle these gaps alone. Our experts are ready to help you reach the next maturity level.",
       "or": "or",
+      "disclaimer": "Although the tool was designed by professionals from the building sector, the results of this test do not constitute a formal certificate and are provided for informational purposes only.",
       "talkButtonLabel": "Talk to an Expert",
       "resetButtonLabel": "Reset questionnaire",
       "resetFormModal": {

@@ -32,6 +32,7 @@ export interface CTABannerProps {
   title: string
   description: string
   or: string
+  disclaimer: string
   talkButtonLabel: string
   resetButtonLabel: string
   resetFormModal: ResetFormModalProps
@@ -45,6 +46,7 @@ const CTABanner = ({
   title,
   description,
   or,
+  disclaimer,
   talkButtonLabel,
   resetButtonLabel,
   resetFormModal,
@@ -87,14 +89,14 @@ const CTABanner = ({
   useEffect(() => {
     const storedGaps = localStorage.getItem("gaps")
     const storedLevel = localStorage.getItem("level")
-    
+
     // Check if all levels are at maximum (9)
     if (storedLevel) {
       try {
         const levelData: LevelStorage = JSON.parse(storedLevel)
-        const allAtMaxLevel = 
-          levelData.trl === 9 && 
-          levelData.mkrl === 9 && 
+        const allAtMaxLevel =
+          levelData.trl === 9 &&
+          levelData.mkrl === 9 &&
           levelData.mfrl === 9
         setIsAllLevelsMax(allAtMaxLevel)
       } catch (error) {
@@ -102,7 +104,7 @@ const CTABanner = ({
         setIsAllLevelsMax(false)
       }
     }
-    
+
     if (storedGaps) {
       try {
         const gaps = JSON.parse(storedGaps) as Partial<Record<StageId, Gap[]>>
@@ -153,8 +155,8 @@ const CTABanner = ({
                 {description}
               </p>
               <div className="flex gap-2">
-                <Button 
-                  onClick={handleTalkButtonClick} 
+                <Button
+                  onClick={handleTalkButtonClick}
                   variant="outline"
                   disabled={isTalkToExpertButtonDisabled}
                 >
@@ -181,6 +183,8 @@ const CTABanner = ({
       >
         {resetButtonLabel}
       </Button>
+
+      <p className="text-sm text-muted-foreground max-w-[825px] text-center mt-8">{disclaimer}</p>
     </div>
   )
 }

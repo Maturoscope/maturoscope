@@ -177,6 +177,7 @@
       "title": "Transformez ce plan en réalité.",
       "description": "Ne vous engagez pas seuls. Nos experts sont prêts à vous aider à atteindre le prochain niveau de maturité.",
       "or": "ou",
+      "disclaimer": "Bien que l'outil ait été conçu par des professionnels du secteur du bâtiment, les résultats de ce test ne constituent pas un certificat officiel et sont fournis à des fins informatifess uniquement.",
       "talkButtonLabel": "Parler à un expert",
       "resetButtonLabel": "Réinitialiser le questionnaire",
       "resetFormModal": {
