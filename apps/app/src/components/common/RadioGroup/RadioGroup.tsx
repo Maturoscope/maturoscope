@@ -26,13 +26,16 @@ const RadioGroup = ({ options, name, className }: RadioGroupProps) => {
   // Extract stage ID and question ID from name (e.g., "trl.questions.TRL_Q1")
   const [stageId, , questionId] = name.split(".") as [StageId, string, string]
 
-  // Initialize comments from saved form data
+  // Initialize comments from saved form data - reset when question changes
   useEffect(() => {
     const currentValue = getValues(`${stageId}.questions.${questionId}` as `${StageId}.questions.${string}`)
     const currentComment = getValues(`${stageId}.comments.${questionId}` as `${StageId}.comments.${string}`)
 
+    // Reset comments map when question changes, only preserve saved comment for this question
     if (currentValue && currentComment) {
       setCommentsPerOption({ [currentValue]: currentComment })
+    } else {
+      setCommentsPerOption({})
     }
   }, [stageId, questionId, getValues])
 
