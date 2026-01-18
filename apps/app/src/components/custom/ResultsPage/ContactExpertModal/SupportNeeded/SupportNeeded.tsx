@@ -61,7 +61,8 @@ const SupportNeeded = ({
     useContactExpertContext()
   const isButtonDisabled = selectedGaps.length === 0
   // Progress: 0/2 when no services selected, 1/2 when at least one is selected
-  const currentStep = selectedGaps.length > 0 ? 1 : 0
+  // const currentStep = selectedGaps.length > 0 ? 1 : 0
+  const currentStep = 1
   const totalSteps = 2
   const progressPercentage = (currentStep / totalSteps) * 100
 

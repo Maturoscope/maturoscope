@@ -27,10 +27,11 @@ const STAGES_ICONS = {
 } as const
 
 const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
-  const { stages, currStage, isCheckpoint } = useProgressContext()
+  const { stages, currStage, currQuestionIndex, currQuestion, isCheckpoint } =
+    useProgressContext()
   const { getValues } = useFormContext()
 
-  if (isCheckpoint) return
+  if (isCheckpoint) return null
 
   const calculateStageProgress = (stageId: StageId) => {
     const stage = stages.find((s) => s.id === stageId)
@@ -44,6 +45,21 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
       }
 
     const total = stage.questions.length
+
+    // For the CURRENT stage, progress should reflect the CURRENT QUESTION
+    // the user is seeing (including when navigating backwards), not the
+    // furthest answered question.
+    if (stageId === currStage.id) {
+      // For the current stage, progress should represent the question the user
+      // is currently viewing (so it moves backward when navigating backward).
+      // Use 1-based question position: index 0 => 1 of total.
+      const answered = Math.min(currQuestionIndex + 1, total)
+      const percentage = total > 0 ? (answered / total) * 100 : 0
+      const isCompleted = answered === total
+
+      return { answered, total, percentage, isCompleted, minLevel: null }
+    }
+
     let answered = 0
     const answeredLevels: number[] = []
 

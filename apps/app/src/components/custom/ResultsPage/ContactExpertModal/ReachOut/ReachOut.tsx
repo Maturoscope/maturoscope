@@ -269,7 +269,8 @@ const ReachOut = ({
   // Check if required fields are filled
   const isFormValid = formState.isValid
   // Progress: 1/2 when form is not valid, 2/2 when all required fields are filled
-  const currentStep = isFormValid ? 2 : 1
+  // const currentStep = isFormValid ? 2 : 1
+  const currentStep = 2
   const totalSteps = 2
   const progressPercentage = (currentStep / totalSteps) * 100
 
