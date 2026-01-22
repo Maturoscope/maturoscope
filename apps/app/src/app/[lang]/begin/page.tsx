@@ -1,7 +1,6 @@
 // Components
 import Header from "@/components/common/Header/Header"
 import SimpleForm from "@/components/custom/BeginPage/SimpleForm/SimpleForm"
-import FormRedirectHandler from "@/components/common/FormRedirectHandler/FormRedirectHandler"
 // Dictionaries
 import { getDictionary, Locale } from "@/dictionaries/dictionaries"
 
@@ -22,7 +21,6 @@ const BeginPage = async ({ params }: BeginPageProps) => {
 
   return (
     <main className="w-full flex flex-col items-center justify-between h-full">
-      <FormRedirectHandler />
       <Header stringConnector={stringConnector} showBackButton leaveQuestionnaireModal={leaveQuestionnaireModal} />
       <SimpleForm {...begin} />
     </main>

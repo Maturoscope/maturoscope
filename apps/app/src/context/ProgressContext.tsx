@@ -68,7 +68,18 @@ const STORAGE_KEYS = {
   gaps: "gaps",
   level: "level",
   phases: "phases",
+  lastViewedQuestion: "lastViewedQuestion",
 } as const
+
+// 24 hours in milliseconds
+const LAST_VIEWED_EXPIRATION_MS = 24 * 60 * 60 * 1000
+
+interface LastViewedQuestion {
+  stageId: StageId
+  questionId: string
+  isCheckpoint: boolean
+  timestamp: number
+}
 
 interface GapsStorage {
   trl?: Gap[]
@@ -147,6 +158,43 @@ export const ProgressProvider = ({
 
   const saveProgress = () =>
     localStorage.setItem("form", JSON.stringify(getValues()))
+
+  const saveLastViewedQuestion = (
+    stageId: StageId,
+    questionId: string,
+    checkpoint: boolean
+  ) => {
+    const lastViewed: LastViewedQuestion = {
+      stageId,
+      questionId,
+      isCheckpoint: checkpoint,
+      timestamp: Date.now(),
+    }
+    localStorage.setItem(
+      STORAGE_KEYS.lastViewedQuestion,
+      JSON.stringify(lastViewed)
+    )
+  }
+
+  const getLastViewedQuestion = (): LastViewedQuestion | null => {
+    const stored = localStorage.getItem(STORAGE_KEYS.lastViewedQuestion)
+    if (!stored) return null
+
+    try {
+      const lastViewed: LastViewedQuestion = JSON.parse(stored)
+      const now = Date.now()
+      const isExpired = now - lastViewed.timestamp > LAST_VIEWED_EXPIRATION_MS
+
+      if (isExpired) {
+        localStorage.removeItem(STORAGE_KEYS.lastViewedQuestion)
+        return null
+      }
+
+      return lastViewed
+    } catch {
+      return null
+    }
+  }
 
   const handlePrevButtonClick = () => {
     const isFirstQuestionOfQuestionnaire =
@@ -235,6 +283,7 @@ export const ProgressProvider = ({
     commentPlaceholder: "",
   }
 
+  // Initialize form position on mount
   useEffect(() => {
     // Check if form was already completed
     const completedOn = localStorage.getItem("completedOn")
@@ -243,6 +292,24 @@ export const ProgressProvider = ({
     const savedForm = JSON.parse(
       localStorage.getItem("form") || "{}"
     ) as DefaultValues
+
+    // First, check if we have a recent last viewed question (within 24 hours)
+    const lastViewed = getLastViewedQuestion()
+    if (lastViewed) {
+      // Restore to the last viewed position
+      setCurrStageId(lastViewed.stageId)
+      setCurrQuestionId(lastViewed.questionId)
+      setIsCheckpoint(lastViewed.isCheckpoint)
+
+      // Check if the current question has a value to enable the next button
+      const questionHasValue = !!savedForm[lastViewed.stageId]?.questions?.[
+        lastViewed.questionId
+      ]
+      setIsNextButtonEnabled(questionHasValue)
+      return
+    }
+
+    // Fallback to checkpoint logic (next question to answer)
     const checkpoint = calcCheckpoint(savedForm)
 
     if (!checkpoint) return
@@ -262,6 +329,16 @@ export const ProgressProvider = ({
     setCurrStageId(lastSavedStage)
     setCurrQuestionId(lastSavedQuestion)
   }, [getValues, router, lang])
+
+  // Save last viewed question whenever position changes
+  useEffect(() => {
+    // Only save after the initial mount has completed
+    // We check if we have form data to avoid saving on fresh start
+    const savedForm = localStorage.getItem("form")
+    if (savedForm) {
+      saveLastViewedQuestion(currStageId, currQuestionId, isCheckpoint)
+    }
+  }, [currStageId, currQuestionId, isCheckpoint])
 
   return (
     <ProgressContext.Provider
