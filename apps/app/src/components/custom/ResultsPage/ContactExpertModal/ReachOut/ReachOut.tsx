@@ -222,7 +222,7 @@ const ReachOut = ({
   setCurrentStep,
 }: ReachOutProps & ExtraProps) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { setContactInformation, selectedGaps } = useContactExpertContext()
+  const { setContactInformation, selectedGaps, clearSelections } = useContactExpertContext()
   const { control, handleSubmit, formState } = useForm<ContactFormData>({
     mode: "onChange",
     defaultValues: {
@@ -260,6 +260,7 @@ const ReachOut = ({
     setIsLoading(false)
 
     if (result.success) {
+      clearSelections()
       setCurrentStep("successStatus")
     } else {
       setCurrentStep("failedStatus")
