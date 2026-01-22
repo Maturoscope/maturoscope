@@ -12,6 +12,7 @@ import DetailedReport from "@/components/custom/ResultsPage/DetailedReport/Detai
 import CTABanner from "@/components/custom/ResultsPage/CTABanner/CTABanner"
 import PrivacyPolicy from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
 import TrackCompletedAssessment from "@/components/common/TrackCompletedAssessment/TrackCompletedAssessment"
+import ResultsRedirectHandler from "@/components/common/ResultsRedirectHandler/ResultsRedirectHandler"
 
 type ResultsPageProps = {
   params: Promise<{ lang: string }>
@@ -31,6 +32,7 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
 
   return (
     <main className="w-full h-full">
+      <ResultsRedirectHandler />
       <TrackCompletedAssessment />
       <Header stringConnector={stringConnector} showBackButton beforeYouGoModal={beforeYouGoModal} />
       <ResultsPageWrapper dictionary={dictionary}>
