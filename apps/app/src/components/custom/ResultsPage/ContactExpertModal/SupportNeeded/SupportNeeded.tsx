@@ -118,42 +118,44 @@ const SupportNeeded = ({
     <Modal
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      className="p-6 flex flex-col justify-between gap-4 max-w-[740px] h-[650px]"
+      className="p-6 flex flex-col gap-4 max-w-[740px] h-[650px]"
     >
-      <div className="flex flex-col gap-4">
-        <div className="flex justify-between items-start lg:items-center gap-1.5 lg:gap-4">
-          <div className="flex flex-col gap-1.5">
-            <h1 className="text-base font-semibold">{title}</h1>
-            <p className="text-sm text-muted-foreground">{description}</p>
-          </div>
-          <div className="flex gap-4 items-center">
-            <div className="flex items-center gap-2">
-              <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full overflow-hidden">
-                <div
-                  className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all duration-200"
-                  style={{ width: `${progressPercentage}%` }}
-                />
-              </div>
-              <span className="text-sm text-muted-foreground hidden lg:block whitespace-nowrap">
-                {currentStep}/{totalSteps} {completedLabel}
-              </span>
+      {/* Header - Always visible */}
+      <div className="flex justify-between items-start lg:items-center gap-1.5 lg:gap-4 shrink-0">
+        <div className="flex flex-col gap-1.5">
+          <h1 className="text-base font-semibold">{title}</h1>
+          <p className="text-sm text-muted-foreground">{description}</p>
+        </div>
+        <div className="flex gap-4 items-center">
+          <div className="flex items-center gap-2">
+            <div className="h-1 w-20 aspect-20/1 relative bg-neutral-100 rounded-full overflow-hidden">
+              <div
+                className="absolute left-0 top-0 h-full bg-accent rounded-full transition-all duration-200"
+                style={{ width: `${progressPercentage}%` }}
+              />
             </div>
+            <span className="text-sm text-muted-foreground hidden lg:block whitespace-nowrap">
+              {currentStep}/{totalSteps} {completedLabel}
+            </span>
+          </div>
 
-            <div className="flex items-center gap-1.5">
-              <div className="bg-border w-px h-3.5" />
-              <div className="cursor-pointer size-8 flex items-center justify-center hover:bg-neutral-100 rounded-sm transition-all duration-200" onClick={() => setIsOpen(false)}>
-                <Image
-                  src="/icons/common/cross.svg"
-                  alt="Close"
-                  width={16}
-                  height={16}
-                />
-              </div>
+          <div className="flex items-center gap-1.5">
+            <div className="bg-border w-px h-3.5" />
+            <div className="cursor-pointer size-8 flex items-center justify-center hover:bg-neutral-100 rounded-sm transition-all duration-200" onClick={() => setIsOpen(false)}>
+              <Image
+                src="/icons/common/cross.svg"
+                alt="Close"
+                width={16}
+                height={16}
+              />
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="flex flex-col gap-6 max-h-[330px] lg:max-h-[700px] overflow-y-auto">
+      {/* Scrollable list - Takes remaining space */}
+      <div className="flex-1 min-h-0 overflow-y-auto">
+        <div className="flex flex-col gap-6">
           {orderedGaps
             .map((scale) => {
               const scaleName = Object.keys(scale)[0] as StageId
@@ -224,7 +226,8 @@ const SupportNeeded = ({
         </div>
       </div>
 
-      <div className="flex justify-end">
+      {/* Footer - Always visible */}
+      <div className="flex justify-end shrink-0">
         <Button
           variant="default"
           accent
