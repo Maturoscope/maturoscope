@@ -213,7 +213,7 @@
       },
       "successStatus": {
         "title": "Demande envoyée avec succès !",
-        "description": "Notre équipe examinera vos besoins et vous contactera dans les 48 heures. En attendant, n'oubliez pas de télécharger votre rapport complet.",
+        "description": "Notre équipe examinera vos besoins et vous contactera dans les 72 heures. En attendant, n'oubliez pas de télécharger votre rapport complet.",
         "primaryButtonLabel": "Télécharger le rapport",
         "secondaryButtonLabel": "Fermer"
       },
