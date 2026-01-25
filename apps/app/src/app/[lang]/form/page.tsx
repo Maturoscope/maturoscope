@@ -22,6 +22,7 @@ const FormPage = async ({ params }: FormPageProps) => {
   const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
   const dictionary = await getDictionary(lang)
   const {
+    common: { loadingLabel },
     form,
     header: { stringConnector },
   } = dictionary
@@ -50,6 +51,7 @@ const FormPage = async ({ params }: FormPageProps) => {
             buttonNextLabel={form.buttonNextLabel}
             buttonPrevLabel={form.buttonPrevLabel}
             commentPlaceholder={form.commentPlaceholder}
+            loadingLabel={loadingLabel}
           />
         </main>
       </ProgressProvider>

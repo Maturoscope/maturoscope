@@ -1,5 +1,8 @@
 {
   "lang": "en",
+  "common": {
+    "loadingLabel": "Loading..."
+  },
   "header": {
     "stringConnector": "by"
   },

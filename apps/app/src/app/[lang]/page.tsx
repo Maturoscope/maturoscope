@@ -17,15 +17,22 @@ const HomePage = async ({ params }: HomePageProps) => {
   const dictionary = await getDictionary(lang)
 
   const {
+    common: { loadingLabel },
     header: { stringConnector },
     homepage: { hero, policy, gdprModal },
   } = dictionary
+
+  // Add loadingLabel to information props
+  const heroWithLoading = {
+    ...hero,
+    information: { ...hero.information, loadingLabel },
+  }
 
   return (
     <main className="w-full flex flex-col items-center justify-between h-full">
       <FormRedirectHandler />
       <Header stringConnector={stringConnector} />
-      <Hero {...hero} />
+      <Hero {...heroWithLoading} />
       <PrivacyPolicy {...policy} />
       <GdprModal
         {...gdprModal}

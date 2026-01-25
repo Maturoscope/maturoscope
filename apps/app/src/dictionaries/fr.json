@@ -1,5 +1,8 @@
 {
   "lang": "fr",
+  "common": {
+    "loadingLabel": "Chargement..."
+  },
   "header": {
     "stringConnector": "par"
   },

@@ -40,6 +40,7 @@ export interface FormProps {
   buttonNextLabel: string
   buttonPrevLabel: string
   commentPlaceholder: string
+  loadingLabel?: string
   // stages are not needed here - Form gets them from ProgressContext
 }
 
@@ -47,6 +48,7 @@ const Form = ({
   buttonNextLabel,
   buttonPrevLabel,
   commentPlaceholder,
+  loadingLabel,
 }: FormProps) => {
   const {
     currStage,
@@ -69,6 +71,7 @@ const Form = ({
         description={currStage.description}
         reviewLabel={currStage.reviewLabel}
         buttonLabel={currStage.buttonLabel}
+        loadingLabel={loadingLabel}
         onReviewClick={handleReviewClick}
         onButtonClick={handleCheckpointButtonClick}
       />

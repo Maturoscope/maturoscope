@@ -20,6 +20,7 @@ const ReviewPage = async ({ params }: ReviewPageProps) => {
   const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
   const dictionary = await getDictionary(lang)
   const {
+    common: { loadingLabel },
     header: { stringConnector },
     form: { leaveQuestionnaireModal },
     review,
@@ -32,7 +33,7 @@ const ReviewPage = async ({ params }: ReviewPageProps) => {
       <ReviewPageWrapper toast={singleReview.toast}>
         <main className="w-full flex flex-col items-center justify-start h-full">
           <Header showBackButton stringConnector={stringConnector} leaveQuestionnaireModal={leaveQuestionnaireModal} />
-          <BackBar buttonLabel={backBar.buttonLabel} />
+          <BackBar buttonLabel={backBar.buttonLabel} loadingLabel={loadingLabel} />
           <Hero {...review} stageName={stage} />
           <AnswersGroup stageName={stage} lang={lang} />
         </main>

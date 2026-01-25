@@ -18,6 +18,7 @@ export interface SimpleFormProps {
   placeholder: string
   backButtonLabel: string
   nextButtonLabel: string
+  loadingLabel?: string
 }
 
 const SimpleForm = ({
@@ -26,9 +27,11 @@ const SimpleForm = ({
   placeholder,
   backButtonLabel,
   nextButtonLabel,
+  loadingLabel = "Loading...",
 }: SimpleFormProps) => {
   const [projectName, setProjectName] = useState("")
-  const isNextButtonDisabled = !projectName.trim()
+  const [isLoading, setIsLoading] = useState(false)
+  const isNextButtonDisabled = !projectName.trim() || isLoading
   const router = useRouter()
   const { lang } = useParams<{ lang: Locale }>()
 
@@ -37,6 +40,7 @@ const SimpleForm = ({
   }
 
   const handleNextButtonClick = () => {
+    setIsLoading(true)
     localStorage.setItem("projectName", projectName)
     router.push(`/${lang}/form`)
   }
@@ -98,13 +102,15 @@ const SimpleForm = ({
           onClick={handleNextButtonClick}
           accent
         >
-          <span>{nextButtonLabel}</span>
-          <Image
-            src="/icons/form/arrow-next.svg"
-            alt="Arrow Next"
-            width={16}
-            height={16}
-          />
+          <span>{isLoading ? loadingLabel : nextButtonLabel}</span>
+          {!isLoading && (
+            <Image
+              src="/icons/form/arrow-next.svg"
+              alt="Arrow Next"
+              width={16}
+              height={16}
+            />
+          )}
         </Button>
       </motion.div>
     </motion.div>

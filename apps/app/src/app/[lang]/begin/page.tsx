@@ -14,6 +14,7 @@ const BeginPage = async ({ params }: BeginPageProps) => {
   const dictionary = await getDictionary(lang)
 
   const {
+    common: { loadingLabel },
     header: { stringConnector },
     form: { leaveQuestionnaireModal },
     begin,
@@ -22,7 +23,7 @@ const BeginPage = async ({ params }: BeginPageProps) => {
   return (
     <main className="w-full flex flex-col items-center justify-between h-full">
       <Header stringConnector={stringConnector} showBackButton leaveQuestionnaireModal={leaveQuestionnaireModal} />
-      <SimpleForm {...begin} />
+      <SimpleForm {...begin} loadingLabel={loadingLabel} />
     </main>
   )
 }
