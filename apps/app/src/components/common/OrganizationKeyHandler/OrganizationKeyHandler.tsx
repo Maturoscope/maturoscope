@@ -5,19 +5,36 @@ import { useSearchParams } from "next/navigation"
 
 const OrganizationKeyHandler = () => {
   const searchParams = useSearchParams()
-  const key = searchParams.get("key")
 
   useEffect(() => {
-    if (key) {
-      // Store organization key in cookie (expires in 7 days)
-      const expires = new Date()
-      expires.setTime(expires.getTime() + 7 * 24 * 60 * 60 * 1000)
-      document.cookie = `organization-key=${key}; expires=${expires.toUTCString()}; path=/`
+    const keyFromUrl = searchParams.get("key")
+    
+    // Get organization key from cookie
+    const getCookie = (name: string): string | null => {
+      const value = `; ${document.cookie}`
+      const parts = value.split(`; ${name}=`)
+      if (parts.length === 2) {
+        return parts.pop()?.split(";").shift() || null
+      }
+      return null
     }
-  }, [key])
+
+    const keyFromCookie = getCookie("organization-key")
+
+    // If both keys exist and they're different, reset everything
+    if (keyFromUrl && keyFromCookie && keyFromUrl !== keyFromCookie) {
+      // Clear all localStorage
+      localStorage.clear()
+
+      // Clear the organization-key cookie
+      document.cookie = "organization-key=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+
+      // Reload the page to start fresh with the new key
+      window.location.reload()
+    }
+  }, [searchParams])
 
   return null
 }
 
 export default OrganizationKeyHandler
-
