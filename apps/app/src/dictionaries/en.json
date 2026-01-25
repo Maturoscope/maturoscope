@@ -1,5 +1,8 @@
 {
   "lang": "en",
+  "common": {
+    "loadingLabel": "Loading..."
+  },
   "header": {
     "stringConnector": "by"
   },
@@ -213,7 +216,7 @@
       },
       "successStatus": {
         "title": "Request sent successfully!",
-        "description": "Our team will review your needs and contact you within 48 hours. In the meantime, don't forget to save your full report.",
+        "description": "Our team will review your needs and contact you within 72 hours. In the meantime, don't forget to save your full report.",
         "primaryButtonLabel": "Download report",
         "secondaryButtonLabel": "Close"
       },

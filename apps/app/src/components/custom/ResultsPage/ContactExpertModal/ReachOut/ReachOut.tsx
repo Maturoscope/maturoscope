@@ -6,6 +6,8 @@ import { useState, useEffect } from "react"
 import { useForm, Controller } from "react-hook-form"
 import { useParams } from "next/navigation"
 import * as RPNInput from "react-phone-number-input"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 // Components
 import Modal from "@/components/common/Modal/Modal"
 import { Button } from "@/components/ui/button"
@@ -171,6 +173,26 @@ const EN_LOADING_BUTTON_LABEL = "Loading..."
 const FR_CLARIFICATION = "Je consens à partager mon nom, mon email, les détails de mon projet, et les réponses du questionnaire avec des experts pour recevoir une guidance personnalisée sur l'amélioration de mon niveau TRL/MkRL/MfRL. Je comprends que mes données seront utilisées exclusivement pour cette demande et ne seront pas stockées par la plateforme."
 const FR_LOADING_BUTTON_LABEL = "Chargement..."
 
+// Validation error messages
+const EN_EMAIL_MAX_ERROR = "Email must be less than 50 characters"
+const FR_EMAIL_MAX_ERROR = "L'email doit contenir moins de 50 caractères"
+const EN_PHONE_MAX_ERROR = "Phone must be less than 15 characters"
+const FR_PHONE_MAX_ERROR = "Le téléphone doit contenir moins de 15 caractères"
+
+// Zod schema for form validation
+const createContactFormSchema = (lang: Locale) => z.object({
+  organization: z.string().optional(),
+  country: z.string().optional(),
+  firstName: z.string().min(1),
+  lastName: z.string().min(1),
+  email: z.string().min(1).max(50, lang === "en" ? EN_EMAIL_MAX_ERROR : FR_EMAIL_MAX_ERROR),
+  phoneNumber: z.string().max(15, lang === "en" ? EN_PHONE_MAX_ERROR : FR_PHONE_MAX_ERROR).optional().or(z.literal("")),
+  additionalInformation: z.string().optional(),
+  consent: z.boolean().refine((val) => val === true),
+})
+
+type ContactFormSchema = z.infer<ReturnType<typeof createContactFormSchema>>
+
 /**
  * Removes duplicate country code from phone number if present.
  * Example: "+54+543512425044" -> "+543512425044"
@@ -222,9 +244,11 @@ const ReachOut = ({
   setCurrentStep,
 }: ReachOutProps & ExtraProps) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { setContactInformation, selectedGaps } = useContactExpertContext()
-  const { control, handleSubmit, formState } = useForm<ContactFormData>({
+  const { setContactInformation, selectedGaps, clearSelections } = useContactExpertContext()
+  const { lang } = useParams<{ lang: Locale }>()
+  const { control, handleSubmit, formState } = useForm<ContactFormSchema>({
     mode: "onChange",
+    resolver: zodResolver(createContactFormSchema(lang)),
     defaultValues: {
       organization: "",
       // country: "",
@@ -237,11 +261,10 @@ const ReachOut = ({
     },
   })
   const [contactInfo, setContactInfo] = useState(EN_CONTACT_INFO_FIELDS)
-  const { lang } = useParams<{ lang: Locale }>()
   const loadingButtonLabel = lang === "en" ? EN_LOADING_BUTTON_LABEL : FR_LOADING_BUTTON_LABEL
   const clarification = lang === "en" ? EN_CLARIFICATION : FR_CLARIFICATION
 
-  const onSubmit = async (data: ContactFormData) => {
+  const onSubmit = async (data: ContactFormSchema) => {
     // Clean phone number to remove duplicate country codes if present
     const cleanedData = {
       ...data,
@@ -260,14 +283,13 @@ const ReachOut = ({
     setIsLoading(false)
 
     if (result.success) {
+      clearSelections()
       setCurrentStep("successStatus")
     } else {
       setCurrentStep("failedStatus")
     }
   }
 
-  // Check if required fields are filled
-  const isFormValid = formState.isValid
   // Progress: 1/2 when form is not valid, 2/2 when all required fields are filled
   // const currentStep = isFormValid ? 2 : 1
   const currentStep = 2
@@ -322,10 +344,10 @@ const ReachOut = ({
             <div className="flex flex-col gap-4">
               <Input fieldProps={contactInfo.organization} control={control} />
               <div className="flex flex-col gap-2 lg:grid grid-cols-2">
-                <Input fieldProps={contactInfo.firstName} control={control} rules={{ required: true }} />
-                <Input fieldProps={contactInfo.lastName} control={control} rules={{ required: true }} />
-                <Input fieldProps={contactInfo.email} control={control} rules={{ required: true }} />
-                <Input fieldProps={contactInfo.phoneNumber} control={control} />
+                <Input fieldProps={contactInfo.firstName} control={control} />
+                <Input fieldProps={contactInfo.lastName} control={control} />
+                <Input fieldProps={contactInfo.email} control={control} error={formState.errors.email?.message} />
+                <Input fieldProps={contactInfo.phoneNumber} control={control} error={formState.errors.phoneNumber?.message} />
               </div>
               <Input fieldProps={contactInfo.additionalInformation} control={control} />
             </div>
@@ -370,7 +392,7 @@ const ReachOut = ({
           >
             {secondaryButtonLabel}
           </Button>
-          <Button variant="default" accent disabled={!isFormValid}>
+          <Button variant="default" accent disabled={!formState.isValid || isLoading}>
             {isLoading ? loadingButtonLabel : primaryButtonLabel}
           </Button>
         </div>

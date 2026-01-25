@@ -27,15 +27,20 @@ type PhoneInputProps = Omit<
 > &
   Omit<RPNInput.Props<typeof RPNInput.default>, "onChange"> & {
     onChange?: (value: RPNInput.Value) => void;
+    hasError?: boolean;
   };
 
 const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
   React.forwardRef<React.ElementRef<typeof RPNInput.default>, PhoneInputProps>(
-    ({ className, onChange, value, ...props }, ref) => {
+    ({ className, onChange, value, hasError, ...props }, ref) => {
       return (
         <RPNInput.default
           ref={ref}
-          className={cn("flex shadow-sm rounded-md", className)}
+          className={cn(
+            "flex shadow-sm rounded-md",
+            hasError && "ring-1 ring-destructive",
+            className
+          )}
           flagComponent={FlagComponent}
           countrySelectComponent={CountrySelect}
           inputComponent={InputComponent}

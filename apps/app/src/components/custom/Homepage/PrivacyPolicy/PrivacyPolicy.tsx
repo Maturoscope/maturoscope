@@ -24,7 +24,7 @@ export interface PrivacyPolicyProps {
 }
 
 const SYNOPP_URL = "https://synopp.io/"
-const EMAIL_ADDRESS = "hello@synopp.io"
+const EMAIL_ADDRESS = "communication@nobatek.com"
 
 const PrivacyPolicy = ({ description, copyright, contactUsLabel, privacyPolicyLabel, privacyPolicyModal }: PrivacyPolicyProps) => {
   const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false)

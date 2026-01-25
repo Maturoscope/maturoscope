@@ -2,7 +2,7 @@
 
 // Packages
 import { createContext, useContext, useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 // Context
 import { useFormContext } from "@/context/FormContext"
 // Types
@@ -68,7 +68,18 @@ const STORAGE_KEYS = {
   gaps: "gaps",
   level: "level",
   phases: "phases",
+  lastViewedQuestion: "lastViewedQuestion",
 } as const
+
+// 24 hours in milliseconds
+const LAST_VIEWED_EXPIRATION_MS = 24 * 60 * 60 * 1000
+
+interface LastViewedQuestion {
+  stageId: StageId
+  questionId: string
+  isCheckpoint: boolean
+  timestamp: number
+}
 
 interface GapsStorage {
   trl?: Gap[]
@@ -130,8 +141,10 @@ export const ProgressProvider = ({
   const [currQuestionId, setCurrQuestionId] = useState(
     stages[0].questions[0].id
   )
+  const [isInitialized, setIsInitialized] = useState(false)
   const { getValues } = useFormContext()
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const currStageIndex = stages.findIndex((stage) => stage.id === currStageId)
   const currStage = stages[currStageIndex]
@@ -147,6 +160,43 @@ export const ProgressProvider = ({
 
   const saveProgress = () =>
     localStorage.setItem("form", JSON.stringify(getValues()))
+
+  const saveLastViewedQuestion = (
+    stageId: StageId,
+    questionId: string,
+    checkpoint: boolean
+  ) => {
+    const lastViewed: LastViewedQuestion = {
+      stageId,
+      questionId,
+      isCheckpoint: checkpoint,
+      timestamp: Date.now(),
+    }
+    localStorage.setItem(
+      STORAGE_KEYS.lastViewedQuestion,
+      JSON.stringify(lastViewed)
+    )
+  }
+
+  const getLastViewedQuestion = (): LastViewedQuestion | null => {
+    const stored = localStorage.getItem(STORAGE_KEYS.lastViewedQuestion)
+    if (!stored) return null
+
+    try {
+      const lastViewed: LastViewedQuestion = JSON.parse(stored)
+      const now = Date.now()
+      const isExpired = now - lastViewed.timestamp > LAST_VIEWED_EXPIRATION_MS
+
+      if (isExpired) {
+        localStorage.removeItem(STORAGE_KEYS.lastViewedQuestion)
+        return null
+      }
+
+      return lastViewed
+    } catch {
+      return null
+    }
+  }
 
   const handlePrevButtonClick = () => {
     const isFirstQuestionOfQuestionnaire =
@@ -235,7 +285,11 @@ export const ProgressProvider = ({
     commentPlaceholder: "",
   }
 
+  // Initialize form position on mount (runs only once)
   useEffect(() => {
+    // Skip if already initialized
+    if (isInitialized) return
+
     // Check if form was already completed
     const completedOn = localStorage.getItem("completedOn")
     setIsFormCompleted(!!completedOn)
@@ -243,9 +297,36 @@ export const ProgressProvider = ({
     const savedForm = JSON.parse(
       localStorage.getItem("form") || "{}"
     ) as DefaultValues
+
+    // Check if coming from begin page (via query param)
+    const fromParam = searchParams.get("from")
+    if (fromParam === "begin") {
+      // Remove the query param from URL so reload goes to checkpoint
+      router.replace(`/${lang}/form`, { scroll: false })
+
+      // Always show first question of TRL when coming from begin page
+      const firstStage = stages[0]
+      const firstQuestion = firstStage.questions[0]
+      setCurrStageId(firstStage.id)
+      setCurrQuestionId(firstQuestion.id)
+      setIsCheckpoint(false)
+
+      // Check if the first question has a value to enable the next button
+      const questionHasValue = !!savedForm[firstStage.id]?.questions?.[
+        firstQuestion.id
+      ]
+      setIsNextButtonEnabled(questionHasValue)
+      setIsInitialized(true)
+      return
+    }
+
+    // Use checkpoint logic (next question to answer) for all other cases
     const checkpoint = calcCheckpoint(savedForm)
 
-    if (!checkpoint) return
+    if (!checkpoint) {
+      setIsInitialized(true)
+      return
+    }
     const { lastSavedStage, lastSavedQuestion } = checkpoint
 
     const lastStageQuestionsId = Object.keys(
@@ -261,7 +342,19 @@ export const ProgressProvider = ({
 
     setCurrStageId(lastSavedStage)
     setCurrQuestionId(lastSavedQuestion)
-  }, [getValues, router, lang])
+    setIsInitialized(true)
+  }, [isInitialized, searchParams, stages])
+
+  // Save last viewed question whenever position changes
+  useEffect(() => {
+    // Only save after initialization to avoid overwriting with default values
+    if (!isInitialized) return
+
+    const savedForm = localStorage.getItem("form")
+    if (savedForm) {
+      saveLastViewedQuestion(currStageId, currQuestionId, isCheckpoint)
+    }
+  }, [currStageId, currQuestionId, isCheckpoint, isInitialized])
 
   return (
     <ProgressContext.Provider

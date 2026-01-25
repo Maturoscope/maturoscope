@@ -25,6 +25,9 @@ type DictionaryStage = Omit<StageType, "questions">
 
 export type Dictionary = {
   lang: Locale
+  common: {
+    loadingLabel: string
+  }
   header: HeaderProps
   backBar: BackToHomeBarProps
   homepage: {

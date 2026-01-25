@@ -23,6 +23,7 @@ export interface InformationProps {
   tooltip: string
   buttonLabel: string
   estimatedTime: string
+  loadingLabel?: string
 }
 
 const Information = ({
@@ -31,12 +32,14 @@ const Information = ({
   tooltip,
   buttonLabel,
   estimatedTime,
+  loadingLabel = "Loading...",
 }: InformationProps) => {
   const { lang } = useParams<{ lang: Locale }>()
   const nextPage = `/${lang}/begin`
   const router = useRouter()
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const checkMobile = () => {
@@ -52,6 +55,7 @@ const Information = ({
   }, [])
 
   const handleLetsBeginClick = async () => {
+    setIsLoading(true)
     await trackStartedAssessment()
     router.push(nextPage)
   }
@@ -112,9 +116,10 @@ const Information = ({
           className="w-max h-9 px-4 rounded-md flex items-center justify-center gap-2"
           accent
           onClick={handleLetsBeginClick}
+          disabled={isLoading}
         >
-          {buttonLabel}
-          <ArrowNextIcon className="w-4 h-4" />
+          {isLoading ? loadingLabel : buttonLabel}
+          {!isLoading && <ArrowNextIcon className="w-4 h-4" />}
         </Button>
 
         <div className="flex items-center justify-start gap-1.5">

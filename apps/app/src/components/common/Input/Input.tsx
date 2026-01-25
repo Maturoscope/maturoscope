@@ -24,6 +24,7 @@ interface InputProps<T extends FieldValues> {
   control: Control<T>
   rules?: RegisterOptions<T>
   className?: string
+  error?: string
 }
 
 const Input = <T extends FieldValues>({
@@ -31,6 +32,7 @@ const Input = <T extends FieldValues>({
   control,
   rules,
   className,
+  error,
 }: InputProps<T>) => {
   const { name, label, placeholder, type, required } = fieldProps
 
@@ -55,9 +57,11 @@ const Input = <T extends FieldValues>({
               onChange={field.onChange}
               onBlur={field.onBlur}
               ref={field.ref}
+              className={cn(error && "border-destructive focus-visible:ring-destructive")}
             />
           )}
         />
+        {error && <p className="text-sm text-destructive">{error}</p>}
       </div>
     )
   }
@@ -107,9 +111,11 @@ const Input = <T extends FieldValues>({
               onChange={(value) => field.onChange(value || "")}
               placeholder={placeholder}
               defaultCountry={defaultCountry as RPNInput.Country | undefined}
+              hasError={!!error}
             />
           )}
         />
+        {error && <p className="text-sm text-destructive">{error}</p>}
       </div>
     )
   }
