@@ -1,7 +1,7 @@
 "use client"
 
 // Packages
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { AnimatePresence, motion } from "framer-motion"
 // Components
@@ -10,6 +10,8 @@ import PrivacyPolicyModal from "@/components/common/PrivacyPolicyModal/PrivacyPo
 import { SIMPLE_FADE_VARIANT } from "@/animations/common"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
+
+const GDPR_MODAL_CLOSED_KEY = "gdprModalClosed"
 
 export interface GdprModalProps {
   message: string
@@ -22,8 +24,21 @@ export interface GdprModalProps {
 }
 
 const GdprModal = ({ message, learnMoreLabel, lang, privacyPolicyModal }: GdprModalProps) => {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false)
+
+  useEffect(() => {
+    // Check if user has already closed the modal in this session
+    const hasClosedModal = sessionStorage.getItem(GDPR_MODAL_CLOSED_KEY)
+    if (!hasClosedModal) {
+      setIsOpen(true)
+    }
+  }, [])
+
+  const handleClose = () => {
+    sessionStorage.setItem(GDPR_MODAL_CLOSED_KEY, "true")
+    setIsOpen(false)
+  }
 
   const handleLearnMoreClick = () => {
     setIsPrivacyPolicyOpen(true)
@@ -61,7 +76,7 @@ const GdprModal = ({ message, learnMoreLabel, lang, privacyPolicyModal }: GdprMo
               </p>
 
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={handleClose}
                 className="cursor-pointer size-4 flex items-center justify-center hover:bg-neutral-100 rounded-sm transition-all duration-200 shrink-0 bg-transparent border-none p-0"
               >
                 <Image
