@@ -1,3 +1,5 @@
+// Packages
+import { Suspense } from "react"
 // Components
 import Header from "@/components/common/Header/Header"
 import Form from "@/components/custom/FormPage/Form/Form"
@@ -41,21 +43,23 @@ const FormPage = async ({ params }: FormPageProps) => {
   })
 
   return (
-    <FormProvider>
-      <ProgressProvider lang={lang} stages={stages}>
-        <main className="w-full h-full flex flex-col items-center justify-start">
-          <Header stringConnector={stringConnector} showBackButton leaveQuestionnaireModal={form.leaveQuestionnaireModal} />
-          <ProgressTopBar />
-          <CheckpointTopBar buttonLabel={form.checkpoint.buttonLabel} />
-          <Form
-            buttonNextLabel={form.buttonNextLabel}
-            buttonPrevLabel={form.buttonPrevLabel}
-            commentPlaceholder={form.commentPlaceholder}
-            loadingLabel={loadingLabel}
-          />
-        </main>
-      </ProgressProvider>
-    </FormProvider>
+    <Suspense fallback={null}>
+      <FormProvider>
+        <ProgressProvider lang={lang} stages={stages}>
+          <main className="w-full h-full flex flex-col items-center justify-start">
+            <Header stringConnector={stringConnector} showBackButton leaveQuestionnaireModal={form.leaveQuestionnaireModal} />
+            <ProgressTopBar />
+            <CheckpointTopBar buttonLabel={form.checkpoint.buttonLabel} />
+            <Form
+              buttonNextLabel={form.buttonNextLabel}
+              buttonPrevLabel={form.buttonPrevLabel}
+              commentPlaceholder={form.commentPlaceholder}
+              loadingLabel={loadingLabel}
+            />
+          </main>
+        </ProgressProvider>
+      </FormProvider>
+    </Suspense>
   )
 }
 

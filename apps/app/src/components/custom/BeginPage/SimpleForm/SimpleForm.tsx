@@ -42,7 +42,8 @@ const SimpleForm = ({
   const handleNextButtonClick = () => {
     setIsLoading(true)
     localStorage.setItem("projectName", projectName)
-    router.push(`/${lang}/form`)
+    // Add query param so form page knows we're coming from begin page
+    router.push(`/${lang}/form?from=begin`)
   }
 
   useEffect(() => {

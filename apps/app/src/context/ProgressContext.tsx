@@ -2,7 +2,7 @@
 
 // Packages
 import { createContext, useContext, useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 // Context
 import { useFormContext } from "@/context/FormContext"
 // Types
@@ -141,8 +141,10 @@ export const ProgressProvider = ({
   const [currQuestionId, setCurrQuestionId] = useState(
     stages[0].questions[0].id
   )
+  const [isInitialized, setIsInitialized] = useState(false)
   const { getValues } = useFormContext()
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const currStageIndex = stages.findIndex((stage) => stage.id === currStageId)
   const currStage = stages[currStageIndex]
@@ -283,8 +285,11 @@ export const ProgressProvider = ({
     commentPlaceholder: "",
   }
 
-  // Initialize form position on mount
+  // Initialize form position on mount (runs only once)
   useEffect(() => {
+    // Skip if already initialized
+    if (isInitialized) return
+
     // Check if form was already completed
     const completedOn = localStorage.getItem("completedOn")
     setIsFormCompleted(!!completedOn)
@@ -293,26 +298,35 @@ export const ProgressProvider = ({
       localStorage.getItem("form") || "{}"
     ) as DefaultValues
 
-    // First, check if we have a recent last viewed question (within 24 hours)
-    const lastViewed = getLastViewedQuestion()
-    if (lastViewed) {
-      // Restore to the last viewed position
-      setCurrStageId(lastViewed.stageId)
-      setCurrQuestionId(lastViewed.questionId)
-      setIsCheckpoint(lastViewed.isCheckpoint)
+    // Check if coming from begin page (via query param)
+    const fromParam = searchParams.get("from")
+    if (fromParam === "begin") {
+      // Remove the query param from URL so reload goes to checkpoint
+      router.replace(`/${lang}/form`, { scroll: false })
 
-      // Check if the current question has a value to enable the next button
-      const questionHasValue = !!savedForm[lastViewed.stageId]?.questions?.[
-        lastViewed.questionId
+      // Always show first question of TRL when coming from begin page
+      const firstStage = stages[0]
+      const firstQuestion = firstStage.questions[0]
+      setCurrStageId(firstStage.id)
+      setCurrQuestionId(firstQuestion.id)
+      setIsCheckpoint(false)
+
+      // Check if the first question has a value to enable the next button
+      const questionHasValue = !!savedForm[firstStage.id]?.questions?.[
+        firstQuestion.id
       ]
       setIsNextButtonEnabled(questionHasValue)
+      setIsInitialized(true)
       return
     }
 
-    // Fallback to checkpoint logic (next question to answer)
+    // Use checkpoint logic (next question to answer) for all other cases
     const checkpoint = calcCheckpoint(savedForm)
 
-    if (!checkpoint) return
+    if (!checkpoint) {
+      setIsInitialized(true)
+      return
+    }
     const { lastSavedStage, lastSavedQuestion } = checkpoint
 
     const lastStageQuestionsId = Object.keys(
@@ -328,17 +342,19 @@ export const ProgressProvider = ({
 
     setCurrStageId(lastSavedStage)
     setCurrQuestionId(lastSavedQuestion)
-  }, [getValues, router, lang])
+    setIsInitialized(true)
+  }, [isInitialized, searchParams, stages])
 
   // Save last viewed question whenever position changes
   useEffect(() => {
-    // Only save after the initial mount has completed
-    // We check if we have form data to avoid saving on fresh start
+    // Only save after initialization to avoid overwriting with default values
+    if (!isInitialized) return
+
     const savedForm = localStorage.getItem("form")
     if (savedForm) {
       saveLastViewedQuestion(currStageId, currQuestionId, isCheckpoint)
     }
-  }, [currStageId, currQuestionId, isCheckpoint])
+  }, [currStageId, currQuestionId, isCheckpoint, isInitialized])
 
   return (
     <ProgressContext.Provider
