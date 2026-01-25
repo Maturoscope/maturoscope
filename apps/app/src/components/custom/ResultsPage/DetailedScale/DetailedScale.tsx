@@ -66,7 +66,7 @@ const DetailedScale = ({
     <div
       id={`scale-${id}`}
       className={cn(
-        "w-full flex flex-col lg:flex-row gap-3.5 md:gap-6",
+        "w-full flex flex-col lg:flex-row gap-3.5 md:gap-6 scroll-mt-52 md:scroll-mt-36 lg:scroll-mt-40",
         className
       )}
     >
