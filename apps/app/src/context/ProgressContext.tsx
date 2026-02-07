@@ -266,9 +266,16 @@ export const ProgressProvider = ({
       return router.push(`/${lang}/results`)
     }
 
+    // Check if the first question of the next stage already has a value
+    const firstQuestionId = nextStage.questions[0].id
+    const firstQuestionHasValue = !!getValues(
+      `${nextStage.id}.questions.${firstQuestionId}` as `${StageId}.questions.${string}`
+    )
+
     setCurrStageId(nextStage.id)
-    setCurrQuestionId(nextStage.questions[0].id)
+    setCurrQuestionId(firstQuestionId)
     setIsCheckpoint(false)
+    setIsNextButtonEnabled(firstQuestionHasValue)
   }
 
   const handleQuestionClick = () => setIsNextButtonEnabled(true)

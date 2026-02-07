@@ -45,6 +45,19 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
       }
 
     const total = stage.questions.length
+    const stageIndex = stages.findIndex((s) => s.id === stageId)
+    const currentStageIndex = stages.findIndex((s) => s.id === currStage.id)
+
+    // For stages AFTER the current stage, show as not started (default state)
+    if (stageIndex > currentStageIndex) {
+      return {
+        answered: 0,
+        total,
+        percentage: 0,
+        isCompleted: false,
+        minLevel: null,
+      }
+    }
 
     // For the CURRENT stage, progress should reflect the CURRENT QUESTION
     // the user is seeing (including when navigating backwards), not the
@@ -60,6 +73,7 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
       return { answered, total, percentage, isCompleted, minLevel: null }
     }
 
+    // For stages BEFORE the current stage, show actual progress
     let answered = 0
     const answeredLevels: number[] = []
 
