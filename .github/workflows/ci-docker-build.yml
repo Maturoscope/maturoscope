@@ -134,10 +134,10 @@ jobs:
           echo "🚀 Building API for ${{ steps.vars.outputs.environment }} environment..."
           docker build \
             --file apps/api/Dockerfile \
-            --tag ${{ steps.vars.outputs.registry }}/maturoscope-api/api:${{ steps.vars.outputs.TAG }} \
+            --tag ${{ steps.vars.outputs.registry }}/api/api:${{ steps.vars.outputs.TAG }} \
             --build-arg API_PORT=8000 \
             .
-          docker push ${{ steps.vars.outputs.registry }}/maturoscope-api/api:${{ steps.vars.outputs.TAG }}
+          docker push ${{ steps.vars.outputs.registry }}/api/api:${{ steps.vars.outputs.TAG }}
 
       - name: Dispatch update-infra (API)
         if: success()
@@ -244,12 +244,12 @@ jobs:
           
           docker build \
             --file apps/app/Dockerfile \
-            --tag ${{ steps.vars.outputs.registry }}/maturoscope-app/app:${{ steps.vars.outputs.TAG }} \
+            --tag ${{ steps.vars.outputs.registry }}/app/app:${{ steps.vars.outputs.TAG }} \
             --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY" \
             --build-arg NEXT_PUBLIC_GATEWAY_URL="$NEXT_PUBLIC_GATEWAY_URL" \
             --build-arg NEXT_SERVER_ACTIONS_ENCRYPTION_KEY="$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY" \
             .
-          docker push ${{ steps.vars.outputs.registry }}/maturoscope-app/app:${{ steps.vars.outputs.TAG }}
+          docker push ${{ steps.vars.outputs.registry }}/app/app:${{ steps.vars.outputs.TAG }}
 
       - name: Dispatch update-infra (App)
         if: success()
@@ -360,14 +360,14 @@ jobs:
           
           docker build \
             --file apps/dashboard/Dockerfile \
-            --tag ${{ steps.vars.outputs.registry }}/maturoscope-dashboard/dashboard:${{ steps.vars.outputs.TAG }} \
+            --tag ${{ steps.vars.outputs.registry }}/dashboard/dashboard:${{ steps.vars.outputs.TAG }} \
             --build-arg AUTH0_CLIENT_SECRET="$AUTH0_CLIENT_SECRET" \
             --build-arg AUTH0_SECRET="$AUTH0_SECRET" \
             --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY" \
             --build-arg NEXT_PUBLIC_GATEWAY_URL="$NEXT_PUBLIC_GATEWAY_URL" \
             --build-arg NEXT_PUBLIC_END_USER_URL="$NEXT_PUBLIC_END_USER_URL" \
             .
-          docker push ${{ steps.vars.outputs.registry }}/maturoscope-dashboard/dashboard:${{ steps.vars.outputs.TAG }}
+          docker push ${{ steps.vars.outputs.registry }}/dashboard/dashboard:${{ steps.vars.outputs.TAG }}
 
       - name: Dispatch update-infra (Dashboard)
         if: success()

@@ -56,12 +56,11 @@ check_projects() {
     echo -e "${YELLOW}🔍 Verificando proyectos en el registry...${NC}"
     echo ""
     echo -e "Los siguientes proyectos deben existir en el registry:"
-    echo -e "  ${BLUE}1.${NC} maturoscope-api"
-    echo -e "  ${BLUE}2.${NC} maturoscope-app"
-    echo -e "  ${BLUE}3.${NC} maturoscope-dashboard"
+    echo -e "  ${BLUE}1.${NC} api"
+    echo -e "  ${BLUE}2.${NC} app"
+    echo -e "  ${BLUE}3.${NC} dashboard"
     echo ""
-    echo -e "${YELLOW}⚠️  Nota: Los proyectos deben ser creados desde el panel de OVH.${NC}"
-    echo -e "${YELLOW}    Si no existen, créalos antes de hacer push de imágenes.${NC}"
+    echo -e "${GREEN}✅ Estos proyectos ya están creados en tu registry!${NC}"
     echo ""
 }
 
@@ -81,18 +80,18 @@ CMD ["echo", "Hello from Production Registry!"]
 EOF
         
         # Construir la imagen
-        docker build -t "${REGISTRY_URL}/maturoscope-api/test:latest" -f /tmp/test.Dockerfile /tmp/
+        docker build -t "${REGISTRY_URL}/api/test:latest" -f /tmp/test.Dockerfile /tmp/
         
         # Intentar hacer push
         echo -e "${BLUE}Haciendo push de la imagen de prueba...${NC}"
-        if docker push "${REGISTRY_URL}/maturoscope-api/test:latest"; then
+        if docker push "${REGISTRY_URL}/api/test:latest"; then
             echo -e "${GREEN}✅ Push exitoso! El registry está funcionando correctamente.${NC}"
             
             # Limpiar
-            docker rmi "${REGISTRY_URL}/maturoscope-api/test:latest"
+            docker rmi "${REGISTRY_URL}/api/test:latest"
             rm /tmp/test.Dockerfile
         else
-            echo -e "${RED}❌ Error al hacer push. Verifica que el proyecto 'maturoscope-api' exista.${NC}"
+            echo -e "${RED}❌ Error al hacer push. Verifica que el proyecto 'api' exista.${NC}"
         fi
         echo ""
     fi
@@ -127,11 +126,11 @@ show_registry_structure() {
     echo -e "${BLUE}════════════════════════════════════════════════════════════${NC}"
     echo ""
     echo -e "${REGISTRY_URL}/"
-    echo -e "├── ${GREEN}maturoscope-api/${NC}"
+    echo -e "├── ${GREEN}api/${NC}"
     echo -e "│   └── api:prod-{timestamp}-{sha}"
-    echo -e "├── ${GREEN}maturoscope-app/${NC}"
+    echo -e "├── ${GREEN}app/${NC}"
     echo -e "│   └── app:prod-{timestamp}-{sha}"
-    echo -e "└── ${GREEN}maturoscope-dashboard/${NC}"
+    echo -e "└── ${GREEN}dashboard/${NC}"
     echo -e "    └── dashboard:prod-{timestamp}-{sha}"
     echo ""
 }
