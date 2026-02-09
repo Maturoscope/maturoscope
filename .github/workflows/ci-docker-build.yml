@@ -5,31 +5,41 @@ on:
     branches:
       - staging
       - develop
+      - main
   pull_request:
     branches:
       - staging
       - develop
+      - main
 
 permissions:
   contents: read
   actions: write
 
 env:
-  REGISTRY: bv630390.c1.de1.container-registry.ovh.net
+  STAGING_REGISTRY: bv630390.c1.de1.container-registry.ovh.net
+  PROD_REGISTRY: tqgac9a3.gra7.container-registry.ovh.net
 
 jobs:
   check-changes:
     runs-on: ubuntu-latest
     outputs:
-      api-changed: ${{ steps.filter.outputs.api }}
-      app-changed: ${{ steps.filter.outputs.app }}
-      dashboard-changed: ${{ steps.filter.outputs.dashboard }}
+      api-changed: ${{ steps.filter.outputs.api == 'true' }}
+      app-changed: ${{ steps.filter.outputs.app == 'true' }}
+      dashboard-changed: ${{ steps.filter.outputs.dashboard == 'true' }}
+      shared-changed: ${{ steps.filter.outputs.shared }}
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Skip on draft PRs
+        if: github.event_name == 'pull_request' && github.event.pull_request.draft == true
+        run: |
+          echo "⏭️ Skipping CI for draft PR"
+          exit 0
 
       - name: Check for changes
         id: filter
@@ -38,22 +48,37 @@ jobs:
           filters: |
             api:
               - 'apps/api/**'
-              - 'packages/**'
-              - 'package.json'
-              - 'yarn.lock'
-              - 'turbo.json'
+              - 'apps/api/package.json'
+              - 'apps/api/Dockerfile'
             app:
               - 'apps/app/**'
-              - 'packages/**'
-              - 'package.json'
-              - 'yarn.lock'
-              - 'turbo.json'
+              - 'apps/app/package.json'
+              - 'apps/app/Dockerfile'
             dashboard:
               - 'apps/dashboard/**'
-              - 'packages/**'
+              - 'apps/dashboard/package.json'
+              - 'apps/dashboard/Dockerfile'
+            shared:
               - 'package.json'
               - 'yarn.lock'
               - 'turbo.json'
+              - 'packages/**'
+
+      - name: Debug changes
+        run: |
+          echo "🔍 Debugging detected changes:"
+          echo "API changed: ${{ steps.filter.outputs.api }}"
+          echo "App changed: ${{ steps.filter.outputs.app }}"
+          echo "Dashboard changed: ${{ steps.filter.outputs.dashboard }}"
+          echo "Shared changed: ${{ steps.filter.outputs.shared }}"
+          echo ""
+          echo "📊 Final build decisions:"
+          echo "Will build API: ${{ steps.filter.outputs.api == 'true' }}"
+          echo "Will build App: ${{ steps.filter.outputs.app == 'true' }}"
+          echo "Will build Dashboard: ${{ steps.filter.outputs.dashboard == 'true' }}"
+          echo ""
+          echo "📁 Changed files:"
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} || echo "No diff available"
 
   build-api:
     needs: check-changes
@@ -61,50 +86,71 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.vars.outputs.TAG }}
+      environment: ${{ steps.vars.outputs.environment }}
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set tag
+      - name: Set tag and environment
         id: vars
         run: |
           SHORT_SHA=$(git rev-parse --short $GITHUB_SHA)
           TS=$(date -u +%Y%m%d-%H%M%S)
-          echo "TAG=staging-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          
+          # Determine environment and create appropriate tag
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            ENVIRONMENT="prod"
+            echo "environment=production" >> $GITHUB_OUTPUT
+            echo "registry=${{ env.PROD_REGISTRY }}" >> $GITHUB_OUTPUT
+            echo "infra_ref=main" >> $GITHUB_OUTPUT
+          else
+            ENVIRONMENT="staging"
+            echo "environment=staging" >> $GITHUB_OUTPUT
+            echo "registry=${{ env.STAGING_REGISTRY }}" >> $GITHUB_OUTPUT
+            echo "infra_ref=staging" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "TAG=${ENVIRONMENT}-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "🏷️ API Generated tag: ${ENVIRONMENT}-${TS}-${SHORT_SHA}"
+          echo "🌍 Environment: ${ENVIRONMENT}"
+          echo "🏷️ Registry: $([ "$ENVIRONMENT" = "prod" ] && echo "${{ env.PROD_REGISTRY }}" || echo "${{ env.STAGING_REGISTRY }}")"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to OVH Harbor
-        run: echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ env.REGISTRY }} -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
+        run: |
+          if [[ "${{ steps.vars.outputs.environment }}" == "production" ]]; then
+            echo "🔐 Logging into PRODUCTION Harbor registry..."
+            echo "${{ secrets.PROD_HARBOR_PASSWORD }}" | docker login ${{ steps.vars.outputs.registry }} -u ${{ secrets.PROD_HARBOR_USERNAME }} --password-stdin
+          else
+            echo "🔐 Logging into STAGING Harbor registry..."
+            echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ steps.vars.outputs.registry }} -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
+          fi
 
       - name: Build & Push API Image
         run: |
+          echo "🚀 Building API for ${{ steps.vars.outputs.environment }} environment..."
           docker build \
             --file apps/api/Dockerfile \
-            --tag ${{ env.REGISTRY }}/maturoscope-api/api:${{ steps.vars.outputs.TAG }} \
-            --build-arg DATABASE_URL="${{ secrets.PROD_DATABASE_URL || 'postgresql://prod:prod@localhost:5432/prod' }}" \
-            --build-arg JWT_SECRET="${{ secrets.PROD_JWT_SECRET || 'production-secret' }}" \
+            --tag ${{ steps.vars.outputs.registry }}/maturoscope-api/api:${{ steps.vars.outputs.TAG }} \
             --build-arg API_PORT=8000 \
             .
-          docker push ${{ env.REGISTRY }}/maturoscope-api/api:${{ steps.vars.outputs.TAG }}
+          docker push ${{ steps.vars.outputs.registry }}/maturoscope-api/api:${{ steps.vars.outputs.TAG }}
 
       - name: Dispatch update-infra (API)
         if: success()
         run: |
           echo "Dispatching update-infra workflow for API with tag: ${{ steps.vars.outputs.TAG }}"
           echo "Repository: ${{ github.repository }}"
-          
-          # Use PAT for workflow dispatch
-          echo "Dispatching update-infra workflow for API with tag: ${{ steps.vars.outputs.TAG }}"
-          echo "Repository: ${{ github.repository }}"
+          echo "Target ref: ${{ steps.vars.outputs.infra_ref }}"
           
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/update-infra-images.yml/dispatches \
-            -d '{"ref":"main","inputs":{"api_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
+            -d '{"ref":"${{ steps.vars.outputs.infra_ref }}","inputs":{"api_tag":"'"${{ steps.vars.outputs.TAG }}"'","environment":"'"${{ steps.vars.outputs.environment }}"'"}}'
 
   build-app:
     needs: check-changes
@@ -112,46 +158,111 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.vars.outputs.TAG }}
+      environment: ${{ steps.vars.outputs.environment }}
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set tag
+      - name: Set tag and environment
         id: vars
         run: |
           SHORT_SHA=$(git rev-parse --short $GITHUB_SHA)
           TS=$(date -u +%Y%m%d-%H%M%S)
-          echo "TAG=staging-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          
+          # Determine environment and create appropriate tag
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            ENVIRONMENT="prod"
+            echo "environment=production" >> $GITHUB_OUTPUT
+            echo "registry=${{ env.PROD_REGISTRY }}" >> $GITHUB_OUTPUT
+            echo "infra_ref=main" >> $GITHUB_OUTPUT
+          else
+            ENVIRONMENT="staging"
+            echo "environment=staging" >> $GITHUB_OUTPUT
+            echo "registry=${{ env.STAGING_REGISTRY }}" >> $GITHUB_OUTPUT
+            echo "infra_ref=staging" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "TAG=${ENVIRONMENT}-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "🏷️ App Generated tag: ${ENVIRONMENT}-${TS}-${SHORT_SHA}"
+          echo "🌍 Environment: ${ENVIRONMENT}"
+          echo "🏷️ Registry: $([ "$ENVIRONMENT" = "prod" ] && echo "${{ env.PROD_REGISTRY }}" || echo "${{ env.STAGING_REGISTRY }}")"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to OVH Harbor
-        run: echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ env.REGISTRY }} -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
+        run: |
+          if [[ "${{ steps.vars.outputs.environment }}" == "production" ]]; then
+            echo "🔐 Logging into PRODUCTION Harbor registry..."
+            echo "${{ secrets.PROD_HARBOR_PASSWORD }}" | docker login ${{ steps.vars.outputs.registry }} -u ${{ secrets.PROD_HARBOR_USERNAME }} --password-stdin
+          else
+            echo "🔐 Logging into STAGING Harbor registry..."
+            echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ steps.vars.outputs.registry }} -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
+          fi
 
       - name: Build & Push App Image
         run: |
+          echo "🚀 Building App for ${{ steps.vars.outputs.environment }} environment..."
+          
+          # Set environment-specific variables
+          if [[ "${{ steps.vars.outputs.environment }}" == "production" ]]; then
+            NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY }}"
+            NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_NEXT_PUBLIC_GATEWAY_URL }}"
+            NEXT_SERVER_ACTIONS_ENCRYPTION_KEY="${{ secrets.PROD_NEXT_SERVER_ACTIONS_ENCRYPTION_KEY }}"
+            echo "🔧 Using PRODUCTION secrets"
+          else
+            NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.STAGING_GOOGLE_MAPS_API_KEY || secrets.PROD_GOOGLE_MAPS_API_KEY || 'staging-key' }}"
+            NEXT_PUBLIC_GATEWAY_URL="${{ secrets.STAGING_GATEWAY_URL || 'https://api.staging.yourapp.com' }}"
+            NEXT_SERVER_ACTIONS_ENCRYPTION_KEY="${{ secrets.STAGING_NEXT_SERVER_ACTIONS_ENCRYPTION_KEY }}"
+            echo "🔧 Using STAGING secrets"
+          fi
+          
+          # Validate NEXT_SERVER_ACTIONS_ENCRYPTION_KEY
+          if [ -z "$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY" ]; then
+            echo "❌ ERROR: NEXT_SERVER_ACTIONS_ENCRYPTION_KEY is empty or not set!"
+            echo "   Please ensure ${{ steps.vars.outputs.environment == 'production' && 'PROD' || 'STAGING' }}_NEXT_SERVER_ACTIONS_ENCRYPTION_KEY is configured in GitHub Secrets"
+            exit 1
+          fi
+          
+          # Validate NEXT_PUBLIC_GATEWAY_URL
+          if [ -z "$NEXT_PUBLIC_GATEWAY_URL" ]; then
+            echo "❌ ERROR: NEXT_PUBLIC_GATEWAY_URL is empty or not set!"
+            echo "   Please ensure ${{ steps.vars.outputs.environment == 'production' && 'PROD' || 'STAGING' }}_NEXT_PUBLIC_GATEWAY_URL is configured in GitHub Secrets"
+            exit 1
+          fi
+          
+          # Verify key length (should be 64 hex characters = 32 bytes)
+          KEY_LENGTH=${#NEXT_SERVER_ACTIONS_ENCRYPTION_KEY}
+          if [ "$KEY_LENGTH" -ne 64 ]; then
+            echo "⚠️  WARNING: NEXT_SERVER_ACTIONS_ENCRYPTION_KEY length is $KEY_LENGTH (expected 64 hex characters)"
+          else
+            echo "✅ NEXT_SERVER_ACTIONS_ENCRYPTION_KEY is set (length: $KEY_LENGTH, first 8 chars: ${NEXT_SERVER_ACTIONS_ENCRYPTION_KEY:0:8}...)"
+          fi
+          
+          echo "✅ NEXT_PUBLIC_GATEWAY_URL is set: ${NEXT_PUBLIC_GATEWAY_URL}"
+          
           docker build \
             --file apps/app/Dockerfile \
-            --tag ${{ env.REGISTRY }}/maturoscope-app/app:${{ steps.vars.outputs.TAG }} \
-            --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
-            --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
+            --tag ${{ steps.vars.outputs.registry }}/maturoscope-app/app:${{ steps.vars.outputs.TAG }} \
+            --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY" \
+            --build-arg NEXT_PUBLIC_GATEWAY_URL="$NEXT_PUBLIC_GATEWAY_URL" \
+            --build-arg NEXT_SERVER_ACTIONS_ENCRYPTION_KEY="$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY" \
             .
-          docker push ${{ env.REGISTRY }}/maturoscope-app/app:${{ steps.vars.outputs.TAG }}
+          docker push ${{ steps.vars.outputs.registry }}/maturoscope-app/app:${{ steps.vars.outputs.TAG }}
 
       - name: Dispatch update-infra (App)
         if: success()
         run: |
           echo "Dispatching update-infra workflow for App with tag: ${{ steps.vars.outputs.TAG }}"
           echo "Repository: ${{ github.repository }}"
+          echo "Target ref: ${{ steps.vars.outputs.infra_ref }}"
           
-          # Use PAT for workflow dispatch
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/update-infra-images.yml/dispatches \
-            -d '{"ref":"main","inputs":{"web_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
+            -d '{"ref":"${{ steps.vars.outputs.infra_ref }}","inputs":{"web_tag":"'"${{ steps.vars.outputs.TAG }}"'","environment":"'"${{ steps.vars.outputs.environment }}"'"}}'
 
   build-dashboard:
     needs: check-changes
@@ -159,46 +270,117 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.vars.outputs.TAG }}
+      environment: ${{ steps.vars.outputs.environment }}
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set tag
+      - name: Set tag and environment
         id: vars
         run: |
           SHORT_SHA=$(git rev-parse --short $GITHUB_SHA)
           TS=$(date -u +%Y%m%d-%H%M%S)
-          echo "TAG=staging-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          
+          # Determine environment and create appropriate tag
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            ENVIRONMENT="prod"
+            echo "environment=production" >> $GITHUB_OUTPUT
+            echo "registry=${{ env.PROD_REGISTRY }}" >> $GITHUB_OUTPUT
+            echo "infra_ref=main" >> $GITHUB_OUTPUT
+          else
+            ENVIRONMENT="staging"
+            echo "environment=staging" >> $GITHUB_OUTPUT
+            echo "registry=${{ env.STAGING_REGISTRY }}" >> $GITHUB_OUTPUT
+            echo "infra_ref=staging" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "TAG=${ENVIRONMENT}-${TS}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "🏷️ Dashboard Generated tag: ${ENVIRONMENT}-${TS}-${SHORT_SHA}"
+          echo "🌍 Environment: ${ENVIRONMENT}"
+          echo "🏷️ Registry: $([ "$ENVIRONMENT" = "prod" ] && echo "${{ env.PROD_REGISTRY }}" || echo "${{ env.STAGING_REGISTRY }}")"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Log in to OVH Harbor
-        run: echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ env.REGISTRY }} -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
+        run: |
+          if [[ "${{ steps.vars.outputs.environment }}" == "production" ]]; then
+            echo "🔐 Logging into PRODUCTION Harbor registry..."
+            echo "${{ secrets.PROD_HARBOR_PASSWORD }}" | docker login ${{ steps.vars.outputs.registry }} -u ${{ secrets.PROD_HARBOR_USERNAME }} --password-stdin
+          else
+            echo "🔐 Logging into STAGING Harbor registry..."
+            echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ steps.vars.outputs.registry }} -u ${{ secrets.HARBOR_USERNAME }} --password-stdin
+          fi
 
       - name: Build & Push Dashboard Image
         run: |
+          echo "🚀 Building Dashboard for ${{ steps.vars.outputs.environment }} environment..."
+          
+          # Set environment-specific variables directly without using GITHUB_OUTPUT
+          echo "🔍 DEBUG: Detected environment: ${{ steps.vars.outputs.environment }}"
+          echo "🔍 DEBUG: Current branch: ${{ github.ref }}"
+          
+          if [[ "${{ steps.vars.outputs.environment }}" == "production" ]]; then
+            AUTH0_CLIENT_SECRET="${{ secrets.PROD_AUTH0_CLIENT_SECRET }}"
+            AUTH0_SECRET="${{ secrets.PROD_AUTH0_SECRET }}"
+            NEXT_PUBLIC_END_USER_URL="${{ secrets.PROD_NEXT_PUBLIC_END_USER_URL }}"
+            NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY }}"
+            NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_NEXT_PUBLIC_GATEWAY_URL }}"
+            echo "🔧 Using PRODUCTION secrets"
+          else
+            AUTH0_CLIENT_SECRET="${{ secrets.STAGING_AUTH0_CLIENT_SECRET }}"
+            AUTH0_SECRET="${{ secrets.STAGING_AUTH0_SECRET }}"
+            NEXT_PUBLIC_END_USER_URL="${{ secrets.STAGING_END_USER_URL || secrets.STAGING_NEXT_PUBLIC_END_USER_URL || '' }}"
+            NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.STAGING_GOOGLE_MAPS_API_KEY || secrets.PROD_GOOGLE_MAPS_API_KEY || 'staging-key' }}"
+            NEXT_PUBLIC_GATEWAY_URL="${{ secrets.STAGING_GATEWAY_URL || 'https://api.staging.yourapp.com' }}"
+            echo "🔧 Using STAGING secrets"
+          fi
+          
+          # Validate required secrets
+          if [ -z "$AUTH0_CLIENT_SECRET" ]; then
+            echo "❌ ERROR: AUTH0_CLIENT_SECRET is empty or not set!"
+            exit 1
+          fi
+          
+          if [ -z "$AUTH0_SECRET" ]; then
+            echo "❌ ERROR: AUTH0_SECRET is empty or not set!"
+            exit 1
+          fi
+          
+          if [ -z "$NEXT_PUBLIC_GATEWAY_URL" ]; then
+            echo "❌ ERROR: NEXT_PUBLIC_GATEWAY_URL is empty or not set!"
+            exit 1
+          fi
+          
+          echo "✅ AUTH0_CLIENT_SECRET length: ${#AUTH0_CLIENT_SECRET}"
+          echo "✅ AUTH0_SECRET length: ${#AUTH0_SECRET}"
+          echo "✅ NEXT_PUBLIC_END_USER_URL: ${NEXT_PUBLIC_END_USER_URL:0:50}..."
+          echo "✅ NEXT_PUBLIC_GATEWAY_URL: ${NEXT_PUBLIC_GATEWAY_URL}"
+          
           docker build \
             --file apps/dashboard/Dockerfile \
-            --tag ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:${{ steps.vars.outputs.TAG }} \
-            --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY || 'prod-key' }}" \
-            --build-arg NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_GATEWAY_URL || 'https://api.yourapp.com' }}" \
+            --tag ${{ steps.vars.outputs.registry }}/maturoscope-dashboard/dashboard:${{ steps.vars.outputs.TAG }} \
+            --build-arg AUTH0_CLIENT_SECRET="$AUTH0_CLIENT_SECRET" \
+            --build-arg AUTH0_SECRET="$AUTH0_SECRET" \
+            --build-arg NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY" \
+            --build-arg NEXT_PUBLIC_GATEWAY_URL="$NEXT_PUBLIC_GATEWAY_URL" \
+            --build-arg NEXT_PUBLIC_END_USER_URL="$NEXT_PUBLIC_END_USER_URL" \
             .
-          docker push ${{ env.REGISTRY }}/maturoscope-dashboard/dashboard:${{ steps.vars.outputs.TAG }}
+          docker push ${{ steps.vars.outputs.registry }}/maturoscope-dashboard/dashboard:${{ steps.vars.outputs.TAG }}
 
       - name: Dispatch update-infra (Dashboard)
         if: success()
         run: |
           echo "Dispatching update-infra workflow for Dashboard with tag: ${{ steps.vars.outputs.TAG }}"
           echo "Repository: ${{ github.repository }}"
+          echo "Target ref: ${{ steps.vars.outputs.infra_ref }}"
           
-          # Use PAT for workflow dispatch
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}" \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/update-infra-images.yml/dispatches \
-            -d '{"ref":"main","inputs":{"dashboard_tag":"'"${{ steps.vars.outputs.TAG }}"'"}}'
+            -d '{"ref":"${{ steps.vars.outputs.infra_ref }}","inputs":{"dashboard_tag":"'"${{ steps.vars.outputs.TAG }}"'","environment":"'"${{ steps.vars.outputs.environment }}"'"}}'
 
   summary:
     needs: [check-changes, build-api, build-app, build-dashboard]
@@ -206,22 +388,31 @@ jobs:
     if: always()
     
     steps:
-      - name: Build Summary
+      - name: Smart Build Summary
         run: |
-          echo "🚀 Smart Build Summary"
-          echo "======================"
-          echo "API changed: ${{ needs.check-changes.outputs.api-changed }}"
-          echo "App changed: ${{ needs.check-changes.outputs.app-changed }}"
-          echo "Dashboard changed: ${{ needs.check-changes.outputs.dashboard-changed }}"
+          echo "🚀 Optimized CI Build Summary"
+          echo "=============================="
+          echo "📊 Change Detection:"
+          echo "  API changed: ${{ needs.check-changes.outputs.api-changed }}"
+          echo "  App changed: ${{ needs.check-changes.outputs.app-changed }}"
+          echo "  Dashboard changed: ${{ needs.check-changes.outputs.dashboard-changed }}"
+          echo "  Shared dependencies changed: ${{ needs.check-changes.outputs.shared-changed }}"
           echo ""
-          echo "Build Results:"
-          echo "API: ${{ needs.build-api.result || 'skipped' }}"
-          echo "App: ${{ needs.build-app.result || 'skipped' }}"
-          echo "Dashboard: ${{ needs.build-dashboard.result || 'skipped' }}"
+          echo "🎯 Build Strategy: Apps only build when their specific code changes"
+          echo "   (Shared deps like yarn.lock no longer trigger all builds)"
           echo ""
-          echo "Generated Tags:"
-          echo "API: ${{ needs.build-api.outputs.tag || 'N/A' }}"
-          echo "App: ${{ needs.build-app.outputs.tag || 'N/A' }}"
-          echo "Dashboard: ${{ needs.build-dashboard.outputs.tag || 'N/A' }}"
+          echo "🏗️ Build Results:"
+          echo "  API: ${{ needs.build-api.result || 'skipped' }}"
+          echo "  App: ${{ needs.build-app.result || 'skipped' }}"
+          echo "  Dashboard: ${{ needs.build-dashboard.result || 'skipped' }}"
           echo ""
-          echo "✅ Smart build completed!"
+          echo "🏷️ Generated Tags:"
+          echo "  API: ${{ needs.build-api.outputs.tag || 'N/A' }}"
+          echo "  App: ${{ needs.build-app.outputs.tag || 'N/A' }}"
+          echo "  Dashboard: ${{ needs.build-dashboard.outputs.tag || 'N/A' }}"
+          echo ""
+          echo "🌍 Target Environment:"
+          echo "  Branch: ${{ github.ref }}"
+          echo "  Environment: ${{ needs.build-dashboard.outputs.environment || needs.build-api.outputs.environment || needs.build-app.outputs.environment || 'N/A' }}"
+          echo ""
+          echo "✅ Optimized build completed - only changed apps were built!"

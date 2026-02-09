@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="<%= htmlLang %>">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= content.subject %></title>
+  </head>
+  <body style="margin:0;padding:32px 0;background-color:#F3F4F6;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;color:#01070D;">
+    <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+      <tr>
+        <td align="center">
+          <table role="presentation" cellpadding="0" cellspacing="0" width="560" style="max-width:560px;margin:0 16px;">
+            <!-- Header (logo + org name) OUTSIDE the card -->
+            <tr>
+              <td style="text-align:left;padding-bottom:18px;">
+                <table role="presentation" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="vertical-align:middle;padding-right:12px;">
+                      <%- companyLogoHtml %>
+                    </td>
+                    <td style="vertical-align:middle;font-size:18px;font-weight:600;color:#01070D;"><%= companyName %></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- Card -->
+            <tr>
+              <td>
+                <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#ffffff;border-radius:12px;padding:28px;box-shadow:0 12px 28px rgba(17,24,39,0.08);">
+                  <!-- Greeting -->
+                  <tr>
+                    <td style="font-size:16px;line-height:26px;color:#01070D;padding-bottom:14px;">
+                      <strong style="font-size:18px;"><%= content.greeting %> <%= expertFullName %>,</strong>
+                    </td>
+                  </tr>
+                  <!-- Intro -->
+                  <tr>
+                    <td style="font-size:16px;line-height:26px;color:#01070D;padding-bottom:14px;">
+                      <%- content.introMessage %>
+                    </td>
+                  </tr>
+                  <!-- Instruction -->
+                  <tr>
+                    <td style="font-size:16px;line-height:26px;color:#01070D;padding-bottom:22px;">
+                      <%- content.instructionMessage %>
+                    </td>
+                  </tr>
+
+                  <!-- PROJECT DETAILS -->
+                  <tr>
+                    <td style="padding-top:32px;">
+                      <!-- PROJECT DETAILS (title row with bg) -->
+                      <div style="background:#FAFAFA;border-bottom:1px solid #E5E7EB;padding:14px 0px;">
+                        <div style="font-size:14px;font-weight:500;color:#0A0A0A;line-height:20px;text-align:left;padding-left:5px;"><%= content.projectDetailsTitle %></div>
+                      </div>
+
+                      <!-- PROJECT NAME -->
+                      <% if (projectData.projectName) { %>
+                        <div style="border-top:1px solid #E5E7EB;padding:18px 0;">
+                          <div style="color:#737373;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;"><%= content.projectNameLabel %></div>
+                          <div style="color:#0A0A0A;font-size:14px;font-weight:600;line-height:20px;"><%= projectData.projectName %></div>
+                        </div>
+                      <% } %>
+
+                      <!-- SERVICE NEEDED -->
+                      <div style="border-top:1px solid #E5E7EB;padding:18px 0;">
+                        <div style="color:#737373;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;"><%= content.serviceNeededLabel %></div>
+                        <div style="color:#0A0A0A;font-size:14px;font-weight:600;line-height:20px;"><%= projectData.serviceTitle %></div>
+                      </div>
+
+                      <!-- GAP TO COMPLETE + BADGE -->
+                      <% if (projectData.gapTitle) { %>
+                        <div style="border-top:1px solid #E5E7EB;padding:18px 0;">
+                          <table role="presentation" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td style="color:#737373;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;vertical-align:middle;padding-right:10px;">
+                                <%= content.gapToCompleteLabel %>
+                              </td>
+                              <td style="vertical-align:middle;">
+                                <span style="display:inline-block;background:#171717;color:#ffffff;border-radius:9999px;padding:6px 12px;font-size:12px;font-weight:600;line-height:1;"><%= content.highestPriorityLabel %></span>
+                              </td>
+                            </tr>
+                          </table>
+                          <div style="margin-top:10px;color:#0A0A0A;font-size:14px;font-weight:600;line-height:20px;"><%= projectData.gapTitle %></div>
+                        </div>
+                      <% } %>
+
+                      <!-- CATEGORY & LEVEL -->
+                      <% if (projectData.category && projectData.currentLevel) { %>
+                        <div style="border-top:1px solid #E5E7EB;padding:18px 0 0 0;">
+                          <div style="color:#737373;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;"><%= content.categoryLevelLabel %></div>
+                          <div style="color:#0A0A0A;font-size:14px;font-weight:600;line-height:20px;"><%= projectData.category %> — <%= content.currentlyAtLevel %> <%= projectData.currentLevel %></div>
+                        </div>
+                      <% } %>
+                    </td>
+                  </tr>
+
+                  <!-- Spacer divider between sections -->
+                  <tr>
+                    <td style="padding-top:22px;">
+                      <div style="border-top:1px solid #E5E7EB;"></div>
+                    </td>
+                  </tr>
+
+                  <!-- CLIENT INFORMATION -->
+                  <tr>
+                    <td style="padding-top:32px;">
+                      <div style="background:#FAFAFA;border-bottom:1px solid #E5E7EB;padding:14px 0px;">
+                        <div style="font-size:14px;font-weight:500;color:#0A0A0A;line-height:20px;text-align:left;padding-left:5px;"><%= content.clientInformationTitle %></div>
+                      </div>
+
+                      <% if (clientData.company) { %>
+                        <div style="border-top:1px solid #E5E7EB;padding:18px 0;">
+                          <div style="color:#737373;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;"><%= content.companyLabel %></div>
+                          <div style="color:#0A0A0A;font-size:14px;font-weight:600;line-height:20px;"><%= clientData.company %></div>
+                        </div>
+                      <% } %>
+
+                      <div style="border-top:1px solid #E5E7EB;padding:18px 0;">
+                        <div style="color:#737373;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;"><%= content.nameLabel %></div>
+                        <div style="color:#0A0A0A;font-size:14px;font-weight:600;line-height:20px;"><%= clientData.firstName %> <%= clientData.lastName %></div>
+                      </div>
+
+                      <div style="border-top:1px solid #E5E7EB;padding:18px 0;">
+                        <div style="color:#737373;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;"><%= content.emailLabel %></div>
+                        <div style="color:#0A0A0A;font-size:14px;font-weight:600;line-height:20px;"><%= clientData.email %></div>
+                      </div>
+
+                      <% if (clientData.phoneNumber) { %>
+                        <div style="border-top:1px solid #E5E7EB;padding:18px 0;">
+                          <div style="color:#737373;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;"><%= content.phoneLabel %></div>
+                          <div style="color:#0A0A0A;font-size:14px;font-weight:600;line-height:20px;"><%= clientData.phoneNumber %></div>
+                        </div>
+                      <% } %>
+
+                      <% if (clientData.additionalInformation) { %>
+                        <div style="border-top:1px solid #E5E7EB;padding:18px 0 0 0;">
+                          <div style="color:#737373;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;"><%= content.commentsLabel %></div>
+                          <div style="color:#0A0A0A;font-size:14px;font-weight:600;line-height:20px;"><%= clientData.additionalInformation %></div>
+                        </div>
+                      <% } %>
+                    </td>
+                  </tr>
+
+                  <!-- CTA + text -->
+                  <tr>
+                    <td style="padding-top:22px;font-size:16px;line-height:26px;font-weight:400;color:#01070D;">
+                      <%= content.reviewMessage %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding-top:18px;padding-bottom:6px;">
+                      <a href="mailto:<%= clientData.email %>?subject=<%= encodeURIComponent(content.contactSubject) %>" style="display:inline-block;padding:14px 28px;background-color:#171717;color:#ffffff;border-radius:10px;font-size:16px;font-weight:700;text-decoration:none;">
+                        <%= content.contactButtonText %>
+                      </a>
+                    </td>
+                  </tr>
+
+                  <!-- Reassignment -->
+                  <% if (reassignmentContact) { %>
+                    <tr>
+                      <td style="padding-top:18px;font-size:16px;line-height:26px;color:#01070D;">
+                        <%= content.reassignmentMessage %><br/>
+                        <span style="display:block;font-size:16px;font-weight:600;color:#01070D;line-height:26px;"><%= reassignmentContact.name %></span>
+                        <a href="<%= reassignmentMailto %>" style="color:#2563EB;text-decoration:underline;"><%= reassignmentContact.email %></a>
+                      </td>
+                    </tr>
+                  <% } %>
+
+                  <!-- Questions -->
+                  <tr>
+                    <td style="padding-top:18px;font-size:16px;line-height:26px;color:#01070D;">
+                      <%= content.questionsMessage %> <a href="mailto:<%= supportEmail %>" style="color:#2563EB;text-decoration:underline;"><%= supportEmail %></a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <!-- Footer -->
+      <tr>
+        <td align="center" style="padding-top:24px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" width="560" style="max-width:560px;margin:0 16px;">
+            <tr>
+              <td style="font-size:14px;line-height:22px;color:#9CA3AF;text-align:center;padding-bottom:24px;">
+                <%= content.footerMessage %>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding-top:16px;">
+                <%- maturoscopeSignature %>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+

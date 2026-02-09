@@ -22,16 +22,22 @@
     COPY turbo.json ./
     COPY .yarnrc.yml ./
     COPY apps/app/package.json ./apps/app/
-    COPY packages/ ./packages/
     
     # Instalar dependencias necesarias para turbo prune
-    RUN yarn install
+    RUN yarn install --network-timeout 300000
     
     # Copiar el código fuente para el prune
     COPY . .
     
-    # Prune para generar archivos mínimos para la instalación en Docker
-    RUN yarn turbo prune app --docker
+    # Workaround para patches de TypeScript en CI/CD
+    RUN echo "compressionLevel: mixed" > .yarnrc-temp.yml && \
+        echo "enableGlobalCache: false" >> .yarnrc-temp.yml && \
+        echo "nodeLinker: node-modules" >> .yarnrc-temp.yml && \
+        mv .yarnrc.yml .yarnrc.yml.backup && \
+        mv .yarnrc-temp.yml .yarnrc.yml && \
+        rm -f yarn.lock && \
+        yarn install --network-timeout 300000 && \
+        yarn turbo prune app --docker
     
     # --------------------------------------------------------------------------------------------------------------------
     # INSTALLER (Instalación y Build)
@@ -44,8 +50,8 @@
     COPY --from=prunner /app/out/json/ .
     COPY --from=prunner /app/out/yarn.lock ./yarn.lock
     
-    # Instalar dependencias
-    RUN yarn install --immutable
+    # Instalar dependencias (sin --immutable porque el lockfile fue generado por prune)
+    RUN yarn install
     
     # Copiar el resto del código pruned
     COPY --from=prunner /app/out/full/ .
@@ -54,14 +60,21 @@
     ARG NODE_ENV=production
     ENV NODE_ENV=${NODE_ENV}
     
-    # Variables de entorno para Next.js (ejemplo)
+    # Variables de entorno para Next.js
     ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
     ARG NEXT_PUBLIC_GATEWAY_URL
+    ARG NEXT_SERVER_ACTIONS_ENCRYPTION_KEY
+    
+    # Set env vars BEFORE build
+    # These ENV vars will be available to turbo and Next.js build process
     ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
     ENV NEXT_PUBLIC_GATEWAY_URL=$NEXT_PUBLIC_GATEWAY_URL
+    ENV NEXT_SERVER_ACTIONS_ENCRYPTION_KEY=$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY
     
     # Construir solo el servicio de app
-    RUN yarn turbo run build --filter=app
+    # The ENV vars are already set above, turbo will pick them up automatically via turbo.json
+    # But we also pass it explicitly in RUN to ensure it's available during build
+    RUN NEXT_SERVER_ACTIONS_ENCRYPTION_KEY=$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY yarn turbo run build --filter=app
     
     # --------------------------------------------------------------------------------------------------------------------
     # RUNNER (Ejecución final)
@@ -70,6 +83,10 @@
     
     ARG NODE_ENV=production
     ENV NODE_ENV=${NODE_ENV}
+    
+    # CRITICAL: Server Actions encryption key - must be the same across all instances
+    ARG NEXT_SERVER_ACTIONS_ENCRYPTION_KEY
+    ENV NEXT_SERVER_ACTIONS_ENCRYPTION_KEY=$NEXT_SERVER_ACTIONS_ENCRYPTION_KEY
     
     # Crear usuario no root
     RUN addgroup --system --gid 1001 app \

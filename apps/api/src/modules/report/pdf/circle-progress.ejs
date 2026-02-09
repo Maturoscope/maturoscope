@@ -1,0 +1,44 @@
+<%
+  // Calculate SVG circle properties
+  var sizeNum = parseInt(size.replace('px', ''));
+  // Default stroke width is 20, but can be overridden for thinner bars (e.g., detailed report)
+  var strokeWidth = typeof strokeWidthParam !== 'undefined' ? strokeWidthParam : 20;
+  var radius = (sizeNum - strokeWidth) / 2;
+  var circumference = 2 * Math.PI * radius;
+  var strokeDasharray = circumference;
+  var strokeDashoffset = circumference - (percentage / 100) * circumference;
+  var center = sizeNum / 2;
+%>
+<div class="relative flex items-center justify-center" style="width: <%= size %>; height: <%= size %>;">
+  <svg width="<%= sizeNum %>" height="<%= sizeNum %>" viewBox="0 0 <%= sizeNum %> <%= sizeNum %>" style="position: absolute; top: 0; left: 0; transform: rotate(-90deg);">
+    <!-- Background circle (full circle in light gray) -->
+    <circle
+      cx="<%= center %>"
+      cy="<%= center %>"
+      r="<%= radius %>"
+      fill="none"
+      stroke="#F5F5F5"
+      stroke-width="<%= strokeWidth %>"
+      stroke-linecap="round"
+    />
+    <!-- Progress circle (colored arc based on percentage) -->
+    <circle
+      cx="<%= center %>"
+      cy="<%= center %>"
+      r="<%= radius %>"
+      fill="none"
+      stroke="<%= color %>"
+      stroke-width="<%= strokeWidth %>"
+      stroke-linecap="round"
+      stroke-dasharray="<%= strokeDasharray %>"
+      stroke-dashoffset="<%= strokeDashoffset %>"
+    />
+  </svg>
+  <!-- Center content (level number) -->
+  <div class="relative z-10 flex items-end justify-center">
+    <span class="text-5xl font-medium text-foreground"><%= level %></span>
+    <% if (showMaxLevel) { %>
+      <span class="text-lg text-muted-foreground">/ 9</span>
+    <% } %>
+  </div>
+</div>

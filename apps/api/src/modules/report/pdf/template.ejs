@@ -1,0 +1,140 @@
+<html>
+
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <%- include(baseDir + '/pdf/styles.ejs' ) %>
+</head>
+
+<body class="bg-[#F5F5F5]">
+  <!-- FIRST PAGE -->
+  <!-- FIRST PAGE -->
+  <!-- FIRST PAGE -->
+  <main class="w-[1440px] h-[2040px] aspect-ratio-1440/2040 flex flex-col gap-4">
+    <%- include(baseDir + '/pdf/nav.ejs' , { t, reportData }) %>
+
+      <div class="w-full h-full px-6">
+        <div class="flex flex-col gap-1.5 mb-9">
+          <h1 class="text-3xl font-bold">
+            <%= t.report.title %>
+          </h1>
+          <% if (reportData.projectName) { %>
+            <p class="text-xl font-medium">
+              <%= reportData.projectName %>
+            </p>
+            <% } %>
+              <p class="text-sm text-muted-foreground">
+                <%= t.report.completedOn %>
+                  <%= reportData.completedOn %>
+              </p>
+        </div>
+
+        <div class="flex flex-col gap-6 mb-9">
+          <h2 class="text-2xl font-semibold">
+            <%= t.overview.title %>
+          </h2>
+
+          <div class="flex gap-6 items-center justify-between">
+            <%- include(baseDir + '/pdf/overview-card.ejs' , { t, scale: reportData.trl, stageTranslation:
+              t.overview.stages.trl, color: '#EA580C' , baseDir }) %>
+              <%- include(baseDir + '/pdf/overview-card.ejs' , { t, scale: reportData.mkrl, stageTranslation:
+                t.overview.stages.mkrl, color: '#0D9488' , baseDir }) %>
+                <%- include(baseDir + '/pdf/overview-card.ejs' , { t, scale: reportData.mfrl, stageTranslation:
+                  t.overview.stages.mfrl, color: '#2563EB' , baseDir }) %>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-6">
+          <div class="flex flex-col gap-1.5">
+            <h2 class="text-2xl font-semibold">
+              <%= t.detailedReport.title %>
+            </h2>
+            <p class="text-sm text-[#171717]">
+              <%= t.detailedReport.description %>
+            </p>
+          </div>
+
+          <div class="flex flex-col gap-6">
+            <%- include(baseDir + '/pdf/detailed-card.ejs' , { t, scale: reportData.trl, stageTranslation:
+              t.overview.stages.trl, color: '#EA580C' , indexBgColor: 'bg-orange-50' , baseDir }) %>
+          </div>
+        </div>
+      </div>
+
+      <%- include(baseDir + '/pdf/footer.ejs' , { t }) %>
+  </main>
+
+  <!-- SECOND PAGE -->
+  <!-- SECOND PAGE -->
+  <!-- SECOND PAGE -->
+  <main class="w-[1440px] h-[2040px] aspect-ratio-1440/2040 flex flex-col gap-4">
+    <%- include(baseDir + '/pdf/nav.ejs' , { t, reportData }) %>
+
+      <div class="flex flex-col gap-6 w-full h-full px-6">
+        <%- include(baseDir + '/pdf/detailed-card.ejs' , { t, scale: reportData.mkrl, stageTranslation:
+          t.overview.stages.mkrl, color: '#0D9488' , indexBgColor: 'bg-teal-50' , baseDir }) %>
+          <%- include(baseDir + '/pdf/detailed-card.ejs' , { t, scale: reportData.mfrl, stageTranslation:
+            t.overview.stages.mfrl, color: '#2563EB' , indexBgColor: 'bg-blue-50' , baseDir }) %>
+      </div>
+
+      <%- include(baseDir + '/pdf/footer.ejs' , { t }) %>
+  </main>
+
+  <!-- THIRD PAGE -->
+  <!-- THIRD PAGE -->
+  <!-- THIRD PAGE -->
+  <main class="w-[1440px] h-[2040px] aspect-ratio-1440/2040 flex flex-col gap-4">
+    <%- include(baseDir + '/pdf/nav.ejs' , { t, reportData }) %>
+
+      <div class="flex flex-col w-full h-full px-6 mt-8">
+        <h1 class="text-2xl font-semibold mb-6">
+          <%= t.answers.title %>
+        </h1>
+        <div class="flex flex-col gap-4 mb-9">
+          <span class="text-xl font-semibold">TRL</span>
+          <div class="flex flex-col gap-2">
+            <% reportData.trl.answers.forEach(function(answer) { %>
+              <%- include(baseDir + '/pdf/answer-card.ejs' , { answer }) %>
+                <% }) %>
+          </div>
+        </div>
+
+      </div>
+
+      <%- include(baseDir + '/pdf/footer.ejs' , { t }) %>
+  </main>
+
+  <!-- FOURTH PAGE -->
+  <!-- FOURTH PAGE -->
+  <!-- FOURTH PAGE -->
+  <main class="w-[1440px] h-[2040px] aspect-ratio-1440/2040 flex flex-col gap-4">
+    <%- include(baseDir + '/pdf/nav.ejs' , { t, reportData }) %>
+
+      <div class="flex flex-col w-full h-full px-6 mt-8">
+        <div class="flex flex-col gap-2 mb-9">
+          <span class="text-xl font-semibold">MkRL</span>
+          <div class="flex flex-col gap-2">
+            <% reportData.mkrl.answers.forEach(function(answer) { %>
+              <%- include(baseDir + '/pdf/answer-card.ejs' , { answer }) %>
+                <% }) %>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2">
+          <span class="text-xl font-semibold">MfRL</span>
+          <div class="flex flex-col gap-2">
+            <% reportData.mfrl.answers.forEach(function(answer) { %>
+              <%- include(baseDir + '/pdf/answer-card.ejs' , { answer }) %>
+                <% }) %>
+          </div>
+        </div>
+
+        <p class="text-sm text-muted-foreground max-w-[825px] text-center mt-8 mx-auto">
+          <%= t.footer.disclaimer %>
+        </p>
+      </div>
+
+      <%- include(baseDir + '/pdf/footer.ejs' , { t }) %>
+  </main>
+</body>
+
+</html>

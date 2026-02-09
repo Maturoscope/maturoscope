@@ -1,0 +1,58 @@
+<% var maxLevel=9; var percentage=Math.round((scale.level / maxLevel) * 100); %>
+<div class="flex gap-6 items-start justify-between">
+  <div class="flex flex-col h-min bg-white rounded-2xl p-6 w-[240px]">
+
+    <div class="flex flex-col gap-3 items-center mb-6">
+      <span class="text-xl font-semibold">
+        <%= stageTranslation.label %>
+      </span>
+      <%- include(baseDir + '/pdf/circle-progress.ejs' , { percentage: percentage, size: '115px' , color: color,
+        level: scale.level, showMaxLevel: false, strokeWidthParam: 8 }) %>
+    </div>
+
+    <div class="flex flex-col gap-5 mb-5">
+      <div class="w-full h-px bg-border"></div>
+      <div class="flex flex-col">
+        <span class="text-sm text-muted-foreground">
+          <%= t.detailedReport.currentFocus %>
+        </span>
+        <span class="text-sm font-medium">
+          <%= scale.strategicFocus || '-' %>
+        </span>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-5">
+      <div class="w-full h-px bg-border"></div>
+      <div class="flex flex-col">
+        <span class="text-sm text-muted-foreground">
+          <%= t.detailedReport.primaryRiskToMitigate %>
+        </span>
+        <span class="text-sm font-medium">
+          <%= scale.primaryRisk || '-' %>
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="flex flex-col h-min bg-white rounded-2xl p-6 flex-1 gap-2.5">
+    <% if (scale.level===9) { %>
+      <h3 class="text-xl font-bold">
+        <%= t.detailedReport.copyLevelLabel %>
+          <%= scale.level %>: <%= t.detailedReport.copyHighestLevel %>
+      </h3>
+      <% } else { %>
+        <h3 class="text-xl font-bold">
+          <%= t.detailedReport.toReachLevel %>
+            <%= scale.level + 1 %>: <%= t.detailedReport.completeTheGapsBelow %>
+        </h3>
+        <% } %>
+
+          <div class="flex flex-col">
+            <% scale.gaps.forEach(function(gap, index) { %>
+              <%- include(baseDir + '/pdf/detailed-gap.ejs' , { t, gap, index, indexBgColor }) %>
+                <% }) %>
+          </div>
+  </div>
+</div>

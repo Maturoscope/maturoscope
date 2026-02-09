@@ -1,0 +1,60 @@
+// Types
+import { Locale } from "@/dictionaries/dictionaries"
+import { StageId } from "@/components/custom/FormPage/Form/Form"
+// Dictionaries
+import { getDictionary } from "@/dictionaries/dictionaries"
+// Components
+import Header from "@/components/common/Header/Header"
+import QuestionEditor from "@/components/custom/ReviewPage/QuestionEditor/QuestionEditor"
+// Actions
+import { getQuestions } from "@/actions/questions"
+
+interface QuestionPageProps {
+  params: Promise<{ lang: string; stage: StageId; question: string }>
+}
+
+const QuestionPage = async ({ params }: QuestionPageProps) => {
+  const { lang: langParam, stage, question: questionId } = await params
+  const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
+  const dictionary = await getDictionary(lang)
+  const {
+    header: { stringConnector },
+    form: { leaveQuestionnaireModal },
+    singleReview,
+  } = dictionary
+
+  // Fetch questions for the stage
+  const questionsStages = await getQuestions(lang)
+  const stageQuestions = questionsStages.find((qs) => qs.id === stage)
+
+  if (!stageQuestions) {
+    throw new Error(`Failed to load questions for stage: ${stage}`)
+  }
+
+  // Find the specific question
+  const question = stageQuestions.questions.find((q) => q.id === questionId)
+
+  if (!question) {
+    throw new Error(`Question not found: ${questionId}`)
+  }
+
+  // Get selected answer from localStorage (we'll need to pass this to client component)
+  // Since we can't access localStorage in server components, we'll handle it in the client component
+
+  return (
+    <main className="w-full h-full flex flex-col items-center justify-start">
+      <Header stringConnector={stringConnector} showBackButton leaveQuestionnaireModal={leaveQuestionnaireModal} />
+      <QuestionEditor
+        stageName={stage}
+        lang={lang}
+        question={question}
+        saveButtonLabel={singleReview.saveButtonLabel}
+        cancelButtonLabel={singleReview.cancelButtonLabel}
+        commentPlaceholder={singleReview.commentPlaceholder}
+        unsavedChangesModal={singleReview.unsavedChangesModal}
+      />
+    </main>
+  )
+}
+
+export default QuestionPage

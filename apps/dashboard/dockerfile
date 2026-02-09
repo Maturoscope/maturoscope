@@ -1,88 +1,98 @@
 # --------------------------------------------------------------------------------------------------------------------
 # BASE
 # --------------------------------------------------------------------------------------------------------------------
-    FROM node:20-alpine AS base
+FROM node:20-alpine AS base
 
-    # Directorio de trabajo
-    WORKDIR /app
-    
-    # Variables comunes
-    ENV NODE_OPTIONS="--max-old-space-size=4096"
-    
-    # Habilitar Yarn Berry (Yarn 3)
-    RUN corepack enable
-    
-    # --------------------------------------------------------------------------------------------------------------------
-    # PRUNNER (Optimización con Turbo)
-    # --------------------------------------------------------------------------------------------------------------------
-    FROM base AS prunner
-    
-    # Copiar solo lo necesario para el prune
+WORKDIR /app
+
+# Common environment variables
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
+# Enable Yarn Berry (Yarn 3)
+RUN corepack enable
+
+# --------------------------------------------------------------------------------------------------------------------
+# PRUNER (Optimization with Turbo)
+# --------------------------------------------------------------------------------------------------------------------
+FROM base AS prunner
+
+    # Copy only what's needed for the prune
     COPY package.json yarn.lock ./
     COPY turbo.json ./
     COPY .yarnrc.yml ./
     COPY apps/dashboard/package.json ./apps/dashboard/
-    COPY packages/ ./packages/
     
-    # Instalar dependencias necesarias para turbo prune
-    RUN yarn install
-    
-    # Copiar el código fuente para el prune
-    COPY . .
-    
-    # Prune para generar archivos mínimos para la instalación en Docker
-    RUN yarn turbo prune dashboard --docker
-    
-    # --------------------------------------------------------------------------------------------------------------------
-    # INSTALLER (Instalación y Build)
-    # --------------------------------------------------------------------------------------------------------------------
-    FROM base AS installer
-    
-    WORKDIR /app
-    
-    # Copiar package.json y lockfiles resultantes del prune
-    COPY --from=prunner /app/out/json/ .
-    COPY --from=prunner /app/out/yarn.lock ./yarn.lock
-    
-    # Instalar dependencias
-    RUN yarn install --immutable
-    
-    # Copiar el resto del código pruned
-    COPY --from=prunner /app/out/full/ .
-    
-    # Configuración de entorno
+    # Install dependencies needed for turbo prune
+    RUN yarn install --network-timeout 300000
+
+# Copy source code for the prune
+COPY . .
+
+# Workaround para patches de TypeScript en CI/CD
+RUN echo "compressionLevel: mixed" > .yarnrc-temp.yml && \
+    echo "enableGlobalCache: false" >> .yarnrc-temp.yml && \
+    echo "nodeLinker: node-modules" >> .yarnrc-temp.yml && \
+    mv .yarnrc.yml .yarnrc.yml.backup && \
+    mv .yarnrc-temp.yml .yarnrc.yml && \
+    rm -f yarn.lock && \
+    yarn install --network-timeout 300000 && \
+    yarn turbo prune dashboard --docker
+
+# --------------------------------------------------------------------------------------------------------------------
+# INSTALLER (Installation and Build)
+# --------------------------------------------------------------------------------------------------------------------
+FROM base AS installer
+
+WORKDIR /app
+
+# Copy package.json and lockfiles resulting from prune
+COPY --from=prunner /app/out/json/ .
+COPY --from=prunner /app/out/yarn.lock ./yarn.lock
+
+# Install dependencies (sin --immutable porque el lockfile fue generado por prune)
+RUN yarn install
+
+# Copy the rest of the pruned code
+COPY --from=prunner /app/out/full/ .
+
+# Environment configuration
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+# Environment variables for Next.js
+ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+ARG NEXT_PUBLIC_GATEWAY_URL
+ARG NEXT_PUBLIC_END_USER_URL
+ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+ENV NEXT_PUBLIC_GATEWAY_URL=$NEXT_PUBLIC_GATEWAY_URL
+ENV NEXT_PUBLIC_END_USER_URL=$NEXT_PUBLIC_END_USER_URL
+
+    # Auth0 variables are handled by Kubernetes secrets
+
+# Build dashboard service
+RUN yarn turbo run build --filter=dashboard
+
+# --------------------------------------------------------------------------------------------------------------------
+# RUNNER (Final execution)
+# --------------------------------------------------------------------------------------------------------------------
+FROM base AS runner
+
     ARG NODE_ENV=production
     ENV NODE_ENV=${NODE_ENV}
     
-    # Variables de entorno para Next.js (ejemplo)
-    ARG NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-    ARG NEXT_PUBLIC_GATEWAY_URL
-    ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=$NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-    ENV NEXT_PUBLIC_GATEWAY_URL=$NEXT_PUBLIC_GATEWAY_URL
-    
-    # Construir solo el servicio de dashboard
-    RUN yarn turbo run build --filter=dashboard
-    
-    # --------------------------------------------------------------------------------------------------------------------
-    # RUNNER (Ejecución final)
-    # --------------------------------------------------------------------------------------------------------------------
-    FROM base AS runner
-    
-    ARG NODE_ENV=production
-    ENV NODE_ENV=${NODE_ENV}
-    
-    # Crear usuario no root
-    RUN addgroup --system --gid 1001 dashboard \
-        && adduser --system --uid 1001 dashboard
-    
-    USER dashboard
-    
-    # Copiar solo archivos necesarios para producción
-    COPY --from=installer --chown=dashboard:dashboard /app .
-    
-    # Exponer puerto del dashboard
-    EXPOSE 3001
-    
-    # Comando de inicio
-    CMD ["yarn", "turbo", "run", "start", "--filter=dashboard"]
-    
+    # Auth0 variables are handled by Kubernetes secrets at runtime
+
+# Create non-root user
+RUN addgroup --system --gid 1001 dashboard \
+    && adduser --system --uid 1001 dashboard
+
+USER dashboard
+
+# Copy only necessary files for production
+COPY --from=installer --chown=dashboard:dashboard /app .
+
+# Expose dashboard port
+EXPOSE 3001
+
+# Start the application
+CMD ["yarn", "turbo", "run", "start", "--filter=dashboard", "--env-mode=loose", "--force"]

@@ -1,0 +1,49 @@
+// Components
+import RadioGroup from "@/components/common/RadioGroup/RadioGroup"
+// Types
+import { StageId } from "@/components/custom/FormPage/Form/Form"
+
+interface Option {
+  id: string
+  title: string
+}
+
+export interface QuestionProps {
+  id: string
+  name: string
+  title: string
+  options: Option[]
+  commentPlaceholder: string
+  onQuestionClick: () => void
+  disabled?: boolean
+}
+
+const Question = ({
+  id,
+  name,
+  options: initOptions,
+  onQuestionClick,
+  commentPlaceholder,
+  disabled = false,
+}: QuestionProps) => {
+  const radioGroupName =
+    `${name}.questions.${id}` as `${StageId}.questions.${string}`
+  const options = initOptions.map((option) => ({
+    ...option,
+    name: radioGroupName,
+    onClick: onQuestionClick,
+    commentPlaceholder,
+    disabled,
+  }))
+
+  return (
+    <RadioGroup
+      key={radioGroupName}
+      options={options}
+      name={radioGroupName}
+      className="w-full flex-1 min-h-0 overflow-y-auto"
+    />
+  )
+}
+
+export default Question

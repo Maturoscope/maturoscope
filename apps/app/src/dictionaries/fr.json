@@ -1,0 +1,231 @@
+{
+  "lang": "fr",
+  "common": {
+    "loadingLabel": "Chargement..."
+  },
+  "header": {
+    "stringConnector": "par"
+  },
+  "backBar": {
+    "buttonLabel": "Retour"
+  },
+  "homepage": {
+    "hero": {
+      "heading": {
+        "title": "Évaluez la maturité de votre innovation en quelques minutes.",
+        "description": "Obtenez une lecture instantanée de vos niveaux de maturité technologique, marché et fabrication, ainsi que des actions ciblées pour vous améliorer."
+      },
+      "information": {
+        "noAccount": "Aucun compte requis",
+        "noStored": "Nous ne stockons pas vos informations",
+        "tooltip": "Nous ne stockons, ne conservons ni ne réutilisons aucune des informations que vous entrez. Toutes les données sont traitées temporairement et automatiquement supprimées pour garantir une confidentialité complète.",
+        "buttonLabel": "Commençons",
+        "estimatedTime": "5 minutes"
+      },
+      "criteria": {
+        "title": "Il évalue 3 dimensions clés",
+        "keys": [
+          {
+            "icon": "/icons/homepage/criteria-trl.svg",
+            "title": "TRL - Niveau de maturité de la technologie",
+            "description": "La technologie est-elle fonctionnelle ? (7 questions)"
+          },
+          {
+            "icon": "/icons/homepage/criteria-mkrl.svg",
+            "title": "MkRL - Niveau de maturité du marché",
+            "description": "Y a-t-il un besoin client ? (4 questions)"
+          },
+          {
+            "icon": "/icons/homepage/criteria-mfrl.svg",
+            "title": "MfRL - Niveau de maturité de la fabrication",
+            "description": "La production est-elle scalable ? (4 questions)"
+          }
+        ]
+      }
+    },
+    "policy": {
+      "description": "Le projet METABUILDING LABS a reçu un financement de la part de la Commission européenne dans le cadre du Programme européen de recherche et d'innovation Horizon 2020 sous le numéro de convention No. 953193. La responsabilité exclusive du contenu de ce document repose entièrement sur l'avis du déposant. La Commission européenne n'est pas responsable de l'utilisation qui peut en être faite.",
+      "copyright": "Conçu et développé par",
+      "contactUsLabel": "Contactez-nous",
+      "privacyPolicyLabel": "Politique de confidentialité",
+      "privacyPolicyModal": {
+        "title": "Politique de Confidentialité",
+        "lastUpdatedLabel": "Dernière version : [12/01/2026]"
+      }
+    },
+    "gdprModal": {
+      "message": "Ce questionnaire utilise des cookies nécessaires et le stockage local pour sauvegarder temporairement votre progression. Nous n'utilisons pas de cookies de suivi ou publicitaires et nous ne collectons pas d'informations personnelles.",
+      "learnMoreLabel": "En savoir plus"
+    }
+  },
+  "notFound": {
+    "title": "Page non trouvée",
+    "description": "Désolé, nous n'avons pas trouvé la page que vous cherchez."
+  },
+  "begin": {
+    "title": "Qu'évaluons-nous aujourd'hui ?",
+    "label": "Nommez votre projet",
+    "placeholder": "Prototype de panneau solaire v2",
+    "backButtonLabel": "Retour",
+    "nextButtonLabel": "Continuer"
+  },
+  "form": {
+    "buttonNextLabel": "Continuer",
+    "buttonPrevLabel": "Retour",
+    "commentPlaceholder": "Ajoutez des notes spécifiques pour votre rapport final (Optionnel)",
+    "leaveQuestionnaireModal": {
+      "title": "Quitter le questionnaire ?",
+      "description": "Si vous quittez maintenant, vos réponses seront perdues.",
+      "resetButtonLabel": "Quitter quand même",
+      "cancelButtonLabel": "Annuler"
+    },
+    "checkpoint": {
+      "buttonLabel": "Retour à"
+    },
+    "stages": [
+      {
+        "id": "trl",
+        "icon": "/icons/form/trl.svg",
+        "name": "TRL",
+        "title": "Analyse technologique terminée",
+        "description": "Une étape de franchie. Voyons maintenant si le marché est prêt.",
+        "reviewLabel": "Voir les réponses",
+        "buttonLabel": "Continuer à MkRL"
+      },
+      {
+        "id": "mkrl",
+        "icon": "/icons/form/mkrl.svg",
+        "name": "MkRL",
+        "title": "Contexte de marché validé",
+        "description": "Vous avez couvert le « Quoi? » et le « Qui? ». Passons maintenant à la dernière pièce : le « Comment? ».",
+        "reviewLabel": "Voir les réponses",
+        "buttonLabel": "Continuer à MfRL"
+      },
+      {
+        "id": "mfrl",
+        "icon": "/icons/form/mfrl.svg",
+        "name": "MfRL",
+        "title": "Évaluation terminée",
+        "description": "Votre rapport est prêt à être généré. (Dernière chance de réviser, les réponses ne pourront plus être modifiées après cette étape).",
+        "reviewLabel": "Voir les réponses",
+        "buttonLabel": "Voir le rapport"
+      }
+    ]
+  },
+  "review": {
+    "title": "Réviser les réponses [STAGE_NAME]"
+  },
+  "singleReview": {
+    "cancelButtonLabel": "Annuler",
+    "saveButtonLabel": "Enregistrer",
+    "commentPlaceholder": "Ajoutez des notes spécifiques pour votre rapport final (Optionnel)",
+    "unsavedChangesModal": {
+      "title": "Changements non enregistrés",
+      "description": "Vous avez des changements non enregistrés. Si vous quittez maintenant, vos dernières mises à jour seront perdues.",
+      "cancelButtonLabel": "Annuler",
+      "saveButtonLabel": "Quitter quand même"
+    },
+    "toast": {
+      "title": "Réponse mise à jour",
+      "description": "Vos mises à jour ont été enregistrées avec succès"
+    }
+  },
+  "results": {
+    "topBar": {
+      "title": "Votre profil de maturité",
+      "subtitle": "Complété le ",
+      "downloadButtonLabel": "Télécharger le rapport",
+      "talkButtonLabel": "Parler à un expert"
+    },
+    "beforeYouGoModal": {
+      "title": "Avant de partir...",
+      "description": "Puisque nous ne stockons pas vos réponses, assurez-vous de télécharger votre rapport d'évaluation. Vous ne pourrez pas y accéder plus tard.",
+      "downloadButtonLabel": "Télécharger et quitter",
+      "cancelButtonLabel": "Annuler",
+      "resetButtonLabel": "Quitter quand même"
+    },
+    "overview": {
+      "title": "Aperçu",
+      "learnMoreButtonLabel": "En savoir plus",
+      "resultsSufixLabel": "Résultats",
+      "stages": [
+        {
+          "label": "TRL",
+          "description": "Niveau de maturité de la technologie"
+        },
+        {
+          "label": "MkRL",
+          "description": "Niveau de maturité du marché"
+        },
+        {
+          "label": "MfRL",
+          "description": "Niveau de maturité de la fabrication"
+        }
+      ]
+    },
+    "unlockNextLevel": {
+      "title": "Débloquez votre prochain niveau",
+      "steps": [
+        "Voir les résultats détaillés ci-dessous.",
+        "Connectez-vous avec les experts recommandés pour accélérer votre succès.",
+        "Téléchargez votre rapport et conservez-le pour vos futurs jalons."
+      ],
+      "clarification": "Après avoir examiné vos résultats, enregistrez-les et contactez les services recommandés. Ils vous aideront à identifier les étapes suivantes pour améliorer votre niveau de maturité."
+    },
+    "detailedReport": {
+      "title": "Rapport détaillé",
+      "description": "Recherchez les étiquettes \"Service disponible\" ci-dessous pour voir où nos experts peuvent accélérer votre progression.",
+      "copyPreLevel": "Pour atteindre le niveau ",
+      "copyPostLevel": "Complétez les lacunes ci-dessous",
+      "copyLevelLabel": "Niveau",
+      "copyHighestLevel": "Niveau le plus élevé atteint",
+      "serviceLabel": "Service disponible",
+      "comingSoonLabel": "Bientôt disponible",
+      "focusLabel": "Focus actuel",
+      "primaryRiskLabel": "Risque principal à mitiger"
+    },
+    "ctaBanner": {
+      "title": "Transformez ce plan en réalité.",
+      "description": "Ne vous engagez pas seuls. Nos experts sont prêts à vous aider à atteindre le prochain niveau de maturité.",
+      "or": "ou",
+      "disclaimer": "Bien que l'outil ait été conçu par des professionnels du secteur du bâtiment, les résultats de ce test ne constituent pas un certificat officiel et sont fournis à des fins informatifess uniquement.",
+      "talkButtonLabel": "Parler à un expert",
+      "resetButtonLabel": "Réinitialiser le questionnaire",
+      "resetFormModal": {
+        "title": "Réinitialiser le questionnaire",
+        "description": "Cette action supprimera toutes vos réponses. Nous ne stockons pas vos réponses. Téléchargez votre rapport maintenant pour conserver un enregistrement de vos résultats.",
+        "downloadButtonLabel": "Télécharger et réinitialiser",
+        "cancelButtonLabel": "Annuler",
+        "resetButtonLabel": "Réinitialiser"
+      }
+    },
+    "contactExpertModal": {
+      "supportNeeded": {
+        "title": "Support nécessaire pour:",
+        "description": "Sélectionnez les lacunes spécifiques que vous aimeriez que nous vous aidions à résoudre.",
+        "primaryButtonLabel": "Continuer",
+        "completedLabel": "complété",
+        "chipLabel": "Recommandé pour votre innovation"
+      },
+      "reachOut": {
+        "title": "Comment pouvons-nous vous contacter ?",
+        "description": "Veuillez fournir vos détails afin que notre expert sache à qui demander.",
+        "primaryButtonLabel": "Demander un contact",
+        "secondaryButtonLabel": "Retour",
+        "completedLabel": "complété"
+      },
+      "successStatus": {
+        "title": "Demande envoyée avec succès !",
+        "description": "Notre équipe examinera vos besoins et vous contactera dans les 72 heures. En attendant, n'oubliez pas de télécharger votre rapport complet.",
+        "primaryButtonLabel": "Télécharger le rapport",
+        "secondaryButtonLabel": "Fermer"
+      },
+      "failedStatus": {
+        "title": "Une erreur est survenue",
+        "description": "Nous n'avons pas pu envoyer votre demande. Veuillez vérifier votre connexion et réessayer.",
+        "primaryButtonLabel": "Réessayer",
+        "secondaryButtonLabel": "Fermer"
+      }
+    }
+  }
+}

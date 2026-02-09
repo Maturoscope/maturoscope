@@ -1,0 +1,47 @@
+{
+  "lang": "en",
+  "header": {
+    "by": "by"
+  },
+  "report": {
+    "title": "Your Maturity Profile",
+    "completedOn": "Completed on"
+  },
+  "overview": {
+    "title": "Overview",
+    "phaseLabel": "Phase",
+    "stages": {
+      "trl": {
+        "label": "TRL",
+        "description": "Technology Readiness Level"
+      },
+      "mkrl": {
+        "label": "MkRL",
+        "description": "Market Readiness Level"
+      },
+      "mfrl": {
+        "label": "MfRL",
+        "description": "Manufacturing Readiness Level"
+      }
+    }
+  },
+  "detailedReport": {
+    "title": "Detailed report",
+    "description": "Look for the \"Service available\" tags below to see where our experts can accelerate your progress.",
+    "currentFocus": "Current focus",
+    "primaryRiskToMitigate": "Primary risk to mitigate",
+    "toReachLevel": "To reach Level",
+    "copyLevelLabel": "Level",
+    "copyHighestLevel": "Highest level achieved",
+    "completeTheGapsBelow": "Complete the gaps below",
+    "serviceAvailable": "Service available",
+    "comingSoon": "Coming soon"
+  },
+  "answers": {
+    "title": "Your answers"
+  },
+  "footer": {
+    "disclaimer": "Although the tool was designed by professionals from the building sector, the results of this test do not constitute a formal certificate and are provided for informational purposes only.",
+    "policy": "METABUILDING LABS Project has received funding from the European Union's Horizon 2020 Research and Innovation Programme under Grant Agreement No. 953193. The sole responsibility for the content of this document lies entirely with the author's view. The European Commission is not responsible for any use that may be made of the information it contains."
+  }
+}

@@ -1,0 +1,19 @@
+<% 
+  var maxLevel = 9;
+  var percentage = Math.round((scale.level / maxLevel) * 100);
+%>
+<div class="flex flex-col gap-5 p-6 pt-8 bg-white rounded-2xl shadow-xs w-full">
+  <div class="flex flex-col gap-2 items-center">
+    <span class="text-xl font-semibold"><%= stageTranslation.label %></span>
+    <span class="text-sm text-muted-foreground"><%= stageTranslation.description %></span>
+  </div>
+
+  <div class="flex flex-col gap-2 items-center">
+    <%- include(baseDir + '/pdf/circle-progress.ejs', { percentage: percentage, size: '170px', color: color, level: scale.level, showMaxLevel: true, strokeWidthParam: 12 }) %>
+  </div>
+
+  <div class="flex flex-col gap-2 items-center">
+    <span class="text-sm font-medium"><%= scale.phaseName %></span>
+    <span class="text-sm text-muted-foreground"><%= scale.phaseGoal %></span>
+  </div>
+</div>

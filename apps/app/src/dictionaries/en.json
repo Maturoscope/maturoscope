@@ -1,0 +1,231 @@
+{
+  "lang": "en",
+  "common": {
+    "loadingLabel": "Loading..."
+  },
+  "header": {
+    "stringConnector": "by"
+  },
+  "backBar": {
+    "buttonLabel": "Back"
+  },
+  "homepage": {
+    "hero": {
+      "heading": {
+        "title": "Assess your innovation's maturity in minutes.",
+        "description": "Get an instant read on your Technology, Market, and Manufacturing readiness levels, and targeted actions to improve."
+      },
+      "information": {
+        "noAccount": "No account required",
+        "noStored": "We don't store your information",
+        "tooltip": "We do not store, retain, or reuse any of the information you enter. All data is processed temporarily and automatically discarded to ensure complete confidentiality.",
+        "buttonLabel": "Let's begin",
+        "estimatedTime": "5 minutes"
+      },
+      "criteria": {
+        "title": "It evaluates 3 key dimensions",
+        "keys": [
+          {
+            "icon": "/icons/homepage/criteria-trl.svg",
+            "title": "TRL - Technology Readiness Level",
+            "description": "Is the technology functional? (7 questions)"
+          },
+          {
+            "icon": "/icons/homepage/criteria-mkrl.svg",
+            "title": "MkRL - Market Readiness Level",
+            "description": "Is there a customer need? (4 questions)"
+          },
+          {
+            "icon": "/icons/homepage/criteria-mfrl.svg",
+            "title": "MfRL - Manufacturing Readiness Level",
+            "description": "Is production scalable? (4 questions)"
+          }
+        ]
+      }
+    },
+    "policy": {
+      "description": "METABUILDING LABS Project has received funding from the European Union's Horizon 2020 Research and Innovation Programme under Grant Agreement No. 953193. The sole responsibility for the content of this document lies entirely with the author's view. The European Commission is not responsible for any use that may be made of the information it contains.",
+      "copyright": "Designed and developed by",
+      "contactUsLabel": "Contact us",
+      "privacyPolicyLabel": "Privacy policy",
+      "privacyPolicyModal": {
+        "title": "Privacy Policy",
+        "lastUpdatedLabel": "Last updated: [17/01/2026]"
+      }
+    },
+    "gdprModal": {
+      "message": "This questionnaire uses necessary cookies and local storage to save your progress temporarily. We don't use tracking or advertising cookies, and we don't collect personal information.",
+      "learnMoreLabel": "Learn more"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "Sorry, we couldn't find the page you're looking for."
+  },
+  "begin": {
+    "title": "What are we evaluating today?",
+    "label": "Name your project",
+    "placeholder": "Solar Panel Prototype v2",
+    "backButtonLabel": "Back",
+    "nextButtonLabel": "Continue"
+  },
+  "form": {
+    "buttonNextLabel": "Continue",
+    "buttonPrevLabel": "Back",
+    "commentPlaceholder": "Add specific notes for your final report (Optional)",
+    "leaveQuestionnaireModal": {
+      "title": "Leave questionnaire?",
+      "description": "If you leave now, your responses will be lost.",
+      "resetButtonLabel": "Leave anyway",
+      "cancelButtonLabel": "Cancel"
+    },
+    "checkpoint": {
+      "buttonLabel": "Back to"
+    },
+    "stages": [
+      {
+        "id": "trl",
+        "icon": "/icons/form/trl.svg",
+        "name": "TRL",
+        "title": "Technology Analysis Complete",
+        "description": "One step down. Now, let's see if the market is ready for it.",
+        "reviewLabel": "Review answers",
+        "buttonLabel": "Continue to MkRL"
+      },
+      {
+        "id": "mkrl",
+        "icon": "/icons/form/mkrl.svg",
+        "name": "MkRL",
+        "title": "Market Context Secured",
+        "description": "You have covered the \"What\" and the \"Who.\" Now for the final piece: the \"How.\"",
+        "reviewLabel": "Review answers",
+        "buttonLabel": "Continue to MfRL"
+      },
+      {
+        "id": "mfrl",
+        "icon": "/icons/form/mfrl.svg",
+        "name": "MfRL",
+        "title": "Assessment Complete",
+        "description": "Your report is ready to be generated. (Last chance to review, answers cannot be changed after this step).",
+        "reviewLabel": "Review answers",
+        "buttonLabel": "See report"
+      }
+    ]
+  },
+  "review": {
+    "title": "Review [STAGE_NAME] answers"
+  },
+  "singleReview": {
+    "cancelButtonLabel": "Cancel",
+    "saveButtonLabel": "Save",
+    "commentPlaceholder": "Add specific notes for your final report (Optional)",
+    "unsavedChangesModal": {
+      "title": "Unsaved changes",
+      "description": "You have unsaved changes. If you leave now, your latest updates will be lost.",
+      "cancelButtonLabel": "Cancel",
+      "resetButtonLabel": "Leave Anyway"
+    },
+    "toast": {
+      "title": "Answer Updated",
+      "description": "Your updates have been saved successfully"
+    }
+  },
+  "results": {
+    "topBar": {
+      "title": "Your Maturity Profile",
+      "subtitle": "Completed on ",
+      "downloadButtonLabel": "Download report",
+      "talkButtonLabel": "Talk to an expert"
+    },
+    "beforeYouGoModal": {
+      "title": "Before you go...",
+      "description": "Since we don't save your responses, make sure you've downloaded your assessment report. You won't be able to access it later.",
+      "downloadButtonLabel": "Download and leave",
+      "cancelButtonLabel": "Cancel",
+      "resetButtonLabel": "Leave anyway"
+    },
+    "overview": {
+      "title": "Overview",
+      "learnMoreButtonLabel": "Learn more",
+      "resultsSufixLabel": "Results",
+      "stages": [
+        {
+          "label": "TRL",
+          "description": "Technology Readiness Level"
+        },
+        {
+          "label": "MkRL",
+          "description": "Market Readiness Level"
+        },
+        {
+          "label": "MfRL",
+          "description": "Manufacturing Readiness Level"
+        }
+      ]
+    },
+    "unlockNextLevel": {
+      "title": "Unlock your next level",
+      "steps": [
+        "Review your detailed results below.",
+        "Connect with the recommended experts to accelerate your success.",
+        "Download your report and keep it for future milestones."
+      ],
+      "clarification": "After reviewing your results, save them and reach out to the recommended services. They'll help you close the gaps needed to improve your readiness level."
+    },
+    "detailedReport": {
+      "title": "Detailed report",
+      "description": "Look for the \"Service available\" tags below to see where our experts can accelerate your progress.",
+      "copyPreLevel": "To reach Level ",
+      "copyPostLevel": "Complete the gaps below",
+      "copyLevelLabel": "Level",
+      "copyHighestLevel": "Highest level achieved",
+      "serviceLabel": "Service available",
+      "comingSoonLabel": "Coming soon",
+      "focusLabel": "Current focus",
+      "primaryRiskLabel": "Primary Risk to Mitigate"
+    },
+    "ctaBanner": {
+      "title": "Turn this plan into reality.",
+      "description": "Don't tackle these gaps alone. Our experts are ready to help you reach the next maturity level.",
+      "or": "or",
+      "disclaimer": "Although the tool was designed by professionals from the building sector, the results of this test do not constitute a formal certificate and are provided for informational purposes only.",
+      "talkButtonLabel": "Talk to an Expert",
+      "resetButtonLabel": "Reset questionnaire",
+      "resetFormModal": {
+        "title": "Reset questionnaire",
+        "description": "This will permanently delete all your answers. We don't store your responses. Download your report now to keep a record of your results.",
+        "downloadButtonLabel": "Download and reset",
+        "cancelButtonLabel": "Cancel",
+        "resetButtonLabel": "Reset"
+      }
+    },
+    "contactExpertModal": {
+      "supportNeeded": {
+        "title": "Support needed for:",
+        "description": "Select the specific gaps you would like us to help you solve.",
+        "primaryButtonLabel": "Continue",
+        "completedLabel": "completed",
+        "chipLabel": "Highest Priority for Growth"
+      },
+      "reachOut": {
+        "title": "How can we reach you?",
+        "description": "Please provide your details so our expert knows who to ask for.",
+        "primaryButtonLabel": "Request contact",
+        "secondaryButtonLabel": "Back",
+        "completedLabel": "completed"
+      },
+      "successStatus": {
+        "title": "Request sent successfully!",
+        "description": "Our team will review your needs and contact you within 72 hours. In the meantime, don't forget to save your full report.",
+        "primaryButtonLabel": "Download report",
+        "secondaryButtonLabel": "Close"
+      },
+      "failedStatus": {
+        "title": "Something went wrong",
+        "description": "We couldn't send your request. Please check your connection and try again.",
+        "primaryButtonLabel": "Try again",
+        "secondaryButtonLabel": "Close"
+      }
+    }
+  }
+}

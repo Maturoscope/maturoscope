@@ -49,70 +49,105 @@ Este workflow construye automáticamente las imágenes Docker del monorepo de fo
 
 Ve a tu repositorio en GitHub → Settings → Secrets and variables → Actions
 
-### **Secrets para Production:**
+### **Secrets Compartidos:**
 ```
-PROD_DATABASE_URL=postgresql://user:pass@prod-host:5432/db
-PROD_JWT_SECRET=your-production-secret-key
-PROD_GOOGLE_MAPS_API_KEY=your-production-google-maps-key
-PROD_GATEWAY_URL=https://api.yourapp.com
+WORKFLOW_DISPATCH_TOKEN=ghp_xxxxxxxxxxxxx (Personal Access Token con permisos workflow + repo)
 ```
 
-### **Secrets para Staging (opcionales):**
+### **Secrets para Staging:**
 ```
-STAGING_DATABASE_URL=postgresql://user:pass@staging-host:5432/db
-STAGING_JWT_SECRET=your-staging-secret-key
+# Harbor Registry Staging
+HARBOR_USERNAME=your-staging-harbor-username
+HARBOR_PASSWORD=your-staging-harbor-password
+
+# App (Next.js) Staging
 STAGING_GOOGLE_MAPS_API_KEY=your-staging-google-maps-key
-STAGING_GATEWAY_URL=https://staging-api.yourapp.com
+STAGING_GATEWAY_URL=https://api.staging.yourapp.com
+STAGING_NEXT_SERVER_ACTIONS_ENCRYPTION_KEY=64-character-hex-string
+
+# Dashboard Staging
+STAGING_AUTH0_CLIENT_SECRET=your-staging-auth0-client-secret
+STAGING_AUTH0_SECRET=your-staging-auth0-secret
+STAGING_END_USER_URL=https://app.staging.yourapp.com
 ```
+
+### **Secrets para Production:**
+```
+# Harbor Registry Production
+PROD_HARBOR_USERNAME=your-production-harbor-username
+PROD_HARBOR_PASSWORD=your-production-harbor-password
+
+# App (Next.js) Production
+PROD_GOOGLE_MAPS_API_KEY=your-production-google-maps-key
+PROD_NEXT_PUBLIC_GATEWAY_URL=https://api.yourapp.com
+PROD_NEXT_SERVER_ACTIONS_ENCRYPTION_KEY=64-character-hex-string
+
+# Dashboard Production
+PROD_AUTH0_CLIENT_SECRET=your-production-auth0-client-secret
+PROD_AUTH0_SECRET=your-production-auth0-secret
+PROD_NEXT_PUBLIC_END_USER_URL=https://app.yourapp.com
+```
+
+### **Notas Importantes:**
+- `PROD_NEXT_SERVER_ACTIONS_ENCRYPTION_KEY` debe tener exactamente 64 caracteres hexadecimales (32 bytes)
+- `WORKFLOW_DISPATCH_TOKEN` es compartido entre staging y producción
+- Las credenciales de Harbor son diferentes para staging y producción
+- Staging usa registry: `bv630390.c1.de1.container-registry.ovh.net`
+- Production usa registry: `c8781u0i.eu-west-par.container-registry.ovh.net`
+
 
 ## 📦 Imágenes generadas
 
 **Nota:** Los nombres de repositorio se convierten automáticamente a minúsculas para cumplir con los requisitos de Docker.
 
-### **Staging:**
-- `ghcr.io/maturoscope/maturoscope/api:staging-{commit-sha}`
-- `ghcr.io/maturoscope/maturoscope/app:staging-{commit-sha}`
-- `ghcr.io/maturoscope/maturoscope/dashboard:staging-{commit-sha}`
+### **Staging (rama: develop, staging):**
+Registry: `bv630390.c1.de1.container-registry.ovh.net`
+- `bv630390.c1.de1.container-registry.ovh.net/maturoscope-api/api:staging-{timestamp}-{commit-sha}`
+- `bv630390.c1.de1.container-registry.ovh.net/maturoscope-app/app:staging-{timestamp}-{commit-sha}`
+- `bv630390.c1.de1.container-registry.ovh.net/maturoscope-dashboard/dashboard:staging-{timestamp}-{commit-sha}`
 
-### **Production:**
-- `ghcr.io/maturoscope/maturoscope/api:production-{commit-sha}` + `:latest`
-- `ghcr.io/maturoscope/maturoscope/app:production-{commit-sha}` + `:latest`
-- `ghcr.io/maturoscope/maturoscope/dashboard:production-{commit-sha}` + `:latest`
+### **Production (rama: main):**
+Registry: `c8781u0i.eu-west-par.container-registry.ovh.net`
+- `c8781u0i.eu-west-par.container-registry.ovh.net/maturoscope-api/api:prod-{timestamp}-{commit-sha}`
+- `c8781u0i.eu-west-par.container-registry.ovh.net/maturoscope-app/app:prod-{timestamp}-{commit-sha}`
+- `c8781u0i.eu-west-par.container-registry.ovh.net/maturoscope-dashboard/dashboard:prod-{timestamp}-{commit-sha}`
 
 ## 🎯 Uso de las imágenes
 
 ### **Pull de imágenes:**
 ```bash
 # Staging
-docker pull ghcr.io/maturoscope/maturoscope/api:staging-abc123
-docker pull ghcr.io/maturoscope/maturoscope/app:staging-abc123
-docker pull ghcr.io/maturoscope/maturoscope/dashboard:staging-abc123
+docker pull bv630390.c1.de1.container-registry.ovh.net/maturoscope-api/api:staging-20260118-120000-abc123
+docker pull bv630390.c1.de1.container-registry.ovh.net/maturoscope-app/app:staging-20260118-120000-abc123
+docker pull bv630390.c1.de1.container-registry.ovh.net/maturoscope-dashboard/dashboard:staging-20260118-120000-abc123
 
 # Production
-docker pull ghcr.io/maturoscope/maturoscope/api:latest
-docker pull ghcr.io/maturoscope/maturoscope/app:latest
-docker pull ghcr.io/maturoscope/maturoscope/dashboard:latest
+docker pull c8781u0i.eu-west-par.container-registry.ovh.net/maturoscope-api/api:prod-20260118-120000-abc123
+docker pull c8781u0i.eu-west-par.container-registry.ovh.net/maturoscope-app/app:prod-20260118-120000-abc123
+docker pull c8781u0i.eu-west-par.container-registry.ovh.net/maturoscope-dashboard/dashboard:prod-20260118-120000-abc123
 ```
 
 ### **Ejecutar contenedores:**
 ```bash
 # API
-docker run -p 8000:8000 ghcr.io/maturoscope/maturoscope/api:latest
+docker run -p 8000:8000 c8781u0i.eu-west-par.container-registry.ovh.net/maturoscope-api/api:prod-20260118-120000-abc123
 
 # App
-docker run -p 3000:3000 ghcr.io/maturoscope/maturoscope/app:latest
+docker run -p 3000:3000 c8781u0i.eu-west-par.container-registry.ovh.net/maturoscope-app/app:prod-20260118-120000-abc123
 
 # Dashboard
-docker run -p 3001:3001 ghcr.io/maturoscope/maturoscope/dashboard:latest
+docker run -p 3001:3001 c8781u0i.eu-west-par.container-registry.ovh.net/maturoscope-dashboard/dashboard:prod-20260118-120000-abc123
 ```
 
 ## 🔄 Triggers
 
 El workflow se ejecuta en:
-- ✅ Push a `main` → Build + Push Production
-- ✅ Push a `develop` → Build Staging
+- ✅ Push a `main` → Build + Push Production (Registry de producción)
+- ✅ Push a `develop` → Build Staging (Registry de staging)
+- ✅ Push a `staging` → Build Staging (Registry de staging)
 - ✅ Pull Request a `main` → Build Staging
 - ✅ Pull Request a `develop` → Build Staging
+- ✅ Pull Request a `staging` → Build Staging
 
 ## 📊 Monitoreo
 

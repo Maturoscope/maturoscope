@@ -1,0 +1,64 @@
+// Translations
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import EN from "./en.json";
+import FR from "./fr.json";
+
+const englishVariants = {
+  EN,
+  "EN-GB": EN,
+  "EN-US": EN,
+  "EN-AU": EN,
+  "EN-CA": EN,
+  "EN-NZ": EN,
+  "EN-IN": EN,
+  "EN-IE": EN,
+};
+
+const frenchVariants = {
+  FR,
+  "FR-FR": FR,
+  "FR-CA": FR,
+  "FR-BE": FR,
+  "FR-CH": FR,
+  "FR-LU": FR,
+  "FR-MC": FR,
+};
+
+const resources = {
+  ...englishVariants,
+  ...frenchVariants,
+  };
+
+export const enum Language {
+  EN = "EN",
+  FR = "FR",
+}
+
+export const dropdownLanguageList = [
+  {
+    key: Language.EN,
+    label: "English",
+  },
+  {
+    key: Language.FR,
+    label: "French",
+  },
+];
+
+i18n.use(initReactI18next).init({
+  resources,
+  lng: "EN",
+  fallbackLng: "EN",
+  interpolation: {
+    escapeValue: false,
+  },
+  returnEmptyString: false,
+  returnNull: false,
+  returnObjects: false,
+  missingKeyHandler: (lng, ns, key) => {
+    console.warn(`Missing translation key: ${key} in namespace: ${ns} for language: ${lng}`);
+  },
+});
+
+export default i18n;

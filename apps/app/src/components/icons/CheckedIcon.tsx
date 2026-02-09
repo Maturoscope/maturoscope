@@ -1,0 +1,56 @@
+import { Icon } from "@/components/common/Icon/Icon"
+import { cn } from "@/lib/utils"
+import { useId } from "react"
+
+interface CheckedIconProps extends React.SVGProps<SVGSVGElement> {
+  className?: string
+  accent?: boolean
+}
+
+export const CheckedIcon = ({
+  className,
+  accent = false,
+  ...props
+}: CheckedIconProps) => {
+  const maskId = useId()
+  const clipId = useId()
+
+  return (
+    <Icon
+      width={16}
+      height={16}
+      viewBox="0 0 16 16"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn(accent && "text-accent", className)}
+      {...props}
+    >
+      <mask id={maskId} fill="white">
+        <path d="M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z" />
+      </mask>
+      <path
+        d="M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z"
+        fill="currentColor"
+      />
+      <path
+        d="M8 16V15C4.13401 15 1 11.866 1 8H0H-1C-1 12.9706 3.02944 17 8 17V16ZM16 8H15C15 11.866 11.866 15 8 15V16V17C12.9706 17 17 12.9706 17 8H16ZM8 0V1C11.866 1 15 4.13401 15 8H16H17C17 3.02944 12.9706 -1 8 -1V0ZM8 0V-1C3.02944 -1 -1 3.02944 -1 8H0H1C1 4.13401 4.13401 1 8 1V0Z"
+        fill="currentColor"
+        mask={`url(#${maskId})`}
+      />
+      <g clipPath={`url(#${clipId})`}>
+        <path
+          d="M8.00033 11.3334C9.84127 11.3334 11.3337 9.84103 11.3337 8.00008C11.3337 6.15913 9.84127 4.66675 8.00033 4.66675C6.15938 4.66675 4.66699 6.15913 4.66699 8.00008C4.66699 9.84103 6.15938 11.3334 8.00033 11.3334Z"
+          fill="white"
+          stroke="white"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </g>
+      <defs>
+        <clipPath id={clipId}>
+          <rect width="8" height="8" fill="white" transform="translate(4 4)" />
+        </clipPath>
+      </defs>
+    </Icon>
+  )
+}
+
