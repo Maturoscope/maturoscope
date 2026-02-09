@@ -1,6 +1,7 @@
 # ---------------------------
 # BASE (common tools)
 # ---------------------------
+# Updated: 2026-02-09 - New production registry configuration
 FROM node:20-alpine AS base
 WORKDIR /app
 ENV NODE_ENV=production
