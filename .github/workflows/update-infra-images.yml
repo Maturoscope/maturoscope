@@ -55,7 +55,7 @@ jobs:
           # Determine paths and registry based on environment
           if [[ "$ENVIRONMENT" == "production" ]]; then
             FILE="infra/clusters/eu-west-par-prod/apps/api/overlays/production/kustomization.yaml"
-            IMAGE_NAME="c8781u0i.eu-west-par.container-registry.ovh.net/maturoscope-api/api"
+            IMAGE_NAME="tqgac9a3.gra7.container-registry.ovh.net/maturoscope-api/api"
             ENV_LABEL="production"
           else
             FILE="infra/clusters/de1-staging/apps/api/overlays/staging/kustomization.yaml"
@@ -177,7 +177,7 @@ jobs:
           # Determine paths and registry based on environment
           if [[ "$ENVIRONMENT" == "production" ]]; then
             FILE="infra/clusters/eu-west-par-prod/apps/dashboard/overlays/production/kustomization.yaml"
-            IMAGE_NAME="c8781u0i.eu-west-par.container-registry.ovh.net/maturoscope-dashboard/dashboard"
+            IMAGE_NAME="tqgac9a3.gra7.container-registry.ovh.net/maturoscope-dashboard/dashboard"
             ENV_LABEL="production"
           else
             FILE="infra/clusters/de1-staging/apps/dashboard/overlays/staging/kustomization.yaml"
@@ -298,7 +298,7 @@ jobs:
           # Determine paths and registry based on environment
           if [[ "$ENVIRONMENT" == "production" ]]; then
             FILE="infra/clusters/eu-west-par-prod/apps/web/overlays/production/kustomization.yaml"
-            IMAGE_NAME="c8781u0i.eu-west-par.container-registry.ovh.net/maturoscope-app/app"
+            IMAGE_NAME="tqgac9a3.gra7.container-registry.ovh.net/maturoscope-app/app"
             ENV_LABEL="production"
           else
             FILE="infra/clusters/de1-staging/apps/web/overlays/staging/kustomization.yaml"

@@ -18,7 +18,7 @@ permissions:
 
 env:
   STAGING_REGISTRY: bv630390.c1.de1.container-registry.ovh.net
-  PROD_REGISTRY: c8781u0i.eu-west-par.container-registry.ovh.net
+  PROD_REGISTRY: tqgac9a3.gra7.container-registry.ovh.net
 
 jobs:
   check-changes:
