@@ -17,6 +17,10 @@ on:
         description: 'Web image tag to update'
         required: false
         default: ''
+      environment:
+        description: 'Environment (production or staging)'
+        required: false
+        default: 'staging'
 
 jobs:
   update-infra-api:
@@ -41,11 +45,28 @@ jobs:
       - name: Update kustomize image tag (API)
         env:
           TAG: ${{ github.event.inputs.api_tag != '' && github.event.inputs.api_tag || github.event.client_payload.api_tag }}
-          FILE: infra/clusters/de1-staging/apps/api/overlays/staging/kustomization.yaml
-          IMAGE_NAME: bv630390.c1.de1.container-registry.ovh.net/maturoscope-api/api
-          APP_NAME: api
+          ENVIRONMENT: ${{ github.event.inputs.environment != '' && github.event.inputs.environment || github.event.client_payload.environment || 'staging' }}
         run: |
           set -euo pipefail
+          
+          echo "🔍 Environment: $ENVIRONMENT"
+          echo "🏷️ Tag: $TAG"
+          
+          # Determine paths and registry based on environment
+          if [[ "$ENVIRONMENT" == "production" ]]; then
+            FILE="infra/clusters/eu-west-par-prod/apps/api/overlays/production/kustomization.yaml"
+            IMAGE_NAME="tqgac9a3.gra7.container-registry.ovh.net/maturoscope-api/api"
+            ENV_LABEL="production"
+          else
+            FILE="infra/clusters/de1-staging/apps/api/overlays/staging/kustomization.yaml"
+            IMAGE_NAME="bv630390.c1.de1.container-registry.ovh.net/maturoscope-api/api"
+            ENV_LABEL="staging"
+          fi
+          
+          APP_NAME="api"
+          
+          echo "📁 File: $FILE"
+          echo "🖼️ Image: $IMAGE_NAME"
           
           # 1) Si no existe, crear un kustomization.yaml válido y mínimo
           if [ ! -f "$FILE" ]; then
@@ -76,7 +97,7 @@ jobs:
           echo "Resultado final de $FILE:"
           cat "$FILE"
           
-          # 4) Git operations with proper conflict handling (API)
+          # 5) Git operations with proper conflict handling (API)
           cd infra
           git config user.name "ci-bot"
           git config user.email "ci@maturoscope.io"
@@ -109,7 +130,7 @@ jobs:
               break
             fi
             
-            git commit -m "${APP_NAME}(staging): bump image to ${TAG}"
+            git commit -m "${APP_NAME}(${ENV_LABEL}): bump image to ${TAG}"
             
             if git push origin main; then
               echo "Successfully pushed changes"
@@ -146,11 +167,28 @@ jobs:
       - name: Update kustomize image tag (Dashboard)
         env:
           TAG: ${{ github.event.inputs.dashboard_tag != '' && github.event.inputs.dashboard_tag || github.event.client_payload.dashboard_tag }}
-          FILE: infra/clusters/de1-staging/apps/dashboard/overlays/staging/kustomization.yaml
-          IMAGE_NAME: bv630390.c1.de1.container-registry.ovh.net/maturoscope-dashboard/dashboard
-          APP_NAME: dashboard
+          ENVIRONMENT: ${{ github.event.inputs.environment != '' && github.event.inputs.environment || github.event.client_payload.environment || 'staging' }}
         run: |
           set -euo pipefail
+          
+          echo "🔍 Environment: $ENVIRONMENT"
+          echo "🏷️ Tag: $TAG"
+          
+          # Determine paths and registry based on environment
+          if [[ "$ENVIRONMENT" == "production" ]]; then
+            FILE="infra/clusters/eu-west-par-prod/apps/dashboard/overlays/production/kustomization.yaml"
+            IMAGE_NAME="tqgac9a3.gra7.container-registry.ovh.net/maturoscope-dashboard/dashboard"
+            ENV_LABEL="production"
+          else
+            FILE="infra/clusters/de1-staging/apps/dashboard/overlays/staging/kustomization.yaml"
+            IMAGE_NAME="bv630390.c1.de1.container-registry.ovh.net/maturoscope-dashboard/dashboard"
+            ENV_LABEL="staging"
+          fi
+          
+          APP_NAME="dashboard"
+          
+          echo "📁 File: $FILE"
+          echo "🖼️ Image: $IMAGE_NAME"
           
           # 1) Si no existe, crear un kustomization.yaml válido y mínimo
           if [ ! -f "$FILE" ]; then
@@ -181,7 +219,7 @@ jobs:
           echo "Resultado final de $FILE:"
           cat "$FILE"
           
-          # 4) Git operations with proper conflict handling (Dashboard)
+          # 5) Git operations with proper conflict handling (Dashboard)
           cd infra
           git config user.name "ci-bot"
           git config user.email "ci@maturoscope.io"
@@ -214,7 +252,7 @@ jobs:
               break
             fi
             
-            git commit -m "${APP_NAME}(staging): bump image to ${TAG}"
+            git commit -m "${APP_NAME}(${ENV_LABEL}): bump image to ${TAG}"
             
             if git push origin main; then
               echo "Successfully pushed changes"
@@ -250,11 +288,28 @@ jobs:
       - name: Update kustomize image tag (Web)
         env:
           TAG: ${{ github.event.inputs.web_tag != '' && github.event.inputs.web_tag || github.event.client_payload.web_tag }}
-          FILE: infra/clusters/de1-staging/apps/web/overlays/staging/kustomization.yaml
-          IMAGE_NAME: bv630390.c1.de1.container-registry.ovh.net/maturoscope-app/app
-          APP_NAME: web
+          ENVIRONMENT: ${{ github.event.inputs.environment != '' && github.event.inputs.environment || github.event.client_payload.environment || 'staging' }}
         run: |
           set -euo pipefail
+          
+          echo "🔍 Environment: $ENVIRONMENT"
+          echo "🏷️ Tag: $TAG"
+          
+          # Determine paths and registry based on environment
+          if [[ "$ENVIRONMENT" == "production" ]]; then
+            FILE="infra/clusters/eu-west-par-prod/apps/web/overlays/production/kustomization.yaml"
+            IMAGE_NAME="tqgac9a3.gra7.container-registry.ovh.net/maturoscope-app/app"
+            ENV_LABEL="production"
+          else
+            FILE="infra/clusters/de1-staging/apps/web/overlays/staging/kustomization.yaml"
+            IMAGE_NAME="bv630390.c1.de1.container-registry.ovh.net/maturoscope-app/app"
+            ENV_LABEL="staging"
+          fi
+          
+          APP_NAME="web"
+          
+          echo "📁 File: $FILE"
+          echo "🖼️ Image: $IMAGE_NAME"
           
           # 1) Si no existe, crear un kustomization.yaml válido y mínimo
           if [ ! -f "$FILE" ]; then
@@ -285,7 +340,7 @@ jobs:
           echo "Resultado final de $FILE:"
           cat "$FILE"
           
-          # 4) Git operations with proper conflict handling (Web)
+          # 5) Git operations with proper conflict handling (Web)
           cd infra
           git config user.name "ci-bot"
           git config user.email "ci@maturoscope.io"
@@ -318,7 +373,7 @@ jobs:
               break
             fi
             
-            git commit -m "${APP_NAME}(staging): bump image to ${TAG}"
+            git commit -m "${APP_NAME}(${ENV_LABEL}): bump image to ${TAG}"
             
             if git push origin main; then
               echo "Successfully pushed changes"
