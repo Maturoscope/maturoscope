@@ -28,7 +28,7 @@ import { SchemaInitService } from './common/schema-init/schema-init.service';
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      synchronize: process.env.NODE_ENV !== 'production', // disable in production
+      synchronize: false, // Always false - using migrations instead
       extra: {
         options: '-c timezone=Europe/Paris',
         max: 20,

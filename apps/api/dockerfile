@@ -97,5 +97,5 @@ USER app
 # Exposed port
 EXPOSE 8000
 
-# Run compiled Nest (Node.js only, no Yarn)
-CMD ["node", "dist/main.js"]
+# Run migrations and then start the application
+CMD ["sh", "-c", "node dist/run-migrations.js && node dist/main.js"]
