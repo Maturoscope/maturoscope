@@ -34,13 +34,18 @@ jobs:
         with:
           repository: Maturoscope/maturoscope-infra
           token: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
-          path: infra
+          fetch-depth: 0
 
-      - name: Install yq (CLI)
+      - name: Install yq
         run: |
           sudo curl -L "https://github.com/mikefarah/yq/releases/download/v4.44.3/yq_linux_amd64" -o /usr/local/bin/yq
           sudo chmod +x /usr/local/bin/yq
           yq --version
+
+      - name: Configure Git
+        run: |
+          git config user.name "ci-bot"
+          git config user.email "ci@maturoscope.io"
 
       - name: Update kustomize image tag (API)
         env:
@@ -48,9 +53,6 @@ jobs:
           ENVIRONMENT: ${{ github.event.inputs.environment != '' && github.event.inputs.environment || github.event.client_payload.environment || 'staging' }}
         run: |
           set -euo pipefail
-          
-          # ✅ CRÍTICO: cd infra PRIMERO
-          cd infra
           
           echo "🔍 Environment: $ENVIRONMENT"
           echo "🏷️ Tag: $TAG"
@@ -67,83 +69,90 @@ jobs:
           fi
           
           APP_NAME="api"
-          
           echo "📁 File: $FILE"
           echo "🖼️ Image: $IMAGE_NAME"
           
           # Verify file exists
           if [ ! -f "$FILE" ]; then
-            echo "❌ ERROR: File $FILE does not exist in infra repo!"
+            echo "❌ ERROR: File $FILE does not exist!"
             exit 1
           fi
           
-          # Show current state
           echo "📄 Current state:"
           cat "$FILE"
-          
-          # Update image tag using yq
           echo ""
-          echo "🔧 Updating image tag..."
           
-          # If image exists in array, update the tag
+          # Update or add image tag
           if yq -e ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null 2>&1; then
-            echo "   Image found, updating tag..."
+            echo "🔧 Image found, updating tag..."
             yq -i "(.images[] | select(.name == \"$IMAGE_NAME\") | .newTag) = \"$TAG\"" "$FILE"
           else
-            # If doesn't exist, add it
-            echo "   Image not found, adding it..."
+            echo "➕ Image not found, adding it..."
             yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
           fi
           
           echo ""
           echo "✅ Updated state:"
           cat "$FILE"
+
+      - name: Commit and Push with retry
+        env:
+          TAG: ${{ github.event.inputs.api_tag != '' && github.event.inputs.api_tag || github.event.client_payload.api_tag }}
+          ENVIRONMENT: ${{ github.event.inputs.environment != '' && github.event.inputs.environment || github.event.client_payload.environment || 'staging' }}
+        run: |
+          set -euo pipefail
           
-          # Git operations with proper conflict handling
-          git config user.name "ci-bot"
-          git config user.email "ci@maturoscope.io"
-          git config pull.rebase true
+          if [[ "$ENVIRONMENT" == "production" ]]; then
+            FILE="clusters/gra-prod/apps/api/overlays/production/kustomization.yaml"
+            ENV_LABEL="production"
+          else
+            FILE="clusters/de1-staging/apps/api/overlays/staging/kustomization.yaml"
+            ENV_LABEL="staging"
+          fi
           
-          # Retry logic for git operations
+          APP_NAME="api"
           MAX_RETRIES=5
           RETRY_COUNT=0
           
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo ""
-            echo "📤 API - Attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            echo "📤 $APP_NAME - Attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
             
-            # Pull latest changes first
-            if git pull --rebase origin main; then
-              echo "   ✅ Successfully pulled and rebased"
-            else
-              echo "   ⚠️  Rebase conflict, resolving..."
+            # Pull latest changes BEFORE making any local changes
+            if ! git pull --rebase origin main; then
+              echo "⚠️  Pull failed, resetting and retrying..."
               git rebase --abort || true
-              git pull --rebase origin main
+              git fetch origin main
+              git reset --hard origin/main
+              sleep $((RETRY_COUNT + 1))
+              continue
             fi
             
-            # Stage changes
-            git add "$FILE"
+            # Re-apply changes after pull (in case file changed)
+            if yq -e ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null 2>&1; then
+              yq -i "(.images[] | select(.name == \"$IMAGE_NAME\") | .newTag) = \"$TAG\"" "$FILE"
+            else
+              yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
+            fi
             
             # Check if there are changes to commit
-            if git diff --staged --quiet; then
-              echo "   ℹ️  No changes to commit (tag already up to date)"
+            if git diff --quiet; then
+              echo "✅ No changes to commit (already up to date)"
               exit 0
             fi
             
-            # Commit
+            # Add and commit
+            git add "$FILE"
             git commit -m "${APP_NAME}(${ENV_LABEL}): bump image to ${TAG}"
             
-            # Push
+            # Try to push
             if git push origin main; then
-              echo "   ✅ Successfully pushed changes"
+              echo "✅ Successfully pushed changes"
               exit 0
             else
-              echo "   ⚠️  Push failed, retrying..."
-              git reset HEAD~1  # Undo commit to retry
+              echo "⚠️  Push failed, will retry..."
+              git reset --soft HEAD~1
               RETRY_COUNT=$((RETRY_COUNT + 1))
-              if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-                sleep $((RETRY_COUNT * 2))  # Exponential backoff
-              fi
+              sleep $((RETRY_COUNT * 2))
             fi
           done
           
@@ -156,14 +165,23 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout infra repo
+        uses: actions/checkout@v4
         with:
           repository: Maturoscope/maturoscope-infra
           token: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
-          path: infra
-      - run: |
+          fetch-depth: 0
+
+      - name: Install yq
+        run: |
           sudo curl -L "https://github.com/mikefarah/yq/releases/download/v4.44.3/yq_linux_amd64" -o /usr/local/bin/yq
           sudo chmod +x /usr/local/bin/yq
+
+      - name: Configure Git
+        run: |
+          git config user.name "ci-bot"
+          git config user.email "ci@maturoscope.io"
+
       - name: Update kustomize image tag (Dashboard)
         env:
           TAG: ${{ github.event.inputs.dashboard_tag != '' && github.event.inputs.dashboard_tag || github.event.client_payload.dashboard_tag }}
@@ -171,13 +189,9 @@ jobs:
         run: |
           set -euo pipefail
           
-          # ✅ CRÍTICO: cd infra PRIMERO
-          cd infra
-          
           echo "🔍 Environment: $ENVIRONMENT"
           echo "🏷️ Tag: $TAG"
           
-          # Determine paths and registry based on environment
           if [[ "$ENVIRONMENT" == "production" ]]; then
             FILE="clusters/gra-prod/apps/dashboard/overlays/production/kustomization.yaml"
             IMAGE_NAME="tqgac9a3.gra7.container-registry.ovh.net/dashboard/dashboard"
@@ -189,83 +203,85 @@ jobs:
           fi
           
           APP_NAME="dashboard"
-          
           echo "📁 File: $FILE"
           echo "🖼️ Image: $IMAGE_NAME"
           
-          # Verify file exists
           if [ ! -f "$FILE" ]; then
-            echo "❌ ERROR: File $FILE does not exist in infra repo!"
+            echo "❌ ERROR: File $FILE does not exist!"
             exit 1
           fi
           
-          # Show current state
           echo "📄 Current state:"
           cat "$FILE"
-          
-          # Update image tag using yq
           echo ""
-          echo "🔧 Updating image tag..."
           
-          # If image exists in array, update the tag
           if yq -e ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null 2>&1; then
-            echo "   Image found, updating tag..."
+            echo "🔧 Image found, updating tag..."
             yq -i "(.images[] | select(.name == \"$IMAGE_NAME\") | .newTag) = \"$TAG\"" "$FILE"
           else
-            # If doesn't exist, add it
-            echo "   Image not found, adding it..."
+            echo "➕ Image not found, adding it..."
             yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
           fi
           
           echo ""
           echo "✅ Updated state:"
           cat "$FILE"
+
+      - name: Commit and Push with retry
+        env:
+          TAG: ${{ github.event.inputs.dashboard_tag != '' && github.event.inputs.dashboard_tag || github.event.client_payload.dashboard_tag }}
+          ENVIRONMENT: ${{ github.event.inputs.environment != '' && github.event.inputs.environment || github.event.client_payload.environment || 'staging' }}
+        run: |
+          set -euo pipefail
           
-          # Git operations with proper conflict handling
-          git config user.name "ci-bot"
-          git config user.email "ci@maturoscope.io"
-          git config pull.rebase true
+          if [[ "$ENVIRONMENT" == "production" ]]; then
+            FILE="clusters/gra-prod/apps/dashboard/overlays/production/kustomization.yaml"
+            IMAGE_NAME="tqgac9a3.gra7.container-registry.ovh.net/dashboard/dashboard"
+            ENV_LABEL="production"
+          else
+            FILE="clusters/de1-staging/apps/dashboard/overlays/staging/kustomization.yaml"
+            IMAGE_NAME="bv630390.c1.de1.container-registry.ovh.net/maturoscope-dashboard/dashboard"
+            ENV_LABEL="staging"
+          fi
           
-          # Retry logic for git operations
+          APP_NAME="dashboard"
           MAX_RETRIES=5
           RETRY_COUNT=0
           
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo ""
-            echo "📤 Dashboard - Attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            echo "📤 $APP_NAME - Attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
             
-            # Pull latest changes first
-            if git pull --rebase origin main; then
-              echo "   ✅ Successfully pulled and rebased"
-            else
-              echo "   ⚠️  Rebase conflict, resolving..."
+            if ! git pull --rebase origin main; then
+              echo "⚠️  Pull failed, resetting and retrying..."
               git rebase --abort || true
-              git pull --rebase origin main
+              git fetch origin main
+              git reset --hard origin/main
+              sleep $((RETRY_COUNT + 1))
+              continue
             fi
             
-            # Stage changes
-            git add "$FILE"
+            if yq -e ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null 2>&1; then
+              yq -i "(.images[] | select(.name == \"$IMAGE_NAME\") | .newTag) = \"$TAG\"" "$FILE"
+            else
+              yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
+            fi
             
-            # Check if there are changes to commit
-            if git diff --staged --quiet; then
-              echo "   ℹ️  No changes to commit (tag already up to date)"
+            if git diff --quiet; then
+              echo "✅ No changes to commit (already up to date)"
               exit 0
             fi
             
-            # Commit
+            git add "$FILE"
             git commit -m "${APP_NAME}(${ENV_LABEL}): bump image to ${TAG}"
             
-            # Push
             if git push origin main; then
-              echo "   ✅ Successfully pushed changes"
+              echo "✅ Successfully pushed changes"
               exit 0
             else
-              echo "   ⚠️  Push failed, retrying..."
-              git reset HEAD~1  # Undo commit to retry
+              echo "⚠️  Push failed, will retry..."
+              git reset --soft HEAD~1
               RETRY_COUNT=$((RETRY_COUNT + 1))
-              if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-                sleep $((RETRY_COUNT * 2))  # Exponential backoff
-              fi
+              sleep $((RETRY_COUNT * 2))
             fi
           done
           
@@ -278,14 +294,23 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout infra repo
+        uses: actions/checkout@v4
         with:
           repository: Maturoscope/maturoscope-infra
           token: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
-          path: infra
-      - run: |
+          fetch-depth: 0
+
+      - name: Install yq
+        run: |
           sudo curl -L "https://github.com/mikefarah/yq/releases/download/v4.44.3/yq_linux_amd64" -o /usr/local/bin/yq
           sudo chmod +x /usr/local/bin/yq
+
+      - name: Configure Git
+        run: |
+          git config user.name "ci-bot"
+          git config user.email "ci@maturoscope.io"
+
       - name: Update kustomize image tag (Web)
         env:
           TAG: ${{ github.event.inputs.web_tag != '' && github.event.inputs.web_tag || github.event.client_payload.web_tag }}
@@ -293,13 +318,9 @@ jobs:
         run: |
           set -euo pipefail
           
-          # ✅ CRÍTICO: cd infra PRIMERO
-          cd infra
-          
           echo "🔍 Environment: $ENVIRONMENT"
           echo "🏷️ Tag: $TAG"
           
-          # Determine paths and registry based on environment
           if [[ "$ENVIRONMENT" == "production" ]]; then
             FILE="clusters/gra-prod/apps/web/overlays/production/kustomization.yaml"
             IMAGE_NAME="tqgac9a3.gra7.container-registry.ovh.net/app/app"
@@ -311,83 +332,85 @@ jobs:
           fi
           
           APP_NAME="web"
-          
           echo "📁 File: $FILE"
           echo "🖼️ Image: $IMAGE_NAME"
           
-          # Verify file exists
           if [ ! -f "$FILE" ]; then
-            echo "❌ ERROR: File $FILE does not exist in infra repo!"
+            echo "❌ ERROR: File $FILE does not exist!"
             exit 1
           fi
           
-          # Show current state
           echo "📄 Current state:"
           cat "$FILE"
-          
-          # Update image tag using yq
           echo ""
-          echo "🔧 Updating image tag..."
           
-          # If image exists in array, update the tag
           if yq -e ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null 2>&1; then
-            echo "   Image found, updating tag..."
+            echo "🔧 Image found, updating tag..."
             yq -i "(.images[] | select(.name == \"$IMAGE_NAME\") | .newTag) = \"$TAG\"" "$FILE"
           else
-            # If doesn't exist, add it
-            echo "   Image not found, adding it..."
+            echo "➕ Image not found, adding it..."
             yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
           fi
           
           echo ""
           echo "✅ Updated state:"
           cat "$FILE"
+
+      - name: Commit and Push with retry
+        env:
+          TAG: ${{ github.event.inputs.web_tag != '' && github.event.inputs.web_tag || github.event.client_payload.web_tag }}
+          ENVIRONMENT: ${{ github.event.inputs.environment != '' && github.event.inputs.environment || github.event.client_payload.environment || 'staging' }}
+        run: |
+          set -euo pipefail
           
-          # Git operations with proper conflict handling
-          git config user.name "ci-bot"
-          git config user.email "ci@maturoscope.io"
-          git config pull.rebase true
+          if [[ "$ENVIRONMENT" == "production" ]]; then
+            FILE="clusters/gra-prod/apps/web/overlays/production/kustomization.yaml"
+            IMAGE_NAME="tqgac9a3.gra7.container-registry.ovh.net/app/app"
+            ENV_LABEL="production"
+          else
+            FILE="clusters/de1-staging/apps/web/overlays/staging/kustomization.yaml"
+            IMAGE_NAME="bv630390.c1.de1.container-registry.ovh.net/maturoscope-app/app"
+            ENV_LABEL="staging"
+          fi
           
-          # Retry logic for git operations
+          APP_NAME="web"
           MAX_RETRIES=5
           RETRY_COUNT=0
           
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo ""
-            echo "📤 Web - Attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            echo "📤 $APP_NAME - Attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
             
-            # Pull latest changes first
-            if git pull --rebase origin main; then
-              echo "   ✅ Successfully pulled and rebased"
-            else
-              echo "   ⚠️  Rebase conflict, resolving..."
+            if ! git pull --rebase origin main; then
+              echo "⚠️  Pull failed, resetting and retrying..."
               git rebase --abort || true
-              git pull --rebase origin main
+              git fetch origin main
+              git reset --hard origin/main
+              sleep $((RETRY_COUNT + 1))
+              continue
             fi
             
-            # Stage changes
-            git add "$FILE"
+            if yq -e ".images[] | select(.name == \"$IMAGE_NAME\")" "$FILE" >/dev/null 2>&1; then
+              yq -i "(.images[] | select(.name == \"$IMAGE_NAME\") | .newTag) = \"$TAG\"" "$FILE"
+            else
+              yq -i ".images += [{\"name\": \"$IMAGE_NAME\", \"newTag\": \"$TAG\"}]" "$FILE"
+            fi
             
-            # Check if there are changes to commit
-            if git diff --staged --quiet; then
-              echo "   ℹ️  No changes to commit (tag already up to date)"
+            if git diff --quiet; then
+              echo "✅ No changes to commit (already up to date)"
               exit 0
             fi
             
-            # Commit
+            git add "$FILE"
             git commit -m "${APP_NAME}(${ENV_LABEL}): bump image to ${TAG}"
             
-            # Push
             if git push origin main; then
-              echo "   ✅ Successfully pushed changes"
+              echo "✅ Successfully pushed changes"
               exit 0
             else
-              echo "   ⚠️  Push failed, retrying..."
-              git reset HEAD~1  # Undo commit to retry
+              echo "⚠️  Push failed, will retry..."
+              git reset --soft HEAD~1
               RETRY_COUNT=$((RETRY_COUNT + 1))
-              if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-                sleep $((RETRY_COUNT * 2))  # Exponential backoff
-              fi
+              sleep $((RETRY_COUNT * 2))
             fi
           done
           
