@@ -7,6 +7,6 @@ import { ValidRoles } from '../auth-module/interfaces/valid-roles';
 export const META_ROLES = 'roles';
 
 export function Auth(...roles: ValidRoles[]) {
-  const guardToUse = process.env.AUTH_DEBUG !== 'false' ? JwtLoggingAuthGuard : (AuthGuard() as any);
+  const guardToUse = process.env.AUTH_DEBUG !== 'false' ? JwtLoggingAuthGuard : AuthGuard('jwt');
   return applyDecorators(SetMetadata(META_ROLES, roles), UseGuards(guardToUse, AuthRoleGuard));
 }
