@@ -155,12 +155,15 @@ export async function POST(req: NextRequest) {
     const response = NextResponse.json({ message: 'Registration completed successfully' }, { status: 200 });
 
     if (loginData.access_token) {
+      const isProduction = process.env.NODE_ENV === 'production';
+      const isHttps = process.env.NEXT_PUBLIC_AUTH0_BASE_URL?.startsWith('https://');
+      
       response.cookies.set({
         name: 'token',
         value: loginData.access_token,
         httpOnly: true,
-        sameSite: 'strict',
-        secure: true,
+        sameSite: 'lax',
+        secure: isProduction && isHttps ? true : false,
         path: '/',
         maxAge: typeof loginData.expires_in === 'number' ? loginData.expires_in : 60 * 60 * 24,
       });
