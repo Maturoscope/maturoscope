@@ -54,11 +54,11 @@ jobs:
           
           # Determine paths and registry based on environment
           if [[ "$ENVIRONMENT" == "production" ]]; then
-            FILE="infra/clusters/eu-west-par-prod/apps/api/overlays/production/kustomization.yaml"
+            FILE="clusters/gra-prod/apps/api/overlays/production/kustomization.yaml"
             IMAGE_NAME="tqgac9a3.gra7.container-registry.ovh.net/api/api"
             ENV_LABEL="production"
           else
-            FILE="infra/clusters/de1-staging/apps/api/overlays/staging/kustomization.yaml"
+            FILE="clusters/de1-staging/apps/api/overlays/staging/kustomization.yaml"
             IMAGE_NAME="bv630390.c1.de1.container-registry.ovh.net/maturoscope-api/api"
             ENV_LABEL="staging"
           fi
@@ -104,7 +104,7 @@ jobs:
           git config pull.rebase true
           
           # Add changes first, then pull
-          git add "${FILE#infra/}"
+          git add "${FILE}"
           
           # Retry logic for git operations
           MAX_RETRIES=5
@@ -176,11 +176,11 @@ jobs:
           
           # Determine paths and registry based on environment
           if [[ "$ENVIRONMENT" == "production" ]]; then
-            FILE="infra/clusters/eu-west-par-prod/apps/dashboard/overlays/production/kustomization.yaml"
+            FILE="clusters/gra-prod/apps/dashboard/overlays/production/kustomization.yaml"
             IMAGE_NAME="tqgac9a3.gra7.container-registry.ovh.net/dashboard/dashboard"
             ENV_LABEL="production"
           else
-            FILE="infra/clusters/de1-staging/apps/dashboard/overlays/staging/kustomization.yaml"
+            FILE="clusters/de1-staging/apps/dashboard/overlays/staging/kustomization.yaml"
             IMAGE_NAME="bv630390.c1.de1.container-registry.ovh.net/maturoscope-dashboard/dashboard"
             ENV_LABEL="staging"
           fi
@@ -226,7 +226,7 @@ jobs:
           git config pull.rebase true
           
           # Add changes first, then pull
-          git add "${FILE#infra/}"
+          git add "${FILE}"
           
           # Retry logic for git operations
           MAX_RETRIES=5
@@ -297,11 +297,11 @@ jobs:
           
           # Determine paths and registry based on environment
           if [[ "$ENVIRONMENT" == "production" ]]; then
-            FILE="infra/clusters/eu-west-par-prod/apps/web/overlays/production/kustomization.yaml"
+            FILE="clusters/gra-prod/apps/web/overlays/production/kustomization.yaml"
             IMAGE_NAME="tqgac9a3.gra7.container-registry.ovh.net/app/app"
             ENV_LABEL="production"
           else
-            FILE="infra/clusters/de1-staging/apps/web/overlays/staging/kustomization.yaml"
+            FILE="clusters/de1-staging/apps/web/overlays/staging/kustomization.yaml"
             IMAGE_NAME="bv630390.c1.de1.container-registry.ovh.net/maturoscope-app/app"
             ENV_LABEL="staging"
           fi
@@ -347,7 +347,7 @@ jobs:
           git config pull.rebase true
           
           # Add changes first, then pull
-          git add "${FILE#infra/}"
+          git add "${FILE}"
           
           # Retry logic for git operations
           MAX_RETRIES=5
