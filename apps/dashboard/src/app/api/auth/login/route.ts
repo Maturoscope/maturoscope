@@ -93,11 +93,7 @@ export const POST = async (req: Request) => {
     }
 
     const responseHeaders = new Headers();
-    const isProduction = process.env.NODE_ENV === 'production';
-    const isHttps = process.env.NEXT_PUBLIC_AUTH0_BASE_URL?.startsWith('https://');
-    const secureFlag = isProduction && isHttps ? 'Secure; ' : '';
-    
-    responseHeaders.append('Set-Cookie', `token=${data.access_token}; Path=/; HttpOnly; ${secureFlag}SameSite=Lax`);
+    responseHeaders.append('Set-Cookie', `token=${data.access_token}; Path=/; HttpOnly; Secure; SameSite=Strict`);
 
     return new NextResponse(JSON.stringify({ message: 'Login successfully' }), {
       status: 200,
