@@ -20,6 +20,12 @@ export interface EncryptedData {
  */
 export const encryptPassword = async (password: string, email: string): Promise<EncryptedData | string> => {
   try {
+    // Check if Web Crypto API is available (requires HTTPS in production)
+    if (!crypto || !crypto.subtle) {
+      console.warn("Web Crypto API not available (requires HTTPS). Using plain password.");
+      return password;
+    }
+    
     // Generate a deterministic key based on email + session info
     const keyMaterial = email + ENCRYPTION_KEY_SUFFIX;
     const encoder = new TextEncoder();
@@ -81,6 +87,12 @@ export const decryptPassword = async (encryptedData: EncryptedData | string, ema
     // If it's a plain string, return as-is (fallback case)
     if (typeof encryptedData === 'string') {
       return encryptedData;
+    }
+
+    // Check if Web Crypto API is available (requires HTTPS in production)
+    if (!crypto || !crypto.subtle) {
+      console.warn("Web Crypto API not available (requires HTTPS). Cannot decrypt.");
+      return '';
     }
 
     // Reconstruct the same key used in encryption
