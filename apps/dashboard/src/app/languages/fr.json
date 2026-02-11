@@ -535,7 +535,7 @@
           }
         },
         "SECONDARY_CONTACT": {
-          "TITLE": "Contact secondaire",
+          "TITLE": "Contact secondaire (optionnel)",
           "FIRST_NAME": {
             "LABEL": "Prénom",
             "PLACEHOLDER": "Entrez le prénom"

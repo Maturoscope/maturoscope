@@ -274,9 +274,14 @@ export function useServiceForm(serviceId?: string) {
       }
     }
 
-    // Secondary Contact fields
+    // Secondary Contact fields (optional BUT if any field is filled, all must be filled)
     if (field === 'secondaryContactFirstName') {
-      if (!formData.secondaryContactFirstName.trim()) {
+      const hasAnySecondaryContact = 
+        formData.secondaryContactFirstName.trim() || 
+        formData.secondaryContactLastName.trim() || 
+        formData.secondaryContactEmail.trim();
+
+      if (hasAnySecondaryContact && !formData.secondaryContactFirstName.trim()) {
         newErrors.secondaryContactFirstName = t('MODAL.ERRORS.FIRST_NAME_REQUIRED');
       } else {
         delete newErrors.secondaryContactFirstName;
@@ -284,7 +289,12 @@ export function useServiceForm(serviceId?: string) {
     }
 
     if (field === 'secondaryContactLastName') {
-      if (!formData.secondaryContactLastName.trim()) {
+      const hasAnySecondaryContact = 
+        formData.secondaryContactFirstName.trim() || 
+        formData.secondaryContactLastName.trim() || 
+        formData.secondaryContactEmail.trim();
+
+      if (hasAnySecondaryContact && !formData.secondaryContactLastName.trim()) {
         newErrors.secondaryContactLastName = t('MODAL.ERRORS.LAST_NAME_REQUIRED');
       } else {
         delete newErrors.secondaryContactLastName;
@@ -292,10 +302,19 @@ export function useServiceForm(serviceId?: string) {
     }
 
     if (field === 'secondaryContactEmail') {
-      if (!formData.secondaryContactEmail.trim()) {
-        newErrors.secondaryContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
-      } else if (!isValidEmail(formData.secondaryContactEmail)) {
-        newErrors.secondaryContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
+      const hasAnySecondaryContact = 
+        formData.secondaryContactFirstName.trim() || 
+        formData.secondaryContactLastName.trim() || 
+        formData.secondaryContactEmail.trim();
+
+      if (hasAnySecondaryContact) {
+        if (!formData.secondaryContactEmail.trim()) {
+          newErrors.secondaryContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
+        } else if (!isValidEmail(formData.secondaryContactEmail)) {
+          newErrors.secondaryContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
+        } else {
+          delete newErrors.secondaryContactEmail;
+        }
       } else {
         delete newErrors.secondaryContactEmail;
       }
@@ -348,6 +367,7 @@ export function useServiceForm(serviceId?: string) {
   const validateStep3 = (): boolean => {
     const newErrors: Record<string, string> = {};
 
+    // Main Contact is required
     if (!formData.mainContactFirstName.trim()) {
       newErrors.mainContactFirstName = t('MODAL.ERRORS.FIRST_NAME_REQUIRED');
     }
@@ -360,16 +380,25 @@ export function useServiceForm(serviceId?: string) {
       newErrors.mainContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
     }
 
-    if (!formData.secondaryContactFirstName.trim()) {
-      newErrors.secondaryContactFirstName = t('MODAL.ERRORS.FIRST_NAME_REQUIRED');
-    }
-    if (!formData.secondaryContactLastName.trim()) {
-      newErrors.secondaryContactLastName = t('MODAL.ERRORS.LAST_NAME_REQUIRED');
-    }
-    if (!formData.secondaryContactEmail.trim()) {
-      newErrors.secondaryContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
-    } else if (!isValidEmail(formData.secondaryContactEmail)) {
-      newErrors.secondaryContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
+    // Secondary Contact is optional BUT if any field is filled, all must be filled
+    const hasAnySecondaryContact = 
+      formData.secondaryContactFirstName.trim() || 
+      formData.secondaryContactLastName.trim() || 
+      formData.secondaryContactEmail.trim();
+
+    if (hasAnySecondaryContact) {
+      // If user started filling secondary contact, all fields are required
+      if (!formData.secondaryContactFirstName.trim()) {
+        newErrors.secondaryContactFirstName = t('MODAL.ERRORS.FIRST_NAME_REQUIRED');
+      }
+      if (!formData.secondaryContactLastName.trim()) {
+        newErrors.secondaryContactLastName = t('MODAL.ERRORS.LAST_NAME_REQUIRED');
+      }
+      if (!formData.secondaryContactEmail.trim()) {
+        newErrors.secondaryContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
+      } else if (!isValidEmail(formData.secondaryContactEmail)) {
+        newErrors.secondaryContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
+      }
     }
 
     setErrors(newErrors);
@@ -394,17 +423,33 @@ export function useServiceForm(serviceId?: string) {
         );
       case 2:
         return formData.gapCoverages.length > 0;
-      case 3:
-        return !!(
+      case 3: {
+        // Main Contact is required
+        const mainContactValid = !!(
           formData.mainContactFirstName.trim() &&
           formData.mainContactLastName.trim() &&
           formData.mainContactEmail.trim() &&
-          isValidEmail(formData.mainContactEmail) &&
-          formData.secondaryContactFirstName.trim() &&
-          formData.secondaryContactLastName.trim() &&
-          formData.secondaryContactEmail.trim() &&
-          isValidEmail(formData.secondaryContactEmail)
+          isValidEmail(formData.mainContactEmail)
         );
+
+        // Secondary Contact: if any field is filled, all must be filled
+        const hasAnySecondaryContact = 
+          formData.secondaryContactFirstName.trim() || 
+          formData.secondaryContactLastName.trim() || 
+          formData.secondaryContactEmail.trim();
+
+        let secondaryContactValid = true;
+        if (hasAnySecondaryContact) {
+          secondaryContactValid = !!(
+            formData.secondaryContactFirstName.trim() &&
+            formData.secondaryContactLastName.trim() &&
+            formData.secondaryContactEmail.trim() &&
+            isValidEmail(formData.secondaryContactEmail)
+          );
+        }
+
+        return mainContactValid && secondaryContactValid;
+      }
       default:
         return false;
     }

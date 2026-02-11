@@ -114,7 +114,7 @@ export function Step3Contacts({
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="secondary-first-name">
-              {t("MODAL.STEP_3.SECONDARY_CONTACT.FIRST_NAME.LABEL")} *
+              {t("MODAL.STEP_3.SECONDARY_CONTACT.FIRST_NAME.LABEL")}
             </Label>
             <Input
               id="secondary-first-name"
@@ -138,7 +138,7 @@ export function Step3Contacts({
 
           <div className="space-y-2">
             <Label htmlFor="secondary-last-name">
-              {t("MODAL.STEP_3.SECONDARY_CONTACT.LAST_NAME.LABEL")} *
+              {t("MODAL.STEP_3.SECONDARY_CONTACT.LAST_NAME.LABEL")}
             </Label>
             <Input
               id="secondary-last-name"
@@ -163,7 +163,7 @@ export function Step3Contacts({
 
         <div className="space-y-2">
           <Label htmlFor="secondary-email">
-            {t("MODAL.STEP_3.SECONDARY_CONTACT.EMAIL.LABEL")} *
+            {t("MODAL.STEP_3.SECONDARY_CONTACT.EMAIL.LABEL")}
           </Label>
           <Input
             id="secondary-email"

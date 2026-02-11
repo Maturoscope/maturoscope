@@ -7,10 +7,13 @@ import { useParams, useRouter } from "next/navigation"
 import { motion } from "motion/react"
 // Components
 import { Button } from "@/components/ui/button"
+import LeaveQuestionnaireModal from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
 // Dictionaries
 import { Locale } from "@/dictionaries/dictionaries"
 // Animations
 import { STAGGERED_LIST_ITEM_VARIANT, STAGGERED_LIST_VARIANT } from "@/animations/common"
+// Types
+import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
 
 export interface SimpleFormProps {
   title: string
@@ -19,6 +22,7 @@ export interface SimpleFormProps {
   backButtonLabel: string
   nextButtonLabel: string
   loadingLabel?: string
+  leaveQuestionnaireModal?: LeaveQuestionnaireModalProps
 }
 
 const SimpleForm = ({
@@ -28,14 +32,22 @@ const SimpleForm = ({
   backButtonLabel,
   nextButtonLabel,
   loadingLabel = "Loading...",
+  leaveQuestionnaireModal,
 }: SimpleFormProps) => {
   const [projectName, setProjectName] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false)
   const isNextButtonDisabled = !projectName.trim() || isLoading
   const router = useRouter()
   const { lang } = useParams<{ lang: Locale }>()
 
   const handleBackButtonClick = () => {
+    setIsLeaveModalOpen(true)
+  }
+
+  const handleLeaveConfirm = () => {
+    localStorage.removeItem("projectName")
+    setIsLeaveModalOpen(false)
     router.push(`/${lang}/`)
   }
 
@@ -59,6 +71,15 @@ const SimpleForm = ({
       whileInView="visible"
       viewport={{ once: true }}
       className="h-full w-full max-w-[750px] flex flex-col px-4 lg:box-content">
+      {leaveQuestionnaireModal && (
+        <LeaveQuestionnaireModal
+          {...leaveQuestionnaireModal}
+          isOpen={isLeaveModalOpen}
+          setIsOpen={setIsLeaveModalOpen}
+          onResetClick={handleLeaveConfirm}
+        />
+      )}
+
       <div className="w-full h-full flex flex-col gap-4 justify-center">
         <motion.h1
           variants={STAGGERED_LIST_ITEM_VARIANT}

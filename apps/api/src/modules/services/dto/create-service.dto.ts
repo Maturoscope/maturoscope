@@ -12,6 +12,7 @@ import {
   MinLength,
   MaxLength,
   IsOptional,
+  ValidateIf,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -89,19 +90,20 @@ export class CreateServiceDto {
   mainContactEmail?: string;
 
   @IsOptional()
+  @ValidateIf((o) => o.secondaryContactFirstName !== '')
   @IsString()
-  @MinLength(1)
   @MaxLength(100)
   secondaryContactFirstName?: string;
 
   @IsOptional()
+  @ValidateIf((o) => o.secondaryContactLastName !== '')
   @IsString()
-  @MinLength(1)
   @MaxLength(100)
   secondaryContactLastName?: string;
 
   @IsOptional()
-  @IsEmail()
+  @ValidateIf((o) => o.secondaryContactEmail !== '')
+  @IsEmail({}, { message: 'Secondary contact email must be a valid email address' })
   @MaxLength(255)
   secondaryContactEmail?: string;
 

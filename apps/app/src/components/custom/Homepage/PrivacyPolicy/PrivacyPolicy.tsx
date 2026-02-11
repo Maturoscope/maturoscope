@@ -52,7 +52,7 @@ const PrivacyPolicy = ({ description, copyright, contactUsLabel, privacyPolicyLa
         </div>
         <div className="flex flex-col gap-3.5 lg:items-end justify-between h-full">
           <div className="flex gap-4 items-center">
-            <a href={`mailto:${EMAIL_ADDRESS}?subject=Contact%20from%20Maturoscope`} target="_blank" rel="noopener noreferrer" className="text-sm font-medium">
+            <a href={`mailto:${EMAIL_ADDRESS}?subject=Contact%20from%20Maturoscope`} target="_blank" rel="noopener noreferrer" className="text-sm font-medium hover:underline">
               {contactUsLabel}
             </a>
             <div className="h-3.5 w-px bg-border" />
