@@ -104,9 +104,11 @@ jobs:
           
           if [[ "$ENVIRONMENT" == "production" ]]; then
             FILE="clusters/gra-prod/apps/api/overlays/production/kustomization.yaml"
+            IMAGE_NAME="tqgac9a3.gra7.container-registry.ovh.net/api/api"
             ENV_LABEL="production"
           else
             FILE="clusters/de1-staging/apps/api/overlays/staging/kustomization.yaml"
+            IMAGE_NAME="bv630390.c1.de1.container-registry.ovh.net/maturoscope-api/api"
             ENV_LABEL="staging"
           fi
           
