@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'maturoscope-staging.s3.eu-west-par.io.cloud.ovh.net',
       },
+      {
+        protocol: 'https',
+        hostname: 'maturoscope-s3.s3.gra.io.cloud.ovh.net',
+      },
     ],
   },
   // Explicitly disable Server Actions to prevent any Server Action infrastructure
