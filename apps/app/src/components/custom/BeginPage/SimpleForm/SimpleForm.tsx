@@ -14,6 +14,8 @@ import { Locale } from "@/dictionaries/dictionaries"
 import { STAGGERED_LIST_ITEM_VARIANT, STAGGERED_LIST_VARIANT } from "@/animations/common"
 // Types
 import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
+// Actions
+import { clearAssessmentTracking } from "@/actions/tracking"
 
 export interface SimpleFormProps {
   title: string
@@ -45,8 +47,17 @@ const SimpleForm = ({
     setIsLeaveModalOpen(true)
   }
 
-  const handleLeaveConfirm = () => {
+  const handleLeaveConfirm = async () => {
+    // Reset all form data
+    await clearAssessmentTracking()
+    localStorage.removeItem("form")
+    localStorage.removeItem("gaps")
+    localStorage.removeItem("level")
+    localStorage.removeItem("phases")
+    localStorage.removeItem("completedOn")
+    localStorage.removeItem("signature")
     localStorage.removeItem("projectName")
+    
     setIsLeaveModalOpen(false)
     router.push(`/${lang}/`)
   }
