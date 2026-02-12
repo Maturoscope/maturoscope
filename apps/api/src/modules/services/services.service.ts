@@ -474,92 +474,190 @@ export class ServicesService {
       serviceMap.set(service.id, service);
     });
 
-    // Process each gap and send emails
-    const emailPromises: Promise<void>[] = [];
+    // Group gaps by service first, then by category within each service
+    // This ensures we send ONE email per service with all categories grouped
+    // Key: serviceId, Value: Map of category -> gaps
+    const gapsByService = new Map<string, Map<string, Array<{ questionId: string; level: number }>>>();
 
     for (const gap of contactServicesDto.gaps) {
-      // Get scale type from question ID
-      const scaleType = this.getScaleTypeFromQuestionId(gap.questionId);
-
-      // Get gap description from assessment data
-      const gapTitle = this.readinessAssessmentService.getGapDescription(
-        gap.questionId,
-        gap.level,
-        scaleType,
-        organizationLanguage,
-      );
-
-      // For each recommended service in this gap
       for (const serviceId of gap.recommendedServices) {
-        const service = serviceMap.get(serviceId);
-        if (!service) {
-          continue; // Skip if service not found
+        const scaleType = this.getScaleTypeFromQuestionId(gap.questionId);
+        
+        if (!gapsByService.has(serviceId)) {
+          gapsByService.set(serviceId, new Map());
         }
-
-        // Collect contacts for this service
-        const contacts: Array<{ email: string; firstName: string; lastName: string }> = [];
-
-        if (service.mainContactEmail) {
-          contacts.push({
-            email: service.mainContactEmail,
-            firstName: service.mainContactFirstName,
-            lastName: service.mainContactLastName,
-          });
+        
+        const categoriesMap = gapsByService.get(serviceId)!;
+        if (!categoriesMap.has(scaleType)) {
+          categoriesMap.set(scaleType, []);
         }
+        
+        categoriesMap.get(scaleType)!.push({
+          questionId: gap.questionId,
+          level: gap.level,
+        });
+      }
+    }
 
-        if (service.secondaryContactEmail) {
-          contacts.push({
+    // Process each service and send ONE email per contact with all categories
+    const emailPromises: Promise<void>[] = [];
+
+    for (const [serviceId, categoriesMap] of gapsByService.entries()) {
+      const service = serviceMap.get(serviceId);
+      if (!service) {
+        continue; // Skip if service not found
+      }
+
+      // Get service name and description based on organization language
+      const serviceName = organizationLanguage === 'FR' ? service.nameFr : service.nameEn;
+      const serviceDescription = organizationLanguage === 'FR' ? service.descriptionFr : service.descriptionEn;
+
+      // Convert categories map to array and sort by level (lowest first)
+      const categoriesArray = Array.from(categoriesMap.entries()).map(([category, gaps]) => ({
+        category,
+        gaps,
+        level: gaps[0].level, // Use first gap's level for this category
+      }));
+
+      // Sort by level (ascending) to show lowest level first
+      categoriesArray.sort((a, b) => a.level - b.level);
+
+      // Find the minimum level to determine which category gets "Highest Priority" badge
+      const minLevel = Math.min(...categoriesArray.map(cat => cat.level));
+      const categoriesWithMinLevel = categoriesArray.filter(cat => cat.level === minLevel);
+
+      // Build HTML for all categories
+      const categoriesHtml: string[] = [];
+
+      for (const categoryData of categoriesArray) {
+        const { category, gaps, level } = categoryData;
+        const isHighestPriority = categoriesWithMinLevel.length === 1 && level === minLevel;
+
+        // Build gap titles for this category
+        const gapTitles = gaps.map((gap) => {
+          const description = this.readinessAssessmentService.getGapDescription(
+            gap.questionId,
+            gap.level,
+            category as ScaleType,
+            organizationLanguage,
+          );
+          return `<table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom: 8px; width: 100%;">
+            <tr>
+              <td style="width: 12px; vertical-align: top; padding-right: 8px; line-height: 20px;">•</td>
+              <td style="vertical-align: top; line-height: 20px;">${description}</td>
+            </tr>
+          </table>`;
+        });
+
+        const gapsHtml = gapTitles.join('');
+
+        // Build category section HTML
+        const categoryHtml = `
+          <!-- CATEGORY & LEVEL -->
+          <div style="border-top: 1px solid #E5E7EB; padding: 18px 0 0 0;">
+            <div style="color: #737373; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px;">Category & Level</div>
+            <div style="color: #0A0A0A; font-size: 14px; font-weight: 600; line-height: 20px;">${category} — Currently at Level ${level}</div>
+          </div>
+
+          <!-- GAP TO COMPLETE + BADGE -->
+          <div style="padding: 18px 0 0 0;">
+            <table role="presentation" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="color: #737373; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; vertical-align: middle; padding-right: 10px;">
+                  GAP TO COMPLETE
+                </td>
+                ${isHighestPriority ? `
+                <td style="vertical-align: middle;">
+                  <span style="display: inline-block; background: #171717; color: #ffffff; border-radius: 9999px; padding: 6px 12px; font-size: 12px; font-weight: 600; line-height: 1;">Highest Priority</span>
+                </td>
+                ` : ''}
+              </tr>
+            </table>
+            <div style="margin-top: 10px; color: #0A0A0A; font-size: 14px; font-weight: 600; line-height: 20px;">${gapsHtml}</div>
+          </div>
+        `;
+
+        categoriesHtml.push(categoryHtml);
+      }
+
+      // Join all categories HTML
+      const allCategoriesHtml = categoriesHtml.join('');
+
+      // Collect contacts for this service (deduplicate by email)
+      // Using a Map ensures we only send one email per unique email address
+      const contactsMap = new Map<string, { email: string; firstName: string; lastName: string }>();
+
+      if (service.mainContactEmail) {
+        contactsMap.set(service.mainContactEmail.toLowerCase(), {
+          email: service.mainContactEmail,
+          firstName: service.mainContactFirstName,
+          lastName: service.mainContactLastName,
+        });
+      }
+
+      if (service.secondaryContactEmail) {
+        // Only add secondary contact if email is different from main contact
+        const secondaryEmailKey = service.secondaryContactEmail.toLowerCase();
+        if (!contactsMap.has(secondaryEmailKey)) {
+          contactsMap.set(secondaryEmailKey, {
             email: service.secondaryContactEmail,
             firstName: service.secondaryContactFirstName,
             lastName: service.secondaryContactLastName,
           });
         }
+      }
 
-        // Get service name and description based on organization language
-        const serviceName = organizationLanguage === 'FR' ? service.nameFr : service.nameEn;
-        const serviceDescription = organizationLanguage === 'FR' ? service.descriptionFr : service.descriptionEn;
+      // Convert map to array
+      const contacts = Array.from(contactsMap.values());
 
-        // Send email to each contact
-        for (const contact of contacts) {
-          // Reassignment contact must be the service secondary contact (per design)
-          // Only show it when the recipient is NOT the secondary contact (avoid self-reassign link).
-          let reassignmentContact: { name: string; email: string } | undefined;
-          if (service.secondaryContactEmail) {
-            reassignmentContact = {
-              name: `${service.secondaryContactFirstName} ${service.secondaryContactLastName}`.trim(),
-              email: service.secondaryContactEmail,
-            };
-          }
-
-          emailPromises.push(
-            this.serviceContactMailService.sendServiceContactEmail({
-              expertEmail: contact.email,
-              expertFirstName: contact.firstName,
-              expertLastName: contact.lastName,
-              companyName,
-              companyLogoUrl,
-              supportEmail,
-              language: organizationLanguage,
-              reassignmentContact,
-              clientData: {
-                company: contactServicesDto.organization || contactServicesDto.company,
-                firstName: contactServicesDto.firstName,
-                lastName: contactServicesDto.lastName,
-                email: contactServicesDto.email,
-                phoneNumber: contactServicesDto.phoneNumber,
-                additionalInformation: contactServicesDto.additionalInformation,
-              },
-              projectData: {
-                projectName: contactServicesDto.projectName,
-                serviceTitle: serviceName,
-                serviceDescription: serviceDescription,
-                gapTitle: gapTitle,
-                category: scaleType,
-                currentLevel: gap.level.toString(),
-              },
-            }),
-          );
+      // Send ONE email to each unique contact (not one per gap)
+      for (const contact of contacts) {
+        // Reassignment contact must be the service secondary contact (per design)
+        // Only show it when:
+        // 1. Secondary contact exists
+        // 2. Secondary contact email is different from main contact email
+        // 3. Current recipient is NOT the secondary contact (avoid self-reassign link)
+        let reassignmentContact: { name: string; email: string } | undefined;
+        if (
+          service.secondaryContactEmail &&
+          service.mainContactEmail &&
+          service.secondaryContactEmail.toLowerCase() !== service.mainContactEmail.toLowerCase() &&
+          contact.email.toLowerCase() !== service.secondaryContactEmail.toLowerCase()
+        ) {
+          reassignmentContact = {
+            name: `${service.secondaryContactFirstName} ${service.secondaryContactLastName}`.trim(),
+            email: service.secondaryContactEmail,
+          };
         }
+
+        emailPromises.push(
+          this.serviceContactMailService.sendServiceContactEmail({
+            expertEmail: contact.email,
+            expertFirstName: contact.firstName,
+            expertLastName: contact.lastName,
+            companyName,
+            companyLogoUrl,
+            supportEmail,
+            language: organizationLanguage,
+            reassignmentContact,
+            clientData: {
+              company: contactServicesDto.organization || contactServicesDto.company,
+              firstName: contactServicesDto.firstName,
+              lastName: contactServicesDto.lastName,
+              email: contactServicesDto.email,
+              phoneNumber: contactServicesDto.phoneNumber,
+              additionalInformation: contactServicesDto.additionalInformation,
+            },
+            projectData: {
+              projectName: contactServicesDto.projectName,
+              serviceTitle: serviceName,
+              serviceDescription: serviceDescription,
+              gapTitle: allCategoriesHtml,
+              // Don't set category and currentLevel when we have multiple categories
+              // The HTML already includes all category information
+            },
+          }),
+        );
       }
     }
 
