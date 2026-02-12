@@ -41,8 +41,10 @@ export function validatePasswordForm(
     // Check password requirements
     if (form.newPassword.length < 10) {
       errors.newPassword = t('ERRORS.PASSWORD_TOO_SHORT')
-    } else if (!/[a-zA-Z]/.test(form.newPassword)) {
-      errors.newPassword = t('ERRORS.PASSWORD_NO_LETTER')
+    } else if (!/[A-Z]/.test(form.newPassword)) {
+      errors.newPassword = t('ERRORS.PASSWORD_NO_UPPERCASE')
+    } else if (!/[a-z]/.test(form.newPassword)) {
+      errors.newPassword = t('ERRORS.PASSWORD_NO_LOWERCASE')
     } else if (!/[0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(form.newPassword)) {
       errors.newPassword = t('ERRORS.PASSWORD_NO_NUMBER_SPECIAL')
     }
@@ -81,8 +83,10 @@ export function validateField(
       errors[fieldName] = t('ERRORS.FIELD_REQUIRED')
     } else if (value.length < 10) {
       errors[fieldName] = t('ERRORS.PASSWORD_TOO_SHORT')
-    } else if (!/[a-zA-Z]/.test(value)) {
-      errors[fieldName] = t('ERRORS.PASSWORD_NO_LETTER')
+    } else if (!/[A-Z]/.test(value)) {
+      errors[fieldName] = t('ERRORS.PASSWORD_NO_UPPERCASE')
+    } else if (!/[a-z]/.test(value)) {
+      errors[fieldName] = t('ERRORS.PASSWORD_NO_LOWERCASE')
     } else if (!/[0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(value)) {
       errors[fieldName] = t('ERRORS.PASSWORD_NO_NUMBER_SPECIAL')
     } else {

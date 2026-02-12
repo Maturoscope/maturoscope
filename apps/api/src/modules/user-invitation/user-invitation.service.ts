@@ -145,9 +145,8 @@ export class UserInvitationService {
     companyLogoUrl: string | undefined,
     organizationLanguage: string,
     expirationDays: number,
+    isFirstUser: boolean,
   ): Promise<void> {
-    const existingUsers = await this.usersService.findByOrganization(organizationId, email);
-    const isFirstUser = existingUsers.length === 0;
     const isAdmin = this.isAdminUser(roles);
     const shouldUseAdminTemplate = isAdmin || isFirstUser;
 
@@ -185,6 +184,11 @@ export class UserInvitationService {
       }
       // If it's the same organization, we allow it (it's the first user being created for this org)
     }
+
+    // Check if this will be the first user BEFORE creating them
+    // This is important for determining which email template to use
+    const existingUsersInOrg = await this.usersService.findByOrganization(organizationId);
+    const isFirstUser = existingUsersInOrg.length === 0;
 
     const existingUser = await this.usersService.findByEmail(email);
 
@@ -244,6 +248,7 @@ export class UserInvitationService {
       companyLogoUrl,
       organizationLanguage,
       expirationDaysDisplay,
+      isFirstUser,
     );
 
     return {
@@ -332,6 +337,9 @@ export class UserInvitationService {
 
     const magicLink = this.buildMagicLink(token);
 
+    // When resending, the user already exists, so they're not the first user
+    const isFirstUser = false;
+
     await this.sendInvitationEmail(
       email,
       firstName,
@@ -342,6 +350,7 @@ export class UserInvitationService {
       companyLogoUrl,
       organizationLanguage,
       expirationDaysDisplay,
+      isFirstUser,
     );
 
     return {
