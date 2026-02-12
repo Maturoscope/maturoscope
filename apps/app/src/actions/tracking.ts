@@ -80,7 +80,10 @@ const trackCompletedCategory = async (category: "TRL" | "MkRL" | "MfRL", level: 
     }),
   })
 
-  cookieStore.set(cookieKey, "true")
+  // Only set cookie if the API call succeeded so we can retry on next completion
+  if (response.ok) {
+    cookieStore.set(cookieKey, "true")
+  }
 
   return response.json()
 }
@@ -89,6 +92,9 @@ const clearAssessmentTracking = async () => {
   const cookieStore = await cookies()
   cookieStore.delete("started-assessment")
   cookieStore.delete("completed-assessment")
+  cookieStore.delete("tracked-category-TRL")
+  cookieStore.delete("tracked-category-MkRL")
+  cookieStore.delete("tracked-category-MfRL")
 }
 
 export { trackStartedAssessment, trackCompletedAssessment, trackCompletedCategory, clearAssessmentTracking }
