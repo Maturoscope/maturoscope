@@ -121,9 +121,13 @@ export class StatisticsService {
       const statistics = await this.getOrCreateStatistics(organization.id);
       
       const levelKey = level.toString();
-      const categoryData = statistics.usersByCategoryAndLevel[category] || {};
+      // Create a new object so TypeORM detects the JSONB change (mutating nested refs can be ignored)
+      const categoryData = { ...(statistics.usersByCategoryAndLevel[category] || {}) };
       categoryData[levelKey] = (categoryData[levelKey] || 0) + 1;
-      statistics.usersByCategoryAndLevel[category] = categoryData;
+      statistics.usersByCategoryAndLevel = {
+        ...statistics.usersByCategoryAndLevel,
+        [category]: categoryData,
+      };
       
       await this.statisticsRepository.save(statistics);
       

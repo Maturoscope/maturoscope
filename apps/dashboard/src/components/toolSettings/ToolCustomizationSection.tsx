@@ -68,7 +68,7 @@ export function ToolCustomizationSection({
     { value: 'geist', label: 'Geist' },
     { value: 'open-sans', label: 'Open Sans' },
     { value: 'inter', label: 'Inter' },
-    { value: 'poppins', label: 'Poppins' },
+    // { value: 'poppins', label: 'Poppins' }, // Temporarily hidden
   ]
 
   const themeOptions = [

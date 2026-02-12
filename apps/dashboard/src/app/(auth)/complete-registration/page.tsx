@@ -20,6 +20,7 @@ interface InvitationData {
 interface PasswordValidation {
   minLength: boolean;
   hasUppercase: boolean;
+  hasLowercase: boolean;
   hasNumberOrSpecial: boolean;
 }
 
@@ -44,6 +45,7 @@ function CompleteRegistrationForm() {
     return {
       minLength: password.length >= 10,
       hasUppercase: /[A-Z]/.test(password),
+      hasLowercase: /[a-z]/.test(password),
       hasNumberOrSpecial: /[0-9#?!&]/.test(password),
     };
   }, [password]);
@@ -51,6 +53,7 @@ function CompleteRegistrationForm() {
   const isPasswordValid = useMemo(() => {
     return passwordValidation.minLength && 
            passwordValidation.hasUppercase &&
+           passwordValidation.hasLowercase &&
            passwordValidation.hasNumberOrSpecial;
   }, [passwordValidation]);
 
@@ -215,6 +218,14 @@ function CompleteRegistrationForm() {
               className="data-[state=checked]:bg-black data-[state=checked]:border-black"
             />
             <span className="text-sm text-foreground">{t('PASSWORD_REQUIREMENTS.ONE_UPPERCASE')}</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Checkbox 
+              checked={passwordValidation.hasLowercase} 
+              className="data-[state=checked]:bg-black data-[state=checked]:border-black"
+            />
+            <span className="text-sm text-foreground">{t('PASSWORD_REQUIREMENTS.ONE_LOWERCASE')}</span>
           </div>
 
           <div className="flex items-center gap-2">

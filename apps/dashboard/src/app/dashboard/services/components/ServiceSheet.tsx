@@ -153,7 +153,7 @@ export function ServiceSheet({
   ];
 
   const progressValue = useMemo(() => {
-    return (currentStep / STEPS.length) * 100;
+    return ((currentStep - 1) / STEPS.length) * 100;
   }, [currentStep, STEPS.length]);
 
   // Handle edit action

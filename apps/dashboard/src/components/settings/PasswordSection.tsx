@@ -143,11 +143,20 @@ export function PasswordSection({
             </div>
             <div className="flex items-center space-x-2">
               <Checkbox 
-                checked={/[a-zA-Z]/.test(form.newPassword)}
+                checked={/[A-Z]/.test(form.newPassword)}
                 className="h-4 w-4 border-gray-600 data-[state=checked]:bg-black data-[state=checked]:border-black"
               />
               <span className="text-gray-900 font-medium">
-                {t('PASSWORD.ONE_LETTER')}
+                {t('PASSWORD.ONE_UPPERCASE')}
+              </span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                checked={/[a-z]/.test(form.newPassword)}
+                className="h-4 w-4 border-gray-600 data-[state=checked]:bg-black data-[state=checked]:border-black"
+              />
+              <span className="text-gray-900 font-medium">
+                {t('PASSWORD.ONE_LOWERCASE')}
               </span>
             </div>
             <div className="flex items-center space-x-2">

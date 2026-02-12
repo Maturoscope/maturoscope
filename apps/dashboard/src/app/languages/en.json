@@ -21,8 +21,8 @@
     "PASSWORD_REQUIREMENTS": {
       "TITLE": "Your password must contain at least",
       "MIN_LENGTH": "10 characters",
-      "ONE_LETTER": "1 letter",
       "ONE_UPPERCASE": "1 uppercase letter",
+      "ONE_LOWERCASE": "1 lowercase letter",
       "ONE_NUMBER_OR_SPECIAL": "1 number or special character (example: # ? ! &)"
     },
     "ERRORS": {
@@ -281,7 +281,8 @@
       "SUCCESS_MESSAGE": "Your password has been changed successfully.",
       "REQUIREMENTS": "Your new password must contain at least",
       "MIN_CHARACTERS": "10 characters",
-      "ONE_LETTER": "1 letter",
+      "ONE_UPPERCASE": "1 uppercase letter",
+      "ONE_LOWERCASE": "1 lowercase letter",
       "ONE_NUMBER_SPECIAL": "1 number or special character (example: # ? ! &)"
     },
     "CUSTOMIZATION": {
@@ -298,6 +299,8 @@
       "FIELD_REQUIRED": "This field cannot be left blank.",
       "PASSWORD_TOO_SHORT": "Password must be at least 10 characters long.",
       "PASSWORD_NO_LETTER": "Password must contain at least 1 letter.",
+      "PASSWORD_NO_UPPERCASE": "Password must contain at least 1 uppercase letter.",
+      "PASSWORD_NO_LOWERCASE": "Password must contain at least 1 lowercase letter.",
       "PASSWORD_NO_NUMBER_SPECIAL": "Password must contain at least 1 number or special character.",
       "PASSWORDS_DONT_MATCH": "Passwords do not match.",
       "CURRENT_PASSWORD_INCORRECT": "Current password is incorrect."
