@@ -656,6 +656,7 @@ export class ServicesService {
               // Don't set category and currentLevel when we have multiple categories
               // The HTML already includes all category information
             },
+            reportPdfBase64: contactServicesDto.reportPdfBase64,
           }),
         );
       }

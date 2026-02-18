@@ -34,6 +34,7 @@ interface ServiceContactEmailPayload {
     category?: string;
     currentLevel?: string;
   };
+  reportPdfBase64?: string;
 }
 
 interface EmailContent {
@@ -194,6 +195,7 @@ export class ServiceContactMailService extends BaseMailService implements OnModu
     reassignmentContact,
     clientData,
     projectData,
+    reportPdfBase64,
   }: ServiceContactEmailPayload) {
     const safeCompanyName =
       companyName ||
@@ -224,6 +226,15 @@ export class ServiceContactMailService extends BaseMailService implements OnModu
     } else {
       maturoscopeSignature = `<strong style="font-size:18px;color:#1F2937;font-weight:600;">Maturoscope.</strong>`;
       this.logger.warn(`Maturoscope logo file not found at: ${this.maturoscopeLogoPath}`);
+    }
+
+    // Attach the maturity report PDF if provided
+    if (reportPdfBase64) {
+      attachments.push({
+        filename: 'maturity-report.pdf',
+        content: Buffer.from(reportPdfBase64, 'base64'),
+        contentType: 'application/pdf',
+      });
     }
 
     const finalSupportEmail = supportEmail || this.configService.get<string>('SUPPORT_EMAIL') || 'support@maturoscope.com';

@@ -16,6 +16,7 @@ import Input from "@/components/common/Input/Input"
 import { useContactExpertContext } from "@/context/ContactExpertContext"
 // Actions
 import { requestContact } from "@/actions/organization"
+import { generateOrGetCachedPdf } from "@/hooks/useDownloadReport"
 // Types
 import { ModalStep } from "../ContactExpertModal"
 import { Locale } from "@/dictionaries/dictionaries"
@@ -275,10 +276,20 @@ const ReachOut = ({
     const projectName = localStorage.getItem("projectName")
 
     setIsLoading(true)
+
+    // Attach the PDF: use cached version if available, otherwise generate it now
+    let reportPdfBase64: string | undefined
+    try {
+      reportPdfBase64 = await generateOrGetCachedPdf(lang)
+    } catch {
+      // PDF attachment is best-effort; the email will be sent without it
+    }
+
     const result = await requestContact({
       gaps: selectedGaps,
       contactInformation: cleanedData,
       projectName: projectName as string,
+      reportPdfBase64,
     })
     setIsLoading(false)
 
