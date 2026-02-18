@@ -49,19 +49,57 @@ const Header = ({
   const { downloadReport, isLoading } = useDownloadReport(lang)
 
   useEffect(() => {
-    // Try to get signature from localStorage first
-    const storedSignature = localStorage.getItem("signature")
-    if (storedSignature) {
-      setSignature(storedSignature)
-    } else {
-      // If not in localStorage, fetch it
-      getOrganizationSignature().then((sig) => {
-        if (sig) {
-          localStorage.setItem("signature", sig)
-          setSignature(sig)
-        }
-      })
+    const SIGNATURE_STORAGE_KEY = "organization-signature"
+
+    const getCookie = (name: string): string | null => {
+      const value = `; ${document.cookie}`
+      const parts = value.split(`; ${name}=`)
+      if (parts.length === 2) {
+        return parts.pop()?.split(";").shift() || null
+      }
+      return null
     }
+
+    const loadSignature = async () => {
+      const organizationKey = getCookie("organization-key")
+
+      if (!organizationKey) {
+        setSignature(null)
+        return
+      }
+
+      try {
+        const stored = localStorage.getItem(SIGNATURE_STORAGE_KEY)
+        if (stored) {
+          const parsed = JSON.parse(stored) as {
+            organizationKey: string
+            url: string
+          }
+
+          if (parsed.organizationKey === organizationKey && parsed.url) {
+            setSignature(parsed.url)
+            return
+          }
+        }
+      } catch (error) {
+        console.error("Error reading organization signature from localStorage:", error)
+      }
+
+      const sig = await getOrganizationSignature()
+      if (sig) {
+        const payload = JSON.stringify({
+          organizationKey,
+          url: sig,
+        })
+        localStorage.setItem(SIGNATURE_STORAGE_KEY, payload)
+        setSignature(sig)
+      } else {
+        localStorage.removeItem(SIGNATURE_STORAGE_KEY)
+        setSignature(null)
+      }
+    }
+
+    loadSignature()
   }, [])
 
   const isResultsPage = pathname.includes("/results")
@@ -78,7 +116,7 @@ const Header = ({
     localStorage.removeItem("level")
     localStorage.removeItem("phases")
     localStorage.removeItem("completedOn")
-    localStorage.removeItem("signature")
+    localStorage.removeItem("organization-signature")
     localStorage.removeItem("projectName")
     setIsResetFormModalOpen(false)
   }

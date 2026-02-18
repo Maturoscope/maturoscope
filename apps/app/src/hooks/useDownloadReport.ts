@@ -29,6 +29,16 @@ export type GapsStorage = Partial<Record<StageId, Gap[]>>
 
 export type RisksStorage = Partial<Record<StageId, RiskData>>
 
+const getLocalizedText = (value: LocalizedText | undefined, lang: Locale): string => {
+  if (!value) return ""
+  return (
+    value[lang] ??
+    value.en ??
+    value.fr ??
+    ""
+  )
+}
+
 // Payload types
 interface AnswerPayload {
   question: string
@@ -90,11 +100,11 @@ const buildScalePayload = (
   })
 
   const gapsPayload: GapPayload[] = gaps.map((gap) => ({
-    gapDescription: gap.gapDescription[lang],
+    gapDescription: getLocalizedText(gap.gapDescription as LocalizedText | undefined, lang),
     hasServices: gap.hasServices,
     recommendedServices: gap.recommendedServices.map((service) => ({
-      name: service.name[lang],
-      description: service.description[lang],
+      name: getLocalizedText(service.name as LocalizedText | undefined, lang),
+      description: getLocalizedText(service.description as LocalizedText | undefined, lang),
     })),
   }))
 
@@ -175,15 +185,51 @@ export const useDownloadReport = (lang: Locale) => {
       // Get projectName from localStorage
       const projectName = localStorage.getItem("projectName") || undefined
 
-      // Get signature from localStorage or fetch it
-      let signature = localStorage.getItem("signature")
-      if (!signature) {
-        signature = await getOrganizationSignature()
-        if (signature) {
-          localStorage.setItem("signature", signature)
+      // Get signature from localStorage, scoped to organization key, or fetch it
+      const SIGNATURE_STORAGE_KEY = "organization-signature"
+
+      const getCookie = (name: string): string | null => {
+        const value = `; ${document.cookie}`
+        const parts = value.split(`; ${name}=`)
+        if (parts.length === 2) {
+          return parts.pop()?.split(";").shift() || null
+        }
+        return null
+      }
+
+      const organizationKey = getCookie("organization-key")
+
+      let signatureUrl: string | undefined
+
+      if (organizationKey) {
+        try {
+          const stored = localStorage.getItem(SIGNATURE_STORAGE_KEY)
+          if (stored) {
+            const parsed = JSON.parse(stored) as {
+              organizationKey: string
+              url: string
+            }
+
+            if (parsed.organizationKey === organizationKey && parsed.url) {
+              signatureUrl = parsed.url
+            }
+          }
+        } catch (error) {
+          console.error("Error reading organization signature from localStorage:", error)
         }
       }
-      const signatureUrl = signature || undefined
+
+      if (!signatureUrl) {
+        const fetchedSignature = await getOrganizationSignature()
+        if (fetchedSignature && organizationKey) {
+          const payload = JSON.stringify({
+            organizationKey,
+            url: fetchedSignature,
+          })
+          localStorage.setItem(SIGNATURE_STORAGE_KEY, payload)
+          signatureUrl = fetchedSignature
+        }
+      }
 
       // Build the payload
       const payload: ReportPayload = {
