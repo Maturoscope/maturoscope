@@ -1,135 +1,217 @@
-# Turborepo starter
+# Maturoscope
 
-This Turborepo starter is maintained by the Turborepo core team.
+A comprehensive technology readiness assessment platform built with Turborepo monorepo architecture.
 
-## Using this example
+## 🚀 Quick Start
 
-Run the following command:
+**New to the project?** Start here: [Initial Setup Guide](./docs/06-setup-initial.md)
 
-```sh
-npx create-turbo@latest
+The setup guide will walk you through:
+- Installing all prerequisites
+- Setting up the database
+- Configuring environment variables
+- Running the applications
+- Seeding initial data
+
+## 📚 Documentation
+
+| File | Description |
+|---|---|
+| [01-architecture.md](./docs/01-architecture.md) | System overview, infrastructure, networking, security model |
+| [02-data-flow.md](./docs/02-data-flow.md) | Request lifecycle, auth flow, CI/CD flow, failure handling |
+| [03-project-structure.md](./docs/03-project-structure.md) | Monorepo layout, module patterns, architectural conventions |
+| [04-cicd-and-deployment.md](./docs/04-cicd-and-deployment.md) | CI pipeline, Docker strategy, Argo CD, rollback |
+| [05-database.md](./docs/05-database.md) | Schema, bastion tunnel guide, migrations, backup & recovery |
+| [06-setup-initial.md](./docs/06-setup-initial.md) | Developer onboarding — local setup, env vars, troubleshooting |
+| [DATABASE_DIAGRAM.dbml](./docs/DATABASE_DIAGRAM.dbml) | Visual ER diagram (paste into dbdiagram.io) |
+
+## 🏗️ Project Structure
+
+This is a Turborepo monorepo containing:
+
+### Applications
+
+- **`apps/api`** - NestJS backend API server (Port 8000)
+- **`apps/app`** - Next.js frontend application (Port 3000)
+- **`apps/dashboard`** - Next.js admin dashboard (Port 3001)
+
+### Packages
+
+- Shared packages and configurations (if any)
+
+## 🛠️ Prerequisites
+
+Before you begin, ensure you have:
+
+- **Node.js** >= 18.x
+- **Yarn** 3.6.4
+- **Docker** and **Docker Compose**
+- **Git**
+
+See the [Setup Guide](./docs/SETUP.md) for detailed installation instructions.
+
+## ⚡ Quick Commands
+
+### Install Dependencies
+
+```bash
+yarn install
 ```
 
-## What's inside?
+### Run All Applications
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```bash
+yarn dev
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+This starts:
+- API: http://localhost:8000
+- App: http://localhost:3000
+- Dashboard: http://localhost:3001
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+### Run Individual Applications
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+```bash
+# API only
+cd apps/api && yarn dev
 
-### Develop
+# App only
+cd apps/app && yarn dev
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+# Dashboard only
+cd apps/dashboard && yarn dev
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+### Database Management
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+```bash
+cd apps/api
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+# Start database
+docker-compose up -d db
 
-### Remote Caching
+# Run migrations
+yarn migration:run
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+# Seed database (creates sample data)
+yarn seed
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## 📖 Getting Started
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd maturoscope
+   ```
 
+2. **Follow the [Setup Guide](./docs/SETUP.md)**
+   - Install prerequisites
+   - Configure environment variables
+   - Set up the database
+   - Run migrations and seed data
+
+3. **Start developing**
+   ```bash
+   yarn dev
+   ```
+
+## 🔧 Development
+
+### Code Quality
+
+```bash
+# Lint all code
+yarn lint
+
+# Format code
+yarn format
+
+# Type check
+yarn check-types
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+### Testing
+
+```bash
+# Run all tests
+yarn test
+
+# Run tests in watch mode
+cd apps/api && yarn test:watch
 ```
 
-## Useful Links
+## 📝 Environment Variables
 
-Learn more about the power of Turborepo:
+Each application requires specific environment variables. See:
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+- **API**: `apps/api/.env.example`
+- **App**: Check `apps/app/` for environment requirements
+- **Dashboard**: Check `apps/dashboard/` for environment requirements
+
+Copy `.env.example` to `.env` and fill in the required values.
+
+## 🗄️ Database
+
+The project uses PostgreSQL managed via Docker. See:
+
+- **[Database Documentation](./docs/DATABASE.md)** - Complete schema documentation
+- **[Database Diagram](./docs/DATABASE_DIAGRAM.dbml)** - Visual ER diagram
+
+### Database Commands
+
+```bash
+cd apps/api
+
+# Start database
+docker-compose up -d db
+
+# Run migrations
+yarn migration:run
+
+# Seed with sample data
+yarn seed
+
+# Connect to database
+docker exec -it maturoscope psql -U postgres -d maturoscope
+```
+
+## 🐛 Troubleshooting
+
+Common issues and solutions are documented in the [Setup Guide](./docs/06-setup-initial.md#11-troubleshooting).
+
+## 📦 Build
+
+```bash
+# Build all applications
+yarn build
+
+# Build specific application
+yarn build --filter=api
+yarn build --filter=app
+yarn build --filter=dashboard
+```
+
+## 🤝 Contributing
+
+1. Read the [Setup Guide](./docs/SETUP.md) to get your environment ready
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
+
+## 📄 License
+
+This project is private and unlicensed.
+
+## 🔗 Useful Links
+
+- [Turborepo Documentation](https://turborepo.org/docs)
+- [NestJS Documentation](https://docs.nestjs.com/)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [TypeORM Documentation](https://typeorm.io/)
+- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+
+---
+
+**Need help?** Check the [Setup Guide](./docs/SETUP.md) or contact the team.
