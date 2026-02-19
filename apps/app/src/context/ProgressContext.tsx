@@ -16,8 +16,7 @@ import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 import { Locale } from "@/dictionaries/dictionaries"
 // Utils
 import { calcCheckpoint } from "@/lib/calcCheckpoint"
-import { pdfCache } from "@/utils/pdfCache"
-import { buildReportPayload } from "@/utils/reportPayload"
+import { generateOrGetCachedPdf } from "@/hooks/useDownloadReport"
 // Actions
 import {
   submitAssessment,
@@ -27,8 +26,6 @@ import {
   DevelopmentPhase,
 } from "@/actions/organization"
 import { trackCompletedCategory } from "@/actions/tracking"
-import { generateReport } from "@/actions/report"
-import { getQuestions } from "@/actions/questions"
 
 interface ProgressContextType {
   stages: StageType[]
@@ -267,22 +264,11 @@ export const ProgressProvider = ({
 
     if (isLastCheckpoint) {
       localStorage.setItem("completedOn", new Date().toISOString())
-
-      // Pre-generate the PDF in the background and cache it for the results page
-      // This runs without blocking navigation so "See Report" feels instant
-      ;(async () => {
-        try {
-          const questionsData = await getQuestions(lang)
-          const payload = await buildReportPayload(lang, questionsData)
-          const result = await generateReport(lang, payload)
-          if (result.success && result.data) {
-            pdfCache.set(result.data, lang)
-          }
-        } catch {
-          // Pre-generation failure is non-critical; the results page will regenerate on demand
-        }
-      })()
-
+      // Kick off PDF generation in background so it's ready (or well underway)
+      // by the time the user arrives at the results page and clicks Download.
+      generateOrGetCachedPdf(lang).catch(() => {
+        // Pre-generation is best-effort — errors are handled on actual download.
+      })
       return router.push(`/${lang}/results`)
     }
 

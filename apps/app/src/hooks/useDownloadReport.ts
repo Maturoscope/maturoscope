@@ -10,24 +10,45 @@ import { buildReportPayload } from "@/utils/reportPayload"
 // Re-export storage types for backward compatibility
 export type { FormStorage, LevelStorage, PhasesStorage, GapsStorage, RisksStorage } from "@/utils/reportPayload"
 
+// Module-level singleton: ensures only one Puppeteer run at a time.
+// Any concurrent caller (PdfPreloader + download button) shares the same Promise.
+let pendingGeneration: { lang: Locale; promise: Promise<string> } | null = null
+
 /**
- * Generates the PDF base64 string.
- * Returns the cached version if still valid; otherwise calls the API and caches the result.
+ * Returns the cached PDF base64 string for the given language.
+ * If already generating, waits for the in-progress generation instead of starting a new one.
+ * If nothing is cached or in-progress, generates, caches, and returns the result.
  */
 export const generateOrGetCachedPdf = async (lang: Locale): Promise<string> => {
+  // 1. Return from cache if available
   const cached = pdfCache.get(lang)
   if (cached) return cached
 
-  const questionsData = await getQuestions(lang)
-  const payload = await buildReportPayload(lang, questionsData)
-  const result = await generateReport(lang, payload)
-
-  if (!result.success || !result.data) {
-    throw new Error(result.error || "Failed to generate PDF")
+  // 2. If already generating for the same lang, share that Promise
+  if (pendingGeneration?.lang === lang) {
+    return pendingGeneration.promise
   }
 
-  pdfCache.set(result.data, lang)
-  return result.data
+  // 3. Start a new generation
+  const promise = (async () => {
+    try {
+      const questionsData = await getQuestions(lang)
+      const payload = await buildReportPayload(lang, questionsData)
+      const result = await generateReport(lang, payload)
+
+      if (!result.success || !result.data) {
+        throw new Error(result.error || "Failed to generate PDF")
+      }
+
+      pdfCache.set(result.data, lang)
+      return result.data
+    } finally {
+      pendingGeneration = null
+    }
+  })()
+
+  pendingGeneration = { lang, promise }
+  return promise
 }
 
 const base64ToBlob = (base64: string): Blob => {
