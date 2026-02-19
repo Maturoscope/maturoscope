@@ -63,5 +63,9 @@ export class ContactServicesDto {
   @IsString()
   @IsOptional()
   projectName?: string;
+
+  @IsString()
+  @IsOptional()
+  reportPdfBase64?: string;
 }
 

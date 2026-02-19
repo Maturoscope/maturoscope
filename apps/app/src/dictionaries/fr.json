@@ -172,11 +172,11 @@
       ],
       "clarification": "Après avoir examiné vos résultats, enregistrez-les et contactez les services recommandés. Ils vous aideront à identifier les étapes suivantes pour améliorer votre niveau de maturité."
     },
-    "detailedReport": {
+      "detailedReport": {
       "title": "Rapport détaillé",
       "description": "Recherchez les étiquettes \"Service disponible\" ci-dessous pour voir où nos experts peuvent accélérer votre progression.",
       "copyPreLevel": "Pour atteindre le niveau ",
-      "copyPostLevel": "Complétez les lacunes ci-dessous",
+      "copyPostLevel": "complétez ces étapes",
       "copyLevelLabel": "Niveau",
       "copyHighestLevel": "Niveau le plus élevé atteint",
       "serviceLabel": "Service disponible",

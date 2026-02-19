@@ -55,7 +55,8 @@ const SimpleForm = ({
     localStorage.removeItem("level")
     localStorage.removeItem("phases")
     localStorage.removeItem("completedOn")
-    localStorage.removeItem("signature")
+    localStorage.removeItem("organization-signature")
+    localStorage.removeItem("report-pdf-cache")
     localStorage.removeItem("projectName")
     
     setIsLeaveModalOpen(false)
