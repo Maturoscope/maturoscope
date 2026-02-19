@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Req, Query, Body } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { StatisticsService } from './statistics.service';
 import { Auth } from '../../common/decorators/auth.decorator';
 import { Request } from 'express';
@@ -9,6 +10,7 @@ import { OrganizationsService } from '../organizations/organizations.service';
 import { ValidRoles } from 'src/common/auth-module/interfaces/valid-roles';
 import { IncrementUserStatisticsDto } from './dto/increment-user-statistics.dto';
 
+@ApiTags('statistics')
 @Controller('statistics')
 export class StatisticsController {
   constructor(
@@ -23,6 +25,36 @@ export class StatisticsController {
    */
   @Get('dashboard')
   @Auth()
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ 
+    summary: 'Get dashboard statistics',
+    description: 'Retrieves dashboard statistics including completion rates and user distribution by category/level for the authenticated user\'s organization.'
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Dashboard statistics retrieved successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        analysisCompletionRate: { type: 'number', example: 75 },
+        contactRate: { type: 'number', example: 60 },
+        chartData: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              level: { type: 'number', example: 5 },
+              TRL: { type: 'number', example: 12 },
+              MkRL: { type: 'number', example: 8 },
+              MfRL: { type: 'number', example: 15 }
+            }
+          }
+        }
+      }
+    }
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden - User or organization not found' })
   async getDashboardStatistics(
     @Req() req: Request & { user?: AuthenticatedUser },
   ) {
@@ -95,6 +127,15 @@ export class StatisticsController {
    */
   @Get('reports')
   @Auth(ValidRoles.admin)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ 
+    summary: 'Get reports statistics (Admin only)',
+    description: 'Retrieves aggregated statistics across all organizations or filtered by organizationId. Requires admin role.'
+  })
+  @ApiQuery({ name: 'organizationId', required: false, description: 'Filter by organization UUID', example: '550e8400-e29b-41d4-a716-446655440000' })
+  @ApiResponse({ status: 200, description: 'Reports statistics retrieved successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Forbidden - Admin role required' })
   async getReportsStatistics(
     @Req() req: Request & { user?: AuthenticatedUser },
     @Query('organizationId') organizationId?: string,
@@ -181,6 +222,13 @@ export class StatisticsController {
    * PUBLIC endpoint - No authentication required
    */
   @Post('track-started')
+  @ApiOperation({ 
+    summary: 'Track started assessment (PUBLIC)',
+    description: 'Tracks when a user starts an assessment. This is a PUBLIC endpoint called from the end-user application.'
+  })
+  @ApiQuery({ name: 'organizationKey', required: true, description: 'Organization unique key', example: 'synopp' })
+  @ApiResponse({ status: 200, description: 'Started assessment tracked successfully' })
+  @ApiResponse({ status: 403, description: 'Forbidden - organizationKey required' })
   async trackStartedAssessment(@Query('organizationKey') organizationKey: string) {
     if (!organizationKey) {
       throw new ForbiddenException('organizationKey query parameter is required');
@@ -196,6 +244,13 @@ export class StatisticsController {
    * PUBLIC endpoint - No authentication required
    */
   @Post('track-completed')
+  @ApiOperation({ 
+    summary: 'Track completed assessment (PUBLIC)',
+    description: 'Tracks when a user completes an assessment. This is a PUBLIC endpoint called from the end-user application.'
+  })
+  @ApiQuery({ name: 'organizationKey', required: true, description: 'Organization unique key', example: 'synopp' })
+  @ApiResponse({ status: 200, description: 'Completed assessment tracked successfully' })
+  @ApiResponse({ status: 403, description: 'Forbidden - organizationKey required' })
   async trackCompletedAssessment(@Query('organizationKey') organizationKey: string) {
     if (!organizationKey) {
       throw new ForbiddenException('organizationKey query parameter is required');
@@ -213,6 +268,13 @@ export class StatisticsController {
    * @param incrementUserDto - Contains category (TRL, MkRL, MfRL) and level (1-9)
    */
   @Post('track-category')
+  @ApiOperation({ 
+    summary: 'Track category statistics (PUBLIC)',
+    description: 'Tracks user count for a specific maturity category (TRL, MkRL, MfRL) and level (1-9). This is a PUBLIC endpoint called from the end-user application.'
+  })
+  @ApiQuery({ name: 'organizationKey', required: true, description: 'Organization unique key', example: 'synopp' })
+  @ApiResponse({ status: 200, description: 'User count incremented successfully' })
+  @ApiResponse({ status: 403, description: 'Forbidden - organizationKey required' })
   async incrementUserStatistics(
     @Query('organizationKey') organizationKey: string,
     @Body() incrementUserDto: IncrementUserStatisticsDto,

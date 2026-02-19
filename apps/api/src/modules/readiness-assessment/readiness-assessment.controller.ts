@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Param, Query, NotFoundException } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { ReadinessAssessmentService } from './readiness-assessment.service';
 import {
   ScaleType,
@@ -11,6 +12,7 @@ import {
 } from './dto/readiness-assessment.dto';
 import { OrganizationsService } from '../organizations/organizations.service';
 
+@ApiTags('readiness-assessment')
 @Controller('readiness-assessment')
 export class ReadinessAssessmentController {
   constructor(
@@ -23,6 +25,15 @@ export class ReadinessAssessmentController {
    * Returns all questions for all scales (TRL, MkRL, MfRL) with EN & FR translations
    */
   @Get('questions')
+  @ApiOperation({ 
+    summary: 'Get all assessment questions',
+    description: 'Returns all questions for all maturity scales (TRL, MkRL, MfRL) with English and French translations. PUBLIC endpoint.'
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'All questions retrieved successfully',
+    type: AllQuestionsI18nDto
+  })
   async getAllQuestions(): Promise<AllQuestionsI18nDto> {
     return this.readinessAssessmentService.getAllQuestions();
   }
@@ -33,6 +44,16 @@ export class ReadinessAssessmentController {
    * @param scale - TRL, MkRL, or MfRL
    */
   @Get('questions/:scale')
+  @ApiOperation({ 
+    summary: 'Get questions by scale',
+    description: 'Returns questions for a specific maturity scale (TRL, MkRL, or MfRL) with English and French translations. PUBLIC endpoint.'
+  })
+  @ApiParam({ name: 'scale', enum: ['TRL', 'MkRL', 'MfRL'], description: 'Maturity scale type', example: 'TRL' })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Questions for the specified scale',
+    type: ScaleQuestionsI18nDto
+  })
   getQuestionsByScale(@Param('scale') scale: ScaleType): ScaleQuestionsI18nDto {
     return this.readinessAssessmentService.getQuestionsByScale(scale);
   }
@@ -44,6 +65,17 @@ export class ReadinessAssessmentController {
    * @param assessScaleDto - Contains scale type and answers
    */
   @Post('assess')
+  @ApiOperation({ 
+    summary: 'Assess maturity scale (PUBLIC)',
+    description: 'Assesses a single maturity scale (TRL, MkRL, or MfRL) based on user answers and returns results with gap analysis. This is a PUBLIC endpoint called from the end-user application.'
+  })
+  @ApiQuery({ name: 'organizationKey', required: true, description: 'Organization unique key', example: 'synopp' })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Assessment completed successfully',
+    type: ScaleResultI18nDto
+  })
+  @ApiResponse({ status: 404, description: 'Organization not found' })
   async assessScale(
     @Query('organizationKey') organizationKey: string,
     @Body() assessScaleDto: AssessScaleDto,
@@ -67,6 +99,15 @@ export class ReadinessAssessmentController {
    * The analysis determines the lowest risk based on readinessLevel (not phase)
    */
   @Post('analyze-risk')
+  @ApiOperation({ 
+    summary: 'Analyze overall risk (PUBLIC)',
+    description: 'Analyzes overall project risk based on all three maturity scales (TRL, MkRL, MfRL) and their phases. Returns the lowest maturity level as the primary risk indicator. PUBLIC endpoint.'
+  })
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Risk analysis completed successfully',
+    type: RiskAnalysisResultI18nDto
+  })
   async analyzeRisk(
     @Body() riskAnalysisDto: RiskAnalysisDto,
   ): Promise<RiskAnalysisResultI18nDto> {

@@ -23,6 +23,7 @@ The setup guide will walk you through:
 | [04-cicd-and-deployment.md](./docs/04-cicd-and-deployment.md) | CI pipeline, Docker strategy, Argo CD, rollback |
 | [05-database.md](./docs/05-database.md) | Schema, bastion tunnel guide, migrations, backup & recovery |
 | [06-setup-initial.md](./docs/06-setup-initial.md) | Developer onboarding — local setup, env vars, troubleshooting |
+| [07-api-reference.md](./docs/07-api-reference.md) | API endpoints, auth, Swagger UI access, response codes |
 | [DATABASE_DIAGRAM.dbml](./docs/DATABASE_DIAGRAM.dbml) | Visual ER diagram (paste into dbdiagram.io) |
 
 ## 🏗️ Project Structure
