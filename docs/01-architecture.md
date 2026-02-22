@@ -30,7 +30,7 @@ All applications are deployed as containerised workloads on **OVHcloud Managed K
 | TLS | cert-manager + Let's Encrypt | Automated certificate provisioning |
 | CI pipeline | GitHub Actions | Build, test, push images |
 | Authentication | Auth0 | Identity provider (JWT/JWKS) |
-| Object storage | OVH S3 (eu-west-par) | File uploads, report assets |
+| Object storage | OVH S3 | File uploads, report assets |
 | Email | Gmail OAuth2 via Nodemailer | Transactional email |
 
 ---
@@ -92,9 +92,9 @@ Ingress routing rules:
 
 | Host | Backend Service |
 |---|---|
-| `api.maturoscope.io` | `api:8000` |
-| `app.maturoscope.io` | `app:3000` |
-| `dashboard.maturoscope.io` | `dashboard:3001` |
+| `api.maturoscope.com` | `api:8000` |
+| `maturoscope.com` | `app:3000` |
+| `dashboard.prod.maturoscope.com` | `dashboard:3001` |
 
 ### 4.4 Internal Service Communication
 
@@ -123,7 +123,7 @@ All inter-service traffic within the cluster uses Kubernetes DNS (`service-name.
 | Service | Provider | Usage |
 |---|---|---|
 | Identity Provider | Auth0 | User authentication, JWT issuance, role management |
-| Object Storage | OVH S3 (eu-west-par) | Report PDFs, organisation avatars, file uploads |
+| Object Storage | OVH S3 | Report PDFs, organisation avatars, file uploads |
 | Email | Gmail OAuth2 / Nodemailer | User invitations, transactional notifications |
 | Container Registry | Harbor (OVH Managed) | Docker image storage and vulnerability scanning |
 | DNS | Configured externally | Domain resolution for public endpoints |

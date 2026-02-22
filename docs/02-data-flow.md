@@ -43,67 +43,182 @@ Response serialised → JSON → Client
 
 ## 2. Authentication Flow (Auth0)
 
-### 2.1 Dashboard Login (Admin user)
+The dashboard uses a **custom authentication implementation** — All auth is handled through Next.js API routes using the **Resource Owner Password Credentials (ROPC)** grant and an HttpOnly cookie.
+
+### 2.1 Dashboard Login
 
 ```
 User (browser)
   │
-  │  1. GET /dashboard → redirect to Auth0 Universal Login
+  │  1. Submits email + password on custom /login page
   ▼
-Auth0 Universal Login Page
+dashboard — POST /api/auth/login  (Next.js API route)
   │
-  │  2. User submits credentials
-  ▼
-Auth0
+  ├─ 2. Decrypts password payload (client-side encryption)
   │
-  │  3. Redirect back with authorization code
-  ▼
-dashboard (Next.js API route /api/auth/callback)
+  ├─ 3. POST {AUTH0_ISSUER_URL}/oauth/token
+  │         grant_type: password
+  │         connection: Username-Password-Authentication
+  │         client_id, client_secret, audience, scope: openid profile email
   │
-  │  4. Exchange code for tokens (access_token, id_token, refresh_token)
-  ▼
-dashboard session (encrypted cookie via NextAuth or Auth0 SDK)
+  ├─ 4. Auth0 returns access_token (JWT)
   │
-  │  5. Subsequent API calls: access_token in Authorization header
-  ▼
-NestJS API
+  ├─ 5. Validates user status in DB:
+  │         GET {API}/users/email/:email  (Authorization: Bearer <access_token>)
+  │         → 423 if Auth0 reports account blocked
+  │         → 403 if user.isActive === false
+  │         → 403 if organization.status === 'inactive'
   │
-  │  6. JwtAuthGuard → fetches JWKS from AUTH0_ISSUER_URL/.well-known/jwks.json
-  │     Validates signature, audience, issuer, expiry
+  └─ 6. Sets HttpOnly cookie and returns 200:
+            Set-Cookie: token=<access_token>; Path=/; HttpOnly; Secure; SameSite=Strict
   ▼
-Controller (request processed with user identity attached to request object)
+User is logged in — browser holds the token in an HttpOnly cookie
 ```
 
-### 2.2 Public App (No login required)
+> Subsequent authenticated requests to the NestJS API are covered in Section 1 (User Request Lifecycle).
 
-The `apps/app` public assessment tool does not require user authentication. Organisation context is resolved via a URL slug/key (`organizationId`). Assessment state is held in client-side session storage.
+### 2.2 Logout
 
-### 2.3 User Invitation Flow
+```
+User clicks logout
+  │
+  ▼
+dashboard — GET /api/auth/logout  (Next.js API route)
+  │
+  └─ Clears token cookie (expires: new Date(0))
+     No Auth0 session invalidation — token remains valid until Auth0 expiry
+```
+
+### 2.3 Password Reset
+
+```
+User requests reset on /reset-password page
+  │
+  ▼
+dashboard — POST /api/auth/reset-password  (Next.js API route)
+  │
+  └─ POST {AUTH0_ISSUER_URL}/dbconnections/change_password
+       connection: Username-Password-Authentication
+  │
+  ▼
+Auth0 sends password reset email directly to user
+```
+
+### 2.4 Public App (No login required)
+
+`apps/app` does not use authentication. Organisation context is resolved from the URL key parameter. Assessment state is held in browser session storage and submitted to the NestJS API on completion.
+
+### 2.5 User Invitation & Registration Flow
+
+#### Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor Admin as Administrator
+    participant Dashboard as Dashboard UI
+    participant BE as Backend (NestJS)
+    participant DB as PostgreSQL
+    participant Email as Email Service (Gmail)
+    actor User as New User
+    participant Auth0 as Auth0
+
+    Admin->>Dashboard: Fill in new user details (email, role)
+    Dashboard->>BE: POST /user-invitation/invite (JWT required)
+    Note over BE: Validates admin permissions
+    BE->>DB: Create user record (authId: null, isActive: true)
+    DB-->>BE: Confirm creation
+    BE->>BE: Sign invitation JWT (JWT_SECRET, expiry)
+    BE->>Email: Send email with magic link
+    Note over Email: Link: {DASHBOARD_URL}/complete-registration?token=<jwt>
+    Email-->>User: Receives email with magic link
+
+    User->>Dashboard: Clicks magic link
+    Dashboard->>BE: GET /user-invitation/verify?token=<jwt>
+    BE->>BE: Validate token signature and expiry
+    BE-->>Dashboard: Return user data (email, firstName, lastName, roles)
+    Dashboard->>User: Display set-password form
+
+    User->>Dashboard: Enter and confirm password
+    Note over Dashboard: Dashboard handles Auth0 account creation directly
+    Dashboard->>Auth0: Create user (email + password) via Management API
+    Auth0-->>Dashboard: Return auth0UserId + access_token
+    Dashboard->>BE: POST /user-invitation/complete { token, authId }
+    BE->>DB: Link authId to user record (isActive: true)
+    DB-->>BE: Confirm update
+    BE-->>Dashboard: Confirm completion
+    Dashboard->>User: Redirect to dashboard (user already authenticated)
+    Note over User,Dashboard: No separate login step required
+```
+
+#### Step-by-Step Flow
+
+**Phase 1 — Admin sends invitation**
 
 ```
 Admin (dashboard)
   │
-  │  POST /user-invitation { email, organizationId, role }
+  │  POST /user-invitation/invite  { email, firstName, lastName, roles, organizationId }
+  │  Authorization: Bearer <admin-access-token>
   ▼
-NestJS API — UserInvitationModule
+NestJS — UserInvitationModule
   │
-  ├─ 1. Calls Auth0 Management API → creates Auth0 user
-  ├─ 2. Assigns role (AUTH0_USER_ROLE or AUTH0_ADMIN_ROLE) via Auth0 API
-  ├─ 3. Signs an invitation JWT (JWT_SECRET, INVITATION_TOKEN_EXPIRATION)
-  ├─ 4. Stores user record in PostgreSQL users table (isActive: false)
-  ├─ 5. Sends invitation email via Gmail OAuth2 (EJS template)
-  │
-  ▼
-User (email received)
-  │
-  │  Clicks link → GET /complete-registration?token=<jwt>
-  ▼
-dashboard (Next.js)
-  │
-  │  Validates token → prompts user to set password via Auth0
-  ▼
-User activated in both Auth0 and PostgreSQL (isActive: true)
+  ├─ 1. Validates JWT + admin role (JwtAuthGuard + AuthRoleGuard)
+  ├─ 2. Creates user record in PostgreSQL  { authId: null, isActive: true }
+  ├─ 3. Signs invitation JWT  { email, roles, organizationId, type: 'invitation' }
+  │      Signed with JWT_SECRET, expires in INVITATION_TOKEN_EXPIRATION
+  └─ 4. Sends magic-link email via Gmail OAuth2 (EJS template)
+         URL: {DASHBOARD_URL}/complete-registration?token=<jwt>
 ```
+
+**Phase 2 — User opens the link and verifies the token**
+
+```
+User clicks link in email
+  │
+  ▼
+dashboard — /complete-registration?token=<jwt>
+  │
+  │  GET /user-invitation/verify?token=<jwt>  (public endpoint)
+  ▼
+NestJS
+  │
+  ├─ Verifies JWT signature and expiry (JWT_SECRET)
+  └─ Returns { email, firstName, lastName, roles, organizationId }
+  ▼
+Dashboard displays set-password form pre-filled with user data
+```
+
+**Phase 3 — User sets password and completes registration**
+
+```
+User submits password
+  │
+  ▼
+dashboard — POST /api/auth/complete-registration  (Next.js API route)
+  │
+  ├─ 1. POST {AUTH0_ISSUER_URL}/oauth/token  (grant_type: client_credentials)
+  │         → obtains Auth0 Management API token
+  │
+  ├─ 2. POST {AUTH0_ISSUER_URL}/api/v2/users
+  │         body: { email, password, name, connection }
+  │         → creates Auth0 account, returns auth0UserId
+  │
+  ├─ 3. POST {AUTH0_ISSUER_URL}/api/v2/users/:auth0UserId/roles
+  │         → assigns AUTH0_USER_ROLE or AUTH0_ADMIN_ROLE
+  │
+  ├─ 4. POST {API}/user-invitation/complete  { token, authId: auth0UserId }
+  │         → NestJS links authId to DB user record (isActive: true)
+  │
+  └─ 5. Sets HttpOnly cookie with access_token
+            Set-Cookie: token=<access_token>; HttpOnly; Secure; SameSite=Strict
+  ▼
+User is redirected to /dashboard — already authenticated, no login step required
+```
+
+**Key points:**
+- The NestJS backend never calls Auth0 directly during this flow. Auth0 account creation is fully handled by the Dashboard (`/api/auth/complete-registration`) using the Management API.
+- The invitation JWT (`JWT_SECRET`) and the Auth0 `access_token` are two distinct tokens with separate purposes: the first is a one-time registration link; the second is the session credential.
+- If the token has expired, the admin uses `POST /user-invitation/resend`. This re-signs the JWT and resets `createdAt` on the user record to restart the expiry window.
 
 ---
 

@@ -41,6 +41,8 @@ This installs dependencies for all apps (`api`, `app`, `dashboard`) and shared p
 
 ## 3. Environment Variables
 
+> **Note:** Real environment variable values are not stored in the repository. If you need working credentials for local development (Auth0 tenant, Gmail OAuth2 tokens, OVH S3 keys), contact the project administrator at **admin@synopp.io**.
+
 Each application requires a `.env` file. Start by copying the example:
 
 ```bash

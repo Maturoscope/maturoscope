@@ -240,8 +240,8 @@ Argo CD watches `overlays/staging` and `overlays/production`. CI updates the ima
 
 | Environment | Kubernetes Namespace | Argo CD App | Branch |
 |---|---|---|---|
-| Staging | `maturoscope-staging` | `maturoscope-staging` | `main` (auto-deploy) |
-| Production | `maturoscope-production` | `maturoscope-production` | `main` (manual sync) |
+| Staging | `maturoscope-staging` | `maturoscope-staging` | `staging` (auto-deploy) |
+| Production | `maturoscope-production` | `maturoscope-production` | `main` (auto-deploy) |
 
 Environment-specific configuration is isolated in Kustomize overlays. Secrets are never committed; they are injected via Kubernetes Secrets managed outside the infra repository (e.g., via sealed-secrets or a manual apply step from a secure secrets store).
 
