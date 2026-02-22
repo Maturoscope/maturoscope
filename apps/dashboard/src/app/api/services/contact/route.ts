@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('services/contact');
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,6 +19,7 @@ export async function POST(req: NextRequest) {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     if (!apiBaseUrl) {
+      logger.error('API base URL is not configured');
       return NextResponse.json(
         { message: 'API base URL is not configured' },
         { status: 500 }
@@ -41,7 +45,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error contacting services:', error);
+    logger.error('Error contacting services', error);
     return NextResponse.json(
       { message: 'Internal server error' },
       { status: 500 }

@@ -1,19 +1,23 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { OrganizationStatistics } from './entities/organization-statistics.entity';
 import { OrganizationsService } from '../organizations/organizations.service';
 import { ScaleType } from '../readiness-assessment/dto/readiness-assessment.dto';
+import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
 
 @Injectable()
 export class StatisticsService {
-  private readonly logger = new Logger(StatisticsService.name);
+  private readonly logger: StructuredLoggerService;
 
   constructor(
     @InjectRepository(OrganizationStatistics)
     private readonly statisticsRepository: Repository<OrganizationStatistics>,
     private readonly organizationsService: OrganizationsService,
-  ) {}
+    structuredLogger: StructuredLoggerService,
+  ) {
+    this.logger = structuredLogger.child('StatisticsService');
+  }
 
   /**
    * Get or create statistics record for an organization
@@ -36,7 +40,6 @@ export class StatisticsService {
         },
       });
       statistics = await this.statisticsRepository.save(statistics);
-      this.logger.log(`Created statistics record for organization ${organizationId}`);
     }
 
     return statistics;
@@ -52,15 +55,8 @@ export class StatisticsService {
       
       statistics.startedAssessments += 1;
       await this.statisticsRepository.save(statistics);
-      
-      this.logger.debug(
-        `Incremented started assessments for organization ${organizationKey}: ${statistics.startedAssessments}`,
-      );
     } catch (error) {
-      this.logger.error(
-        `Failed to increment started assessments for organization ${organizationKey}:`,
-        error,
-      );
+      this.logger.error('Failed to increment started assessments', error, { organizationKey });
     }
   }
 
@@ -74,15 +70,8 @@ export class StatisticsService {
       
       statistics.completedAssessments += 1;
       await this.statisticsRepository.save(statistics);
-      
-      this.logger.debug(
-        `Incremented completed assessments for organization ${organizationKey}: ${statistics.completedAssessments}`,
-      );
     } catch (error) {
-      this.logger.error(
-        `Failed to increment completed assessments for organization ${organizationKey}:`,
-        error,
-      );
+      this.logger.error('Failed to increment completed assessments', error, { organizationKey });
     }
   }
 
@@ -96,15 +85,8 @@ export class StatisticsService {
       
       statistics.contactedServices += 1;
       await this.statisticsRepository.save(statistics);
-      
-      this.logger.debug(
-        `Incremented contacted services for organization ${organizationKey}: ${statistics.contactedServices}`,
-      );
     } catch (error) {
-      this.logger.error(
-        `Failed to increment contacted services for organization ${organizationKey}:`,
-        error,
-      );
+      this.logger.error('Failed to increment contacted services', error, { organizationKey });
     }
   }
 
@@ -130,15 +112,12 @@ export class StatisticsService {
       };
       
       await this.statisticsRepository.save(statistics);
-      
-      this.logger.debug(
-        `Incremented user count for organization ${organizationKey}, category ${category}, level ${level}: ${categoryData[levelKey]}`,
-      );
     } catch (error) {
-      this.logger.error(
-        `Failed to increment user count for organization ${organizationKey}, category ${category}, level ${level}:`,
-        error,
-      );
+      this.logger.error('Failed to increment user by category/level', error, {
+        organizationKey,
+        category,
+        level,
+      });
     }
   }
 

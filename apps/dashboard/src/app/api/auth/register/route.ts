@@ -1,6 +1,9 @@
 import { ROLES_MAPPED } from '@/app/utils/getUserRoles';
 import { NextResponse } from 'next/server';
 import { decryptPassword } from '@/app/utils/crypto';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('auth/register');
 
 export const POST = async (req: Request) => {
   try {
@@ -68,11 +71,12 @@ export const POST = async (req: Request) => {
 
     if (!assignRolesResponse.ok) {
       const errorData = await assignRolesResponse.json();
-      console.error(`Error al asignar roles: ${JSON.stringify(errorData)}`);
+      logger.error('Error assigning roles in Auth0', new Error(JSON.stringify(errorData)), { userId });
     }
 
     return NextResponse.json({ message: 'User registered successfully' }, { status: 201 });
   } catch (error) {
+    logger.error('Error during registration', error);
     return NextResponse.json({ error: 'Internal Server Error: ' + error }, { status: 500 });
   }
 };

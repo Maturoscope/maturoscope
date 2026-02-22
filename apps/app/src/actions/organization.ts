@@ -2,6 +2,9 @@
 
 import { cookies } from "next/headers"
 import { DEFAULT_ACCENT_THEME, DEFAULT_FONT_THEME } from "@/context/ThemeContext"
+import { createStructuredLogger } from "@/lib/structured-logger"
+
+const logger = createStructuredLogger("actions/organization")
 
 export type FontTheme = "geist" | "open-sans" | "inter" | "poppins"
 
@@ -38,7 +41,7 @@ export const getOrganizationTheme = async (
       font: font || DEFAULT_FONT_THEME,
     }
   } catch (error) {
-    console.error("Error fetching theme:", error)
+    logger.error("Error fetching theme", error, { key: key ?? undefined })
     return {
       accentColor: DEFAULT_ACCENT_THEME,
       font: DEFAULT_FONT_THEME,
@@ -127,7 +130,7 @@ export const submitAssessment = async ({
     const data: AssessmentResponse = await response.json()
     return { success: true, data }
   } catch (error) {
-    console.error("Error submitting assessment:", error)
+    logger.error("Error submitting assessment", error, { organizationKey })
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",
@@ -203,7 +206,7 @@ export const requestContact = async ({
 
     return { success: true }
   } catch (error) {
-    console.error("Error requesting contact:", error)
+    logger.error("Error requesting contact", error, { organizationKey })
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error",
@@ -225,7 +228,7 @@ export const getOrganizationSignature = async (): Promise<string | null> => {
 
     return organization.signature || null
   } catch (error) {
-    console.error("Error fetching organization signature:", error)
+    logger.error("Error fetching organization signature", error)
     return null
   }
 }
@@ -244,7 +247,7 @@ export const getOrganizationName = async (): Promise<string> => {
 
     return organization.name || "Maturoscope"
   } catch (error) {
-    console.error("Error fetching organization name:", error)
+    logger.error("Error fetching organization name", error)
     return "Maturoscope"
   }
 }

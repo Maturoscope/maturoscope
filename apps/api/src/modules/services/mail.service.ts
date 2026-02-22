@@ -1,6 +1,7 @@
-import { Injectable, Logger, type OnModuleInit } from '@nestjs/common';
+import { Injectable, type OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { BaseMailService } from '../../common/mail/mail.service';
+import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as ejs from 'ejs';
@@ -77,20 +78,20 @@ interface EmailContent {
 @Injectable()
 export class ServiceContactMailService extends BaseMailService implements OnModuleInit {
   protected maturoscopeLogoPath: string;
-  private readonly logger = new Logger(ServiceContactMailService.name);
 
-  constructor(configService: ConfigService) {
-    super(configService);
+  constructor(
+    configService: ConfigService,
+    structuredLogger: StructuredLoggerService,
+  ) {
+    super(configService, structuredLogger);
     this.maturoscopeLogoPath = path.join(process.cwd(), 'public', 'image', 'maturoscope-logo.png');
   }
 
   async onModuleInit() {
     await super.onModuleInit();
     try {
-      if (fs.existsSync(this.maturoscopeLogoPath)) {
-        this.logger.log(`Maturoscope logo file found at: ${this.maturoscopeLogoPath}`);
-      } else {
-        this.logger.warn(`Maturoscope logo file not found at: ${this.maturoscopeLogoPath}`);
+      if (!fs.existsSync(this.maturoscopeLogoPath)) {
+        this.logger.warn('Maturoscope logo file not found', { path: this.maturoscopeLogoPath });
       }
     } catch (error) {
       this.logger.error('Error checking Maturoscope logo file', error);

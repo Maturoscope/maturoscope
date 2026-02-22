@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken } from '@/app/utils/authDecode'
+import { createStructuredLogger } from '@/lib/structured-logger'
+
+const logger = createStructuredLogger('organizations/[organizationId]')
 
 async function handleOrganizationUpdate(req: NextRequest, organizationId: string) {
   const cookies = req.cookies
@@ -56,7 +59,7 @@ async function handleOrganizationUpdate(req: NextRequest, organizationId: string
     return NextResponse.json(organization)
 
   } catch (error) {
-    console.error('Error updating organization:', error)
+    logger.error('Error updating organization', error, { organizationId })
     
     if (error instanceof Error && error.name === 'AbortError') {
       return NextResponse.json({ 
@@ -123,7 +126,7 @@ async function handleOrganizationGet(req: NextRequest, organizationId: string) {
     return NextResponse.json(organization)
 
   } catch (error) {
-    console.error('Error fetching organization:', error)
+    logger.error('Error fetching organization', error, { organizationId })
     
     if (error instanceof Error && error.name === 'AbortError') {
       return NextResponse.json({ 

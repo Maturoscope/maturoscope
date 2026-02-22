@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('readiness-assessment/assess');
 
 /**
  * PUBLIC endpoint - No authentication required
@@ -11,6 +14,7 @@ export async function POST(request: NextRequest) {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   if (!apiBaseUrl) {
+    logger.error('API base URL is not configured');
     return NextResponse.json(
       { message: 'API base URL is not configured' },
       { status: 500 }
@@ -60,13 +64,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(data);
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
+      logger.warn('Request timeout assessing scale');
       return NextResponse.json(
         { message: 'Request timeout' },
         { status: 408 }
       );
     }
 
-    console.error('Error assessing scale:', error);
+    logger.error('Error assessing scale', error);
     return NextResponse.json(
       { message: 'Internal server error' },
       { status: 500 }

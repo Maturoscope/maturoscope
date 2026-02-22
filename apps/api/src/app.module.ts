@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -14,11 +14,14 @@ import { ReadinessAssessmentModule } from './modules/readiness-assessment/readin
 import { ServicesModule } from './modules/services/services.module';
 import { StatisticsModule } from './modules/statistics/statistics.module';
 import { AuthIdInterceptor } from './common/auth-module/interceptors/auth-id.interceptor';
+import { LoggerModule } from './common/logger/logger.module';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import * as fs from 'fs';
 import { SchemaInitService } from './common/schema-init/schema-init.service';
 
 @Module({
   imports: [
+    LoggerModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -66,6 +69,10 @@ import { SchemaInitService } from './common/schema-init/schema-init.service';
     {
       provide: APP_INTERCEPTOR,
       useClass: AuthIdInterceptor,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
     },
   ],
 })

@@ -2,6 +2,9 @@
 
 import { Locale } from "@/dictionaries/dictionaries"
 import { getOrganizationKeyFromCookies } from "./organization"
+import { createStructuredLogger } from "@/lib/structured-logger"
+
+const logger = createStructuredLogger("actions/report")
 
 interface AnswerPayload {
   question: string
@@ -64,13 +67,16 @@ export const generateReport = async (
     })
 
     if (!response.ok) {
+      logger.error("PDF generation failed", new Error(response.statusText), {
+        status: response.status,
+        lang,
+      })
       return {
         success: false,
         error: `Failed to generate PDF: ${response.statusText}`,
       }
     }
 
-    // Convert the response to base64
     const arrayBuffer = await response.arrayBuffer()
     const base64 = Buffer.from(arrayBuffer).toString("base64")
 
@@ -79,6 +85,7 @@ export const generateReport = async (
       data: base64,
     }
   } catch (error) {
+    logger.error("Error generating report", error, { lang })
     return {
       success: false,
       error: error instanceof Error ? error.message : "Unknown error occurred",

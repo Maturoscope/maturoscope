@@ -1,0 +1,83 @@
+// Maturoscope Database Schema
+// Copy this code to https://dbdiagram.io/ to visualize the database structure
+
+Table organizations {
+  id uuid [pk]
+  key varchar(50) [unique, not null]
+  name text [not null]
+  email varchar(255) [unique, not null]
+  font text
+  theme text
+  signature text
+  language text
+  avatar text
+  status enum('inactive','active') [not null, default: 'active']
+  createdAt timestamp [not null, default: `now()`]
+
+  Note: 'Stores organization/client information. Each organization can have multiple users and services.'
+}
+
+Table users {
+  id uuid [pk]
+  organizationId uuid [ref: > organizations.id]
+  authId text
+  firstName text [not null]
+  lastName text [not null]
+  roles text[]
+  email varchar(255) [unique, not null]
+  isActive boolean [not null, default: true]
+  createdAt timestamp [not null, default: `now()`]
+
+  Note: 'Stores user account information. Users belong to organizations. The organizationId is nullable to allow users without organization assignment. authId maps to the Auth0 user ID.'
+}
+
+Table services {
+  id uuid [pk]
+  organizationId uuid [not null, ref: > organizations.id]
+  name varchar(255)
+  nameEn varchar(255)
+  nameFr varchar(255)
+  description text
+  descriptionEn text
+  descriptionFr text
+  url varchar(500)
+  mainContactFirstName varchar(100)
+  mainContactLastName varchar(100)
+  mainContactEmail varchar(255)
+  secondaryContactFirstName varchar(100)
+  secondaryContactLastName varchar(100)
+  secondaryContactEmail varchar(255)
+  createdAt timestamp [not null, default: `now()`]
+  updatedAt timestamp [not null, default: `now()`]
+
+  Note: 'Stores service information offered by organizations. Supports multilingual content (name and description in EN/FR). Secondary contact fields are optional.'
+}
+
+Table service_gap_coverages {
+  id uuid [pk]
+  serviceId uuid [not null, ref: > services.id, note: 'CASCADE delete']
+  questionId varchar(20) [not null]
+  level integer [not null]
+  scaleType enum('TRL','MkRL','MfRL') [not null]
+  createdAt timestamp [not null, default: `now()`]
+
+  indexes {
+    (serviceId, questionId, level) [unique, name: 'unique_gap_coverage']
+    (questionId, level) [name: 'idx_question_level']
+  }
+
+  Note: 'Maps services to assessment questions and readiness levels. The combination of serviceId, questionId, and level must be unique. Scale types: TRL (Technology Readiness Level), MkRL (Market Readiness Level), MfRL (Manufacturing Readiness Level).'
+}
+
+Table organization_statistics {
+  id uuid [pk]
+  organizationId uuid [not null, unique, ref: > organizations.id]
+  startedAssessments integer [not null, default: 0]
+  completedAssessments integer [not null, default: 0]
+  contactedServices integer [not null, default: 0]
+  usersByCategoryAndLevel jsonb [not null, default: `'{"TRL":{}, "MkRL":{}, "MfRL":{}}'`]
+  createdAt timestamp [not null, default: `now()`]
+  updatedAt timestamp [not null, default: `now()`]
+
+  Note: 'Stores analytics and statistics per organization. One-to-one with organizations. usersByCategoryAndLevel stores user counts by scale (TRL, MkRL, MfRL) and level (1-9). Updated on assessment interactions.'
+}

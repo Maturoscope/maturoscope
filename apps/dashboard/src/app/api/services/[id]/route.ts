@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('services/[id]');
 
 export async function GET(
   request: NextRequest,
@@ -13,6 +16,7 @@ export async function GET(
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   if (!apiBaseUrl) {
+    logger.error('API base URL is not configured');
     return NextResponse.json({ message: 'API base URL is not configured' }, { status: 500 });
   }
 
@@ -43,10 +47,11 @@ export async function GET(
     return NextResponse.json(data);
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
+      logger.warn('Request timeout fetching service');
       return NextResponse.json({ message: 'Request timeout' }, { status: 408 });
     }
 
-    console.error('Error fetching service:', error);
+    logger.error('Error fetching service', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }
@@ -64,6 +69,7 @@ export async function PATCH(
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   if (!apiBaseUrl) {
+    logger.error('API base URL is not configured');
     return NextResponse.json({ message: 'API base URL is not configured' }, { status: 500 });
   }
 
@@ -98,10 +104,11 @@ export async function PATCH(
     return NextResponse.json(data);
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
+      logger.warn('Request timeout updating service');
       return NextResponse.json({ message: 'Request timeout' }, { status: 408 });
     }
 
-    console.error('Error updating service:', error);
+    logger.error('Error updating service', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }
@@ -119,6 +126,7 @@ export async function DELETE(
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   if (!apiBaseUrl) {
+    logger.error('API base URL is not configured');
     return NextResponse.json({ message: 'API base URL is not configured' }, { status: 500 });
   }
 
@@ -149,10 +157,11 @@ export async function DELETE(
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
+      logger.warn('Request timeout deleting service');
       return NextResponse.json({ message: 'Request timeout' }, { status: 408 });
     }
 
-    console.error('Error deleting service:', error);
+    logger.error('Error deleting service', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }

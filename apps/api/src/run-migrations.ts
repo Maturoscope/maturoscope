@@ -1,28 +1,26 @@
 import { AppDataSource } from './data-source';
+import { writeStructuredLog } from './common/logger/structured-logger.service';
 
 async function runMigrations() {
   try {
-    console.log('🔄 Initializing database connection...');
+    writeStructuredLog('info', 'Database connection initializing');
     await AppDataSource.initialize();
-    console.log('✅ Database connection established');
+    writeStructuredLog('info', 'Database connection established');
 
-    console.log('🔄 Running pending migrations...');
+    writeStructuredLog('info', 'Running pending migrations');
     const migrations = await AppDataSource.runMigrations({ transaction: 'all' });
 
     if (migrations.length === 0) {
-      console.log('✅ No pending migrations - database is up to date');
+      writeStructuredLog('info', 'No pending migrations - database up to date');
     } else {
-      console.log(`✅ Successfully ran ${migrations.length} migration(s):`);
-      migrations.forEach((migration) => {
-        console.log(`   - ${migration.name}`);
-      });
+      writeStructuredLog('info', 'Migrations completed', undefined, { count: migrations.length });
     }
 
     await AppDataSource.destroy();
-    console.log('✅ Migration process completed successfully');
+    writeStructuredLog('info', 'Migration process completed successfully');
     process.exit(0);
   } catch (error) {
-    console.error('❌ Migration failed:', error);
+    writeStructuredLog('error', 'Migration failed', error);
     process.exit(1);
   }
 }

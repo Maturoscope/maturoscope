@@ -22,10 +22,12 @@ import { ScaleType, RecommendedServiceDto as ReadinessRecommendedServiceDto, I18
 import { ServiceContactMailService } from './mail.service';
 import { OrganizationsService } from '../organizations/organizations.service';
 import { StatisticsService } from '../statistics/statistics.service';
+import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
 
 @Injectable()
 export class ServicesService {
   private readinessAssessmentService: ReadinessAssessmentService;
+  private readonly logger: StructuredLoggerService;
 
   constructor(
     @InjectRepository(Service)
@@ -37,8 +39,10 @@ export class ServicesService {
     private readonly serviceContactMailService: ServiceContactMailService,
     private readonly organizationsService: OrganizationsService,
     private readonly statisticsService: StatisticsService,
+    structuredLogger: StructuredLoggerService,
   ) {
     this.readinessAssessmentService = readinessAssessmentService;
+    this.logger = structuredLogger.child('ServicesService');
   }
 
   /**
@@ -666,8 +670,7 @@ export class ServicesService {
 
     // Track service contact
     this.statisticsService.incrementContactedServices(organizationKey).catch((error) => {
-      // Log error but don't fail the request
-      console.error('Failed to track service contact:', error);
+      this.logger.error('Failed to track service contact', error, { organizationKey });
     });
 
     return {

@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('statistics/dashboard');
 
 /**
  * GET /api/statistics/dashboard
@@ -8,6 +11,7 @@ export async function GET(request: NextRequest) {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   if (!apiBaseUrl) {
+    logger.error('API base URL is not configured');
     return NextResponse.json(
       { message: 'API base URL is not configured' },
       { status: 500 }
@@ -45,7 +49,9 @@ export async function GET(request: NextRequest) {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      console.error('[Statistics API] Backend error:', response.status, data);
+      logger.error('Backend error fetching dashboard statistics', new Error((data as { message?: string }).message ?? 'Backend error'), {
+        status: response.status,
+      });
       return NextResponse.json(
         { 
           message: data.message || data.error || `Failed to fetch dashboard statistics (${response.status})`,
@@ -59,13 +65,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(data);
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
+      logger.warn('Request timeout fetching dashboard statistics');
       return NextResponse.json(
         { message: 'Request timeout' },
         { status: 408 }
       );
     }
 
-    console.error('Error fetching dashboard statistics:', error);
+    logger.error('Error fetching dashboard statistics', error);
     return NextResponse.json(
       { message: 'Internal server error' },
       { status: 500 }

@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { createStructuredLogger } from '@/lib/structured-logger'
+
+const logger = createStructuredLogger('user/[userEmail]')
 
 async function handleUserUpdate(req: NextRequest, userEmail: string) {
   if (!userEmail || userEmail === 'undefined') {
@@ -152,7 +155,7 @@ export async function PATCH(
     const { userEmail } = await params
     return await handleUserUpdate(req, userEmail)
   } catch (error) {
-    console.error('Error in PATCH route:', error)
+    logger.error('Error in PATCH route', error)
     return NextResponse.json({ 
       error: 'Internal server error' 
     }, { status: 500 })
@@ -167,7 +170,7 @@ export async function GET(
     const { userEmail } = await params
     return await handleUserGet(req, userEmail)
   } catch (error) {
-    console.error('Error fetching user:', error)
+    logger.error('Error fetching user', error)
     return NextResponse.json({ 
       error: 'Internal server error' 
     }, { status: 500 })

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
@@ -7,6 +7,7 @@ import { CreateUserInvitationDto } from './dto/create-user-invitation.dto';
 import { CompleteUserInvitationDto } from './dto/complete-user-invitation.dto';
 import { UserInvitationMailService } from './mail.service';
 import { getRolesMapped } from '../../common/auth-module/interfaces/valid-roles';
+import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
 
 export interface InvitationPayload {
   email: string;
@@ -21,7 +22,7 @@ export interface InvitationPayload {
 
 @Injectable()
 export class UserInvitationService {
-  private readonly logger = new Logger(UserInvitationService.name);
+  private readonly logger: StructuredLoggerService;
 
   constructor(
     private readonly jwtService: JwtService,
@@ -29,7 +30,10 @@ export class UserInvitationService {
     private readonly usersService: UsersService,
     private readonly organizationsService: OrganizationsService,
     private readonly userInvitationMailService: UserInvitationMailService,
-  ) {}
+    structuredLogger: StructuredLoggerService,
+  ) {
+    this.logger = structuredLogger.child('UserInvitationService');
+  }
 
   private getInvitationExpiration(): JwtSignOptions['expiresIn'] {
     const configured = this.configService.get<string>('INVITATION_TOKEN_EXPIRATION');
@@ -104,8 +108,7 @@ export class UserInvitationService {
         organizationLanguage = organization.language?.toUpperCase() || 'EN';
       }
     } catch (error) {
-      // Log error but continue with defaults
-      this.logger.error('Error fetching organization for email template', error);
+      this.logger.error('Error fetching organization for email template', error, { organizationId });
     }
 
     // Fallback to inviter's organization logo if not found
@@ -115,9 +118,8 @@ export class UserInvitationService {
         if (inviter?.organization?.avatar) {
           companyLogoUrl = inviter.organization.avatar;
         }
-      } catch (error) {
-        // Silently fail - logo is optional
-        this.logger.debug('Error fetching inviter organization logo (optional)', error);
+      } catch {
+        // Silently fail - logo is optional, no log to avoid noise
       }
     }
 
@@ -251,6 +253,7 @@ export class UserInvitationService {
       isFirstUser,
     );
 
+    this.logger.info('User invitation sent', { email, organizationId });
     return {
       message: 'Invitation sent successfully',
       email,
@@ -267,7 +270,7 @@ export class UserInvitationService {
 
       return payload;
     } catch (error) {
-      this.logger.error('Error verifying invitation token', error);
+      this.logger.error('Invitation token verification failed', error);
       throw new BadRequestException('Invalid or expired invitation token');
     }
   }
@@ -286,6 +289,7 @@ export class UserInvitationService {
       isActive: true,
     });
 
+    this.logger.info('User invitation completed', { email: payload.email, organizationId: payload.organizationId });
     return {
       message: 'Invitation completed successfully',
       user: updatedUser,
@@ -353,6 +357,7 @@ export class UserInvitationService {
       isFirstUser,
     );
 
+    this.logger.info('User invitation resent', { email, organizationId });
     return {
       message: 'Invitation resent successfully',
       email,
