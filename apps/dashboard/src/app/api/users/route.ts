@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('users/route');
 
 export async function GET(request: NextRequest) {
   const organizationId = request.nextUrl.searchParams.get('organizationId');
@@ -16,6 +19,7 @@ export async function GET(request: NextRequest) {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   if (!apiBaseUrl) {
+    logger.error('API base URL is not configured');
     return NextResponse.json({ message: 'API base URL is not configured' }, { status: 500 });
   }
 
@@ -45,10 +49,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(data);
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
+      logger.warn('Request timeout fetching members', { organizationId });
       return NextResponse.json({ message: 'Request timeout' }, { status: 408 });
     }
 
-    console.error('Error fetching organization members:', error);
+    logger.error('Error fetching organization members', error, { organizationId });
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }

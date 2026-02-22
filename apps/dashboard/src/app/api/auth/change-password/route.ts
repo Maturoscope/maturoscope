@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken } from '@/app/utils/authDecode'
 import { decryptPassword } from '@/app/utils/crypto'
+import { createStructuredLogger } from '@/lib/structured-logger'
+
+const logger = createStructuredLogger('auth/change-password')
 
 interface ChangePasswordRequest {
   currentPassword: string
@@ -133,7 +136,7 @@ export async function POST(req: NextRequest) {
     }, { status: 200 })
 
   } catch (error) {
-    console.error('Error updating password:', error)
+    logger.error('Error updating password', error)
     return NextResponse.json({
       error: 'Internal server error'
     }, { status: 500 })

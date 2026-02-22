@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('organizations/signature');
 
 export async function PATCH(req: NextRequest) {
   const controller = new AbortController();
@@ -22,8 +25,6 @@ export async function PATCH(req: NextRequest) {
     const signatureFile = formData.get('file') as File;
 
     if (!signatureFile) {
-      const keys = Array.from(formData.keys());
-      console.log('Available form data keys:', keys);
       return NextResponse.json({ 
         error: 'Bad Request', 
         message: 'No file provided' 
@@ -78,7 +79,7 @@ export async function PATCH(req: NextRequest) {
 
   } catch (error) {
     clearTimeout(timeoutId);
-    console.error('Error uploading signature:', error);
+    logger.error('Error uploading signature', error);
     
     if (error instanceof Error && error.name === 'AbortError') {
       return NextResponse.json({ 
@@ -137,7 +138,7 @@ export async function DELETE() {
 
   } catch (error) {
     clearTimeout(timeoutId);
-    console.error('Error removing signature:', error);
+    logger.error('Error removing signature', error);
     
     if (error instanceof Error && error.name === 'AbortError') {
       return NextResponse.json({ 

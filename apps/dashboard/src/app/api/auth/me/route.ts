@@ -1,6 +1,8 @@
-
 import { verifyToken } from '@/app/utils/authDecode';
 import { NextRequest, NextResponse } from 'next/server';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('auth/me');
 
 export async function GET(req: NextRequest) {
   const cookies = req.cookies;
@@ -36,9 +38,9 @@ export async function GET(req: NextRequest) {
           userApiData = await userData.json();
         } else {
           const errorText = await userData.text();
-          console.error('User API returned non-OK status:', userData.status, errorText);
-          
-          console.log('Falling back to token data');
+          logger.error('User API returned non-OK status', new Error(errorText || String(userData.status)), {
+            status: userData.status,
+          });
           return NextResponse.json({
             userId: decoded.sub,
             email: decoded.userEmail,
@@ -52,10 +54,7 @@ export async function GET(req: NextRequest) {
           });
         }
       } catch (apiError) {
-        console.error('Failed to fetch from user API:', apiError);
-        
-        
-        console.log('Falling back to token data due to API error');
+        logger.error('Failed to fetch from user API', apiError);
         return NextResponse.json({
           userId: decoded.sub,
           email: decoded.userEmail,
@@ -69,10 +68,7 @@ export async function GET(req: NextRequest) {
         });
       }
     } else {
-      console.warn('NEXT_PUBLIC_API_BASE_URL not configured or userEmail missing');
-      console.log('Using token data only');
-      
-    
+      logger.warn('API base URL not configured or userEmail missing');
       return NextResponse.json({
         userId: decoded.sub,
         email: decoded.userEmail,
@@ -101,10 +97,8 @@ export async function GET(req: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error verifying token:', error);
-    
     if (error instanceof Error && error.message.includes('Token verification failed')) {
-      console.log('Token is invalid, clearing cookies');
+      logger.warn('Token invalid or expired, clearing cookies');
       const response = NextResponse.json({ 
         error: 'Unauthorized', 
         message: 'Invalid or expired token' 
@@ -123,7 +117,7 @@ export async function GET(req: NextRequest) {
       
       return response;
     } else {
-      console.error('Server error (not clearing cookies):', error);
+      logger.error('Error verifying token', error);
       return NextResponse.json({ 
         error: 'Internal Server Error', 
         message: 'Unable to process request' 

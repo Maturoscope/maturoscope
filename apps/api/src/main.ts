@@ -5,9 +5,13 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { json, urlencoded } from 'express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { join } from 'path';
+import { requestIdMiddleware } from './common/middleware/request-id.middleware';
+import { StructuredLoggerService } from './common/logger/structured-logger.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  app.use(requestIdMiddleware);
 
   // Increase body size limit to handle base64-encoded PDF attachments (~5 MB)
   app.use(json({ limit: '5mb' }));
@@ -83,10 +87,10 @@ async function bootstrap() {
     `,
   });
 
-  // Log Swagger URL
   const port = process.env.PORT || 8000;
-  console.log(`📚 Swagger documentation available at: http://localhost:${port}/${swaggerPath}`);
-
   await app.listen(port);
+
+  const logger = app.get(StructuredLoggerService);
+  logger.info('API started', { port, swaggerPath });
 }
 bootstrap();

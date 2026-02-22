@@ -2,6 +2,9 @@ import { NextResponse, NextRequest } from "next/server"
 import { Locale } from "./dictionaries/dictionaries"
 import { match } from "@formatjs/intl-localematcher"
 import Negotiator from "negotiator"
+import { createStructuredLogger } from "./lib/structured-logger"
+
+const logger = createStructuredLogger("middleware")
 
 const headers = { "accept-language": "en,es;q=0.5" }
 const languages = new Negotiator({ headers }).languages()
@@ -50,7 +53,7 @@ const validateOrganizationKey = async (key: string, organizationKeyFromCookie: s
     // Organization should have at least some identifying properties
     return Object.keys(organization).length > 0
   } catch (error) {
-    console.error("Error validating organization key:", error)
+    logger.error("Error validating organization key", error, { key })
     return false
   }
 }

@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('organizations/resend-invitation');
 
 export async function POST(req: NextRequest) {
   const cookies = req.cookies;
@@ -78,7 +81,7 @@ export async function POST(req: NextRequest) {
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error resending invitation:', error);
+    logger.error('Error resending invitation', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

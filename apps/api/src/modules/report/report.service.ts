@@ -8,6 +8,7 @@ import puppeteer, { Browser } from 'puppeteer';
 // Types
 import { LaunchOptions, PDFOptions } from 'puppeteer';
 import { ReportDataDto } from './dto/report-data.dto';
+import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
 
 const PUPPETEER_OPTIONS: LaunchOptions = {
   executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
@@ -27,6 +28,12 @@ const PAGE_PDF_OPTIONS: PDFOptions = {
 
 @Injectable()
 export class ReportService {
+  private readonly logger: StructuredLoggerService;
+
+  constructor(structuredLogger: StructuredLoggerService) {
+    this.logger = structuredLogger.child('ReportService');
+  }
+
   private loadTranslations(locale: string): Record<string, unknown> {
     const localePath = path.join(__dirname, `./pdf/locales/${locale}.json`);
     const localeContent = fs.readFileSync(localePath, 'utf8');
@@ -53,20 +60,15 @@ export class ReportService {
     let browser: Browser | null = null;
 
     try {
-      // Launch the browser
       browser = await puppeteer.launch(PUPPETEER_OPTIONS);
       const page = await browser.newPage();
-
-      // Set a longer timeout for the page
       page.setDefaultTimeout(30000);
 
-      // Navigate to the temp file using file:// protocol (more reliable than data URL)
       await page.goto(`file://${tempFilePath}`, {
         waitUntil: ['load', 'networkidle0'],
         timeout: 30000,
       });
 
-      // Wait for Tailwind CDN to process and apply styles
       await page.waitForFunction(
         () => {
           const styles = document.querySelectorAll('style');
@@ -75,7 +77,6 @@ export class ReportService {
         { timeout: 15000 },
       );
 
-      // Wait for computed styles to be applied to body
       await page.waitForFunction(
         () => {
           const body = document.body;
@@ -85,10 +86,13 @@ export class ReportService {
         { timeout: 10000 },
       );
 
-      // Generate PDF
       const pdfBuffer = await page.pdf(PAGE_PDF_OPTIONS);
-
-      return Buffer.from(pdfBuffer);
+      const buffer = Buffer.from(pdfBuffer);
+      this.logger.info('PDF report generated', { locale, sizeBytes: buffer.length });
+      return buffer;
+    } catch (err) {
+      this.logger.error('PDF report generation failed', err, { locale });
+      throw err;
     } finally {
       // Always cleanup: close browser and delete temp file
       if (browser) {

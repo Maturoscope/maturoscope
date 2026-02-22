@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import { decryptPassword } from '@/app/utils/crypto';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('auth/login');
 
 export const POST = async (req: Request) => {
   try {
@@ -29,7 +32,12 @@ export const POST = async (req: Request) => {
     const data = await response.json();
 
     if (!response.ok) {
-      if (data.error_description && data.error_description.includes('Your account has been blocked')) {
+      const blocked = data.error_description?.includes('Your account has been blocked');
+      logger.error('Login failed', new Error(data.error_description ?? 'Auth error'), {
+        status: response.status,
+        code: blocked ? 'ACCOUNT_BLOCKED' : 'AUTH_FAILED',
+      });
+      if (blocked) {
         return NextResponse.json({ error: data.error_description || 'Error en autenticación' }, { status: 423 });
       }
       return NextResponse.json({ error: data.error_description || 'Error en autenticación' }, { status: 400 });
@@ -88,9 +96,10 @@ export const POST = async (req: Request) => {
         }
       }
     } catch (error) {
-      console.error('Error checking user active status:', error);
-      // Continue with login if there's an error checking the status
+      logger.error('Error checking user active status', error);
     }
+
+    logger.info('Login success');
 
     const responseHeaders = new Headers();
     responseHeaders.append('Set-Cookie', `token=${data.access_token}; Path=/; HttpOnly; Secure; SameSite=Strict`);
@@ -100,6 +109,7 @@ export const POST = async (req: Request) => {
       headers: responseHeaders,
     });
   } catch (error) {
+    logger.error('Login request failed', error);
     return NextResponse.json({ error: 'Internal Server Error: ' + error }, { status: 500 });
   }
 };

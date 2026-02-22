@@ -4,15 +4,21 @@ import * as nodemailer from 'nodemailer';
 import * as fs from 'fs';
 import * as path from 'path';
 import { google } from 'googleapis';
+import { StructuredLoggerService } from '../logger/structured-logger.service';
 
 @Injectable()
 export class BaseMailService implements OnModuleInit {
   protected logoPath: string;
   protected transporter: nodemailer.Transporter | null = null;
   protected isInitialized = false;
+  protected readonly logger: StructuredLoggerService;
 
-  constructor(protected readonly configService: ConfigService) {
+  constructor(
+    protected readonly configService: ConfigService,
+    structuredLogger: StructuredLoggerService,
+  ) {
     this.logoPath = path.join(process.cwd(), 'public', 'image', 'logo.png');
+    this.logger = structuredLogger.child('BaseMailService');
   }
 
   protected async getTransporter(): Promise<nodemailer.Transporter> {
@@ -63,14 +69,12 @@ export class BaseMailService implements OnModuleInit {
 
   async onModuleInit() {
     try {
-      if (fs.existsSync(this.logoPath)) {
-        console.log('Logo file found at:', this.logoPath);
-      } else {
-        console.warn('Logo file not found at:', this.logoPath);
+      if (!fs.existsSync(this.logoPath)) {
+        this.logger.warn('Logo file not found', { logoPath: this.logoPath });
       }
       this.isInitialized = true;
     } catch (error) {
-      console.error('Error during initialization:', error);
+      this.logger.error('Mail service initialization failed', error);
       throw error;
     }
   }
@@ -91,9 +95,8 @@ export class BaseMailService implements OnModuleInit {
 
     try {
       await transporter.sendMail(mailOptions);
-      console.log(`Email sent to ${options.to}`);
     } catch (error) {
-      console.error('Error sending email:', error);
+      this.logger.error('Email send failed', error, { to: options.to, subject: options.subject });
       throw error;
     }
   }

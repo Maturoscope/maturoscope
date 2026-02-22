@@ -2,6 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { UploadedFile } from '../types/uploaded-file.type';
+import { StructuredLoggerService } from '../logger/structured-logger.service';
 
 @Injectable()
 export class OvhS3Service {
@@ -11,8 +12,13 @@ export class OvhS3Service {
   private readonly forcePathStyle: boolean;
   private readonly makePublic: boolean;
   private readonly endpointUrl: string;
+  private readonly logger: StructuredLoggerService;
 
-  constructor(private readonly config: ConfigService) {
+  constructor(
+    private readonly config: ConfigService,
+    structuredLogger: StructuredLoggerService,
+  ) {
+    this.logger = structuredLogger.child('OvhS3Service');
     const endpoint = this.config.get<string>('OVH_S3_ENDPOINT');
     const region = this.config.get<string>('OVH_S3_REGION') || 'us-east-1';
     const accessKeyId = this.config.get<string>('OVH_S3_ACCESS_KEY');
@@ -64,7 +70,7 @@ export class OvhS3Service {
       await this.s3.send(command);
       return { key, url: this.buildPublicUrl(key) };
     } catch (error) {
-        console.error(error);
+      this.logger.error('S3 upload failed', error, { key });
       throw new InternalServerErrorException('Error uploading file to object storage');
     }
   }

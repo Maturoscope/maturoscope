@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('organizations/language');
 
 export async function PATCH(req: NextRequest) {
   const controller = new AbortController();
@@ -65,7 +68,7 @@ export async function PATCH(req: NextRequest) {
 
   } catch (error) {
     clearTimeout(timeoutId);
-    console.error('Error updating language:', error);
+    logger.error('Error updating language', error);
     
     if (error instanceof Error && error.name === 'AbortError') {
       return NextResponse.json({ 

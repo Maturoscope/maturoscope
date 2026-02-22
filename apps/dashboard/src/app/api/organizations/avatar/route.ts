@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyToken } from '@/app/utils/authDecode'
+import { createStructuredLogger } from '@/lib/structured-logger'
+
+const logger = createStructuredLogger('organizations/avatar')
 
 export async function PATCH(req: NextRequest) {
   const cookies = req.cookies
@@ -27,10 +30,6 @@ export async function PATCH(req: NextRequest) {
     const avatarFile = formData.get('file') as File
     
     if (!avatarFile) {
-      // Debug: log all form data keys
-      const keys = Array.from(formData.keys())
-      console.log('Available form data keys:', keys)
-      
       return NextResponse.json({ 
         error: 'Bad Request', 
         message: 'No file provided' 
@@ -94,7 +93,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json(result)
 
   } catch (error) {
-    console.error('Error uploading avatar:', error)
+    logger.error('Error uploading avatar', error)
     
     if (error instanceof Error && error.name === 'AbortError') {
       return NextResponse.json({ 
@@ -165,7 +164,7 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json(result)
 
   } catch (error) {
-    console.error('Error removing avatar:', error)
+    logger.error('Error removing avatar', error)
     
     if (error instanceof Error && error.name === 'AbortError') {
       return NextResponse.json({ 

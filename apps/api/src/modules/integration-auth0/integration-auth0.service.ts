@@ -1,4 +1,5 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
 
 @Injectable()
 export class IntegrationAuth0Service {
@@ -8,8 +9,10 @@ export class IntegrationAuth0Service {
   private readonly audience = `${this.auth0Domain}api/v2/`;
   private accessToken: string | null = null;
   private tokenExpiry: number | null = null;
+  private readonly logger: StructuredLoggerService;
 
-  constructor() {
+  constructor(structuredLogger: StructuredLoggerService) {
+    this.logger = structuredLogger.child('IntegrationAuth0Service');
     if (!this.auth0Domain || !this.clientId || !this.clientSecret) {
       throw new Error('Auth0 configuration is missing. Please check your environment variables.');
     }
@@ -35,10 +38,9 @@ export class IntegrationAuth0Service {
 
       const data = await response.json();
       this.accessToken = data.access_token;
-      // Set token expiry (typically 24 hours for client credentials)
       this.tokenExpiry = Date.now() + (data.expires_in * 1000);
     } catch (error) {
-      console.error('Error getting token from Auth0:', error);
+      this.logger.error('Auth0 management token failed', error);
       throw new HttpException(
         'Failed to authenticate with Auth0',
         HttpStatus.INTERNAL_SERVER_ERROR,

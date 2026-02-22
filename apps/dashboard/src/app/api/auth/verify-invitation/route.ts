@@ -1,4 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('auth/verify-invitation');
 
 export async function GET(request: NextRequest) {
   try {
@@ -12,12 +15,15 @@ export async function GET(request: NextRequest) {
     const data = await response.json();
 
     if (!response.ok) {
+      logger.error('Invitation token verify failed', new Error((data as { message?: string }).message ?? 'Invalid token'), {
+        status: response.status,
+      });
       return NextResponse.json({ message: data.message || 'Invalid or expired token' }, { status: response.status });
     }
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error verifying invitation token:', error);
+    logger.error('Error verifying invitation token', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }

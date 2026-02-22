@@ -13,6 +13,7 @@ import {
   RecommendedServiceDto,
 } from './dto/readiness-assessment.dto';
 import { ServicesService } from '../services/services.service';
+import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
 
 type I18nText = I18nTextInterface;
 
@@ -57,11 +58,14 @@ interface AssessmentDataI18n {
 @Injectable()
 export class ReadinessAssessmentService {
   private assessmentData: AssessmentDataI18n;
+  private readonly logger: StructuredLoggerService;
 
   constructor(
     @Inject(forwardRef(() => ServicesService))
     private readonly servicesService: ServicesService,
+    structuredLogger: StructuredLoggerService,
   ) {
+    this.logger = structuredLogger.child('ReadinessAssessmentService');
     this.loadAssessmentData();
   }
 
@@ -355,7 +359,7 @@ export class ReadinessAssessmentService {
       const lang = language?.toUpperCase() === 'FR' ? 'fr' : 'en';
       return levelData[lang];
     } catch (error) {
-      console.error('Error getting gap description:', error);
+      this.logger.error('Error getting gap description', error, { questionId, level, scaleType });
       return undefined;
     }
   }

@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('users/invite');
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,6 +16,7 @@ export async function POST(req: NextRequest) {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
     if (!apiBaseUrl) {
+      logger.error('API base URL is not configured');
       return NextResponse.json({ message: 'API base URL is not configured' }, { status: 500 });
     }
 
@@ -28,12 +32,15 @@ export async function POST(req: NextRequest) {
     const data = await response.json().catch(() => ({}));
 
     if (!response.ok) {
+      logger.error('Invitation request failed', new Error((data as { message?: string }).message ?? 'Invite failed'), {
+        status: response.status,
+      });
       return NextResponse.json(data, { status: response.status });
     }
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error sending invitation:', error);
+    logger.error('Error sending invitation', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }

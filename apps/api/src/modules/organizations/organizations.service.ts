@@ -10,15 +10,21 @@ import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { OrganizationResponseDto } from './dto/organization-response.dto';
 import { RegistrationStatus } from '../users/helpers/registration-status.helper';
 import { validate as uuidValidate } from 'uuid';
+import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
 
 @Injectable()
 export class OrganizationsService {
+  private readonly logger: StructuredLoggerService;
+
   constructor(
     @InjectRepository(Organization)
     private readonly organizationRepository: Repository<Organization>,
     private readonly ovhS3: OvhS3Service,
     private readonly usersService: UsersService,
-  ) {}
+    structuredLogger: StructuredLoggerService,
+  ) {
+    this.logger = structuredLogger.child('OrganizationsService');
+  }
 
   async create(createOrganizationDto: CreateOrganizationDto): Promise<Organization> {
 
@@ -87,7 +93,7 @@ export class OrganizationsService {
             };
           }
         } catch (error) {
-          console.error('Error getting registration status for organization:', error);
+          this.logger.error('Error getting registration status for organization', error, { organizationId: org.id });
         }
         
         // If no user found, return organization with pending status

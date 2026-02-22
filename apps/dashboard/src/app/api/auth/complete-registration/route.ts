@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { decryptPassword } from '@/app/utils/crypto';
 import { ROLES_MAPPED } from '@/app/utils/getUserRoles';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('auth/complete-registration');
 
 interface InvitationResponse {
   email: string;
@@ -114,7 +117,10 @@ export async function POST(req: NextRequest) {
 
       if (!assignRolesResponse.ok) {
         const errorData = await assignRolesResponse.json().catch(() => ({}));
-        console.error('Error assigning roles in Auth0:', errorData);
+        logger.error('Error assigning roles in Auth0', new Error(JSON.stringify(errorData)), {
+          auth0UserId,
+          status: assignRolesResponse.status,
+        });
       }
     }
 
@@ -152,6 +158,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message }, { status: loginResponse.status || 400 });
     }
 
+    logger.info('Registration completed', { organizationId: invitationData.organizationId });
+
     const response = NextResponse.json({ message: 'Registration completed successfully' }, { status: 200 });
 
     if (loginData.access_token) {
@@ -168,7 +176,7 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (error) {
-    console.error('Error completing registration:', error);
+    logger.error('Error completing registration', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }

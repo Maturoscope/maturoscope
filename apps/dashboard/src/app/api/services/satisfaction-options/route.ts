@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createStructuredLogger } from '@/lib/structured-logger';
+
+const logger = createStructuredLogger('services/satisfaction-options');
 
 export async function GET(request: NextRequest) {
   const token = request.cookies.get('token');
@@ -10,6 +13,7 @@ export async function GET(request: NextRequest) {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   if (!apiBaseUrl) {
+    logger.error('API base URL is not configured');
     return NextResponse.json({ message: 'API base URL is not configured' }, { status: 500 });
   }
 
@@ -39,10 +43,11 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(data);
   } catch (error) {
     if (error instanceof Error && error.name === 'AbortError') {
+      logger.warn('Request timeout fetching satisfaction options');
       return NextResponse.json({ message: 'Request timeout' }, { status: 408 });
     }
 
-    console.error('Error fetching satisfaction options:', error);
+    logger.error('Error fetching satisfaction options', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }
