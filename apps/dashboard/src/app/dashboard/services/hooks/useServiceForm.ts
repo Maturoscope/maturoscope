@@ -238,9 +238,7 @@ export function useServiceForm(serviceId?: string) {
     }
 
     if (field === 'url') {
-      if (!formData.url.trim()) {
-        newErrors.url = t('MODAL.ERRORS.URL_REQUIRED');
-      } else if (!isValidUrl(formData.url)) {
+      if (formData.url.trim() && !isValidUrl(formData.url)) {
         newErrors.url = t('MODAL.ERRORS.URL_INVALID');
       } else {
         delete newErrors.url;
@@ -342,9 +340,7 @@ export function useServiceForm(serviceId?: string) {
       newErrors.descriptionFr = t('MODAL.ERRORS.DESCRIPTION_REQUIRED');
     }
 
-    if (!formData.url.trim()) {
-      newErrors.url = t('MODAL.ERRORS.URL_REQUIRED');
-    } else if (!isValidUrl(formData.url)) {
+    if (formData.url.trim() && !isValidUrl(formData.url)) {
       newErrors.url = t('MODAL.ERRORS.URL_INVALID');
     }
 
@@ -418,8 +414,7 @@ export function useServiceForm(serviceId?: string) {
           formData.nameFr.trim() &&
           formData.descriptionEn.trim() &&
           formData.descriptionFr.trim() &&
-          formData.url.trim() &&
-          isValidUrl(formData.url)
+          (!formData.url.trim() || isValidUrl(formData.url))
         );
       case 2:
         return formData.gapCoverages.length > 0;

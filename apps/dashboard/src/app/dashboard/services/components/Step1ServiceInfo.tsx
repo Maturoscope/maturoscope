@@ -88,25 +88,25 @@ export function Step1ServiceInfo({
           value={formData.descriptionEn}
           onChange={(e) => {
             const value = e.target.value;
-            if (value.length <= 150) {
+            if (value.length <= 500) {
               onUpdateField("descriptionEn", value);
             }
           }}
           onFocus={() => onClearFieldError("descriptionEn")}
           onBlur={() => onValidateField("descriptionEn")}
           placeholder={t("MODAL.STEP_1.DESCRIPTION_EN.PLACEHOLDER")}
-          rows={4}
+          rows={6}
           disabled={viewOnly}
           readOnly={viewOnly}
-          maxLength={150}
-          className={errors.descriptionEn ? "border-red-500" : ""}
+          maxLength={500}
+          className={`resize-none overflow-y-auto ${errors.descriptionEn ? "border-red-500" : ""}`}
         />
         <div className="flex justify-between items-center">
           {errors.descriptionEn && (
             <p className="text-sm text-red-500">{errors.descriptionEn}</p>
           )}
           <p className="text-sm text-gray-500 ml-auto">
-            {formData.descriptionEn.length}/150
+            {formData.descriptionEn.length}/500
           </p>
         </div>
       </div>
@@ -124,25 +124,25 @@ export function Step1ServiceInfo({
           value={formData.descriptionFr}
           onChange={(e) => {
             const value = e.target.value;
-            if (value.length <= 150) {
+            if (value.length <= 500) {
               onUpdateField("descriptionFr", value);
             }
           }}
           onFocus={() => onClearFieldError("descriptionFr")}
           onBlur={() => onValidateField("descriptionFr")}
           placeholder={t("MODAL.STEP_1.DESCRIPTION_FR.PLACEHOLDER")}
-          rows={4}
+          rows={6}
           disabled={viewOnly}
           readOnly={viewOnly}
-          maxLength={150}
-          className={errors.descriptionFr ? "border-red-500" : ""}
+          maxLength={500}
+          className={`resize-none overflow-y-auto ${errors.descriptionFr ? "border-red-500" : ""}`}
         />
         <div className="flex justify-between items-center">
           {errors.descriptionFr && (
             <p className="text-sm text-red-500">{errors.descriptionFr}</p>
           )}
           <p className="text-sm text-gray-500 ml-auto">
-            {formData.descriptionFr.length}/150
+            {formData.descriptionFr.length}/500
           </p>
         </div>
       </div>
@@ -151,9 +151,6 @@ export function Step1ServiceInfo({
       <div className="space-y-2">
         <Label htmlFor="service-url">
           {t("MODAL.STEP_1.URL.LABEL")}
-          <span className="text-black ml-1">
-            {t("MODAL.STEP_1.NAME.REQUIRED")}
-          </span>
         </Label>
         <Input
           id="service-url"

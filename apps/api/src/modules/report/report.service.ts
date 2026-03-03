@@ -8,6 +8,7 @@ import puppeteer, { Browser } from 'puppeteer';
 // Types
 import { LaunchOptions, PDFOptions } from 'puppeteer';
 import { ReportDataDto } from './dto/report-data.dto';
+import { buildPageLayout } from './pdf/page-layout-builder';
 import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
 
 const PUPPETEER_OPTIONS: LaunchOptions = {
@@ -47,8 +48,11 @@ export class ReportService {
     // Load translations for the specified locale
     const t = this.loadTranslations(locale);
 
+    // Build dynamic page layout based on content volume
+    const pages = buildPageLayout(reportData);
+
     // Interpolate the dynamic data into the template
-    const templateData = { reportData, t, baseDir: __dirname };
+    const templateData = { reportData, t, baseDir: __dirname, pages };
     const templatePath = path.join(__dirname, 'pdf/template.ejs');
     const template = fs.readFileSync(templatePath, 'utf8');
     const html = ejs.render(template, templateData);

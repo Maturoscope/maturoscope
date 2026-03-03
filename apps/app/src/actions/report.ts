@@ -15,6 +15,7 @@ interface AnswerPayload {
 interface RecommendedServicePayload {
   name: string
   description: string
+  url?: string
 }
 
 interface GapPayload {

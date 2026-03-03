@@ -17,6 +17,7 @@ interface DetailedScaleProps {
   copyHighestLevel: string
   copyLevelLabel: string
   serviceLabel: string
+  servicesLabel: string
   comingSoonLabel: string
   focusLabel: string
   primaryRiskLabel: string
@@ -51,6 +52,7 @@ const DetailedScale = ({
   copyHighestLevel,
   copyLevelLabel,
   serviceLabel,
+  servicesLabel,
   comingSoonLabel,
   focusLabel,
   primaryRiskLabel,
@@ -128,6 +130,7 @@ const DetailedScale = ({
               index={index}
               title={gap.gapDescription[lang]}
               serviceLabel={serviceLabel}
+              servicesLabel={servicesLabel}
               comingSoonLabel={comingSoonLabel}
               recommendedServices={gap.recommendedServices}
               hasServices={gap.hasServices}

@@ -13,8 +13,10 @@ interface AccordionTriggerProps {
   index: number
   title: string
   serviceLabel: string
+  servicesLabel: string
   comingSoonLabel: string
   hasServices: boolean
+  serviceCount: number
   indexColor: string
   handleClick: () => void
 }
@@ -23,6 +25,7 @@ interface ServiceAccordionProps {
   index: number
   title: string
   serviceLabel: string
+  servicesLabel: string
   comingSoonLabel: string
   recommendedServices: RecommendedService[]
   hasServices: boolean
@@ -35,11 +38,14 @@ const AccordionTrigger = ({
   index,
   title,
   serviceLabel,
+  servicesLabel,
   comingSoonLabel,
   hasServices,
+  serviceCount,
   indexColor,
   handleClick,
 }: AccordionTriggerProps) => {
+  const resolvedServiceLabel = serviceCount > 1 ? servicesLabel : serviceLabel
   const handleTriggerClick = () => {
     if (hasServices) handleClick()
   }
@@ -69,7 +75,7 @@ const AccordionTrigger = ({
               hasServices ? "text-[#0D9488]" : "text-[#854D0E]"
             )}
           >
-            {hasServices ? serviceLabel : comingSoonLabel}
+            {hasServices ? resolvedServiceLabel : comingSoonLabel}
           </span>
           <Image
             src="/icons/chevron-down.svg"
@@ -88,7 +94,7 @@ const AccordionTrigger = ({
             hasServices ? "text-[#0D9488]" : "text-[#854D0E]"
           )}
         >
-          {hasServices ? serviceLabel : comingSoonLabel}
+          {hasServices ? resolvedServiceLabel : comingSoonLabel}
         </span>
       )}
     </div>
@@ -103,15 +109,32 @@ const AccordionContent = ({
   lang: Locale
 }) => {
   return (
-    <ul className="flex flex-col pl-8 mb-4 gap-2">
-      {recommendedServices.map((service) => (
-        <li key={service.id} className="flex flex-col">
+    <ul className="flex flex-col pl-8 mb-4">
+      {recommendedServices.map((service, idx) => (
+        <li
+          key={service.id}
+          className={cn(
+            "flex flex-col gap-1",
+            idx !== 0 && "border-t border-border pt-3 mt-4"
+          )}
+        >
           <span className="text-sm lg:text-base font-semibold text-foreground">
             {service.name[lang]}
           </span>
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm text-muted-foreground max-w-[900px]">
             {service.description[lang]}
           </span>
+          {service.url && (
+            <a
+              href={service.url.startsWith("http") ? service.url : `https://${service.url}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-sm text-[#0A0A0A] hover:underline mt-2.5"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              {service.url}
+            </a>
+          )}
         </li>
       ))}
     </ul>
@@ -122,6 +145,7 @@ const ServiceAccordion = ({
   index,
   title,
   serviceLabel,
+  servicesLabel,
   comingSoonLabel,
   recommendedServices = [],
   hasServices,
@@ -136,8 +160,10 @@ const ServiceAccordion = ({
           isOpen={isOpen}
           title={title}
           serviceLabel={serviceLabel}
+          servicesLabel={servicesLabel}
           comingSoonLabel={comingSoonLabel}
           hasServices={hasServices}
+          serviceCount={recommendedServices.length}
           indexColor={indexColor}
           handleClick={handleClick}
         />

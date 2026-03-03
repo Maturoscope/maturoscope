@@ -74,6 +74,7 @@ export interface RecommendedService {
   id: string
   name: LocalizedText
   description: LocalizedText
+  url?: string
 }
 
 export interface Gap {

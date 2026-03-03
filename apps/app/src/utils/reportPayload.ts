@@ -69,6 +69,7 @@ export const buildScalePayload = (
     recommendedServices: gap.recommendedServices.map((service) => ({
       name: getLocalizedText(service.name as LocalizedText | undefined, lang),
       description: getLocalizedText(service.description as LocalizedText | undefined, lang),
+      ...(service.url && { url: service.url }),
     })),
   }))
 

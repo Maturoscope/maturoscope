@@ -120,6 +120,7 @@ export class CreateServiceDto {
     example: 'https://www.example-consulting.com'
   })
   @IsOptional()
+  @ValidateIf((o) => o.url !== '' && o.url != null)
   @IsUrl()
   @MaxLength(500)
   url?: string;
