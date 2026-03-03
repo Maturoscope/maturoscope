@@ -45,7 +45,7 @@
     },
     "policy": {
       "description": "METABUILDING LABS Project has received funding from the European Union's Horizon 2020 Research and Innovation Programme under Grant Agreement No. 953193. The sole responsibility for the content of this document lies entirely with the author's view. The European Commission is not responsible for any use that may be made of the information it contains.",
-      "copyright": "Designed and developed by",
+      "copyright": "Developed by",
       "contactUsLabel": "Contact us",
       "privacyPolicyLabel": "Privacy policy",
       "privacyPolicyModal": {
@@ -180,6 +180,7 @@
       "copyLevelLabel": "Level",
       "copyHighestLevel": "Highest level achieved",
       "serviceLabel": "Service available",
+      "servicesLabel": "Services available",
       "comingSoonLabel": "Coming soon",
       "focusLabel": "Current focus",
       "primaryRiskLabel": "Primary Risk to Mitigate"

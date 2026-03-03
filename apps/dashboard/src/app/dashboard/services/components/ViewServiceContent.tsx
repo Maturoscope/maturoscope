@@ -154,7 +154,7 @@ export function ViewServiceContent({
           <h2 className="text-lg font-semibold text-[#0A0A0A]">
             {getTranslatedName() || "-"}
           </h2>
-          <p className="text-sm text-[#0A0A0A] leading-relaxed">
+          <p className="text-sm text-[#0A0A0A] leading-relaxed max-h-[120px] overflow-y-auto">
             {getTranslatedDescription() || "-"}
           </p>
           {formData.url && (

@@ -19,6 +19,7 @@ export interface DetailedReportProps {
   copyHighestLevel: string
   copyLevelLabel: string
   serviceLabel: string
+  servicesLabel: string
   comingSoonLabel: string
   focusLabel: string
   primaryRiskLabel: string
@@ -61,6 +62,7 @@ const DetailedReport = ({
   copyHighestLevel,
   copyLevelLabel,
   serviceLabel,
+  servicesLabel,
   comingSoonLabel,
   focusLabel,
   primaryRiskLabel,
@@ -146,6 +148,7 @@ const DetailedReport = ({
             copyHighestLevel={copyHighestLevel}
             copyLevelLabel={copyLevelLabel}
             serviceLabel={serviceLabel}
+            servicesLabel={servicesLabel}
             comingSoonLabel={comingSoonLabel}
             focusLabel={focusLabel}
             primaryRiskLabel={primaryRiskLabel}

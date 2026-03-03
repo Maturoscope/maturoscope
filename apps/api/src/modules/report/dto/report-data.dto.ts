@@ -14,6 +14,10 @@ export class RecommendedServicePayload {
 
   @IsString()
   description: string;
+
+  @IsString()
+  @IsOptional()
+  url?: string;
 }
 
 export class GapDto {

@@ -45,7 +45,7 @@
     },
     "policy": {
       "description": "Le projet METABUILDING LABS a reçu un financement de la part de la Commission européenne dans le cadre du Programme européen de recherche et d'innovation Horizon 2020 sous le numéro de convention No. 953193. La responsabilité exclusive du contenu de ce document repose entièrement sur l'avis du déposant. La Commission européenne n'est pas responsable de l'utilisation qui peut en être faite.",
-      "copyright": "Conçu et développé par",
+      "copyright": "Développé par",
       "contactUsLabel": "Contactez-nous",
       "privacyPolicyLabel": "Politique de confidentialité",
       "privacyPolicyModal": {
@@ -180,6 +180,7 @@
       "copyLevelLabel": "Niveau",
       "copyHighestLevel": "Niveau le plus élevé atteint",
       "serviceLabel": "Service disponible",
+      "servicesLabel": "Services disponibles",
       "comingSoonLabel": "Bientôt disponible",
       "focusLabel": "Focus actuel",
       "primaryRiskLabel": "Risque principal à mitiger"

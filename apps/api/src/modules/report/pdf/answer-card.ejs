@@ -1,7 +1,7 @@
 <div class="w-full p-6 bg-white rounded-2xl border border-border shadow-xs flex flex-col">
   <span class="text-lg font-semibold"><%= answer.question %></span>
   <span class="text-[#171717]"><%= answer.answer %></span>
-  <span class="text-sm text-muted-foreground">
+  <span class="text-sm text-muted-foreground max-w-[900px]">
     <% if (answer.comment) { %>
       <span>Comment: <%= answer.comment %></span>
     <% } else { %>
