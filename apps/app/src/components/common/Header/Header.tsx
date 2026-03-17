@@ -205,8 +205,8 @@ const Header = ({
               <Image
                 src={signature}
                 alt="Signature"
-                width={64}
-                height={20}
+                width={90}
+                height={28}
               />
             </>
           )}

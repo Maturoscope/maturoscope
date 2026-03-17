@@ -41,7 +41,7 @@ const Answer = ({
           className="shrink-0"
           onClick={handleEditClick}
         >
-          Edit
+          {lang === "fr" ? "Editer" : "Edit"}
         </Button>
       </div>
     </div>

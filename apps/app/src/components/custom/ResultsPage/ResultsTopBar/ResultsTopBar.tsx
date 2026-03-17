@@ -52,7 +52,10 @@ const ResultsTopBar = ({
 
   const handleTalkButtonClick = () => openModal()
 
-  const handleDownloadClick = async () => await downloadReport()
+  const handleDownloadClick = async () => {
+    console.log("[PDF Debug] Download button clicked!")
+    await downloadReport()
+  }
 
   useEffect(() => {
     const storedCompletedOn = localStorage.getItem("completedOn")

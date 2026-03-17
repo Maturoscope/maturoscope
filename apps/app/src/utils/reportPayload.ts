@@ -1,8 +1,8 @@
 import { Locale } from "@/dictionaries/dictionaries"
 import { StageId, QuestionData } from "@/components/custom/FormPage/Form/Form"
-import { DevelopmentPhase, Gap, LocalizedText, getOrganizationSignature } from "@/actions/organization"
+import type { DevelopmentPhase, Gap, LocalizedText } from "@/actions/organization"
 import { ReportPayload } from "@/actions/report"
-import { getRisks, RiskData } from "@/actions/questions"
+import type { RiskData } from "@/actions/questions"
 
 // ─── Storage types ────────────────────────────────────────────────────────────
 
@@ -31,6 +31,53 @@ const getCookie = (name: string): string | null => {
   const parts = value.split(`; ${name}=`)
   if (parts.length === 2) return parts.pop()?.split(";").shift() || null
   return null
+}
+
+type ScaleAbbreviation = "TRL" | "MkRL" | "MfRL"
+
+/**
+ * Fetches risk analysis directly from the API (client-side).
+ * Avoids using the server action which can hang during page transitions.
+ */
+const fetchRisksFromClient = async (
+  levels: Record<StageId, number>,
+  phases: Record<StageId, number>
+): Promise<RisksStorage> => {
+  const organizationKey = getCookie("organization-key")
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/readiness-assessment/analyze-risk${organizationKey ? `?organizationKey=${organizationKey}` : ""}`
+
+  const scales = [
+    { scale: "TRL" as ScaleAbbreviation, readinessLevel: levels.trl, phase: phases.trl },
+    { scale: "MkRL" as ScaleAbbreviation, readinessLevel: levels.mkrl, phase: phases.mkrl },
+    { scale: "MfRL" as ScaleAbbreviation, readinessLevel: levels.mfrl, phase: phases.mfrl },
+  ]
+
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ scales }),
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch risks: ${response.statusText}`)
+  }
+
+  const data = await response.json()
+  const scaleToStageId: Record<ScaleAbbreviation, StageId> = { TRL: "trl", MkRL: "mkrl", MfRL: "mfrl" }
+  const risksRecord: RisksStorage = {}
+
+  data.risks.forEach((risk: { scale: ScaleAbbreviation; readinessLevel: number; phase: number; isLowest: boolean; strategicFocus?: unknown; primaryRisk?: unknown }) => {
+    const stageId = scaleToStageId[risk.scale]
+    risksRecord[stageId] = {
+      readinessLevel: risk.readinessLevel,
+      phase: risk.phase,
+      isLowest: risk.isLowest,
+      strategicFocus: risk.strategicFocus as RiskData["strategicFocus"],
+      primaryRisk: risk.primaryRisk as RiskData["primaryRisk"],
+    }
+  })
+
+  return risksRecord
 }
 
 // ─── Scale payload builder ────────────────────────────────────────────────────
@@ -108,18 +155,18 @@ export const buildReportPayload = async (
 
   let risksData: RisksStorage | null = null
   if (hasAllLevels && hasAllPhases) {
-    risksData = await getRisks({
-      levels: {
+    risksData = await fetchRisksFromClient(
+      {
         trl: levelData.trl as number,
         mkrl: levelData.mkrl as number,
         mfrl: levelData.mfrl as number,
       },
-      phases: {
+      {
         trl: phasesData.trl!.phase,
         mkrl: phasesData.mkrl!.phase,
         mfrl: phasesData.mfrl!.phase,
-      },
-    })
+      }
+    )
   }
 
   const storedCompletedOn = localStorage.getItem("completedOn")
@@ -150,14 +197,22 @@ export const buildReportPayload = async (
     }
   }
 
-  if (!signatureUrl) {
-    const fetchedSignature = await getOrganizationSignature()
-    if (fetchedSignature && organizationKey) {
-      localStorage.setItem(
-        SIGNATURE_STORAGE_KEY,
-        JSON.stringify({ organizationKey, url: fetchedSignature })
-      )
-      signatureUrl = fetchedSignature
+  if (!signatureUrl && organizationKey) {
+    try {
+      const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/organizations/key/${organizationKey}`
+      const res = await fetch(endpoint)
+      if (res.ok) {
+        const org = await res.json()
+        if (org?.signature) {
+          localStorage.setItem(
+            SIGNATURE_STORAGE_KEY,
+            JSON.stringify({ organizationKey, url: org.signature })
+          )
+          signatureUrl = org.signature
+        }
+      }
+    } catch {
+      // Signature is optional — continue without it
     }
   }
 

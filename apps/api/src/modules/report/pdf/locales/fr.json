@@ -39,10 +39,11 @@
     "comingSoon": "Bientôt disponible"
   },
   "answers": {
-    "title": "Vos réponses"
+    "title": "Vos réponses",
+    "commentLabel": "Commentaire"
   },
   "footer": {
-    "disclaimer": "Bien que l'outil ait été conçu par des professionnels du secteur du bâtiment, les résultats de ce test ne constituent pas un certificat officiel et sont fournis à des fins informatifess uniquement.",
+    "disclaimer": "Bien que l'outil ait été conçu par des professionnels du secteur du bâtiment, les résultats de ce test ne constituent pas un certificat officiel et sont fournis à des fins informatives uniquement.",
     "policy": "Le projet METABUILDING LABS a reçu un financement de la part de la Commission européenne dans le cadre du Programme européen de recherche et d'innovation Horizon 2020 sous le numéro de convention No. 953193. La responsabilité exclusive du contenu de ce document repose entièrement sur l'avis du déposant. La Commission européenne n'est pas responsable de l'utilisation qui peut en être faite."
   }
 }

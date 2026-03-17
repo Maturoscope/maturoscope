@@ -95,7 +95,7 @@
               <div class="flex flex-col gap-2">
                 <% var answers = answerScaleInfo.data.answers.slice(block.answerStartIndex, block.answerEndIndex); %>
                 <% answers.forEach(function(answer) { %>
-                  <%- include(baseDir + '/pdf/answer-card.ejs' , { answer }) %>
+                  <%- include(baseDir + '/pdf/answer-card.ejs' , { answer, t }) %>
                 <% }) %>
               </div>
             </div>

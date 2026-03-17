@@ -59,6 +59,11 @@ const KeysCriteria = ({ title, keys }: KeysCriteriaProps) => {
                   <span className="text-base text-muted-foreground">
                     {key.description}
                   </span>
+                  {key.questionsCount && (
+                    <span className="text-sm text-muted-foreground">
+                      {key.questionsCount}
+                    </span>
+                  )}
                 </div>
               </motion.li>
             </Box>

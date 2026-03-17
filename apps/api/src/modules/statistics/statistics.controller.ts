@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Query, Body } from '@nestjs/common';
+import { Controller, Get, Post, Req, Query, Body, Headers } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { StatisticsService } from './statistics.service';
 import { Auth } from '../../common/decorators/auth.decorator';
@@ -72,17 +72,17 @@ export class StatisticsController {
       user.organizationId,
     );
 
-    // Calculate rates
+    // Calculate rates (capped at 100% to prevent display issues from duplicate tracking)
     const analysisCompletionRate =
       statistics.startedAssessments > 0
-        ? Math.round(
+        ? Math.min(100, Math.round(
             (statistics.completedAssessments / statistics.startedAssessments) * 100,
-          )
+          ))
         : 0;
 
     const contactRate =
       statistics.completedAssessments > 0
-        ? Math.round((statistics.contactedServices / statistics.completedAssessments) * 100)
+        ? Math.min(100, Math.round((statistics.contactedServices / statistics.completedAssessments) * 100))
         : 0;
 
     // Prepare chart data - counts by level for each category (non-cumulative)
@@ -97,14 +97,14 @@ export class StatisticsController {
         MkRL: 0,
         MfRL: 0,
       };
-      
+
       for (const category of categories) {
         // Get count for this specific level only (not cumulative)
         // Level 0 always has 0 users
         const count = level === 0 ? 0 : (statistics.usersByCategoryAndLevel[category]?.[level.toString()] || 0);
         dataPoint[category] = count;
       }
-      
+
       chartData.push(dataPoint);
     }
 
@@ -128,7 +128,7 @@ export class StatisticsController {
   @Get('reports')
   @Auth(ValidRoles.admin)
   @ApiBearerAuth('JWT-auth')
-  @ApiOperation({ 
+  @ApiOperation({
     summary: 'Get reports statistics (Admin only)',
     description: 'Retrieves aggregated statistics across all organizations or filtered by organizationId. Requires admin role.'
   })
@@ -168,17 +168,17 @@ export class StatisticsController {
 
     const statistics = await this.statisticsService.getAggregatedStatistics(targetOrganizationId);
 
-    // Calculate rates
+    // Calculate rates (capped at 100% to prevent display issues from duplicate tracking)
     const analysisCompletionRate =
       statistics.startedAssessments > 0
-        ? Math.round(
+        ? Math.min(100, Math.round(
             (statistics.completedAssessments / statistics.startedAssessments) * 100,
-          )
+          ))
         : 0;
 
     const contactRate =
       statistics.completedAssessments > 0
-        ? Math.round((statistics.contactedServices / statistics.completedAssessments) * 100)
+        ? Math.min(100, Math.round((statistics.contactedServices / statistics.completedAssessments) * 100))
         : 0;
 
     // Prepare chart data - counts by level for each category (non-cumulative)
@@ -193,13 +193,13 @@ export class StatisticsController {
         MkRL: 0,
         MfRL: 0,
       };
-      
+
       for (const category of categories) {
         // Get count for this specific level only (not cumulative)
         const count = level === 0 ? 0 : (statistics.usersByCategoryAndLevel[category]?.[level.toString()] || 0);
         dataPoint[category] = count;
       }
-      
+
       chartData.push(dataPoint);
     }
 
@@ -229,12 +229,15 @@ export class StatisticsController {
   @ApiQuery({ name: 'organizationKey', required: true, description: 'Organization unique key', example: 'synopp' })
   @ApiResponse({ status: 200, description: 'Started assessment tracked successfully' })
   @ApiResponse({ status: 403, description: 'Forbidden - organizationKey required' })
-  async trackStartedAssessment(@Query('organizationKey') organizationKey: string) {
+  async trackStartedAssessment(
+    @Query('organizationKey') organizationKey: string,
+    @Headers('x-session-id') sessionId?: string,
+  ) {
     if (!organizationKey) {
       throw new ForbiddenException('organizationKey query parameter is required');
     }
 
-    await this.statisticsService.incrementStartedAssessments(organizationKey);
+    await this.statisticsService.incrementStartedAssessments(organizationKey, sessionId);
     return { success: true, message: 'Started assessment tracked successfully' };
   }
 
@@ -251,12 +254,15 @@ export class StatisticsController {
   @ApiQuery({ name: 'organizationKey', required: true, description: 'Organization unique key', example: 'synopp' })
   @ApiResponse({ status: 200, description: 'Completed assessment tracked successfully' })
   @ApiResponse({ status: 403, description: 'Forbidden - organizationKey required' })
-  async trackCompletedAssessment(@Query('organizationKey') organizationKey: string) {
+  async trackCompletedAssessment(
+    @Query('organizationKey') organizationKey: string,
+    @Headers('x-session-id') sessionId?: string,
+  ) {
     if (!organizationKey) {
       throw new ForbiddenException('organizationKey query parameter is required');
     }
 
-    await this.statisticsService.incrementCompletedAssessments(organizationKey);
+    await this.statisticsService.incrementCompletedAssessments(organizationKey, sessionId);
     return { success: true, message: 'Completed assessment tracked successfully' };
   }
 
@@ -278,6 +284,7 @@ export class StatisticsController {
   async incrementUserStatistics(
     @Query('organizationKey') organizationKey: string,
     @Body() incrementUserDto: IncrementUserStatisticsDto,
+    @Headers('x-session-id') sessionId?: string,
   ) {
     if (!organizationKey) {
       throw new ForbiddenException('organizationKey query parameter is required');
@@ -287,6 +294,7 @@ export class StatisticsController {
       organizationKey,
       incrementUserDto.category,
       incrementUserDto.level,
+      sessionId,
     );
 
     return {

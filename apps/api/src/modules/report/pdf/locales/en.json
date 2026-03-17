@@ -39,7 +39,8 @@
     "comingSoon": "Coming soon"
   },
   "answers": {
-    "title": "Your answers"
+    "title": "Your answers",
+    "commentLabel": "Comment"
   },
   "footer": {
     "disclaimer": "Although the tool was designed by professionals from the building sector, the results of this test do not constitute a formal certificate and are provided for informational purposes only.",
