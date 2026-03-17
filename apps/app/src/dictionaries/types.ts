@@ -33,7 +33,7 @@ export type Dictionary = {
   homepage: {
     hero: HomepageHeroProps
     policy: PrivacyPolicyProps
-    gdprModal: GdprModalProps
+    gdprModal: Pick<GdprModalProps, "message" | "learnMoreLabel">
   }
   notFound: NotFoundProps
   begin: SimpleFormProps
