@@ -1,5 +1,7 @@
 # Maturoscope
 
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 A comprehensive technology readiness assessment platform built with Turborepo monorepo architecture.
 
 ## 🚀 Quick Start
@@ -193,17 +195,27 @@ yarn build --filter=app
 yarn build --filter=dashboard
 ```
 
-## 🤝 Contributing
+## 🤝 Contribution guidelines
 
-1. Read the [Setup Guide](./docs/SETUP.md) to get your environment ready
-2. Create a feature branch
-3. Make your changes
-4. Run tests and linting
-5. Submit a pull request
+If you want to contribute to Maturoscope, be sure to review the [Contribution Guidelines](CONTRIBUTING.md). This project adheres to Maturoscope's [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+
+We use [GitHub Issues](https://github.com/Maturoscope/maturoscope/issues) for tracking requests and bugs, and [GitHub Discussions](https://github.com/Maturoscope/maturoscope/discussions) for general questions and community discussion.
+
+The Maturoscope project strives to abide by generally accepted best practices in open-source software development.
+
+## 🔒 Security
+
+If you discover a security vulnerability, please follow our [Security Policy](SECURITY.md). Do not create a public issue for security vulnerabilities.
 
 ## 📄 License
 
-This project is private and unlicensed.
+Copyright 2024 METABUILDING LABS
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
+See the [LICENSE](LICENSE) file for details.
 
 ## 🔗 Useful Links
 
@@ -215,4 +227,8 @@ This project is private and unlicensed.
 
 ---
 
-**Need help?** Check the [Setup Guide](./docs/SETUP.md) or contact the team.
+**Need help?** Check the [Setup Guide](./docs/06-setup-initial.md) or contact us at **communication@nobatek.com**.
+
+---
+
+*METABUILDING LABS Project has received funding from the European Union's Horizon 2020 Research and Innovation Programme under Grant Agreement No. 953193.*

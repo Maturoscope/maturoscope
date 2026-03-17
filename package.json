@@ -1,6 +1,16 @@
 {
   "name": "maturoscope",
   "private": true,
+  "description": "A comprehensive technology readiness assessment platform",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Maturoscope/maturoscope.git"
+  },
+  "homepage": "https://github.com/Maturoscope/maturoscope",
+  "bugs": {
+    "url": "https://github.com/Maturoscope/maturoscope/issues"
+  },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
