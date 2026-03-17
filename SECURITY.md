@@ -6,7 +6,7 @@ The Maturoscope team takes security issues seriously. We appreciate your efforts
 
 **Please do NOT report security vulnerabilities through public GitHub issues.**
 
-Instead, please report them via email to **communication@nobatek.com** with the subject line: `[SECURITY] Maturoscope - <brief description>`.
+Instead, please report them via email to **contact@nobatek.com** with the subject line: `[SECURITY] Maturoscope - <brief description>`.
 
 ### What to include in your report
 

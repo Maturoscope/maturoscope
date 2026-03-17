@@ -180,7 +180,7 @@ By contributing to Maturoscope, you agree that your contributions will be licens
 
 ## Questions?
 
-If you have questions about contributing, please open a [GitHub Discussion](https://github.com/Maturoscope/maturoscope/discussions) or contact us at **communication@nobatek.com**.
+If you have questions about contributing, please open a [GitHub Discussion](https://github.com/Maturoscope/maturoscope/discussions) or contact us at **contact@nobatek.com**.
 
 
 Thank you for contributing to Maturoscope!

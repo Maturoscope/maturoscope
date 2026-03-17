@@ -209,7 +209,7 @@ If you discover a security vulnerability, please follow our [Security Policy](SE
 
 ## 📄 License
 
-Copyright 2024 METABUILDING LABS
+Copyright 2024 Nobatek
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -227,7 +227,7 @@ See the [LICENSE](LICENSE) file for details.
 
 ---
 
-**Need help?** Check the [Setup Guide](./docs/06-setup-initial.md) or contact us at **communication@nobatek.com**.
+**Need help?** Check the [Setup Guide](./docs/06-setup-initial.md) or contact us at **contact@nobatek.com**.
 
 ---
 
