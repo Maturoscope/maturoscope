@@ -3,9 +3,9 @@
   <span class="text-[#171717]"><%= answer.answer %></span>
   <span class="text-sm text-muted-foreground max-w-[900px]">
     <% if (answer.comment) { %>
-      <span>Comment: <%= answer.comment %></span>
+      <span><%= t.answers.commentLabel %>: <%= answer.comment %></span>
     <% } else { %>
-      <span>Comment: -</span>
+      <span><%= t.answers.commentLabel %>: -</span>
     <% } %>
   </span>
 </div>

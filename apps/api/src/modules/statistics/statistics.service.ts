@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, IsNull } from 'typeorm';
 import { OrganizationStatistics } from './entities/organization-statistics.entity';
+import { TrackingSession } from './entities/tracking-session.entity';
 import { OrganizationsService } from '../organizations/organizations.service';
 import { ScaleType } from '../readiness-assessment/dto/readiness-assessment.dto';
 import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
@@ -13,10 +14,64 @@ export class StatisticsService {
   constructor(
     @InjectRepository(OrganizationStatistics)
     private readonly statisticsRepository: Repository<OrganizationStatistics>,
+    @InjectRepository(TrackingSession)
+    private readonly trackingSessionRepository: Repository<TrackingSession>,
     private readonly organizationsService: OrganizationsService,
     structuredLogger: StructuredLoggerService,
   ) {
     this.logger = structuredLogger.child('StatisticsService');
+  }
+
+  /**
+   * Check if a tracking event has already been recorded for this session.
+   * Returns true if it's a duplicate (already tracked), false if it's new.
+   */
+  private async isDuplicateSession(
+    organizationId: string,
+    sessionId: string | undefined,
+    event: 'started' | 'completed' | 'category',
+    category: string | null = null,
+  ): Promise<boolean> {
+    if (!sessionId) return false;
+
+    try {
+      const existing = await this.trackingSessionRepository.findOne({
+        where: {
+          organizationId,
+          sessionId,
+          event,
+          category: category ?? IsNull(),
+        },
+      });
+      return !!existing;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Record a tracking session to prevent future duplicates.
+   */
+  private async recordSession(
+    organizationId: string,
+    sessionId: string | undefined,
+    event: 'started' | 'completed' | 'category',
+    category: string | null = null,
+  ): Promise<void> {
+    if (!sessionId) return;
+
+    try {
+      const session = this.trackingSessionRepository.create({
+        organizationId,
+        sessionId,
+        event,
+        category,
+      });
+      await this.trackingSessionRepository.save(session);
+    } catch {
+      // Unique constraint violation means it was already recorded — safe to ignore
+      this.logger.warn('Could not record tracking session (likely duplicate)', { organizationId, sessionId, event, category: category ?? undefined });
+    }
   }
 
   /**
@@ -48,13 +103,20 @@ export class StatisticsService {
   /**
    * Increment started assessments counter
    */
-  async incrementStartedAssessments(organizationKey: string): Promise<void> {
+  async incrementStartedAssessments(organizationKey: string, sessionId?: string): Promise<void> {
     try {
       const organization = await this.organizationsService.findByKey(organizationKey);
+
+      if (await this.isDuplicateSession(organization.id, sessionId, 'started')) {
+        this.logger.warn('Duplicate started assessment session skipped', { organizationKey, sessionId });
+        return;
+      }
+
       const statistics = await this.getOrCreateStatistics(organization.id);
-      
       statistics.startedAssessments += 1;
       await this.statisticsRepository.save(statistics);
+
+      await this.recordSession(organization.id, sessionId, 'started');
     } catch (error) {
       this.logger.error('Failed to increment started assessments', error, { organizationKey });
     }
@@ -63,13 +125,20 @@ export class StatisticsService {
   /**
    * Increment completed assessments counter
    */
-  async incrementCompletedAssessments(organizationKey: string): Promise<void> {
+  async incrementCompletedAssessments(organizationKey: string, sessionId?: string): Promise<void> {
     try {
       const organization = await this.organizationsService.findByKey(organizationKey);
+
+      if (await this.isDuplicateSession(organization.id, sessionId, 'completed')) {
+        this.logger.warn('Duplicate completed assessment session skipped', { organizationKey, sessionId });
+        return;
+      }
+
       const statistics = await this.getOrCreateStatistics(organization.id);
-      
       statistics.completedAssessments += 1;
       await this.statisticsRepository.save(statistics);
+
+      await this.recordSession(organization.id, sessionId, 'completed');
     } catch (error) {
       this.logger.error('Failed to increment completed assessments', error, { organizationKey });
     }
@@ -82,7 +151,7 @@ export class StatisticsService {
     try {
       const organization = await this.organizationsService.findByKey(organizationKey);
       const statistics = await this.getOrCreateStatistics(organization.id);
-      
+
       statistics.contactedServices += 1;
       await this.statisticsRepository.save(statistics);
     } catch (error) {
@@ -97,11 +166,18 @@ export class StatisticsService {
     organizationKey: string,
     category: ScaleType,
     level: number,
+    sessionId?: string,
   ): Promise<void> {
     try {
       const organization = await this.organizationsService.findByKey(organizationKey);
+
+      if (await this.isDuplicateSession(organization.id, sessionId, 'category', category)) {
+        this.logger.warn('Duplicate category tracking session skipped', { organizationKey, sessionId, category });
+        return;
+      }
+
       const statistics = await this.getOrCreateStatistics(organization.id);
-      
+
       const levelKey = level.toString();
       // Create a new object so TypeORM detects the JSONB change (mutating nested refs can be ignored)
       const categoryData = { ...(statistics.usersByCategoryAndLevel[category] || {}) };
@@ -110,8 +186,10 @@ export class StatisticsService {
         ...statistics.usersByCategoryAndLevel,
         [category]: categoryData,
       };
-      
+
       await this.statisticsRepository.save(statistics);
+
+      await this.recordSession(organization.id, sessionId, 'category', category);
     } catch (error) {
       this.logger.error('Failed to increment user by category/level', error, {
         organizationKey,

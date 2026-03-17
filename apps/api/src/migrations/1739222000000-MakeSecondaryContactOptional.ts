@@ -4,6 +4,8 @@ export class MakeSecondaryContactOptional1739222000000 implements MigrationInter
   name = 'MakeSecondaryContactOptional1739222000000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
+    // Idempotent: COMMENT ON and DROP NOT NULL are safe to run multiple times
+
     // Add comments to document that secondary contact fields are optional
     await queryRunner.query(`
       COMMENT ON COLUMN "services"."secondaryContactFirstName" IS 'Optional - Secondary contact first name'

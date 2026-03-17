@@ -4,6 +4,16 @@ export class InitialSchema1707518400000 implements MigrationInterface {
   name = 'InitialSchema1707518400000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
+    // Skip if schema already exists (handles databases set up before migration tracking)
+    const organizationsExists = await queryRunner.query(`
+      SELECT EXISTS (
+        SELECT FROM information_schema.tables WHERE table_name = 'organizations'
+      ) AS "exists"
+    `);
+    if (organizationsExists[0]?.exists) {
+      return;
+    }
+
     // Create enum types
     await queryRunner.query(`
       CREATE TYPE "organization_status_enum" AS ENUM('inactive', 'active')

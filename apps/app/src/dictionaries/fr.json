@@ -13,7 +13,7 @@
     "hero": {
       "heading": {
         "title": "Évaluez la maturité de votre innovation en quelques minutes.",
-        "description": "Obtenez une lecture instantanée de vos niveaux de maturité technologique, marché et fabrication, ainsi que des actions ciblées pour vous améliorer."
+        "description": "Obtenez une analyse instantanée et personnalisée de vos niveaux de maturité : technologique, marché et fabrication, ainsi que des services ciblés pour vous améliorer"
       },
       "information": {
         "noAccount": "Aucun compte requis",
@@ -28,17 +28,20 @@
           {
             "icon": "/icons/homepage/criteria-trl.svg",
             "title": "TRL - Niveau de maturité de la technologie",
-            "description": "La technologie est-elle fonctionnelle ? (7 questions)"
+            "description": "Quel est le niveau d'avancement de votre technologie ?",
+            "questionsCount": "7 questions"
           },
           {
             "icon": "/icons/homepage/criteria-mkrl.svg",
             "title": "MkRL - Niveau de maturité du marché",
-            "description": "Y a-t-il un besoin client ? (4 questions)"
+            "description": "Comment faciliter la mise sur le marché de votre produit ?",
+            "questionsCount": "4 questions"
           },
           {
             "icon": "/icons/homepage/criteria-mfrl.svg",
             "title": "MfRL - Niveau de maturité de la fabrication",
-            "description": "La production est-elle scalable ? (4 questions)"
+            "description": "Comment produire votre innovation facilement et à moindre coût ?",
+            "questionsCount": "4 questions"
           }
         ]
       }
@@ -113,7 +116,8 @@
     ]
   },
   "review": {
-    "title": "Réviser les réponses [STAGE_NAME]"
+    "title": "Réviser les réponses [STAGE_NAME]",
+    "editButtonLabel": "Editer"
   },
   "singleReview": {
     "cancelButtonLabel": "Annuler",
@@ -135,7 +139,7 @@
       "title": "Votre profil de maturité",
       "subtitle": "Complété le ",
       "downloadButtonLabel": "Télécharger le rapport",
-      "talkButtonLabel": "Parler à un expert"
+      "talkButtonLabel": "Contacter un expert"
     },
     "beforeYouGoModal": {
       "title": "Avant de partir...",
@@ -164,13 +168,13 @@
       ]
     },
     "unlockNextLevel": {
-      "title": "Débloquez votre prochain niveau",
+      "title": "Et ensuite ?",
       "steps": [
-        "Voir les résultats détaillés ci-dessous.",
-        "Connectez-vous avec les experts recommandés pour accélérer votre succès.",
-        "Téléchargez votre rapport et conservez-le pour vos futurs jalons."
+        "Analyser vos résultats personnalisés ci-dessous",
+        "Echangez avec des experts pour vous guider",
+        "Télécharger votre rapport pour planifier vos futures étapes"
       ],
-      "clarification": "Après avoir examiné vos résultats, enregistrez-les et contactez les services recommandés. Ils vous aideront à identifier les étapes suivantes pour améliorer votre niveau de maturité."
+      "clarification": "Après avoir consulté vos résultats, enregistrez-les et contacter les spécialistes identifiés qui vous accompagneront dans le développement de votre innovation"
     },
       "detailedReport": {
       "title": "Rapport détaillé",
@@ -189,8 +193,8 @@
       "title": "Transformez ce plan en réalité.",
       "description": "Ne vous engagez pas seuls. Nos experts sont prêts à vous aider à atteindre le prochain niveau de maturité.",
       "or": "ou",
-      "disclaimer": "Bien que l'outil ait été conçu par des professionnels du secteur du bâtiment, les résultats de ce test ne constituent pas un certificat officiel et sont fournis à des fins informatifess uniquement.",
-      "talkButtonLabel": "Parler à un expert",
+      "disclaimer": "Bien que l'outil ait été conçu par des professionnels du secteur du bâtiment, les résultats de ce test ne constituent pas un certificat officiel et sont fournis à des fins informatives uniquement.",
+      "talkButtonLabel": "Contacter un expert",
       "resetButtonLabel": "Réinitialiser le questionnaire",
       "resetFormModal": {
         "title": "Réinitialiser le questionnaire",
@@ -202,15 +206,15 @@
     },
     "contactExpertModal": {
       "supportNeeded": {
-        "title": "Support nécessaire pour:",
-        "description": "Sélectionnez les lacunes spécifiques que vous aimeriez que nous vous aidions à résoudre.",
+        "title": "Sélection des services :",
+        "description": "Ci-dessous, sélectionnez les services pour lesquels vous souhaitez être recontacté par un expert",
         "primaryButtonLabel": "Continuer",
         "completedLabel": "complété",
         "chipLabel": "Recommandé pour votre innovation"
       },
       "reachOut": {
-        "title": "Comment pouvons-nous vous contacter ?",
-        "description": "Veuillez fournir vos détails afin que notre expert sache à qui demander.",
+        "title": "Formulaire de contact :",
+        "description": "Entrez vos informations ci-dessous afin d'être recontacté par nos experts",
         "primaryButtonLabel": "Demander un contact",
         "secondaryButtonLabel": "Retour",
         "completedLabel": "complété"

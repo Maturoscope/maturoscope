@@ -15,7 +15,6 @@ import Input from "@/components/common/Input/Input"
 // Context
 import { useContactExpertContext } from "@/context/ContactExpertContext"
 // Actions
-import { requestContact } from "@/actions/organization"
 import { generateOrGetCachedPdf } from "@/hooks/useDownloadReport"
 // Types
 import { ModalStep } from "../ContactExpertModal"
@@ -171,7 +170,7 @@ const FR_CONTACT_INFO_FIELDS: ContactInfoForm = {
 
 const EN_CLARIFICATION = "I agree to share my name, email, project details, and questionnaire responses with experts to receive personalized guidance on improving my TRL/MKRL/MFRL level. I understand my data will be used exclusively for this inquiry and will not be stored by the platform."
 const EN_LOADING_BUTTON_LABEL = "Loading..."
-const FR_CLARIFICATION = "Je consens à partager mon nom, mon email, les détails de mon projet, et les réponses du questionnaire avec des experts pour recevoir une guidance personnalisée sur l'amélioration de mon niveau TRL/MkRL/MfRL. Je comprends que mes données seront utilisées exclusivement pour cette demande et ne seront pas stockées par la plateforme."
+const FR_CLARIFICATION = "Je consens à partager mon nom prénom, mon email, le nom de mon projet et les réponses au questionnaire pour recevoir un accompagnement personnalisé et améliorer mes niveaux TRL/MkRL/MfRL. Je comprends que mes données seront utilisées uniquement dans le cadre de cette demande et ne seront pas stockées ou réutilisées par la plateforme."
 const FR_LOADING_BUTTON_LABEL = "Chargement..."
 
 // Validation error messages
@@ -285,18 +284,46 @@ const ReachOut = ({
       // PDF attachment is best-effort; the email will be sent without it
     }
 
-    const result = await requestContact({
-      gaps: selectedGaps,
-      contactInformation: cleanedData,
-      projectName: projectName as string,
-      reportPdfBase64,
-    })
-    setIsLoading(false)
+    // Call API directly from the client to avoid Server Action 1MB body limit
+    // (the PDF base64 can exceed 1MB when serialised through React Flight protocol)
+    const cookieValue = `; ${document.cookie}`
+    const parts = cookieValue.split("; organization-key=")
+    const organizationKey = parts.length === 2 ? parts.pop()?.split(";").shift() : null
 
-    if (result.success) {
-      clearSelections()
-      setCurrentStep("successStatus")
-    } else {
+    if (!organizationKey) {
+      setIsLoading(false)
+      setCurrentStep("failedStatus")
+      return
+    }
+
+    try {
+      const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/services/contact?organizationKey=${organizationKey}`
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          gaps: selectedGaps,
+          company: cleanedData.organization,
+          firstName: cleanedData.firstName,
+          lastName: cleanedData.lastName,
+          email: cleanedData.email,
+          phoneNumber: cleanedData.phoneNumber,
+          additionalInformation: cleanedData.additionalInformation,
+          projectName,
+          ...(reportPdfBase64 && { reportPdfBase64 }),
+        }),
+      })
+
+      setIsLoading(false)
+
+      if (response.ok) {
+        clearSelections()
+        setCurrentStep("successStatus")
+      } else {
+        setCurrentStep("failedStatus")
+      }
+    } catch {
+      setIsLoading(false)
       setCurrentStep("failedStatus")
     }
   }

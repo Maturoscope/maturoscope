@@ -13,7 +13,7 @@
     "hero": {
       "heading": {
         "title": "Assess your innovation's maturity in minutes.",
-        "description": "Get an instant read on your Technology, Market, and Manufacturing readiness levels, and targeted actions to improve."
+        "description": "Get an instant analysis of your Technology, Market and Manufacturing readiness levels and identify services to improve them"
       },
       "information": {
         "noAccount": "No account required",
@@ -28,17 +28,20 @@
           {
             "icon": "/icons/homepage/criteria-trl.svg",
             "title": "TRL - Technology Readiness Level",
-            "description": "Is the technology functional? (7 questions)"
+            "description": "What is the current level of your innovation?",
+            "questionsCount": "7 questions"
           },
           {
             "icon": "/icons/homepage/criteria-mkrl.svg",
             "title": "MkRL - Market Readiness Level",
-            "description": "Is there a customer need? (4 questions)"
+            "description": "How to reach the market?",
+            "questionsCount": "4 questions"
           },
           {
             "icon": "/icons/homepage/criteria-mfrl.svg",
             "title": "MfRL - Manufacturing Readiness Level",
-            "description": "Is production scalable? (4 questions)"
+            "description": "How to replicate the product quickly and cost-effectively?",
+            "questionsCount": "4 questions"
           }
         ]
       }
@@ -113,7 +116,8 @@
     ]
   },
   "review": {
-    "title": "Review [STAGE_NAME] answers"
+    "title": "Review [STAGE_NAME] answers",
+    "editButtonLabel": "Edit"
   },
   "singleReview": {
     "cancelButtonLabel": "Cancel",
@@ -164,7 +168,7 @@
       ]
     },
     "unlockNextLevel": {
-      "title": "Unlock your next level",
+      "title": "What's next?",
       "steps": [
         "Review your detailed results below.",
         "Connect with the recommended experts to accelerate your success.",

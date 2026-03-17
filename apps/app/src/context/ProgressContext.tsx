@@ -266,8 +266,11 @@ export const ProgressProvider = ({
       localStorage.setItem("completedOn", new Date().toISOString())
       // Kick off PDF generation in background so it's ready (or well underway)
       // by the time the user arrives at the results page and clicks Download.
-      generateOrGetCachedPdf(lang).catch(() => {
-        // Pre-generation is best-effort — errors are handled on actual download.
+      console.log("[PDF Debug] Kicking off PDF pre-generation from checkpoint...")
+      generateOrGetCachedPdf(lang).then(() => {
+        console.log("[PDF Debug] PDF pre-generation completed successfully!")
+      }).catch((err) => {
+        console.error("[PDF Debug] PDF pre-generation FAILED:", err)
       })
       return router.push(`/${lang}/results`)
     }

@@ -152,7 +152,7 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
                     </div>
                     {isCurrentStage && (
                       <span className="text-xs text-muted-foreground">
-                        {progress.answered} of {progress.total}
+                        {progress.answered}/{progress.total}
                       </span>
                     )}
 
