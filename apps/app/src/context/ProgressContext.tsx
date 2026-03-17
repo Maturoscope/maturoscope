@@ -26,6 +26,7 @@ import {
   DevelopmentPhase,
 } from "@/actions/organization"
 import { trackCompletedCategory } from "@/actions/tracking"
+import { getRisks } from "@/actions/questions"
 
 interface ProgressContextType {
   stages: StageType[]
@@ -264,13 +265,33 @@ export const ProgressProvider = ({
 
     if (isLastCheckpoint) {
       localStorage.setItem("completedOn", new Date().toISOString())
+
+      // Pre-fetch risks and save to localStorage so buildReportPayload
+      // can read them without making any network calls during PDF generation.
+      const levelData = JSON.parse(localStorage.getItem("level") || "{}")
+      const phasesData = JSON.parse(localStorage.getItem("phases") || "{}")
+      try {
+        const risksData = await getRisks({
+          levels: {
+            trl: levelData.trl,
+            mkrl: levelData.mkrl,
+            mfrl: levelData.mfrl,
+          },
+          phases: {
+            trl: phasesData.trl?.phase,
+            mkrl: phasesData.mkrl?.phase,
+            mfrl: phasesData.mfrl?.phase,
+          },
+        })
+        localStorage.setItem("risks", JSON.stringify(risksData))
+      } catch {
+        // Risks are best-effort — PDF will still generate without them
+      }
+
       // Kick off PDF generation in background so it's ready (or well underway)
       // by the time the user arrives at the results page and clicks Download.
-      console.log("[PDF Debug] Kicking off PDF pre-generation from checkpoint...")
-      generateOrGetCachedPdf(lang).then(() => {
-        console.log("[PDF Debug] PDF pre-generation completed successfully!")
-      }).catch((err) => {
-        console.error("[PDF Debug] PDF pre-generation FAILED:", err)
+      generateOrGetCachedPdf(lang).catch(() => {
+        // Pre-generation is best-effort — errors are handled on actual download.
       })
       return router.push(`/${lang}/results`)
     }

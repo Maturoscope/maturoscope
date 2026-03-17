@@ -22,28 +22,19 @@ let pendingGeneration: { lang: Locale; promise: Promise<string> } | null = null
 export const generateOrGetCachedPdf = async (lang: Locale): Promise<string> => {
   // 1. Return from cache if available
   const cached = pdfCache.get(lang)
-  if (cached) {
-    console.log("[PDF Debug] Returning cached PDF")
-    return cached
-  }
+  if (cached) return cached
 
   // 2. If already generating for the same lang, share that Promise
   if (pendingGeneration?.lang === lang) {
-    console.log("[PDF Debug] Sharing pending generation promise")
     return pendingGeneration.promise
   }
 
   // 3. Start a new generation
-  console.log("[PDF Debug] Starting new PDF generation...")
   const promise = (async () => {
     try {
-      console.log("[PDF Debug] Fetching questions...")
       const questionsData = await getQuestions(lang)
-      console.log("[PDF Debug] Questions fetched, building payload...")
       const payload = await buildReportPayload(lang, questionsData)
-      console.log("[PDF Debug] Payload built, calling generateReport...")
       const result = await generateReport(lang, payload)
-      console.log("[PDF Debug] generateReport result:", { success: result.success, hasData: !!result.data, error: result.error })
 
       if (!result.success || !result.data) {
         throw new Error(result.error || "Failed to generate PDF")
@@ -51,9 +42,6 @@ export const generateOrGetCachedPdf = async (lang: Locale): Promise<string> => {
 
       pdfCache.set(result.data, lang)
       return result.data
-    } catch (err) {
-      console.error("[PDF Debug] Error in generation:", err)
-      throw err
     } finally {
       pendingGeneration = null
     }
@@ -76,7 +64,6 @@ export const useDownloadReport = (lang: Locale) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const downloadReport = useCallback(async () => {
-    console.log("[PDF Debug] >>> downloadReport() called, lang:", lang)
     setIsLoading(true)
 
     try {
