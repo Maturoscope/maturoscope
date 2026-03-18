@@ -1,5 +1,5 @@
 // Packages
-import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { Injectable, OnModuleDestroy } from '@nestjs/common';
 import * as path from 'path';
 import * as ejs from 'ejs';
 import * as fs from 'fs';
@@ -41,7 +41,7 @@ const PAGE_PDF_OPTIONS: PDFOptions = {
 const MAX_CONCURRENT = 2;
 
 @Injectable()
-export class ReportService implements OnModuleInit, OnModuleDestroy {
+export class ReportService implements OnModuleDestroy {
   private readonly logger: StructuredLoggerService;
   private browser: Browser | null = null;
   private activePdfCount = 0;
@@ -52,11 +52,6 @@ export class ReportService implements OnModuleInit, OnModuleDestroy {
     // Load compiled CSS once at startup
     const cssPath = path.join(__dirname, './pdf/compiled.css');
     this.compiledCss = fs.readFileSync(cssPath, 'utf8');
-  }
-
-  async onModuleInit(): Promise<void> {
-    await this.ensureBrowser();
-    this.logger.info('Browser instance initialized for PDF generation');
   }
 
   async onModuleDestroy(): Promise<void> {
@@ -78,14 +73,21 @@ export class ReportService implements OnModuleInit, OnModuleDestroy {
       } catch {
         // Ignore close errors on stale browser
       }
-    }
-    this.browser = await puppeteer.launch(PUPPETEER_OPTIONS);
-    // Re-launch if browser disconnects unexpectedly
-    this.browser.on('disconnected', () => {
-      this.logger.warn('Browser disconnected unexpectedly');
       this.browser = null;
-    });
-    return this.browser;
+    }
+    try {
+      this.browser = await puppeteer.launch(PUPPETEER_OPTIONS);
+      // Re-launch if browser disconnects unexpectedly
+      this.browser.on('disconnected', () => {
+        this.logger.warn('Browser disconnected unexpectedly');
+        this.browser = null;
+      });
+      this.logger.info('Browser instance launched for PDF generation');
+      return this.browser;
+    } catch (err) {
+      this.logger.error('Failed to launch browser', err);
+      throw new Error('PDF generation unavailable: browser failed to launch');
+    }
   }
 
   private loadTranslations(locale: string): Record<string, unknown> {
