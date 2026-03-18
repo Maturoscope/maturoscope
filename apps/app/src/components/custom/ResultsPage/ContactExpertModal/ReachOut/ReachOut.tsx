@@ -297,7 +297,7 @@ const ReachOut = ({
     }
 
     try {
-      const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/services/contact?organizationKey=${organizationKey}`
+      const endpoint = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/services/contact?organizationKey=${organizationKey}`
       const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
