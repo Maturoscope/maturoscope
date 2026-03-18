@@ -76,9 +76,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Set Chromium path for Puppeteer
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
-# Create non-root user
+# Create non-root user and crashpad directory
 RUN groupadd --system --gid 1001 app \
-    && useradd --system --uid 1001 --gid app app
+    && useradd --system --uid 1001 --gid app app \
+    && mkdir -p /tmp/crashpad \
+    && chown app:app /tmp/crashpad
 
 # Copy only what's needed to run the compiled API
 # 1) compiled dist
