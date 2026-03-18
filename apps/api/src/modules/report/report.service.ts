@@ -1,5 +1,5 @@
 // Packages
-import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import * as path from 'path';
 import * as ejs from 'ejs';
 import * as fs from 'fs';
@@ -19,7 +19,6 @@ const PUPPETEER_OPTIONS: LaunchOptions = {
     '--disable-gpu',
     '--disable-dev-shm-usage',
     '--disable-setuid-sandbox',
-    '--single-process',
   ],
 };
 
@@ -29,13 +28,9 @@ const PAGE_PDF_OPTIONS: PDFOptions = {
   height: '2040px',
 };
 
-const MAX_CONCURRENT = 2;
-
 @Injectable()
-export class ReportService implements OnModuleInit, OnModuleDestroy {
+export class ReportService {
   private readonly logger: StructuredLoggerService;
-  private browser: Browser | null = null;
-  private activePdfCount = 0;
   private compiledCss: string;
 
   constructor(structuredLogger: StructuredLoggerService) {
@@ -43,44 +38,6 @@ export class ReportService implements OnModuleInit, OnModuleDestroy {
     // Load compiled CSS once at startup
     const cssPath = path.join(__dirname, './pdf/compiled.css');
     this.compiledCss = fs.readFileSync(cssPath, 'utf8');
-  }
-
-  async onModuleInit(): Promise<void> {
-    try {
-      await this.ensureBrowser();
-      this.logger.info('Browser instance initialized for PDF generation');
-    } catch (err) {
-      this.logger.error('Failed to initialize browser on startup', err);
-    }
-  }
-
-  async onModuleDestroy(): Promise<void> {
-    if (this.browser) {
-      await this.browser.close();
-      this.browser = null;
-      this.logger.info('Browser instance closed');
-    }
-  }
-
-  private async ensureBrowser(): Promise<Browser> {
-    if (this.browser && this.browser.connected) {
-      return this.browser;
-    }
-    // Close stale browser if disconnected
-    if (this.browser) {
-      try {
-        await this.browser.close();
-      } catch {
-        // Ignore close errors on stale browser
-      }
-    }
-    this.browser = await puppeteer.launch(PUPPETEER_OPTIONS);
-    // Re-launch if browser disconnects unexpectedly
-    this.browser.on('disconnected', () => {
-      this.logger.warn('Browser disconnected unexpectedly');
-      this.browser = null;
-    });
-    return this.browser;
   }
 
   private loadTranslations(locale: string): Record<string, unknown> {
@@ -93,14 +50,6 @@ export class ReportService implements OnModuleInit, OnModuleDestroy {
     reportData: ReportDataDto,
     locale: string = 'en',
   ): Promise<Buffer> {
-    // Concurrency guard
-    if (this.activePdfCount >= MAX_CONCURRENT) {
-      throw new Error(
-        'PDF generation is busy, please try again in a moment',
-      );
-    }
-    this.activePdfCount++;
-
     // Load translations for the specified locale
     const t = this.loadTranslations(locale);
 
@@ -126,42 +75,41 @@ export class ReportService implements OnModuleInit, OnModuleDestroy {
     );
     fs.writeFileSync(tempFilePath, html, 'utf8');
 
+    let browser: Browser | null = null;
+
     try {
-      const browser = await this.ensureBrowser();
+      browser = await puppeteer.launch(PUPPETEER_OPTIONS);
       const page = await browser.newPage();
 
-      try {
-        await page.goto(`file://${tempFilePath}`, {
-          waitUntil: 'load',
-          timeout: 15000,
-        });
+      await page.goto(`file://${tempFilePath}`, {
+        waitUntil: 'load',
+        timeout: 30000,
+      });
 
-        // Brief wait for styles to apply (CSS is already inlined, no network needed)
-        await page.waitForFunction(
-          () => {
-            const body = document.body;
-            const computedStyle = window.getComputedStyle(body);
-            return computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)';
-          },
-          { timeout: 5000 },
-        );
+      // Brief wait for styles to apply (CSS is already inlined, no network needed)
+      await page.waitForFunction(
+        () => {
+          const body = document.body;
+          const computedStyle = window.getComputedStyle(body);
+          return computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)';
+        },
+        { timeout: 10000 },
+      );
 
-        const pdfBuffer = await page.pdf(PAGE_PDF_OPTIONS);
-        const buffer = Buffer.from(pdfBuffer);
-        this.logger.info('PDF report generated', {
-          locale,
-          sizeBytes: buffer.length,
-        });
-        return buffer;
-      } finally {
-        await page.close();
-      }
+      const pdfBuffer = await page.pdf(PAGE_PDF_OPTIONS);
+      const buffer = Buffer.from(pdfBuffer);
+      this.logger.info('PDF report generated', {
+        locale,
+        sizeBytes: buffer.length,
+      });
+      return buffer;
     } catch (err) {
       this.logger.error('PDF report generation failed', err, { locale });
       throw err;
     } finally {
-      this.activePdfCount--;
-      // Delete temp file
+      if (browser) {
+        await browser.close();
+      }
       if (fs.existsSync(tempFilePath)) {
         fs.unlinkSync(tempFilePath);
       }
