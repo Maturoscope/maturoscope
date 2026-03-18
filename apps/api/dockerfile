@@ -57,9 +57,9 @@ RUN yarn add @nestjs/typeorm typeorm @nestjs/core @nestjs/common @nestjs/platfor
 RUN yarn turbo run build --filter=api
 
 # ---------------------------
-# RUNTIME (Alpine with Chromium)
+# RUNTIME (Alpine 3.20 pinned - Chromium 131 compatible with OVH b3-8 CPUs)
 # ---------------------------
-FROM node:20-alpine AS runner
+FROM node:20-alpine3.20 AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
