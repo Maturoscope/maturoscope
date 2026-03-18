@@ -26,6 +26,9 @@ const PUPPETEER_OPTIONS: LaunchOptions = {
     '--disable-sync',
     '--no-first-run',
     '--disable-translate',
+    '--disable-crash-reporter',
+    '--disable-breakpad',
+    '--crash-dumps-dir=/tmp/crashpad',
   ],
 };
 
