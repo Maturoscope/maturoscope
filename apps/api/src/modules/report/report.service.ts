@@ -14,8 +14,6 @@ import { StructuredLoggerService } from '../../common/logger/structured-logger.s
 
 const PUPPETEER_OPTIONS: LaunchOptions = {
   headless: true,
-  pipe: true,
-  dumpio: true,
   executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
   args: [
     '--no-sandbox',
