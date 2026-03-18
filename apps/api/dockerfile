@@ -91,6 +91,11 @@ COPY --from=builder --chown=app:app /app/apps/api/package.json ./package.json
 # 3) complete node_modules from builder (includes all pruned dependencies)
 COPY --from=builder --chown=app:app /app/node_modules ./node_modules
 
+# Verify critical PDF assets exist
+RUN test -s dist/modules/report/pdf/template.ejs || (echo "ERROR: template.ejs missing or empty" && exit 1) \
+    && test -s dist/modules/report/pdf/compiled.css || (echo "ERROR: compiled.css missing or empty" && exit 1) \
+    && test -s dist/modules/report/pdf/locales/en.json || (echo "ERROR: en.json locale missing or empty" && exit 1)
+
 # Switch to non-root user
 USER app
 
