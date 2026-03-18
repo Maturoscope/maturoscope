@@ -1,7 +1,6 @@
 # ---------------------------
 # BASE (common tools)
 # ---------------------------
-# Updated: 2026-02-10-20:21 
 FROM node:20-alpine AS base
 WORKDIR /app
 ENV NODE_ENV=production
@@ -58,36 +57,32 @@ RUN yarn add @nestjs/typeorm typeorm @nestjs/core @nestjs/common @nestjs/platfor
 RUN yarn turbo run build --filter=api
 
 # ---------------------------
-# RUNTIME (Debian slim for Chromium compatibility)
+# RUNTIME (Alpine with Chromium)
 # ---------------------------
-FROM node:20-slim AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-# Install Chromium and required dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Install Chromium and dependencies
+RUN apk add --no-cache \
     chromium \
-    fonts-freefont-ttf \
-    fonts-noto-color-emoji \
+    nss \
+    freetype \
+    freetype-dev \
+    harfbuzz \
     ca-certificates \
-    dbus \
-    && rm -rf /var/lib/apt/lists/*
+    ttf-freefont
 
 # Set Chromium path for Puppeteer
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
-# Create non-root user and crashpad directory
-RUN groupadd --system --gid 1001 app \
-    && useradd --system --uid 1001 --gid app app \
-    && mkdir -p /tmp/crashpad \
-    && chown app:app /tmp/crashpad
+# Create non-root user
+RUN addgroup --system --gid 1001 app \
+    && adduser --system --uid 1001 app
 
 # Copy only what's needed to run the compiled API
-# 1) compiled dist
 COPY --from=builder --chown=app:app /app/apps/api/dist ./dist
-# 2) API package.json (needed for Node.js)
 COPY --from=builder --chown=app:app /app/apps/api/package.json ./package.json
-# 3) complete node_modules from builder (includes all pruned dependencies)
 COPY --from=builder --chown=app:app /app/node_modules ./node_modules
 
 # Verify critical PDF assets exist

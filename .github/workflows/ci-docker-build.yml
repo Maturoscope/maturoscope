@@ -37,7 +37,7 @@ jobs:
             api:
               - 'apps/api/**'
               - 'apps/api/package.json'
-              - 'apps/api/Dockerfile'
+              - 'apps/api/dockerfile'
             app:
               - 'apps/app/**'
               - 'apps/app/package.json'
@@ -123,7 +123,7 @@ jobs:
         run: |
           echo "🚀 Building API for ${{ steps.vars.outputs.environment }} environment..."
           docker build \
-            --file apps/api/Dockerfile \
+            --file apps/api/dockerfile \
             --tag ${{ steps.vars.outputs.registry }}/api/api:${{ steps.vars.outputs.TAG }} \
             --build-arg API_PORT=8000 \
             .

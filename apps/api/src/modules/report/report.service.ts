@@ -1,5 +1,5 @@
 // Packages
-import { Injectable, OnModuleDestroy } from '@nestjs/common';
+import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import * as path from 'path';
 import * as ejs from 'ejs';
 import * as fs from 'fs';
@@ -13,22 +13,13 @@ import { buildPageLayout } from './pdf/page-layout-builder';
 import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
 
 const PUPPETEER_OPTIONS: LaunchOptions = {
-  headless: true,
   executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
   args: [
     '--no-sandbox',
     '--disable-gpu',
     '--disable-dev-shm-usage',
     '--disable-setuid-sandbox',
-    '--disable-extensions',
-    '--disable-background-networking',
-    '--disable-default-apps',
-    '--disable-sync',
-    '--no-first-run',
-    '--disable-translate',
-    '--disable-crash-reporter',
-    '--disable-breakpad',
-    '--crash-dumps-dir=/tmp/crashpad',
+    '--single-process',
   ],
 };
 
@@ -41,10 +32,9 @@ const PAGE_PDF_OPTIONS: PDFOptions = {
 const MAX_CONCURRENT = 2;
 
 @Injectable()
-export class ReportService implements OnModuleDestroy {
+export class ReportService implements OnModuleInit, OnModuleDestroy {
   private readonly logger: StructuredLoggerService;
   private browser: Browser | null = null;
-  private browserLaunchPromise: Promise<Browser> | null = null;
   private activePdfCount = 0;
   private compiledCss: string;
 
@@ -53,6 +43,15 @@ export class ReportService implements OnModuleDestroy {
     // Load compiled CSS once at startup
     const cssPath = path.join(__dirname, './pdf/compiled.css');
     this.compiledCss = fs.readFileSync(cssPath, 'utf8');
+  }
+
+  async onModuleInit(): Promise<void> {
+    try {
+      await this.ensureBrowser();
+      this.logger.info('Browser instance initialized for PDF generation');
+    } catch (err) {
+      this.logger.error('Failed to initialize browser on startup', err);
+    }
   }
 
   async onModuleDestroy(): Promise<void> {
@@ -67,12 +66,6 @@ export class ReportService implements OnModuleDestroy {
     if (this.browser && this.browser.connected) {
       return this.browser;
     }
-
-    // Mutex: if a launch is already in progress, wait for it
-    if (this.browserLaunchPromise) {
-      return this.browserLaunchPromise;
-    }
-
     // Close stale browser if disconnected
     if (this.browser) {
       try {
@@ -80,32 +73,14 @@ export class ReportService implements OnModuleDestroy {
       } catch {
         // Ignore close errors on stale browser
       }
-      this.browser = null;
     }
-
-    // Launch with mutex to prevent multiple concurrent launches
-    this.browserLaunchPromise = puppeteer
-      .launch(PUPPETEER_OPTIONS)
-      .then((browser) => {
-        this.browser = browser;
-        this.browser.on('disconnected', () => {
-          this.logger.warn('Browser disconnected unexpectedly');
-          this.browser = null;
-        });
-        this.logger.info('Browser instance launched for PDF generation');
-        return this.browser;
-      })
-      .catch((err) => {
-        this.logger.error('Failed to launch browser', err);
-        throw new Error(
-          'PDF generation unavailable: browser failed to launch',
-        );
-      })
-      .finally(() => {
-        this.browserLaunchPromise = null;
-      });
-
-    return this.browserLaunchPromise;
+    this.browser = await puppeteer.launch(PUPPETEER_OPTIONS);
+    // Re-launch if browser disconnects unexpectedly
+    this.browser.on('disconnected', () => {
+      this.logger.warn('Browser disconnected unexpectedly');
+      this.browser = null;
+    });
+    return this.browser;
   }
 
   private loadTranslations(locale: string): Record<string, unknown> {
@@ -158,7 +133,7 @@ export class ReportService implements OnModuleDestroy {
       try {
         await page.goto(`file://${tempFilePath}`, {
           waitUntil: 'load',
-          timeout: 30000,
+          timeout: 15000,
         });
 
         // Brief wait for styles to apply (CSS is already inlined, no network needed)
@@ -168,7 +143,7 @@ export class ReportService implements OnModuleDestroy {
             const computedStyle = window.getComputedStyle(body);
             return computedStyle.backgroundColor !== 'rgba(0, 0, 0, 0)';
           },
-          { timeout: 10000 },
+          { timeout: 5000 },
         );
 
         const pdfBuffer = await page.pdf(PAGE_PDF_OPTIONS);
