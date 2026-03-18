@@ -19,7 +19,6 @@ const PUPPETEER_OPTIONS: LaunchOptions = {
     '--disable-gpu',
     '--disable-dev-shm-usage',
     '--disable-setuid-sandbox',
-    '--single-process',
   ],
 };
 
