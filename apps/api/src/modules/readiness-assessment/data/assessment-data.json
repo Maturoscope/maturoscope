@@ -11,315 +11,315 @@
           "id": "TRL_Q1",
           "levels": {
             "1": {
-              "en": "The concept is only described informally.",
-              "fr": "Le concept est uniquement décrit de manière informelle."
+              "en": "The concept and its potential value are briefly described (note, email).",
+              "fr": "Le concept et sa valeur potentielle sont décrits  de manière informelle (note, e-mail)."
             },
             "2": {
-              "en": "A first formalization is available, accompanied by an illustration or diagram.",
-              "fr": "Une première formalisation est disponible, accompagnée d’une illustration ou schéma."
+              "en": "The concept is defined with functional specifications and positioned relative to existing solutions (technological benchmark).",
+              "fr": "Le concept est formalisé dans un cahier des charges fonctionnel et positionné par rapport aux solutions existantes (benchmark technologique)."
             },
             "3": {
-              "en": "The solution is described as a whole, with its key features and components. An analysis of the existing situation (benchmark, state of the art) was carried out.",
-              "fr": "La solution est décrite dans son ensemble, avec ses fonctionnalités et composants clés. Une analyse de l’existant (benchmark, état de l’art) a été réalisée."
+              "en": "A proof of concept (POC) demonstrates the technical feasibility of the solution. Components are not yet detailed.",
+              "fr": "Une preuve de concept (POC) démontre la faisabilité technique de la solution.  Les composants ne sont pas encore détaillés."
             },
             "4": {
-              "en": "All key components are selected and described, along with their functions.",
-              "fr": "Tous les composants clés sont choisis et décrits, avec leurs fonctions."
+              "en": "In addition to the proof of concept, the key components and their functions are described and the application domain is defined. Interfaces are not yet stabilised.",
+              "fr": "En plus de la preuve de concept, les composants clés et leurs fonctions sont décrits et le domaine d’application est défini. Les interfaces ne sont pas encore stabilisées."
             },
             "5": {
-              "en": "The entire product is described, with the components and their interfaces.",
-              "fr": "L’ensemble du produit est décrit, avec les composants et leurs interfaces."
+              "en": "The product is fully described with its components and interfaces for which the assemblies are defined. The installation process is not yet defined.",
+              "fr": "Le produit est entièrement décrit avec ses composants et interfaces pour lesquelles les assemblages sont définis. Le procédé de mise en œuvre n'est pas encore défini."
             },
             "6": {
-              "en": "The product and its process of implementation and integration into the building are described for the intended field of application.",
-              "fr": "Le produit et son procédé de mise en œuvre et d’intégration au bâtiment est décrit pour le domaine d'application visé."
+              "en": "The product and its installation process are described for the intended application domain and are ready to be applied in a real project.",
+              "fr": "Le produit et son procédé de mise en œuvre sont décrits pour le domaine d’emploi visé. Il est prêt à être appliqué sur une opération réelle."
             },
             "7": {
-              "en": "Initial positive feedback on the implementation of the process has been documented.",
-              "fr": "Un premier retour d'expérience positif de mise en œuvre du procédé a été documenté."
+              "en": "A first implementation in a real environment is successful and documented with detailed description of the process.",
+              "fr": "Une première mise en œuvre en environnement réel est réussie et documentée avec description détaillée du procédé."
             },
             "8": {
-              "en": "Several feedbacks were collected and cover the entire targeted area of application.",
-              "fr": "Plusieurs retours d'expériences ont été collectés et couvrent l'ensemble du domaine d'application visé."
+              "en": "Several successful implementations covering the entire application domain have been completed.",
+              "fr": "Plusieurs opération de mise en oeuvres couvrant l'ensemble du domaine d’application ont été réalisées avec succès."
             },
             "9": {
-              "en": "Consolidated technical file, ready to be used for commercial or industrial purposes.",
-              "fr": "Dossier technique consolidé, prêt à être utilisé à des fins commerciales ou industrielles."
+              "en": "The technical approval file is consolidated with experimental data and references and is ready for commercial and insurance purposes.",
+              "fr": "Dossier technique consolidé avec données expérimentales et références, prêt à des fins commerciales et assurentielles."
             }
           },
           "question": {
-            "en": "Is the technical concept formalized and positioned in relation to the existing system?",
-            "fr": "Le concept technique est-il formalisé et positionné par rapport à l’existant ?"
+            "en": "What is the level of technical design and definition of your product?",
+            "fr": "Quel est le niveau de conception et de formalisation technique de votre produit?"
           }
         },
         {
           "id": "TRL_Q2",
           "levels": {
             "1": {
-              "en": "No representation exists.",
-              "fr": "Aucune représentation n’existe."
+              "en": "No graphical or digital representation exists.",
+              "fr": "Aucune représentation graphique ou numérique n’existe."
             },
             "2": {
-              "en": "A preliminary sketch or diagram is available.",
-              "fr": "Un croquis ou schéma préliminaire est disponible."
+              "en": "A preliminary sketch or diagram illustrates the concept at building or process scale.",
+              "fr": "Un croquis ou schéma préliminaire illustre le concept à l’échelle du bâtiment ou du procédé."
             },
             "3": {
-              "en": "3D views or simplified digital models were produced.",
-              "fr": "Des vues 3D ou maquettes numériques simplifiées ont été réalisées."
+              "en": "Simplified 3D views or digital mock‑ups illustrate the overall product.",
+              "fr": "Des vues 3D ou maquettes numériques simplifiées ont été réalisées pour illustrer le produit dans son ensemble."
             },
             "4": {
               "en": "CAD models and technical drawings are produced for the main components.",
-              "fr": "Des modèles CAO et dessins techniques sont produits pour les composants principaux."
+              "fr": "Des modèles numériques CAO et dessins techniques sont produits pour les composants principaux."
             },
             "5": {
-              "en": "Detailed CAD/BIM models including components, interfaces, tolerances and manufacturing instructions.",
-              "fr": "Modèles CAO/BIM détaillés incluant composants, interfaces, tolérances et instructions de fabrication."
+              "en": "A detailed CAD/BIM model is available including components, interfaces and manufacturing instructions.",
+              "fr": "Un modèle CAO/BIM détaillé est disponible incluant composants, interfaces et instructions de fabrication."
             },
             "6": {
-              "en": "The CAD model is updated from tested prototypes, including all system components and integration details for pilot site installation.",
-              "fr": "Le modèle CAO est mis à jour à partir de prototypes testés, incluant tous les composants du système et les détails d’intégration pour une installation sur site pilote."
+              "en": "The CAD/BIM model is updated from tested prototypes and integrates installation details for a pilot site.",
+              "fr": "Le modèle CAO/BIM est mis à jour à partir de prototypes testés et intègre les détails d’installation pour un site pilote."
             },
             "7": {
-              "en": "The CAD/BIM model is used in a pilot project.",
-              "fr": "Le modèle CAO/BIM est utilisé dans un projet pilote."
+              "en": "The CAD/BIM model is used in a pilot project for design and monitoring.",
+              "fr": "Le modèle CAO/BIM est utilisé dans un projet pilote pour la conception et le suivi."
             },
             "8": {
-              "en": "The CAD/BIM model is finalized for commercial use and widely distributed.",
-              "fr": "Le modèle CAO/BIM est finalisé pour usage commercial et diffusé largement."
+              "en": "The CAD/BIM model is finalised for commercial use and distributed to partners and prescribers.",
+              "fr": "Le modèle CAO/BIM est finalisé pour usage commercial et diffusé (catalogue, prescripteurs, partenaires)."
             },
             "9": {
-              "en": "Optimized and standardized solution for large-scale deployment. The model is kept up to date and used in the operational phase.",
-              "fr": "Solution optimisée et standardisée pour le déploiement à grande échelle. Le modèle est maintenu à jour et utilisé dans la phase d’exploitation."
+              "en": "The solution is optimised and standardised for large‑scale deployment and the model is maintained during operation.",
+              "fr": "La solution est optimisée et standardisée pour un déploiement à grande échelle. Le modèle est maintenu à jour et utilisé en phase d’exploitation."
             }
           },
           "question": {
-            "en": "Have you developed a graphic or digital representation of the product (plans, models, 3D models)?",
-            "fr": "Avez-vous développé une représentation graphique ou numérique du produit (plans, maquettes, modèles 3D) ?"
+            "en": "What is the level of graphical or digital representation of your product (drawings, mock-ups, 3D models)?",
+            "fr": "Quel est le niveau de représentation graphique ou numérique de votre produit (plans, maquettes, modèles 3D) ?"
           }
         },
         {
           "id": "TRL_Q3",
           "levels": {
             "1": {
-              "en": "No prototype or model was made.",
+              "en": "No prototype or mock-up has been developed.",
               "fr": "Aucun prototype ni maquette n’a été réalisé."
             },
             "2": {
-              "en": "Elements, materials and components are collected to validate feasibility.",
-              "fr": "Des éléments, matériaux et composants sont collectés pour valider la faisabilité."
+              "en": "Exploratory assemblies of materials or components have been developed in order to examine feasibility.",
+              "fr": "Des assemblages exploratoires de matériaux ou composants ont été réalisés pour examiner la faisabilité du concept."
             },
             "3": {
-              "en": "A mockup or partial MVP is available.",
-              "fr": "Une maquette ou un MVP partiel est disponible."
+              "en": "A mock‑up or partial MVP is available and validates the technical principle (Proof of Concept – POC).",
+              "fr": "Une maquette ou un MVP partiel est disponible et permet de valider le principe technique (Preuve de concept - POC)"
             },
             "4": {
-              "en": "All major components have been built and observed.",
-              "fr": "L'ensemble des composants principaux ont été construits et observés."
+              "en": "The main components of the system have been built and evaluated individually.",
+              "fr": "Les principaux composants du système ont été construits et évalués individuellement."
             },
             "5": {
-              "en": "A scaled-down prototype is built, observed, and tested in a representative environment. The prototype results were used to adjust the design.",
-              "fr": "Un prototype à échelle réduite est construit, observé et testé en environnement représentatif. Les résultats du prototype ont permis d’ajuster la conception."
+              "en": "A reduced‑scale prototype including assemblies is built and tested in a representative environment.",
+              "fr": "Un prototype à échelle réduite comprenant les assemblages est construit et testé en environnement représentatif."
             },
             "6": {
-              "en": "The full-scale prototype of the complete system is used in a test bench with experimental protocols.",
-              "fr": "Le prototype à l’échelle réelle du système complet est utilisé dans un banc d’essai avec protocoles expérimentaux."
+              "en": "A full‑scale prototype of the complete system is tested using experimental test benches with defined protocols.",
+              "fr": "Un prototype du système complet à l’échelle réelle est testé via des bancs d’essais avec protocoles expérimentaux."
             },
             "7": {
-              "en": "The solution is installed on a pilot site and tested in real use.",
-              "fr": "La solution est installée sur un site pilote et testée dans un usage réel."
+              "en": "The solution is successfully installed on a pilot site and tested in real use conditions.",
+              "fr": "La solution est installée avec succès sur un site pilote et testée en usage réel."
             },
             "8": {
-              "en": "Several experimental applications on real pilot sites with active monitoring, to cover the entire targeted field of application.",
-              "fr": "Plusieurs applications expérimentales sur des sites pilotes réels avec monitoring actif, pour couvrir l'ensemble du champ d'application visé."
+              "en": "Several pilot installations covering the application domain have been carried out with monitoring.",
+              "fr": "Plusieurs installations pilotes couvrant le domaine d’application ont été réalisées avec suivi instrumenté et constituent un socle de référence."
             },
             "9": {
-              "en": "The solution is mass-produced and monitored after implementation.",
-              "fr": "La solution est produite en série et monitorée après mise en œuvre."
+              "en": "The solution is produced in series and monitored after implementation to ensure performance monitoring, commissioning and continuous improvement.",
+              "fr": "La solution est produite en série et monitorée après mise en œuvre pour assurer le suivi des performances, les opérations de commissioning et l’amélioration continue."
             }
           },
           "question": {
-            "en": "Have you developed mockups, prototypes or implemented the product on real sites?",
-            "fr": "Avez-vous développé des maquettes, prototypes ou mis en œuvre le produit sur des sites réels ?"
+            "en": "Have you developed mock-ups, prototypes, or implemented your solution on real sites?",
+            "fr": "Avez-vous développé des maquettes, prototypes ou mis en œuvre votre solution sur des sites réels ?"
           }
         },
         {
           "id": "TRL_Q4",
           "levels": {
             "1": {
-              "en": "No testing has yet been carried out.",
-              "fr": "Aucun essai n’a encore été réalisé."
+              "en": "No analysis or testing has been carried out yet.",
+              "fr": "Aucune analyse ni essai n’a encore été réalisé."
             },
             "2": {
-              "en": "No tests have been carried out but the state of the art provides elements confirming the initial hypotheses.",
-              "fr": "Aucun essai n'a été réalisé mais l'état de l'art apporte des éléments confirmant les premières hypothèses."
+              "en": "The first hypotheses are confirmed by the state of the art or theoretical analysis.",
+              "fr": "Les premières hypothèses sont confirmées par l’état de l’art ou des analyses théoriques."
             },
             "3": {
-              "en": "The technical feasibility of the solution is validated by experimental or numerical analyses without a formalized protocol to validate the concept (proof of feasibility).",
-              "fr": "La faisabilité technique de la solution est validée par des analyses expérimentales ou numériques sans protocole formalisé pour valider le concept (preuve de faisabilité)."
+              "en": "Technical feasibility is validated through exploratory numerical or experimental analyses.",
+              "fr": "La faisabilité technique est validée par analyses numériques ou expérimentales exploratoires (preuve de concept)."
             },
             "4": {
-              "en": "All components of the solution are characterized independently analytically or experimentally.",
-              "fr": "L'ensemble des composants de la solution sont caractérisés indépendamment analytiquement ou expérimentalement."
+              "en": "The main components are characterised analytically or experimentally in laboratory.",
+              "fr": "Les principaux composants sont caractérisés analytiquement ou expérimentalement en laboratoire."
             },
             "5": {
-              "en": "Tests carried out on small prototypes including key interfaces between components.",
-              "fr": "Essais réalisés sur des prototypes de petite dimension incluant les interfaces clés entre les composants."
+              "en": "Tests and/or simulations are carried out on prototypes or assemblies including interfaces between components.",
+              "fr": "Des essais et/ou simulations sont réalisés sur prototypes ou assemblages incluant les interfaces entre composants."
             },
             "6": {
-              "en": "Tests carried out in a representative environment, for example on a full-scale test bench. Launch of the first required accredited tests.",
-              "fr": "Essais réalisés en environnement représentatif, par exemple sur banc d’essai à l’échelle 1. Lancement des premiers essais accrédités requis."
+              "en": "Experimental or numerical validations are carried out in a representative environment (full scale).",
+              "fr": "Des validations expérimentales ou numériques sont réalisées en environnement représentatif (échelle 1)."
             },
             "7": {
-              "en": "Implementation and instrumented monitoring of the process in a real environment.",
-              "fr": "Mise en œuvre et suivi instrumenté du procédé dans un environnement réel."
+              "en": "The solution is implemented and monitored with instrumentation on a first real site.",
+              "fr": "La solution est mise en œuvre et suivie instrumentée sur un premier site réel."
             },
             "8": {
-              "en": "Implementation and instrumented monitoring of the process in real environments on a panel of buildings representative of the targeted application area.",
-              "fr": "Mise en œuvre et suivi instrumenté du procédé en environnements réels sur un panel de bâtiments représentatifs du domaine d'application visé."
+              "en": "The solution is tested and monitored across multiple representative sites.",
+              "fr": "La solution est testée et suivie sur plusieurs sites représentatifs avec collecte de données expérimentales."
             },
             "9": {
-              "en": "The consolidated test results are used for industrialization purposes (technical file, quality, compliance).",
-              "fr": "Les résultats d’essais consolidés sont utilisés dans une logique d’industrialisation (dossier technique, qualité, conformité)."
+              "en": "The experimental results are consolidated and integrated into the technical dossier and quality processes.",
+              "fr": "Les résultats expérimentaux sont consolidés et intégrés dans le dossier technique et les processus qualité."
             }
           },
           "question": {
-            "en": "Have you carried out laboratory, representative or real environment tests?",
-            "fr": "Avez-vous réalisé des essais en laboratoire, en environnement représentatif ou réel ?"
+            "en": "What is the level of experimental validation of your solution’s performance (analyses, tests and measurements)?",
+            "fr": "Quel est le niveau de validation expérimentale des performances de votre solution (analyses, essais et mesures) ?"
           }
         },
         {
           "id": "TRL_Q5",
           "levels": {
             "1": {
-              "en": "No regulatory or voluntary testing carried out.",
-              "fr": "Aucun test réglementaire ou volontaire réalisé."
+              "en": "No regulatory or normative process has been initiated.",
+              "fr": "Aucune démarche réglementaire ou normative n’a été engagée."
             },
             "2": {
-              "en": "An initial analysis of regulatory requirements is carried out.",
-              "fr": "Une analyse initiale des exigences réglementaires est effectuée."
+              "en": "Regulatory, normative and certification requirements applicable to the solution are identified.",
+              "fr": "Les exigences réglementaires, normatives et les labels ou certifications applicables sont identifiées."
             },
             "3": {
-              "en": "A testing roadmap is defined.",
-              "fr": "Une feuille de route des essais est définie."
+              "en": "A roadmap of tests and technical evidence has been defined.",
+              "fr": "Une feuille de route des essais et justificatifs est définie."
             },
             "4": {
-              "en": "Initial experimental tests are carried out in the lab or the main characteristics of the components are collected.",
-              "fr": "De premiers essais expérimentaux sont réalisés en labo ou bien les caractéristiques principales des composants sont collectées."
+              "en": "Initial technical data or exploratory tests are available for the main components.",
+              "fr": "Les premières données techniques ou essais exploratoires sont disponibles pour les composants principaux."
             },
             "5": {
-              "en": "Initial accredited tests have been carried out for critical components.",
-              "fr": "De premiers tests accrédités ont été réalisés pour les composants critiques."
+              "en": "All required accredited or standardised tests are completed on critical components.",
+              "fr": "L'ensemble des essais accrédités ou normés requis sont réalisés sur les composants critiques."
             },
             "6": {
-              "en": "The complete system (product and process) is tested under representative conditions to validate its suitability for use.",
-              "fr": "Le système complet (produit et procédé) est testé dans des conditions représentatives en vue de valider son aptitude à l’emploi."
+              "en": "The full system (product and process) is tested in representative conditions in order to validate its fitness for use.",
+              "fr": "Le système complet (produit et procédé) est testé dans des conditions représentatives en vue de valider son aptitude à l'emploi."
             },
             "7": {
-              "en": "The test results are complete and have enabled us to obtain authorizations for implementation on a first real site.",
-              "fr": "Les résultats d’essais sont complets et ont permis d’obtenir les autorisations pour une mise en œuvre sur un premier site réel."
+              "en": "The test results are complete and have enabled authorisation for first real implementation.",
+              "fr": "Les résultats d’essais sont complets et ont permis d'obtenir les authorisations pour une mise en œuvre sur un premier site réel."
             },
             "8": {
-              "en": "The test results are comprehensive and have enabled an experimental technical assessment to be obtained covering the intended field of use.",
-              "fr": "Les résultats d’essais sont complets et ont permis d’obtenir une évaluation technique expérimentale couvrant le domaine d’emploi visé."
+              "en": "Test results enable an experimental technical evaluation covering the application domain.",
+              "fr": "Les résultats d’essais sont complets et ont permis d'obtenir une évaluation technique expérimentale couvrant le domaine d’emploi (ex. ATEx cas A, ETN, etc.)."
             },
             "9": {
-              "en": "The test results are comprehensive and have enabled a technical assessment to be obtained covering the intended area of use and enabling CE marking to be established for marketing, where applicable.",
-              "fr": "Les résultats d’essais sont complets et ont permis d’obtenir une évaluation technique couvrant le domaine d’emploi visé et permettant d'établir le marquage CE pour la commercialisation, le cas échéant."
+              "en": "All required technical evaluations are obtained enabling commercialisation and insurability (technical approvals, CE marking, certifications or labels).",
+              "fr": "Les évaluations techniques requises sont obtenues et permet la commercialisation et assurabilité (ATEc, marquage CE, certifications ou labels applicables)."
             }
           },
           "question": {
-            "en": "Have regulatory or voluntary tests been carried out?",
-            "fr": "Des tests réglementaires ou volontaires ont-ils été réalisés ?"
+            "en": "Have you initiated the procedures and tests required to obtain regulatory, insurance-related or voluntary approvals (technical assessments, CE marking, labels, etc.)?",
+            "fr": "Avez-vous engagé les démarches et essais nécessaires pour obtenir les autorisations réglementaires, assurantielles ou volontaires (évaluations techniques, marquage CE, labels, etc.) ?"
           }
         },
         {
           "id": "TRL_Q6",
           "levels": {
             "1": {
-              "en": "No environmental work undertaken.",
-              "fr": "Aucun travail environnemental engagé."
+              "en": "No environmental assessment work has been carried out.",
+              "fr": "Aucun travail d'analyse environnemental n’a été engagé."
             },
             "2": {
-              "en": "An analysis of the impacts of existing solutions is carried out.",
-              "fr": "Une analyse des impacts des solutions existantes est faite."
+              "en": "A qualitative analysis of impacts of existing solutions has been carried out.",
+              "fr": "Une analyse qualitative des impacts des solutions existantes est réalisée."
             },
             "3": {
-              "en": "The environmental objectives are set.",
-              "fr": "Les objectifs environnementaux sont posés."
+              "en": "The environmental objectives are defined with respect to existing solutions.",
+              "fr": "Les objectifs environnementaux sont définis au regard de l'existant."
             },
             "4": {
-              "en": "A simplified LCA or LCA screening is performed.",
-              "fr": "Une ACV simplifiée ou un screening LCA est réalisé."
+              "en": "A simplified LCA (screening LCA) is performed based on initial assumptions and circularity principles are analysed.",
+              "fr": "Une ACV simplifiée (screening LCA) est réalisée sur la base d’hypothèses initiales et les principes de circularité sont analysés."
             },
             "5": {
-              "en": "Inventory of materials and energy flows is initiated.",
-              "fr": "Un inventaire des matériaux et des flux d'énergie est initié."
+              "en": "A simplified LCA or screening LCA has been performed.",
+              "fr": "Une ACV simplifiée ou un screening LCA est réalisé."
             },
             "6": {
-              "en": "LCA uses data from tested prototypes.",
-              "fr": "L’ACV utilise des données issues de prototypes testés."
+              "en": "The LCA uses data from prototypes or first production runs.",
+              "fr": "L’ACV utilise des données issues de prototypes ou premières fabrications."
             },
             "7": {
-              "en": "LCA is applied to a real case (pilot site).",
-              "fr": "L’ACV est appliquée à un cas réel (site pilote)."
+              "en": "The LCA is applied to a real case with analysis of circularity and end‑of‑life scenarios.",
+              "fr": "L’ACV est appliquée à un cas réel avec analyse des scénarios de fin de vie et de circularité."
             },
             "8": {
-              "en": "A first version of EPD/FDES is available.",
-              "fr": "Une première version d’EPD/FDES est disponible."
+              "en": "A third‑party verified EN 15804 EPD/FDES is published.",
+              "fr": "Une EPD/FDES conforme EN 15804 est publiée et vérifiée par une tierce partie."
             },
             "9": {
-              "en": "Final EPD/FDES published, validated by a third party and compliant with EN 15804.",
-              "fr": "EPD/FDES finale publiée, validée par un tiers et conforme à la norme EN 15804."
+              "en": "A parametric environmental declaration generation system (FDES configurator or equivalent) is available.",
+              "fr": "Un configurateur FDES ou un système de génération paramétrée de déclarations environnementales est disponible."
             }
           },
           "question": {
-            "en": "Have you assessed the environmental impact (LCA, EPD) of your solution?",
-            "fr": "Avez-vous évalué l’impact environnemental (ACV, EPD) de votre solution ?"
+            "en": "Have you assessed the environmental impact and circularity of your solution (LCA, FDES/EPD, dismantling, reuse, recyclability)?",
+            "fr": "Avez-vous évalué l’impact environnemental et la circularité de votre solution (ACV, FDES/EPD, démontabilité, réemploi, recyclabilité) ?"
           }
         },
         {
           "id": "TRL_Q7",
           "levels": {
             "1": {
-              "en": "No plan or follow-up.",
-              "fr": "Aucun plan ou suivi."
+              "en": "No development plan or project organisation is defined.",
+              "fr": "Aucun plan de développement ni organisation projet n’est défini."
             },
             "2": {
-              "en": "Expertise needs are identified.",
-              "fr": "Les besoins d’expertise sont identifiés."
+              "en": "The required expertise is identified.",
+              "fr": "Les expertises nécessaires sont identifiées."
             },
             "3": {
-              "en": "A project team is identified.",
-              "fr": "Une équipe projet est identifiée."
+              "en": "A project team is established with potential partners.",
+              "fr": "Une équipe projet est constituée avec des partenaires potentiels."
             },
             "4": {
-              "en": "A budget is dedicated to development and resources are planned (skills, time, means).",
-              "fr": "Un budget est dédié au développement et les ressources sont planifiées (compétences, temps, moyens)."
+              "en": "The project is structured with planning and role allocation, and funding has been identified or obtained.",
+              "fr": "Le projet est structuré avec planning et répartition des rôles, et des financements sont identifiés ou obtenus."
             },
             "5": {
-              "en": "The additional required expertise has been added to the team and training has been carried out.",
-              "fr": "Les expertises additionnelles requises ont été ajoutées à l'équipe et les formations ont été réalisées."
+              "en": "The required expertise is mobilised and technical resources are organised.",
+              "fr": "Les expertises nécessaires sont mobilisées et les ressources techniques sont organisées."
             },
             "6": {
-              "en": "A first pilot site has been identified on which the solution will be implemented.",
-              "fr": "Un premier site pilote a été identifié sur lequel la solution va être mise en œuvre."
+              "en": "A pilot or demonstrator site is identified to test the solution.",
+              "fr": "Un site pilote ou démonstrateur est identifié pour tester la solution."
             },
             "7": {
-              "en": "Site stakeholders (implementation, users, owners, etc.) are informed and involved in the design process.",
-              "fr": "Les acteurs du site (mise en œuvre, usagers, propriétaires, etc.) sont informés et impliqués dans le processus de conception."
+              "en": "Project stakeholders and pilot site actors are involved in implementation and evaluation.",
+              "fr": "Les acteurs du projet et du site pilote sont impliqués dans la mise en œuvre et l’évaluation de la solution."
             },
             "8": {
-              "en": "Tools and training for craftsmen, design offices, etc. are in place to promote product adoption.",
-              "fr": "Des outils et formations à destination des artisans, bureaux d'étude, etc. sont en place pour diffuser l'adoption du produit."
+              "en": "Tools and training are available to facilitate adoption by professionals.",
+              "fr": "Des outils et formations sont disponibles pour faciliter l’adoption de la solution par les professionnels."
             },
             "9": {
-              "en": "Continuous monitoring is in place to identify any necessary improvements.",
-              "fr": "Un suivi continu est en place pour identifier toute amélioration nécessaire."
+              "en": "A structured product monitoring system is in place with analysis of feedback and continuous improvement.",
+              "fr": "Un suivi structuré du produit est en place avec analyse des retours d’expérience et amélioration continue."
             }
           },
           "question": {
-            "en": "Have you structured your product development? (planning, resources, roles).",
-            "fr": "Avez-vous structuré le développement de votre produit ? (planning, ressources, rôles)."
+            "en": "Have you structured the development of your product? (planning, resources, roles)",
+            "fr": "Avez-vous structuré le développement de votre produit ? (planning, ressources, rôles)"
           }
         }
       ]
@@ -334,180 +334,180 @@
         {
           "id": "MkRL_Q1",
           "question": {
-            "en": "Does your solution meet a need clearly identified and validated by the market?",
-            "fr": "Votre solution répond-elle à un besoin clairement identifié et validé par le marché ?"
+            "en": "Is the market need addressed by your solution clearly identified and validated?",
+            "fr": "Le besoin marché auquel répond votre solution est-il clairement identifié et validé ?"
           },
           "levels": {
             "1": {
-              "en": "Areas of need have been identified, but without validation.",
-              "fr": "Des pistes de besoins ont été identifiées, mais sans validation."
+              "en": "Potential needs have been identified but not validated by the market.",
+              "fr": "Des pistes de besoins ont été identifiées mais sans validation marché."
             },
             "2": {
-              "en": "An initial analysis of the demand was carried out with customer discussions.",
-              "fr": "Une première analyse de la demande a été menée avec des échanges clients."
+              "en": "A first analysis of demand has been carried out through exploratory discussions with market actors.",
+              "fr": "Une première analyse de la demande a été menée avec des échanges exploratoires avec des acteurs du marché."
             },
             "3": {
-              "en": "Market study and value in use clarified with initial customer validations.",
-              "fr": "Étude de marché et valeur d’usage clarifiées avec premières validations clients."
+              "en": "The need and value proposition are analysed through a market study and initial feedback from stakeholders.",
+              "fr": "Le besoin et la valeur d’usage sont analysés à travers une étude de marché et des premiers retours d’acteurs."
             },
             "4": {
-              "en": "Structured value proposition, validated by MVP or functional model.",
-              "fr": "Proposition de valeur structurée, validée par MVP ou maquette fonctionnelle."
+              "en": "The value proposition is formalised and tested through an MVP or functional mock‑up.",
+              "fr": "La proposition de valeur est formalisée et testée via un MVP ou une maquette fonctionnelle."
             },
             "5": {
-              "en": "The need is validated by user feedback on the first tests, prototypes, etc.",
-              "fr": "Le besoin est validé par des retours utilisateurs sur les premiers essais, prototypes, etc."
+              "en": "The need is validated through user feedback from prototypes or experimental tests.",
+              "fr": "Le besoin est validé par des retours utilisateurs issus de prototypes ou essais expérimentaux."
             },
             "6": {
-              "en": "The test bench demonstration reinforces market interest and perceived relevance.",
-              "fr": "La démonstration sur banc d'essai renforce l'intérêt marché et la pertinence perçue."
+              "en": "Demonstrations on test benches or demonstrators reinforce market interest and credibility.",
+              "fr": "Des démonstrations sur banc d'essai ou démonstrateur renforcent l'intérêt marché et la crédibilité de la solution."
             },
             "7": {
-              "en": "Actual user feedback confirms compliance with expectations.",
-              "fr": "Des retours d’usage réels confirment la conformité aux attentes."
+              "en": "Real usage feedback from at least one pilot site confirms alignment with market expectations.",
+              "fr": "Des retours d’usage réels de la solution appliquée sur au moins un site pilote confirment l’adéquation de la solution aux attentes du marché."
             },
             "8": {
-              "en": "Several projects demonstrate market fit and build credibility.",
-              "fr": "Plusieurs projets démontrent l'adéquation au marché et renforcent la crédibilité."
+              "en": "Several pilot projects demonstrate market fit and reinforce the credibility of the solution.",
+              "fr": "Plusieurs projets pilotes démontrent l’adéquation au marché et renforcent la crédibilité de la solution."
             },
             "9": {
-              "en": "The product is adopted at scale and recognized as suitable for market needs.",
-              "fr": "Le produit est adopté à l’échelle et reconnu comme adapté aux besoins du marché."
+              "en": "The product is adopted at larger scale and recognised as meeting market needs.",
+              "fr": "Le produit est adopté à plus grande échelle et reconnu comme adapté aux besoins du marché."
             }
           }
         },
         {
           "id": "MkRL_Q2",
           "question": {
-            "en": "Does your solution meet the specific mandatory and strategic (voluntary) market requirements that facilitate the sale?",
-            "fr": "Votre solution répond-elle aux exigences spécifiques du marché obligatoires et stratégiques (volontaires) qui facilitent la vente ?"
+            "en": "Does your solution meet the performance and usage requirements expected by the market?",
+            "fr": "Votre solution répond-elle aux exigences performentielles et d’usage attendues par le marché ?"
           },
           "levels": {
             "1": {
-              "en": "Specific requirements have not yet been identified and no indicators have been defined.",
-              "fr": "Les exigences spécifiques n'ont pas encore été identifiées et aucun indicateur n'est défini."
+              "en": "Specific market requirements have not yet been identified.",
+              "fr": "Les exigences spécifiques du marché ne sont pas encore identifiées."
             },
             "2": {
-              "en": "The requirements have been identified and the first customer indicators identified (price, usage, benefits), but no strategy has yet been developed.",
-              "fr": "Les exigences ont été repérées et les premiers indicateurs clients identifiés (prix, usage, bénéfices), mais aucune stratégie n'a encore été développée."
+              "en": "Market requirements have been identified and first client indicators defined (price, usage, benefits), but no strategy has yet been developed.",
+              "fr": "Les exigences ont été repérées et les premiers indicateurs clients identifiés (prix, usage, bénéfices), mais aucune startégie n'a encore été développée."
             },
             "3": {
-              "en": "The proof of concept indicates strong potential to achieve strategic requirements and thus stand out from the competition and highlights the main points of vigilance for future developments.",
-              "fr": "La preuve de concept indique un fort potentiel pour atteindre les exigences stratégiques et met en avant les principaux points de vigilance pour les développements à venir."
+              "en": "The proof of concept shows strong potential to meet strategic requirements competitively and highlights key development risks.",
+              "fr": "La preuve de concept indique un fort potentiel pour atteindre les exigences  startégiques de façon compétitive et mets en avant les principaux points de vigilence pour les développements à venir."
             },
             "4": {
-              "en": "The voluntary steps required for the insurability of solutions are underway.",
-              "fr": "Les démarches volontaires requises pour l'assurabilité des solutions sont engagées."
+              "en": "Voluntary procedures required for market access are identified and initiated.",
+              "fr": "Les démarches volontaires nécessaires pour l’accès marché sont identifiées et engagées."
             },
             "5": {
-              "en": "The performance strategy is outlined (tests, thresholds, commitments).",
-              "fr": "La stratégie de performance est esquissée (tests, seuils, engagements)."
+              "en": "A performance strategy is defined including indicators and performance thresholds.",
+              "fr": "La stratégie de performance est définie incluant indicateurs et seuils de performance. (tests, seuils, engagements)."
             },
             "6": {
-              "en": "Validation of KPIs in demonstrator or test bench.",
-              "fr": "Validation des KPIs en démonstrateur ou banc d’essai."
+              "en": "Performance indicators are validated through demonstrators or test benches.",
+              "fr": "Les indicateurs de performance sont validés sur démonstrateur ou banc d’essai."
             },
             "7": {
-              "en": "Indicators are being tracked for a first pilot site. Measurement tools and guarantees are ready to be used for sales.",
-              "fr": "Les indicateurs sont suivis pour un premier site pilote. Outils de mesure et garantie prêts à être utilisés pour la vente."
+              "en": "Performance indicators are monitored on a first pilot site and guarantee mechanisms are prepared.",
+              "fr": "Les indicateurs sont suivis pour un premier site pilote.  Outils de mesure et méthode garantie de performance prêts à être utilisés pour la vente."
             },
             "8": {
-              "en": "Indicators are monitored in several real-world scenarios. Tested and validated performance guarantee.",
-              "fr": "Les indicateurs sont suivis dans plusieurs cas réels. Garantie de performance testée et validée."
+              "en": "Performance and guarantee methods are tested and validated on several pilot projects.",
+              "fr": "Les performances et la méthode de garantie de performance sont testées et validées sur plusieurs projets pilotes."
             },
             "9": {
-              "en": "Warranty activated on commercial projects with structured return.",
-              "fr": "Garantie activée sur les projets commerciaux avec retour structuré."
+              "en": "Performance guarantees are activated on commercial projects with structured feedback.",
+              "fr": "La garantie est activée sur des projets commerciaux avec retour d’expérience structuré."
             }
           }
         },
         {
           "id": "MkRL_Q3",
           "question": {
-            "en": "Do you have a structured business model and marketing plan?",
-            "fr": "Disposez-vous d’un business model et d’un plan de commercialisation structurés ?"
+            "en": "Are the business model and the commercialisation strategy defined and validated?",
+            "fr": "Le modèle économique et la stratégie de commercialisation sont-ils définis et validés ?"
           },
           "levels": {
             "1": {
-              "en": "No formalization of the economic model.",
+              "en": "No business model has been formalised.",
               "fr": "Aucune formalisation du modèle économique."
             },
             "2": {
-              "en": "A first version is outlined based on assumptions made for customer segments and revenue streams.",
-              "fr": "Une première version est esquissée à partir d'hypothèses posées pour les segments clients et les flux de revenus."
+              "en": "A first version of the business model is drafted based on assumptions regarding customer segments and revenue streams.",
+              "fr": "Une première version du business model est esquissée à partir d'hypothèses posées pour les segments clients et les flux de revenus."
             },
             "3": {
-              "en": "The business model is completed on the client side with real data (problems, value, relationship).",
+              "en": "The business model is refined with real customer data (problems, value, relationship).",
               "fr": "Le business model est complété côté client avec des données réelles (problèmes, valeur, relation)."
             },
             "4": {
-              "en": "An MVP supports the value proposition and tests the price/usage strategy.",
+              "en": "An MVP supports the value proposition and tests the pricing/usage strategy.",
               "fr": "Un MVP appuie la proposition de valeur et teste la stratégie prix/usage."
             },
             "5": {
-              "en": "The business model is updated with prototype data and series costs and validation by early adopters.",
-              "fr": "Le business model est mis à jour avec données de prototypes et coûts de série ainsi que validation par les early adopters."
+              "en": "The business model is adjusted based on early adopter feedback and first production cost estimates.",
+              "fr": "Le business model est ajusté grâce aux retours des early adopters et aux premières estimations de coûts de production."
             },
             "6": {
-              "en": "The business model is validated by real data from the first tests and customer feedback and the first sales are concluded.",
-              "fr": "Le business model est validé par les données réelles des premiers tests et retours clients et de premières ventes sont conclues."
+              "en": "The business model is validated with real data from initial tests and customer feedback, and first sales are achieved.",
+              "fr": "Le business model est validé à partir de données réelles issues des premiers tests, retours clients et de premières ventes sont conclues."
             },
             "7": {
-              "en": "The business model is consolidated by demonstrations and real KPIs.",
-              "fr": "Le business model est consolidé par les démonstrations et les KPIs réels."
+              "en": "The business model is consolidated through a real demonstration, user feedback and measured performance indicators.",
+              "fr": "Le business model est consolidé grâce à une première démonstration réelle, aux retours utilisateurs et aux indicateurs de performance mesurés."
             },
             "8": {
-              "en": "The business model is formally validated for market launch.",
-              "fr": "Le business model est formellement validé pour le lancement sur le marché."
+              "en": "The business model and commercial strategy are formally validated through several successful operations.",
+              "fr": "Le business model et la stratégie commerciale sont formellement validés sur le domaine d'application visé à travers plusieurs opérations réussies."
             },
             "9": {
-              "en": "It is monitored and adjusted after marketing.",
-              "fr": "Il est suivi et ajusté après commercialisation."
+              "en": "The business model is continuously monitored and adjusted after market launch.",
+              "fr": "Le modèle économique est suivi et ajusté en continu après la mise sur le marché."
             }
           }
         },
         {
           "id": "MkRL_Q4",
           "question": {
-            "en": "Have you assessed the costs (production, life cycle) and defined a market price?",
-            "fr": "Avez-vous évalué les coûts (production, cycle de vie) et défini un prix de marché ?"
+            "en": "Are the costs, pricing and profitability of your solution under control?",
+            "fr": "Les coûts, le prix et la rentabilité de votre solution sont-ils maîtrisés ?"
           },
           "levels": {
             "1": {
-              "en": "No figures or estimates.",
-              "fr": "Aucun chiffrage ou estimation."
+              "en": "No cost estimation or pricing analysis has been performed.",
+              "fr": "Aucun chiffrage ou estimation des coûts."
             },
             "2": {
-              "en": "Estimated cost from generic data or assumptions.",
+              "en": "Costs estimated based on generic data or assumptions.",
               "fr": "Coût estimé à partir de données génériques ou hypothèses."
             },
             "3": {
-              "en": "Detailed cost based on reasoned hypotheses and quotes or prototypes.",
-              "fr": "Coût détaillé à partir d'hypothèses argumentées et de devis ou prototypes."
+              "en": "Costs are detailed based on supported assumptions, quotations or prototypes and confirm economic feasibility (POC).",
+              "fr": "Les coûts sont détaillés sur la base d'hypothèses argumentées, de devis ou de prototypes et amènent à la validation de la faisabilité économique (POC)"
             },
             "4": {
-              "en": "Integration of building variants and usage costs.",
-              "fr": "Intégration des variantes bâtiment et coûts d’usage."
+              "en": "Costs are consolidated and include life‑cycle aspects (usage, maintenance, implementation).",
+              "fr": "Les coûts sont consolidés et intègrent le cycle de vie (coûts d'usage, mainteance, mise en oeuvre, etc.)"
             },
             "5": {
-              "en": "Consolidation of costs for the business plan and pricing strategy.",
-              "fr": "Consolidation des coûts pour le business plan et la stratégie prix."
+              "en": "Costs are consolidated and integrated into the pricing strategy.",
+              "fr": "Les coûts sont consolidés et intégrés dans la stratégie de prix."
             },
             "6": {
-              "en": "Cost validated on prototype or small series.",
-              "fr": "Coût validé sur prototype ou faible série."
+              "en": "Costs validated on prototypes or small series.",
+              "fr": "Les coûts sont validés sur prototype ou faible série."
             },
             "7": {
-              "en": "Cost confirmed on a first pilot site.",
-              "fr": "Coût confirmé sur un premier site pilote."
+              "en": "Costs confirmed on a real pilot site.",
+              "fr": "Les coûts sont confirmés sur un site pilote réel."
             },
             "8": {
-              "en": "Cost confirmed on several pilot projects.",
-              "fr": "Coût confirmé sur plusieurs projets pilotes."
+              "en": "Costs confirmed across several pilot projects representative of the target application domain.",
+              "fr": "Les coûts sont confirmés sur plusieurs projets pilotes représentatifs d'une domaine d'application visé."
             },
             "9": {
-              "en": "Production cost stabilized before launch. The price is validated by the market and monitored under real conditions.",
-              "fr": "Coût de production stabilisé avant le lancement. Le prix est validé par le marché et suivi en conditions réelles."
+              "en": "Production costs are stabilised before market launch. The price is validated by the market and monitored in real conditions.",
+              "fr": "Coût de production stabilisé avant le lancement.  Le prix est validé par le marché et suivi en conditions réelles."
             }
           }
         }
@@ -523,134 +523,134 @@
         {
           "id": "MfRL_Q1",
           "question": {
-            "en": "Where are you in the structuring and control of your manufacturing process? (Design, feasibility, organization and tooling).",
-            "fr": "Où en est la structuration et la maîtrise de votre processus de fabrication ? (Conception, faisabilité, organisation et outillage)."
+            "en": "What is the level of definition and maturity of your manufacturing process (process, equipment, industrial organisation)?",
+            "fr": "Quel est le niveau de définition et de maturité de votre processus de fabrication (procédé, équipements, organisation industrielle) ?"
           },
           "levels": {
             "1": {
-              "en": "Only exploratory research was conducted on existing manufacturing practices.",
+              "en": "Only exploratory research has been carried out on existing manufacturing practices.",
               "fr": "Seules des recherches exploratoires ont été menées sur les pratiques de fabrication existantes."
             },
             "2": {
-              "en": "The first manufacturing scenarios (equipment, organization) have been outlined.",
+              "en": "Initial manufacturing scenarios (equipment, organisation) have been outlined.",
               "fr": "Les premiers scénarios de fabrication (équipements, organisation) ont été esquissés."
             },
             "3": {
-              "en": "A factory concept is drawn up, and the feasibility of key components has been validated analytically or in the lab.",
-              "fr": "Un concept d’usine est rédigé, et la faisabilité des composants clés a été validée analytiquement ou en labo."
+              "en": "A manufacturing concept is defined and feasibility of key components has been validated analytically or in laboratory.",
+              "fr": "Un concept de fabrication est défini et la faisabilité de réalisation des composants clés est validée analytiquement ou en laboratoire."
             },
             "4": {
-              "en": "The production organization and several scenarios are documented and compared with models.",
-              "fr": "L’organisation de production et plusieurs scénarios sont documentés et confrontés à des maquettes."
+              "en": "Several production scenarios are documented and compared.",
+              "fr": "Plusieurs scénarios de production sont documentés et comparés."
             },
             "5": {
-              "en": "Small-scale prototypes were used to select a realistic manufacturing scenario.",
-              "fr": "Des prototypes à petite échelle ont permis de sélectionner un scénario de fabrication réaliste."
+              "en": "Small-scale prototypes have enabled the selection of a manufacturing scenario.",
+              "fr": "Des prototypes à petite échelle ont permis de sélectionner un scénario de fabrication."
             },
             "6": {
-              "en": "A full-scale prototype was produced and implemented in a relevant environment.",
-              "fr": "Un prototype à l’échelle réelle a été produit et mis en œuvre dans un environnement pertinent."
+              "en": "Production equipment is installed and validated on a few full-scale prototypes.",
+              "fr": "Les moyens de production sont installés et validés sur quelques prototypes à l'échelle réelle."
             },
             "7": {
-              "en": "A reduced-rate production is operational; the resources are installed and validated.",
-              "fr": "Une production à cadence réduite est opérationnelle ; les moyens sont installés et validés."
+              "en": "The production line is qualified and operations are repeatable; low-rate production is operational.",
+              "fr": "La ligne de production est qualifiée et les opérations sont répétables. Une production à cadence réduite est opérationnelle."
             },
             "8": {
-              "en": "The production line is qualified by an external body; operations are repeatable.",
-              "fr": "La ligne de production est qualifiée par un organisme externe ; les opérations sont répétables."
+              "en": "The production line is qualified by an external body confirming serial production capability.",
+              "fr": "La ligne de production est qualifiée par un organisme externe et valide que la production en série est opérationnelle."
             },
             "9": {
-              "en": "Serial production is in place, in accordance with the industrial and commercial plan (S&OP).",
-              "fr": "La production en série est en place, conforme au plan industriel et commercial (S&OP)."
+              "en": "Serial production is stabilised and aligned with the industrial and commercial plan (S&OP).",
+              "fr": "La production en série est stabilisée et conforme au plan industriel et commercial (S&OP)."
             }
           }
         },
         {
           "id": "MfRL_Q2",
           "question": {
-            "en": "What is the progress of prototyping and field validations?",
-            "fr": "Quel est le niveau d’avancement du prototypage et des validations terrain ?"
+            "en": "What is the level of industrialisation and operational deployment of your product?",
+            "fr": "Quel est le niveau d’industrialisation et de déploiement opérationnel de votre produit ?"
           },
           "levels": {
             "1": {
-              "en": "No prototype was made.",
+              "en": "No prototype has been produced.",
               "fr": "Aucun prototype n’a été réalisé."
             },
             "2": {
-              "en": "Industrial capabilities are analyzed with regard to the concept.",
-              "fr": "Les capacités industriels sont analysées au regard du concept."
+              "en": "Existing industrial capabilities have been analysed in relation to the concept.",
+              "fr": "Les capacités industrielles existantes sont analysées au regard du concept."
             },
             "3": {
-              "en": "Models or partial elements are made for exploratory purposes.",
+              "en": "Exploratory mock-ups or partial elements have been produced.",
               "fr": "Des maquettes ou éléments partiels sont fabriqués à des fins exploratoires."
             },
             "4": {
-              "en": "Working prototypes of components are available.",
-              "fr": "Des prototypes fonctionnels de composants sont disponibles."
+              "en": "Functional component prototypes are available and produced using available industrial means.",
+              "fr": "Des prototypes fonctionnels de composants sont disponibles et proviennent des moyens industriels disponibles."
             },
             "5": {
-              "en": "Complete small-scale prototypes are tested in the laboratory.",
-              "fr": "Des prototypes complets à petite échelle sont testés en laboratoire."
+              "en": "Complete small-scale prototypes are produced with available industrial tools.",
+              "fr": "Des prototypes complets à petite échelle sont produits avec les outils industriels disponibles."
             },
             "6": {
-              "en": "Full-scale prototypes are implemented on a test bench.",
-              "fr": "Des prototypes à l’échelle 1 sont mis en œuvre sur banc d’essai."
+              "en": "A full-scale prototype is produced and tested in an industrial environment.",
+              "fr": "Un prototype à l’échelle réelle est produit et testé en environnement industriel."
             },
             "7": {
-              "en": "A complete system is manufactured and implemented in a relevant building environment.",
-              "fr": "Un système complet est fabriqué et mis en œuvre dans un environnement bâtiment pertinent."
+              "en": "A complete system is implemented in a real environment.",
+              "fr": "Un système complet est mis en œuvre dans un environnement réel."
             },
             "8": {
-              "en": "Several systems are produced via industrial infrastructure and implemented in real situations.",
+              "en": "Several systems are produced through industrial infrastructure and deployed in real conditions.",
               "fr": "Plusieurs systèmes sont produits via l’infrastructure industrielle et mis en œuvre en situation réelle."
             },
             "9": {
-              "en": "Production continues with operational feedback. Manufacturing and implementation are controlled on a large scale, with performance indicators.",
-              "fr": "La production se poursuit avec retour d’expérience opérationnel. La fabrication et l’implémentation sont maîtrisées à grande échelle, avec indicateurs de performance."
+              "en": "Manufacturing and implementation are mastered at large scale with performance indicators.",
+              "fr": "La fabrication et la mise en oeuvre de la solution sont maîtrisées à grande échelle avec indicateurs de performance."
             }
           }
         },
         {
           "id": "MfRL_Q3",
           "question": {
-            "en": "How well structured is your supply chain? (Procurement, transport, storage, implementation).",
-            "fr": "Quel est le degré de structuration de votre chaîne logistique (supply chain) ? (Approvisionnement, transport, stockage, mise en œuvre)."
+            "en": "What is the level of maturity of your supply chain and industrial partner network?",
+            "fr": "Quel est le niveau de structuration de votre chaîne logistique et de vos partenaires industriels ?"
           },
           "levels": {
             "1": {
-              "en": "No structured thinking about the supply chain.",
+              "en": "No structured supply chain approach has been defined.",
               "fr": "Aucune réflexion structurée sur la chaîne logistique."
             },
             "2": {
-              "en": "An initial logistical organization has been outlined.",
+              "en": "A first logistics organisation has been outlined.",
               "fr": "Une première organisation logistique a été esquissée."
             },
             "3": {
-              "en": "The supply chain is documented up to manufacturing.",
+              "en": "The supply chain is documented up to the manufacturing stage.",
               "fr": "La chaîne logistique est documentée jusqu’à la fabrication."
             },
             "4": {
-              "en": "The logistics plan integrates transport, storage and installation.",
+              "en": "The logistics scheme integrates transport, storage and installation.",
               "fr": "Le schéma logistique intègre transport, stockage et pose."
             },
             "5": {
-              "en": "Partners are identified, flows are modeled and refined.",
-              "fr": "Les partenaires sont identifiés, les flux sont modélisés et affinés."
+              "en": "Partners (suppliers, transport, assemblers) are identified and logistics flows modelled.",
+              "fr": "Les partenaires sont identifiés (fournisseurs, transport, assembleurs, etc.)  et les flux logistiques modélisés."
             },
             "6": {
-              "en": "The schedule is consolidated with key suppliers.",
+              "en": "Planning is consolidated with key suppliers.",
               "fr": "Le planning est consolidé avec les fournisseurs clés."
             },
             "7": {
-              "en": "The diagram is validated on real site with quality audits.",
+              "en": "The logistics scheme is validated on a real site with quality audits.",
               "fr": "Le schéma est validé sur site réel avec audits qualité."
             },
             "8": {
-              "en": "Logistics are efficient, with traceability, labeling, compliance and flow control.",
+              "en": "Logistics are efficient with traceability, labelling and flow control.",
               "fr": "La logistique est performante, avec traçabilité, étiquetage, conformité et maîtrise des flux."
             },
             "9": {
-              "en": "The supply chain is stabilized, managed and aligned with mass production.",
+              "en": "The supply chain is stabilised, managed and aligned with serial production.",
               "fr": "La supply chain est stabilisée, pilotée et alignée sur la production en série."
             }
           }
@@ -658,25 +658,25 @@
         {
           "id": "MfRL_Q4",
           "question": {
-            "en": "Are the quality processes and industrial tools in place and functional? (Quality, documents, equipment, training and maintenance).",
-            "fr": "Les démarches qualité et outils industriels sont-ils en place et fonctionnels ? (Qualité, documents, équipements, formation et maintenance)."
+            "en": "Is your quality management and industrial control system structured and operational?",
+            "fr": "Votre système de qualité et de maîtrise industrielle est-il structuré et opérationnel ?"
           },
           "levels": {
             "1": {
-              "en": "No quality system or control in place.",
-              "fr": "Aucun dispositif qualité ou contrôle mis en place."
+              "en": "No quality or control system is in place.",
+              "fr": "Aucun dispositif qualité ou contrôle n’est en place."
             },
             "2": {
-              "en": "Production constraints are beginning to be listed.",
-              "fr": "Les contraintes de production commencent à être listées."
+              "en": "Production constraints and quality requirements have been identified.",
+              "fr": "Les contraintes de production et exigences qualité sont identifiées."
             },
             "3": {
               "en": "Technical specifications and industrial processes are described.",
               "fr": "Les spécifications techniques et processus industriels sont décrits."
             },
             "4": {
-              "en": "Quality control sheets are drawn up by the relevant departments.",
-              "fr": "Les feuilles de contrôle qualité sont rédigées par les services concernés."
+              "en": "Quality procedures and inspection sheets are defined.",
+              "fr": "Les procédures et feuilles de contrôle qualité sont définies."
             },
             "5": {
               "en": "Production documentation is available and validated.",
@@ -687,16 +687,16 @@
               "fr": "Les moyens industriels sont installés et validés selon les procédures."
             },
             "7": {
-              "en": "Quality compliance is validated at each stage (production, transport, installation) via an initial pilot operation.",
+              "en": "Quality compliance is validated at each step (production, transport, installation) through a pilot operation.",
               "fr": "La conformité qualité est validée à chaque étape (production, transport, pose) via une première opération pilote."
             },
             "8": {
-              "en": "Tools are maintained, operators are trained, and quality is certified.",
-              "fr": "Les outils sont maintenus, les opérateurs sont formés, et la qualité est certifiée."
+              "en": "Operators are trained, tools maintained and the quality system operational.",
+              "fr": "Les opérateurs sont formés, les outils maintenus et le système qualité est opérationnel."
             },
             "9": {
-              "en": "Quality control is continuously integrated with feedback from field experience.",
-              "fr": "Le contrôle qualité est intégré en continu avec retour d’expérience terrain."
+              "en": "Quality control is integrated continuously with operational feedback and improvement.",
+              "fr": "Le contrôle qualité est intégré en continu avec retour d’expérience et amélioration permanente."
             }
           }
         }
@@ -848,1029 +848,1024 @@
   "gaps": {
     "TRL_Q1": {
       "1": {
-        "en": "Produce an initial formalization of the concept and accompany it with a diagram or a clear illustration.",
-        "fr": "Produire une première formalisation du concept et l’accompagner d’un schéma ou d’une illustration claire."
+        "en": "Define the concept, its main functional expectations and deepen the technological benchmark.",
+        "fr": "Formaliser le concept, définir les premières attentes fonctionnelles et approfondir le benchmark technologique."
       },
       "2": {
-        "en": "Describe the solution in its entirety, specify its key features and components, and perform a state-of-the-art analysis.",
-        "fr": "Décrire la solution dans son ensemble, préciser ses fonctionnalités et composants clés, et réaliser une analyse de l’état de l’art."
+        "en": "Verify and validate the technical feasibility of the concept (Proof of Concept – POC).",
+        "fr": "Vérifier et valider la faisabilité technique du concept (preuve de concept – POC)."
       },
       "3": {
-        "en": "Select and describe the main components of the solution, specifying their respective functions.",
-        "fr": "Sélectionner et décrire les composants principaux de la solution en précisant leurs fonctions respectives."
+        "en": "Select and define the main components and their functionalities.",
+        "fr": "Sélectionner et préciser les composants principaux et leurs fonctionnalités."
       },
       "4": {
-        "en": "Document the entire product, its components and the interfaces between them.",
-        "fr": "Documenter l’ensemble du produit, ses composants et les interfaces entre eux."
+        "en": "Define and document the entire product, its components and its interfaces through the description of assemblies.",
+        "fr": "Définir et documenter l'ensemble du produit, ses composants et ses interfaces via la description des assemblages."
       },
       "5": {
-        "en": "Describe the product and its implementation and integration process for the targeted application area.",
-        "fr": "Décrire le produit ainsi que son procédé de mise en œuvre et d’intégration pour le domaine d’application ciblé."
+        "en": "Describe the implementation and installation process for the intended application domain.",
+        "fr": "Décrire le procédé de mise en œuvre pour le domaine d'application visé."
       },
       "6": {
-        "en": "Carry out an initial experimental implementation and document the associated feedback.",
-        "fr": "Réaliser une première mise en œuvre expérimentale et documenter les retours d’expérience associés."
+        "en": "Document a first implementation under real conditions.",
+        "fr": "Documenter une première mise en œuvre en conditions réelles."
       },
       "7": {
-        "en": "Collect and analyze multiple feedbacks covering the entire application area.",
-        "fr": "Collecter et analyser plusieurs retours d’expérience couvrant l’ensemble du domaine d’application."
+        "en": "Multiply feedback in order to cover the application domain and implement iterative improvement of the product and process.",
+        "fr": "Multiplier les retours d’expérience afin de couvrir le domaine d’emploi et engager une amélioration itérative du produit et du procédé."
       },
       "8": {
-        "en": "Finalize and consolidate the technical file for use for commercial or industrial purposes.",
-        "fr": "Finaliser et consolider le dossier technique en vue d’une utilisation commerciale ou industrielle."
+        "en": "Finalise and consolidate the technical approval file by compiling all technical data and feedback.",
+        "fr": "Finaliser et consolider le dossier d'évaluation technique en y compilant l'ensmble des données techniques et retours d'expérience."
       }
     },
     "TRL_Q2": {
       "1": {
-        "en": "Create a first sketch or preliminary diagram describing the general principles of the solution.",
-        "fr": "Réaliser un premier croquis ou schéma préliminaire décrivant les principes généraux de la solution."
+        "en": "Produce a first sketch or diagram illustrating the concept.",
+        "fr": "Réaliser un premier croquis ou schéma illustrant le concept."
       },
       "2": {
-        "en": "Produce 3D views or simplified digital models to visualize the structure and main components of the solution.",
-        "fr": "Produire des vues 3D ou des modèles numériques simplifiés afin de visualiser la structure et les composants principaux de la solution."
+        "en": "Produce 3D views or a simplified digital model.",
+        "fr": "Produire des vues 3D ou une maquette numérique simplifiée."
       },
       "3": {
-        "en": "Create CAD models and technical drawings of the main components, with a level of detail sufficient for initial testing.",
-        "fr": "Créer les modèles CAO et les plans techniques des composants principaux avec un niveau de détail suffisant pour les essais initiaux."
+        "en": "Develop CAD models and technical drawings of the main components.",
+        "fr": "Développer des modèles numériques CAO et des dessins techniques des composants principaux."
       },
       "4": {
-        "en": "Develop detailed CAD/BIM models integrating all components, interfaces and manufacturing constraints.",
-        "fr": "Développer des modèles CAO/BIM détaillés intégrant l’ensemble des composants, interfaces et contraintes de fabrication."
+        "en": "Develop a detailed CAD/BIM model including components, interfaces and tolerances.",
+        "fr": "Développer un modèle CAO/BIM détaillé incluant composants, interfaces et tolérances."
       },
       "5": {
-        "en": "Update the CAD/BIM model with feedback from tested prototypes and initial integration tests.",
-        "fr": "Mettre à jour le modèle CAO/BIM à partir des retours des prototypes testés et des premiers essais d’intégration."
+        "en": "Update the model based on tested prototypes and integrate installation details for a pilot site.",
+        "fr": "Mettre à jour le modèle à partir de prototypes testés et intégrer les détails d’installation pour un site pilote."
       },
       "6": {
-        "en": "Use the CAD/BIM model for the design and monitoring of a pilot project.",
-        "fr": "Utiliser le modèle CAO/BIM pour la conception et le suivi d’un projet pilote."
+        "en": "Use CAD/BIM for the design and monitoring of a real pilot project.",
+        "fr": "Utiliser la CAO/BIM pour la conception et le suivi d’un projet pilote réel."
       },
       "7": {
-        "en": "Finalize the CAD/BIM model for commercial distribution and standardization within the application domain.",
-        "fr": "Finaliser le modèle CAO/BIM pour la diffusion commerciale et la standardisation au sein du domaine d’application."
+        "en": "Finalise the model for commercial diffusion.",
+        "fr": "Finaliser le modèle pour sa diffusion commerciale."
       },
       "8": {
-        "en": "Optimize and standardize the solution to enable its industrial deployment and continuous updating during the operating phase.",
-        "fr": "Optimiser et standardiser la solution afin de permettre son déploiement industriel et sa mise à jour continue en phase d’exploitation."
+        "en": "Optimise and standardise the model for large‑scale industrial deployment.",
+        "fr": "Optimiser et standardiser le modèle pour un déploiement industriel à grande échelle."
       }
     },
     "TRL_Q3": {
       "1": {
-        "en": "Design and manufacture a first prototype or experimental model to validate the operating principle of the solution.",
-        "fr": "Concevoir et fabriquer un premier prototype ou modèle expérimental afin de valider le principe de fonctionnement de la solution."
+        "en": "Produce exploratory assemblies of materials or components in order to examine the feasibility of the concept.",
+        "fr": "Réaliser des assemblages exploratoires de matériaux ou composants pour examiner la faisabilité du concept."
       },
       "2": {
-        "en": "Carry out feasibility tests on the prototype to confirm the technical validity of the concept.",
-        "fr": "Réaliser des essais de faisabilité sur le prototype afin de confirmer la validité technique du concept."
+        "en": "Develop a mock‑up or a partial Minimum Viable Product (MVP) in order to validate the proof of concept.",
+        "fr": "Développer une maquette ou un Produit Minimum Viable (MVP) partiel afin de valider la preuve de concept."
       },
       "3": {
-        "en": "Perform integrated tests to verify interaction and compatibility between core components.",
-        "fr": "Effectuer des tests intégrés afin de vérifier l’interaction et la compatibilité entre les composants principaux."
+        "en": "Build and evaluate individually the main components of the system.",
+        "fr": "Construire et évaluer individuellement les principaux composants du système."
       },
       "4": {
-        "en": "Carry out tests under conditions simulating the real-life usage context in order to assess the robustness of the solution.",
-        "fr": "Réaliser des essais dans des conditions simulant l’usage réel afin d’évaluer la robustesse de la solution."
+        "en": "Develop a reduced‑scale prototype in a representative environment including assemblies.",
+        "fr": "Développer un prototype à échelle réduite en environnement représentatif er y inclure les assemblages."
       },
       "5": {
-        "en": "Install and test the prototype in a real environment to observe its performance in an operational situation.",
-        "fr": "Installer et tester le prototype dans un environnement réel afin d’observer ses performances en situation opérationnelle."
+        "en": "Develop full system prototypes at real scale for testing on experimental rigs.",
+        "fr": "Développer des prototypes du système complet à l’échelle réelle pour essais sur banc."
       },
       "6": {
-        "en": "Measure and document product performance on the pilot site, comparing results to initial objectives.",
-        "fr": "Mesurer et documenter les performances du produit sur site pilote en les comparant aux objectifs initiaux."
+        "en": "Install the solution on a pilot site and test it under real conditions.",
+        "fr": "Installer la solution sur un site pilote et la tester en conditions réelles."
       },
       "7": {
-        "en": "Evaluate the product in various application contexts to confirm its versatility and reliability.",
-        "fr": "Évaluer le produit dans différents contextes d’application afin de confirmer sa polyvalence et sa fiabilité."
+        "en": "Deploy the solution on several pilot sites covering the intended application domain.",
+        "fr": "Déployer la solution sur plusieurs sites pilotes couvrant le domaine d’application visé."
       },
       "8": {
-        "en": "Perform final tests on several large-scale use cases to validate the solution before industrialization.",
-        "fr": "Réaliser des tests finaux sur plusieurs cas d’usage à grande échelle afin de valider la solution avant industrialisation."
+        "en": "Implement commissioning and performance monitoring for the first series installations.",
+        "fr": "Mettre en place un dispositif de commissioning et de suivi des performances pour les premières installations en série."
       }
     },
     "TRL_Q4": {
       "1": {
-        "en": "Carry out an initial functional validation of the concept to verify that the basic principle meets the identified needs.",
-        "fr": "Réaliser une première validation fonctionnelle du concept afin de vérifier que le principe de base répond aux besoins identifiés."
+        "en": "Confirm the first hypotheses based on the existing state of the art.",
+        "fr": "Confirmer les premières hypothèses à partir de l’état de l’art existant."
       },
       "2": {
-        "en": "Conduct performance tests on individual components to confirm their technical capabilities and limitations.",
-        "fr": "Effectuer des essais de performance sur les composants individuels afin de confirmer leurs capacités techniques et leurs limites."
+        "en": "Validate technical feasibility through numerical or experimental analyses (proof of concept).",
+        "fr": "Valider la faisabilité technique par des analyses numériques ou expérimentales (preuve de concept)."
       },
       "3": {
-        "en": "Carry out integration and overall operational tests to demonstrate the consistency of the entire system.",
-        "fr": "Réaliser des essais d’intégration et de fonctionnement global afin de démontrer la cohérence de l’ensemble du système."
+        "en": "Characterise analytically or experimentally the components of the solution.",
+        "fr": "Caractériser analytiquement ou expérimentalement les composants de la solution."
       },
       "4": {
-        "en": "Define performance indicators, carry out demonstrator tests, and document the results obtained.",
-        "fr": "Définir des indicateurs de performance, réaliser des essais sur démonstrateur et documenter les résultats obtenus."
+        "en": "Perform tests on prototypes or assemblies including the key interfaces between components.",
+        "fr": "Réaliser des essais sur prototypes ou assemblages incluant les interfaces clés entre composants."
       },
       "5": {
-        "en": "Test and validate product performance in a representative environment to confirm its suitability for the application area.",
-        "fr": "Tester et valider les performances du produit dans un environnement représentatif afin de confirmer son adéquation au domaine d’application."
+        "en": "Validate system performance in a representative environment (test bench or full scale simulation).",
+        "fr": "Valider les performances du système en environnement représentatif (banc d’essai ou simulation à l’échelle 1)."
       },
       "6": {
-        "en": "Carry out a complete demonstration on a pilot site, collecting performance and reliability data over time.",
-        "fr": "Réaliser une démonstration complète sur site pilote en collectant des données de performance et de fiabilité dans la durée."
+        "en": "Implement the solution in a real environment with instrumentation and monitoring of performance.",
+        "fr": "Mettre en œuvre la solution en environnement réel avec instrumentation et suivi des performances."
       },
       "7": {
-        "en": "Extend validation to multiple pilot sites or use cases to confirm performance stability and reproducibility.",
-        "fr": "Étendre la validation à plusieurs sites pilotes ou cas d’usage afin de confirmer la stabilité et la reproductibilité des performances."
+        "en": "Extend experimental validation to multiple representative buildings.",
+        "fr": "Étendre la validation expérimentale à plusieurs bâtiments représentatifs du domaine d’application visé."
       },
       "8": {
-        "en": "Have the product's performance validated and certified by a recognized organization to guarantee its compliance and credibility on the market.",
-        "fr": "Faire valider et certifier les performances du produit par un organisme reconnu afin de garantir sa conformité et sa crédibilité sur le marché."
+        "en": "Consolidate and structure the results to support the technical dossier, quality approach and regulatory compliance.",
+        "fr": "Consolider et structurer les résultats pour alimenter le dossier technique, la démarche qualité et la conformité réglementaire."
       }
     },
     "TRL_Q5": {
       "1": {
-        "en": "Identify potential manufacturing processes and assess their compatibility with the technical concept.",
-        "fr": "Identifier les procédés de fabrication potentiels et évaluer leur compatibilité avec le concept technique."
+        "en": "Analyse the regulatory and normative requirements applicable to the solution.",
+        "fr": "Analyser les exigences réglementaires et normatives applicables."
       },
       "2": {
-        "en": "Carry out small-scale manufacturing trials to confirm the feasibility of the envisaged processes.",
-        "fr": "Réaliser des essais de fabrication à petite échelle afin de confirmer la faisabilité des procédés envisagés."
+        "en": "Define a roadmap of tests and technical evidence required for market access.",
+        "fr": "Définir une feuille de route des essais et justificatifs nécessaires pour l’accès au marché."
       },
       "3": {
-        "en": "Precisely define manufacturing processes to ensure the consistency and quality of the parts produced.",
-        "fr": "Définir précisément les procédés de fabrication afin d’assurer la constance et la qualité des pièces produites."
+        "en": "Collect the first technical data and component characteristics to support the technical documentation.",
+        "fr": "Collecter les premières données techniques et caractéristiques des composants pour alimenter les dossiers techniques."
       },
       "4": {
-        "en": "Set up a pilot line or semi-industrial production to validate the stability of the process.",
-        "fr": "Mettre en place une ligne pilote ou une production semi-industrielle afin de valider la stabilité du procédé."
+        "en": "Perform accredited or standardised tests on critical components.",
+        "fr": "Réaliser des essais accrédités ou normés sur les composants critiques."
       },
       "5": {
-        "en": "Produce and control a first industrial batch to verify the conformity and reproducibility of the process.",
-        "fr": "Produire et contrôler un premier lot industriel afin de vérifier la conformité et la reproductibilité du procédé."
+        "en": "Test the full system (product and process) in representative conditions to demonstrate fitness for use.",
+        "fr": "Tester le système complet (produit et procédé) en conditions représentatives afin de démontrer son aptitude à l’emploi."
       },
       "6": {
-        "en": "Adapt and optimize the process for mass or continuous production, guaranteeing quality and cost control.",
-        "fr": "Adapter et optimiser le procédé pour une production en série ou continue en garantissant la qualité et la maîtrise des coûts."
+        "en": "Obtain the authorisations required for first implementation on a real site.",
+        "fr": "Obtenir les autorisations nécessaires pour une première mise en œuvre sur site réel (ex. ATEx cas B, avis de chantier)."
       },
       "7": {
-        "en": "Test and validate the manufacturing process at several manufacturers or industrial sites to ensure its transferability.",
-        "fr": "Tester et valider le procédé de fabrication auprès de plusieurs fabricants ou sites industriels afin d’assurer sa transférabilité."
+        "en": "Obtain an experimental technical assessment covering the intended application domain.",
+        "fr": "Obtenir une évaluation technique expérimentale couvrant le domaine d’emploi visé."
       },
       "8": {
-        "en": "Optimize, automate and certify the industrial process to guarantee quality, traceability and regulatory compliance.",
-        "fr": "Optimiser, automatiser et certifier le procédé industriel afin de garantir la qualité, la traçabilité et la conformité réglementaire."
+        "en": "Obtain complete technical assessments and recognitions required for commercialisation (technical approvals, CE marking, labels).",
+        "fr": "Obtenir une évaluation technique complète et les reconnaissances nécessaires pour la commercialisation (ATEc, CE, labels…)."
       }
     },
     "TRL_Q6": {
       "1": {
-        "en": "Identify the constraints and conditions for integrating the product into its application environment (technical, spatial, regulatory, etc.).",
-        "fr": "Identifier les contraintes et conditions d’intégration du produit dans son environnement d’application (techniques, spatiales, réglementaires, etc.)."
+        "en": "Perform a qualitative analysis of the environmental impact of existing or reference solutions.",
+        "fr": "Analyser qualitativement l’impact environnemental des solutions existantes ou de référence."
       },
       "2": {
-        "en": "Study the interactions between the solution and its environment in order to anticipate adaptation or compatibility needs.",
-        "fr": "Étudier les interactions entre la solution et son environnement afin d’anticiper les besoins d’adaptation ou de compatibilité."
+        "en": "Define the environmental objectives and indicators of the product (carbon, resources, circularity).",
+        "fr": "Définir les objectifs et indicateurs environnementaux du produit (carbone, ressources, circularité)."
       },
       "3": {
-        "en": "Define and document the procedures for installation, commissioning and initial verification of the product.",
-        "fr": "Définir et documenter les procédures d’installation, de mise en service et de vérification initiale du produit."
+        "en": "Identify sources of environmental impact (simplified LCA) and evaluate circularity principles (dismantling, reuse, recyclability).",
+        "fr": "Identifier les sources d'impact (ACV simplifiée) et évaluer les principes de circularité (démontabilité, réemploi, recyclabilité)."
       },
       "4": {
-        "en": "Determine maintenance needs, establish associated protocols and plan the interventions necessary for the sustainability of the product.",
-        "fr": "Déterminer les besoins de maintenance, établir les protocoles associés et planifier les interventions nécessaires à la pérennité du produit."
+        "en": "Conduct a detailed LCA integrating the main components and use scenarios.",
+        "fr": "Réaliser une ACV approfondie intégrant les principaux composants et scénarios d’usage."
       },
       "5": {
-        "en": "Implement monitoring during the operating phase to collect and analyze feedback from users and operators.",
-        "fr": "Mettre en place un suivi en phase d’exploitation afin de collecter et analyser les retours des utilisateurs et opérateurs."
+        "en": "Integrate prototype data into the LCA and evaluate end‑of‑life scenarios (reuse, recycling).",
+        "fr": "Intégrer dans l’ACV des données issues de prototypes testés et évaluer les scénarios de fin de vie (réemploi, recyclage)."
       },
       "6": {
-        "en": "Carry out a long-term test campaign to validate the reliability and performance of the solution in real use.",
-        "fr": "Réaliser une campagne d’essais longue durée afin de valider la fiabilité et les performances de la solution en usage réel."
+        "en": "Apply the LCA to a real case (pilot site) and analyse dismantling and reuse potential.",
+        "fr": "Appliquer l’ACV à un cas réel (site pilote) et analyser la démontabilité et les possibilités de réemploi."
       },
       "7": {
-        "en": "Formalize and standardize operating and maintenance procedures to ensure reproducible performance.",
-        "fr": "Formaliser et standardiser les procédures d’exploitation et de maintenance afin de garantir la reproductibilité des performances."
+        "en": "Publish a third‑party verified EPD/FDES compliant with EN 15804.",
+        "fr": "Publier une EPD/FDES validée par un tiers et conforme à la norme EN 15804."
       },
       "8": {
-        "en": "Optimize the solution to facilitate its deployment, maintenance and sustainability across multiple sites or markets.",
-        "fr": "Optimiser la solution afin de faciliter son déploiement, sa maintenance et sa durabilité sur plusieurs sites ou marchés."
+        "en": "Develop tools enabling parametric generation of environmental declarations and material traceability (FDES configurator, DPP).",
+        "fr": "Développer des outils permettant la génération paramétrée des déclarations environnementales et la traçabilité des matériaux (ex : configurateur FDES, DPP)."
       }
     },
     "TRL_Q7": {
       "1": {
-        "en": "Carry out an initial qualitative assessment of the environmental impact of the concept (materials, energy, emissions, etc.).",
-        "fr": "Réaliser une première évaluation qualitative de l’impact environnemental du concept (matériaux, énergie, émissions, etc.)."
+        "en": "Identify the expertise required for the development of the solution.",
+        "fr": "Identifier les besoins d’expertise nécessaires au développement de la solution."
       },
       "2": {
-        "en": "Identify sources of impact and collect initial environmental data on the components and materials used.",
-        "fr": "Identifier les sources d’impact et collecter les premières données environnementales sur les composants et matériaux utilisés."
+        "en": "Establish a dedicated project team and identify key partners.",
+        "fr": "Constituer une équipe projet dédiée et identifier les partenaires clés."
       },
       "3": {
-        "en": "Carry out a comparative analysis of the environmental impact between the solution and other similar products.",
-        "fr": "Réaliser une analyse comparative de l’impact environnemental entre la solution et d’autres produits similaires."
+        "en": "Structure the project (objectives, planning, roles, governance) and seek appropriate funding.",
+        "fr": "Structurer le projet (objectifs, planning, rôles, gouvernance) et rechercher des financements adaptés."
       },
       "4": {
-        "en": "Conduct a complete life cycle analysis to quantify the environmental impacts of the product throughout its lifespan.",
-        "fr": "Mener une analyse complète du cycle de vie afin de quantifier les impacts environnementaux du produit sur l’ensemble de sa durée de vie."
+        "en": "Mobilise complementary expertise and organise the technical resources required for development.",
+        "fr": "Mobiliser les expertises complémentaires et organiser les moyens techniques nécessaires au développement."
       },
       "5": {
-        "en": "Identify the standards, certifications and regulations applicable to the product and its area of use.",
-        "fr": "Identifier les normes, certifications et réglementations applicables au produit et à son domaine d’utilisation."
+        "en": "Identify a first pilot site or demonstrator for implementation of the solution.",
+        "fr": "Identifier un premier site pilote ou démonstrateur pour la mise en œuvre de la solution."
       },
       "6": {
-        "en": "Verify product compliance with regulatory requirements and initiate the necessary certification procedures.",
-        "fr": "Vérifier la conformité du produit aux exigences réglementaires et engager les démarches de certification nécessaires."
+        "en": "Involve project stakeholders (operators, users, building owners, contractors) in the design and implementation process.",
+        "fr": "Impliquer les acteurs du projet et du site (exploitants, usagers, maîtres d’ouvrage, entreprises) dans le processus de conception et de mise en œuvre."
       },
       "7": {
-        "en": "Integrate eco-design and sustainability principles from the product design stage to reduce its environmental footprint.",
-        "fr": "Intégrer dès la conception du produit des principes d’écoconception et de durabilité afin de réduire son empreinte environnementale."
+        "en": "Develop tools, methods or training to facilitate adoption and diffusion of the solution.",
+        "fr": "Développer des outils, méthodes ou formations pour faciliter l’adoption et la diffusion de la solution."
       },
       "8": {
-        "en": "Assess the overall impact (environmental, economic and social) and publish transparent communication on the sustainability of the product.",
-        "fr": "Évaluer l’impact global (environnemental, économique et social) et publier une communication transparente sur la durabilité du produit."
+        "en": "Implement monitoring of the product and feedback in order to improve the solution.",
+        "fr": "Mettre en place un suivi du produit et des retours d’expérience afin d’améliorer la solution."
       }
     },
     "MkRL_Q1": {
       "1": {
-        "en": "Conduct an in-depth market analysis to validate demand and refine initial assumptions.",
-        "fr": "Mener une analyse de marché approfondie afin de valider la demande et d’affiner les hypothèses initiales."
+        "en": "Structure the analysis of demand based on the identified needs.",
+        "fr": "Structurer l’analyse de la demande à partir des besoins identifiés."
       },
       "2": {
-        "en": "Develop models or prototypes to collect customer feedback and concretely validate the value proposition.",
-        "fr": "Développer des modèles ou prototypes pour recueillir les retours clients et valider concrètement la proposition de valeur."
+        "en": "Clarify the value proposition through a structured market study.",
+        "fr": "Clarifier la valeur d’usage via une étude de marché structurée."
       },
       "3": {
-        "en": "Create a functional mockup and a Minimum Viable Product (MVP) to demonstrate value to users.",
-        "fr": "Créer une maquette fonctionnelle et un MVP (Produit Minimum Viable) afin de démontrer la valeur auprès des utilisateurs."
+        "en": "Formalise the value proposition and test it using a mock-up or MVP.",
+        "fr": "Formaliser la proposition de valeur et la tester via une maquette ou MVP."
       },
       "4": {
-        "en": "Establish a process for collecting and analyzing feedback from initial trials to confirm key benefits.",
-        "fr": "Mettre en place un processus de collecte et d’analyse des retours issus des premiers essais afin de confirmer les bénéfices clés."
+        "en": "Validate the need through user feedback from prototypes or tests.",
+        "fr": "Valider le besoin par des retours utilisateurs issus de prototypes ou essais."
       },
       "5": {
-        "en": "Consolidate the test bench to obtain more robust results and validate perceived performance.",
-        "fr": "Consolider le banc d’essai afin d’obtenir des résultats plus robustes et de valider la performance perçue."
+        "en": "Strengthen market relevance through demonstration in representative conditions.",
+        "fr": "Renforcer la pertinence marché via une démonstration en conditions représentatives."
       },
       "6": {
-        "en": "Conduct post-use surveys and interviews to quantify and confirm alignment with key market expectations.",
-        "fr": "Réaliser des enquêtes et entretiens post-utilisation afin de quantifier et confirmer l’alignement avec les attentes clés du marché."
+        "en": "Confirm market fit: deploy a pilot site and analyse real usage feedback.",
+        "fr": "Confirmer l’adéquation au marché: Mise en place d'un site pilote, collecte et analyse des retours d’usage réels."
       },
       "7": {
-        "en": "Deploy pilot projects or demonstrations in real conditions to consolidate the credibility of the solution.",
-        "fr": "Déployer des projets pilotes ou des démonstrations en conditions réelles afin de consolider la crédibilité de la solution."
+        "en": "Demonstrate market fit across several pilot projects.",
+        "fr": "Démontrer l’adéquation au marché sur plusieurs projets pilotes."
       },
       "8": {
-        "en": "Implement the sales and marketing strategy to launch the product and measure its market adoption.",
-        "fr": "Mettre en œuvre la stratégie commerciale et marketing afin de lancer le produit et mesurer son adoption sur le marché."
+        "en": "Structure and analyse customer feedback at a larger scale.",
+        "fr": "Structurer et analyser les retours clients à grande échelle."
       }
     },
     "MkRL_Q2": {
       "1": {
-        "en": "Define a clear development strategy, aligned with key requirements (price, usage, benefits).",
-        "fr": "Définir une stratégie de développement claire, alignée sur les exigences clés (prix, usage, bénéfices)."
+        "en": "Identify market requirements and define the first key indicators (price, usage, expected benefits).",
+        "fr": "Identifier les exigences du marché et définir les premiers indicateurs clés (prix, usage, bénéfices attendus)."
       },
       "2": {
-        "en": "Carry out a detailed competitive analysis and identify the main areas of focus for development.",
-        "fr": "Réaliser une analyse concurrentielle détaillée et identifier les principaux axes de développement."
+        "en": "Demonstrate the product’s potential to meet strategic market requirements and differentiate from competitors (proof of concept).",
+        "fr": "Démontrer le potentiel du produit à répondre aux exigences stratégiques et à se différencier de la concurrence (preuve de concept)."
       },
       "3": {
-        "en": "Formalize roles and responsibilities (organizational chart, charter) and stakeholder commitments.",
-        "fr": "Formaliser les rôles et responsabilités (organigramme, charte) ainsi que les engagements des parties prenantes."
+        "en": "Identify voluntary procedures required (labels, certifications).",
+        "fr": "Identifier les démarches volontaires nécessaires (labels, certifications)."
       },
       "4": {
-        "en": "Detail and formalize the testing and engagement strategy for each phase of the project.",
-        "fr": "Détailler et formaliser la stratégie de test et d’engagement pour chaque phase du projet."
+        "en": "Define a performance roadmap including evidence and tests to be delivered.",
+        "fr": "Définir une feuille de route des performances et des preuves à fournir."
       },
       "5": {
-        "en": "Define a plan for validating KPIs under real-life usage conditions, beyond the test bench.",
-        "fr": "Définir un plan de validation des KPI en conditions d’usage réel, au-delà du banc d’essai."
+        "en": "Collect evidence and validate performance indicators (KPIs) through demonstrators or test benches.",
+        "fr": "Rassembler les preuves et valider les indicateurs de performance (KPIs) sur démonstrateur ou banc d’essai."
       },
       "6": {
-        "en": "Implement success indicator measurement tools at the pilot site to obtain reliable data.",
-        "fr": "Mettre en place des outils de mesure des indicateurs de succès sur site pilote afin d’obtenir des données fiables."
+        "en": "Implement KPI monitoring on a first pilot site and prepare performance guarantee methods.",
+        "fr": "Mettre en place le suivi des performances (KPIs) sur un premier site pilote et une méthodologie de garantie de ces performances pour les clients."
       },
       "7": {
-        "en": "Test the solution under extreme conditions and formally validate the performance guarantee for customers.",
-        "fr": "Tester la solution dans des conditions extrêmes et valider formellement la garantie de performance pour les clients."
+        "en": "Validate performance and performance guarantee methodology across several pilot projects.",
+        "fr": "Valider la performance et la méthode de garantie de performance sur plusieurs projets pilotes couvrant le domaine d'application visé."
       },
       "8": {
-        "en": "Structure customer return management processes within the warranty framework for continuous improvement.",
-        "fr": "Structurer les processus de gestion des retours clients dans le cadre de la garantie afin d’assurer l’amélioration continue."
+        "en": "Activate guarantees on commercial projects and structure feedback collection.",
+        "fr": "Activer la garantie sur des projets commerciaux et structurer le retour d’expérience."
       }
     },
     "MkRL_Q3": {
       "1": {
-        "en": "Conduct customer surveys (quantitative and qualitative) to validate revenue assumptions and target segments.",
-        "fr": "Réaliser des enquêtes clients (quantitatives et qualitatives) afin de valider les hypothèses de revenus et les segments cibles."
+        "en": "Conduct customer interviews to validate business model assumptions.",
+        "fr": "Mener des enquêtes clients pour valider les hypothèses du modèle économique"
       },
       "2": {
-        "en": "Deploy real-life tests (e.g., A/B testing) with customers to validate pricing and value proposition.",
-        "fr": "Déployer des tests en conditions réelles (par exemple tests A/B) avec des clients afin de valider la tarification et la proposition de valeur."
+        "en": "Test perceived value and pricing strategy with potential customers.",
+        "fr": "Tester la valeur perçue et la stratégie de prix auprès de clients potentiels."
       },
       "3": {
-        "en": "Conduct usage and pricing tests with the MVP to adjust and confirm the price/usage strategy.",
-        "fr": "Réaliser des tests d’usage et de tarification avec le MVP afin d’ajuster et de confirmer la stratégie prix/usage."
+        "en": "Test the value proposition and pricing/usage strategy via an MVP.",
+        "fr": "Tester la proposition de valeur et la stratégie prix/usage via un MVP."
       },
       "4": {
-        "en": "Identify and engage early adopters to obtain concrete feedback and validate the business model.",
-        "fr": "Identifier et engager des early adopters afin d’obtenir des retours concrets et de valider le modèle économique."
+        "en": "Identify and engage early adopters to refine the business model.",
+        "fr": "Identifier et engager les premiers utilisateurs (early adopters) pour affiner le business model."
       },
       "5": {
-        "en": "Analyze real data from early users to consolidate and adjust the Business Model.",
-        "fr": "Analyser les données réelles issues des premiers utilisateurs afin de consolider et d’ajuster le Business Model."
+        "en": "Analyse real data from initial tests and customer feedback.",
+        "fr": "Analyser les données réelles issues des premiers tests et retours client."
       },
       "6": {
-        "en": "Finalize the consolidation of the Business Model by integrating all the data from the pilot phase.",
-        "fr": "Finaliser la consolidation du Business Model en intégrant l’ensemble des données issues de la phase pilote."
+        "en": "Consolidate the economic model based on demonstrations and real KPIs.",
+        "fr": "Consolider le modèle économique à partir d’une démonstration et d’indicateurs de performance réels (KPIs)."
       },
       "7": {
-        "en": "Set up a dashboard to monitor KPIs for the final adjustment of the Business Model before marketing.",
-        "fr": "Mettre en place un tableau de bord de suivi des KPI pour l’ajustement final du Business Model avant commercialisation."
+        "en": "Formally validate the business model and commercialisation plan through several operations covering the target application domain.",
+        "fr": "Valider formellement le business model et le plan de commercialisation pour le lancement sur le marché à partir de plusieurs opération couvrant le domaine d'application visé."
       },
       "8": {
-        "en": "Deploy the mechanism for monitoring and continuous adjustment of the Business Model after commercial launch.",
-        "fr": "Déployer un mécanisme de suivi et d’ajustement continu du Business Model après le lancement commercial."
+        "en": "Implement a structured mechanism to monitor and adjust the model after market launch.",
+        "fr": "Mettre en place un mécanisme structuré de suivi et d’ajustement du modèle après mise sur le marché."
       }
     },
     "MkRL_Q4": {
       "1": {
-        "en": "Develop prototypes and models to obtain concrete data and refine cost estimates.",
-        "fr": "Développer des prototypes et des modèles afin d’obtenir des données concrètes et d’affiner les estimations de coûts."
+        "en": "Estimate production costs based on generic data or initial assumptions.",
+        "fr": "Estimer les coûts de production à partir de données génériques ou d’hypothèses initiales."
       },
       "2": {
-        "en": "Finalize the integration of variants into the cost calculation and ensure their completeness.",
-        "fr": "Finaliser l’intégration des variantes dans le calcul des coûts et en assurer l’exhaustivité."
+        "en": "Detail costs using supported assumptions, quotations or prototypes and validate economic feasibility.",
+        "fr": "Détailler les coûts sur la base d’hypothèses argumentées, de devis ou de prototypes et valider la faisabilité économique."
       },
       "3": {
-        "en": "Integrate the pricing strategy and the Business Plan into the cost calculation to validate profitability.",
-        "fr": "Intégrer la stratégie de tarification et le Business Plan dans le calcul des coûts afin de valider la rentabilité."
+        "en": "Integrate application variants and life‑cycle costs (maintenance, usage, etc.).",
+        "fr": "Intégrer les variantes du domaine d'emploi visé et le cycle de vie dans l'estimation des couts (maintenance, usage, etc.)."
       },
       "4": {
-        "en": "Produce a prototype or a small series to validate and adjust the actual production cost.",
-        "fr": "Produire un prototype ou une petite série afin de valider et d’ajuster le coût réel de production."
+        "en": "Translate cost analysis into a pricing strategy integrated in the business plan.",
+        "fr": "Transformer l’analyse des coûts en stratégie de prix intégrée au business plan."
       },
       "5": {
-        "en": "Conduct final cost validation at the first production/launch site.",
-        "fr": "Réaliser la validation finale des coûts sur le premier site de production ou de lancement."
+        "en": "Validate costs based on a prototype or small production series.",
+        "fr": "Valider les coûts à partir d’un prototype ou d’une faible série."
       },
       "6": {
-        "en": "Extend testing to several pilot projects to confirm cost robustness in different contexts.",
-        "fr": "Étendre les tests à plusieurs projets pilotes afin de confirmer la robustesse des coûts dans différents contextes."
+        "en": "Confirm costs on a first pilot site.",
+        "fr": "Confirmer les coûts sur un premier site pilote."
       },
       "7": {
-        "en": "Implement a post-launch cost tracking system to ensure cost control.",
-        "fr": "Mettre en place un système de suivi des coûts post-lancement afin d’assurer leur maîtrise."
+        "en": "Implement cost monitoring and confirm costs across several representative pilot projects.",
+        "fr": "Mettre en place un système de suivi des coûts  et confirmer les coûts sur plusieurs projets pilotes représentatifs."
       },
       "8": {
-        "en": "Implement market monitoring and a process for adjusting the sales price based on the market and costs.",
-        "fr": "Mettre en œuvre une veille marché et un processus d’ajustement du prix de vente en fonction du marché et des coûts."
+        "en": "Validate the market price and monitor profitability.",
+        "fr": "Valider le prix par le marché et suivre la rentabilité."
       }
     },
     "MfRL_Q1": {
       "1": {
-        "en": "Detail the organization (roles, skills, equipment) required for each manufacturing scenario.",
-        "fr": "Détailler l’organisation (rôles, compétences, équipements) requise pour chaque scénario de fabrication."
+        "en": "Analyse existing manufacturing practices and explore initial manufacturing pathways adapted to the concept.",
+        "fr": "Analyser les pratiques de fabrication existantes et explorer les premières pistes adaptées au concept."
       },
       "2": {
-        "en": "Carry out pilot production tests to validate the feasibility of components under real conditions.",
-        "fr": "Réaliser des tests de production pilote afin de valider la faisabilité des composants en conditions réelles."
+        "en": "Formalise an industrial organisation concept and validate manufacturability of key components.",
+        "fr": "Formaliser un concept d’organisation industrielle et valider la faisabilité de fabrication des composants clés."
       },
       "3": {
-        "en": "Continue to compare the organization and flows with 3D or digital models to detect inconsistencies.",
-        "fr": "Poursuivre la comparaison de l’organisation et des flux avec des modèles numériques ou 3D afin de détecter les incohérences."
+        "en": "Document and compare several production scenarios (layout, equipment, organisation).",
+        "fr": "Documenter et comparer plusieurs scénarios de production (implantation, équipements, organisation)."
       },
       "4": {
-        "en": "Plan and start the small-scale prototype production with the defined resources and schedule.",
-        "fr": "Planifier et démarrer la production de prototypes à petite échelle avec les ressources et le planning définis."
+        "en": "Select a realistic manufacturing scenario based on small-scale prototypes.",
+        "fr": "Sélectionner un scénario de fabrication réaliste à partir de maquettes ou prototypes à petite échelle."
       },
       "5": {
-        "en": "Implement the full-scale prototype in a representative environment (advanced test bench or pilot site).",
-        "fr": "Mettre en œuvre le prototype à l’échelle réelle dans un environnement représentatif (banc d’essai avancé ou site pilote)."
+        "en": "Install the necessary production equipment.",
+        "fr": "Installer les moyens de production nécessaires."
       },
       "6": {
-        "en": "Conduct load and cadence testing on the business unit to optimize performance and flows.",
-        "fr": "Réaliser des tests de charge et de cadence sur l’unité opérationnelle afin d’optimiser les performances et les flux."
+        "en": "Qualify the production line and demonstrate repeatability of operations.",
+        "fr": "Qualifier la ligne de production et démontrer la répétabilité des opérations."
       },
       "7": {
-        "en": "Obtain validation and final qualification of the production line by a recognized external organization or body.",
-        "fr": "Obtenir la validation et la qualification finale de la ligne de production par un organisme externe reconnu."
+        "en": "Launch initial serial production.",
+        "fr": "Lancer la production en série initiale."
       },
       "8": {
-        "en": "Formalize and optimize S&OP processes to ensure alignment between sales and mass production.",
-        "fr": "Formaliser et optimiser les processus S&OP afin d’assurer l’alignement entre les ventes et la production de série."
+        "en": "Stabilise serial production and optimise industrial organisation.",
+        "fr": "Stabiliser la production en série et optimiser l’organisation industrielle."
       }
     },
     "MfRL_Q2": {
       "1": {
-        "en": "Confirm the technical feasibility of the required industrial capabilities through detailed engineering studies.",
-        "fr": "Confirmer la faisabilité technique des capacités industrielles requises par des études d’ingénierie détaillées."
+        "en": "Analyse the capability of existing industrial resources to manufacture the product.",
+        "fr": "Analyser la capacité des moyens industriels existants à fabriquer le produit."
       },
       "2": {
-        "en": "Integrate exploratory components into mockups for preliminary assembly and performance testing.",
-        "fr": "Intégrer les composants exploratoires dans des maquettes pour des assemblages préliminaires et des tests de performance."
+        "en": "Produce exploratory mock-ups or elements using industrial means.",
+        "fr": "Réaliser des maquettes ou éléments exploratoires via les moyens industriels."
       },
       "3": {
-        "en": "Conduct a complete and systematic test of functional prototypes in the laboratory.",
-        "fr": "Réaliser des essais complets et systématiques des prototypes fonctionnels en laboratoire."
+        "en": "Manufacture functional prototypes of components.",
+        "fr": "Fabriquer des prototypes fonctionnels de composants."
       },
       "4": {
-        "en": "Implement the complete prototypes on an advanced test bench for simulation of real conditions.",
-        "fr": "Mettre en œuvre les prototypes complets sur un banc d’essai avancé afin de simuler des conditions réelles."
+        "en": "Produce a complete small-scale prototype using industrial resources.",
+        "fr": "Produire un prototype complet à petite échelle via les moyens industriels."
       },
       "5": {
-        "en": "Deploy the complete system in an environment that faithfully replicates real-life usage conditions.",
-        "fr": "Déployer le système complet dans un environnement reproduisant fidèlement les conditions d’usage réelles."
+        "en": "Produce a full-scale prototype in a relevant industrial environment.",
+        "fr": "Produire un prototype à l’échelle réelle dans un environnement industriel pertinent."
       },
       "6": {
-        "en": "Conduct real-life performance tests to validate the robustness of infrastructures and systems.",
-        "fr": "Réaliser des tests de performance en conditions réelles afin de valider la robustesse des infrastructures et des systèmes."
+        "en": "Validate the implementation of the complete system in a real environment (including logistics and delivery).",
+        "fr": "Valider la mise en œuvre du système complet en environnement réel. (incluant logistique et réception)."
       },
       "7": {
-        "en": "Confirm the repeatability and reliability of operations through long-term production monitoring.",
-        "fr": "Confirmer la répétabilité et la fiabilité des opérations par un suivi de production à long terme."
+        "en": "Deploy and validate implementation across several representative operations.",
+        "fr": "Déployer et valider la mise en oeuvre de la solution sur plusieurs opérations représentatives."
       },
       "8": {
-        "en": "Implement an optimized preventive and corrective maintenance plan and a performance monitoring dashboard.",
-        "fr": "Mettre en place un plan de maintenance préventive et corrective optimisé ainsi qu’un tableau de bord de suivi des performances."
+        "en": "Consolidate feedback and master large-scale manufacturing.",
+        "fr": "Consolider le retour d’expérience et maîtriser la fabrication à grande échelle."
       }
     },
     "MfRL_Q3": {
       "1": {
-        "en": "Define the detailed logistics flows (physical and information) between the organization and its suppliers/customers.",
-        "fr": "Définir les flux logistiques détaillés (physiques et informationnels) entre l’organisation et ses fournisseurs/clients."
+        "en": "Outline an initial logistics organisation adapted to the product.",
+        "fr": "Esquisser une première organisation logistique adaptée au produit."
       },
       "2": {
-        "en": "Ensure complete integration of the supply chain with manufacturing processes.",
-        "fr": "Assurer l’intégration complète de la chaîne d’approvisionnement avec les processus de fabrication."
+        "en": "Document the supply chain up to the manufacturing stage.",
+        "fr": "Documenter la chaîne logistique jusqu’à la fabrication."
       },
       "3": {
-        "en": "Identify and contract with key logistics partners (carriers, warehouses).",
-        "fr": "Identifier et contractualiser avec les partenaires logistiques clés (transporteurs, entrepôts)."
+        "en": "Integrate transport, storage and installation into the logistics scheme.",
+        "fr": "Intégrer transport, stockage et mise en œuvre dans le schéma logistique."
       },
       "4": {
-        "en": "Model and refine logistics flows with partners to optimize costs and deadlines.",
-        "fr": "Modéliser et affiner les flux logistiques avec les partenaires afin d’optimiser les coûts et les délais."
+        "en": "Identify key partners (transport, assemblers, etc.) and model logistics flows.",
+        "fr": "Identifier les partenaires clés (transport, assembleurs, etc.) et modéliser les flux logistiques."
       },
       "5": {
-        "en": "Carry out a quality and compliance audit on the actual site to validate the execution of flows.",
-        "fr": "Réaliser un audit qualité et conformité sur site réel afin de valider l’exécution des flux."
+        "en": "Consolidate planning with strategic suppliers.",
+        "fr": "Consolider le planning avec les fournisseurs stratégiques."
       },
       "6": {
-        "en": "Deploy a complete traceability system and formalize flow balancing rules.",
-        "fr": "Déployer un système complet de traçabilité et formaliser les règles d’équilibrage des flux."
+        "en": "Validate the logistics scheme on a real site through audits and feedback.",
+        "fr": "Valider le schéma logistique sur site réel via audits et retours d’expérience."
       },
       "7": {
-        "en": "Ensure serial alignment of logistics with the production plan (S&OP).",
-        "fr": "Assurer l’alignement en série de la logistique avec le plan de production (S&OP)."
+        "en": "Implement high-performance logistics with traceability and compliance.",
+        "fr": "Mettre en place une logistique performante intégrant traçabilité et conformité."
       },
       "8": {
-        "en": "Establish a formal feedback loop (logistics and quality) for continuous improvement.",
-        "fr": "Mettre en place une boucle de retour formalisée (logistique et qualité) pour l’amélioration continue."
+        "en": "Stabilise and manage the supply chain in line with serial production.",
+        "fr": "Stabiliser et piloter la supply chain en cohérence avec la production série."
       }
     },
     "MfRL_Q4": {
       "1": {
-        "en": "Write detailed technical and process specifications taking into account all constraints.",
-        "fr": "Rédiger des spécifications techniques et de processus détaillées en tenant compte de l’ensemble des contraintes."
+        "en": "Identify production constraints and associated quality requirements.",
+        "fr": "Identifier les contraintes de production et les exigences qualité associées."
       },
       "2": {
-        "en": "Write specific quality control sheets for critical services and processes.",
-        "fr": "Rédiger des fiches de contrôle qualité spécifiques pour les services et processus critiques."
+        "en": "Formalise technical specifications and industrial processes.",
+        "fr": "Formaliser les spécifications techniques et processus industriels."
       },
       "3": {
-        "en": "Install and validate production documentation (instructions, ranges) directly on workstations.",
-        "fr": "Installer et valider la documentation de production (instructions, gammes) directement sur les postes de travail."
+        "en": "Define quality procedures and inspection sheets.",
+        "fr": "Définir les procédures et feuilles de contrôle qualité."
       },
       "4": {
-        "en": "Validate and test industrial resources (machines, tools) in accordance with procedures and technical specifications.",
-        "fr": "Valider et tester les moyens industriels (machines, outillages) conformément aux procédures et spécifications techniques."
+        "en": "Implement and validate production documentation.",
+        "fr": "Mettre en place et valider la documentation de production."
       },
       "5": {
-        "en": "Designate and train a pilot operator to validate quality compliance at each stage of the production process.",
-        "fr": "Désigner et former un opérateur pilote afin de valider la conformité qualité à chaque étape du processus de production."
+        "en": "Install and qualify industrial resources according to procedures.",
+        "fr": "Installer et qualifier les moyens industriels selon les procédures."
       },
       "6": {
-        "en": "Implement a maintenance and update plan for measurement and quality control tools.",
-        "fr": "Mettre en œuvre un plan de maintenance et de mise à jour des outils de mesure et de contrôle qualité."
+        "en": "Validate quality compliance through a first pilot operation.",
+        "fr": "Valider la conformité qualité via une première opération pilote."
       },
       "7": {
-        "en": "Certify the qualified operator (internal trainer) to ensure the transfer of skills and standardization of practices.",
-        "fr": "Certifier l’opérateur qualifié (formateur interne) afin d’assurer le transfert de compétences et la standardisation des pratiques."
+        "en": "Implement maintenance of tools and training of operators.",
+        "fr": "Mettre en place la maintenance des outils et la formation des opérateurs."
       },
       "8": {
-        "en": "Optimize non-conformity management and implement root cause analysis for continuous serial improvement.",
-        "fr": "Optimiser la gestion des non-conformités et mettre en place des analyses de causes racines pour une amélioration continue en série."
+        "en": "Integrate continuous quality control with field feedback.",
+        "fr": "Intégrer le contrôle qualité en continu avec retour d’expérience terrain."
       }
-    } 
+    }
   },
   "serviceSatisfactionOptions": {
     "TRL_Q1": {
       "1": {
-        "en": "Initial formalization of the concept",
-        "fr": "Formalisation initiale du concept"
+        "en": "Concept formalisation and benchmark",
+        "fr": "Formalisation du concept et benchmark."
       },
       "2": {
-        "en": "Describe the solution and perform a state-of-the-art analysis",
-        "fr": "Décrire la solution et réaliser une analyse de l'état de l'art"
+        "en": "Feasibility validation (POC)",
+        "fr": "Validation de faisabilité (POC)."
       },
       "3": {
-        "en": "Select and describe main components",
-        "fr": "Sélectionner et décrire les composants principaux"
+        "en": "Component definition",
+        "fr": "Définition des composants."
       },
       "4": {
-        "en": "Document the entire product and its interfaces",
-        "fr": "Documenter l'ensemble du produit et ses interfaces"
+        "en": "Interfaces and assemblies definition",
+        "fr": "Définition des interfaces et assemblages."
       },
       "5": {
-        "en": "Describe product implementation and integration",
-        "fr": "Décrire la mise en œuvre et l'intégration du produit"
+        "en": "Implementation process description",
+        "fr": "Description du procédé de mise en oeuvre."
       },
       "6": {
-        "en": "Carry out experimental implementation and document feedback",
-        "fr": "Réaliser une mise en œuvre expérimentale et documenter les retours d'expérience"
+        "en": "First real implementation",
+        "fr": "Première mise en oeuvre réelle."
       },
       "7": {
-        "en": "Collect and analyze multiple feedbacks",
-        "fr": "Collecter et analyser plusieurs retours d'expérience"
+        "en": "Field feedback and iterative improvement",
+        "fr": "Retours terrain et amélioration itérative."
       },
       "8": {
-        "en": "Finalize and consolidate the technical file",
-        "fr": "Finaliser et consolider le dossier technique"
+        "en": "Technical dossier",
+        "fr": "Dossier technique."
       }
     },
     "TRL_Q2": {
       "1": {
-        "en": "Create a first sketch or preliminary diagram",
-        "fr": "Réaliser une première esquisse ou un schéma préliminaire"
+        "en": "Initial sketch",
+        "fr": "Croquis initial."
       },
       "2": {
-        "en": "Produce 3D views or simplified digital models",
-        "fr": "Produire des vues 3D ou des modèles numériques simplifiés"
+        "en": "Simplified mock‑up",
+        "fr": "Maquette simplifiée"
       },
       "3": {
-        "en": "Create CAD models and technical drawings",
-        "fr": "Créer des modèles CAO et des plans techniques"
+        "en": "CAD modelling components",
+        "fr": "Modélisation CAO composants"
       },
       "4": {
-        "en": "Develop detailed CAD/BIM model",
-        "fr": "Développer un modèle CAO/BIM détaillé"
+        "en": "Detailed CAD/BIM model",
+        "fr": "Modèle CAO/BIM détaillé"
       },
       "5": {
-        "en": "Update CAD/BIM model with feedback from prototypes",
-        "fr": "Mettre à jour le modèle CAO/BIM avec les retours des prototypes testés"
+        "en": "Prototype feedback integration",
+        "fr": "Intégration retours prototypes"
       },
       "6": {
-        "en": "Use CAD/BIM for design and monitoring of a pilot project",
-        "fr": "Utiliser la CAO/BIM pour la conception et le suivi d'un projet pilote"
+        "en": "BIM pilot project",
+        "fr": "BIM projet pilote"
       },
       "7": {
-        "en": "Finalize CAD/BIM for commercial distribution",
-        "fr": "Finaliser le modèle CAO/BIM pour sa diffusion commerciale"
+        "en": "BIM ready for market",
+        "fr": "BIM prêt diffusion"
       },
       "8": {
-        "en": "Optimize and standardize for industrial deployment",
-        "fr": "Optimiser et standardiser pour un déploiement industriel"
+        "en": "Industrial standardisation",
+        "fr": "Standardisation industrielle"
       }
     },
-
     "TRL_Q3": {
       "1": {
-        "en": "Design and manufacture a first prototype",
-        "fr": "Concevoir et fabriquer un premier prototype"
+        "en": "Feasibility exploration materials and components",
+        "fr": "Exploration faisabilité matériaux et composants"
       },
       "2": {
-        "en": "Carry out feasibility tests",
-        "fr": "Réaliser des tests de faisabilité"
+        "en": "Mock‑up or partial MVP",
+        "fr": "Maquette / MVP partiel"
       },
       "3": {
-        "en": "Perform integrated tests",
-        "fr": "Effectuer des tests intégrés"
+        "en": "Component validation",
+        "fr": "Validation composants"
       },
       "4": {
-        "en": "Carry out tests under realistic conditions",
-        "fr": "Réaliser des tests dans des conditions réalistes"
+        "en": "Reduced scale prototype with assemblies",
+        "fr": "Prototype échelle réduite et assemblages"
       },
       "5": {
-        "en": "Install and test the prototype in a real environment",
-        "fr": "Installer et tester le prototype dans un environnement réel"
+        "en": "Full system prototypes",
+        "fr": "Prototypes système complet"
       },
       "6": {
-        "en": "Measure and document performance",
-        "fr": "Mesurer et documenter les performances"
+        "en": "First pilot site installation",
+        "fr": "Installation premier site pilote"
       },
       "7": {
-        "en": "Evaluate in multiple application contexts",
-        "fr": "Évaluer dans plusieurs contextes d'application"
+        "en": "Multi‑site validation",
+        "fr": "Installation pour validation multi-sites"
       },
       "8": {
-        "en": "Perform final large-scale validation tests",
-        "fr": "Effectuer les tests de validation finale à grande échelle"
+        "en": "Multi‑site monitoring",
+        "fr": "Suivi multi-sites"
       }
     },
-
     "TRL_Q4": {
       "1": {
-        "en": "Initial functional validation",
-        "fr": "Validation fonctionnelle initiale"
+        "en": "Literature analysis",
+        "fr": "Analyse bibliographique"
       },
       "2": {
-        "en": "Performance tests on components",
-        "fr": "Tests de performance sur les composants"
+        "en": "Feasibility validation",
+        "fr": "Validation faisabilité"
       },
       "3": {
-        "en": "Integration and operational tests",
-        "fr": "Tests d'intégration et de fonctionnement opérationnel"
+        "en": "Component characterisation",
+        "fr": "Caractérisation composants"
       },
       "4": {
-        "en": "Define performance indicators and demonstrator tests",
-        "fr": "Définir les indicateurs de performance et les tests du démonstrateur"
+        "en": "Assembly testing",
+        "fr": "Essais assemblages"
       },
       "5": {
-        "en": "Test in representative environments",
-        "fr": "Tester dans des environnements représentatifs"
+        "en": "Representative environment validation",
+        "fr": "Validation numérique ou expérimentale environnement représentatif"
       },
       "6": {
-        "en": "Complete demonstration on pilot site",
-        "fr": "Réaliser une démonstration complète sur site pilote"
+        "en": "Instrumented real site",
+        "fr": "Premier site réel instrumenté"
       },
       "7": {
-        "en": "Extend validation to multiple pilot sites",
-        "fr": "Étendre la validation à plusieurs sites pilotes"
+        "en": "Multi‑site validation",
+        "fr": "Validation multi-site"
       },
       "8": {
-        "en": "Performance validation and certification",
-        "fr": "Validation des performances et certification"
+        "en": "Results consolidation",
+        "fr": "Consolidation résultats"
       }
     },
-
     "TRL_Q5": {
       "1": {
-        "en": "Identify potential manufacturing processes",
-        "fr": "Identifier les processus de fabrication potentiels"
+        "en": "Regulatory and normative analysis",
+        "fr": "Analyse réglementaire et normative"
       },
       "2": {
-        "en": "Carry out small-scale manufacturing trials",
-        "fr": "Effectuer des essais de fabrication à petite échelle"
+        "en": "Testing and evidence roadmap",
+        "fr": "Feuille de route essais et justificatifs"
       },
       "3": {
-        "en": "Precisely define manufacturing processes",
-        "fr": "Définir précisément les processus de fabrication"
+        "en": "Component technical data",
+        "fr": "Données techniques composants"
       },
       "4": {
-        "en": "Set up a pilot or semi-industrial line",
-        "fr": "Mettre en place une ligne pilote ou semi-industrielle"
+        "en": "Accredited or standardised component testing",
+        "fr": "Essais accrédités ou normés composants"
       },
       "5": {
-        "en": "Produce and control a first industrial batch",
-        "fr": "Produire et contrôler un premier lot industriel"
+        "en": "Full system testing",
+        "fr": "Essais système complet"
       },
       "6": {
-        "en": "Adapt and optimize for mass or continuous production",
-        "fr": "Adapter et optimiser pour une production de masse ou continue"
+        "en": "Pilot site authorisation",
+        "fr": "Autorisation site pilote"
       },
       "7": {
-        "en": "Validate process at several manufacturers",
-        "fr": "Valider le procédé auprès de plusieurs fabricants"
+        "en": "Experimental technical assessment",
+        "fr": "Évaluation technique expérimentale couvrant le domaine d'emploi"
       },
       "8": {
-        "en": "Optimize, automate and certify the process",
-        "fr": "Optimiser, automatiser et certifier le processus"
+        "en": "Market qualification",
+        "fr": "Qualification marché"
       }
     },
-
     "TRL_Q6": {
       "1": {
-        "en": "Identify constraints and integration conditions",
-        "fr": "Identifier les contraintes et conditions d'intégration"
+        "en": "Initial environmental analysis",
+        "fr": "Analyse environnementale initiale"
       },
       "2": {
-        "en": "Study interactions between product and environment",
-        "fr": "Étudier les interactions entre le produit et son environnement"
+        "en": "Environmental objectives",
+        "fr": "Objectifs environnementaux"
       },
       "3": {
-        "en": "Define and document installation and verification procedures",
-        "fr": "Définir et documenter les procédures d'installation et de vérification"
+        "en": "Circularity analysis and simplified LCA",
+        "fr": "Analyse circularité et ACV simplifiée"
       },
       "4": {
-        "en": "Determine maintenance needs and plan sustainability",
-        "fr": "Déterminer les besoins de maintenance et planifier la durabilité"
+        "en": "Detailed LCA",
+        "fr": "ACV détaillée"
       },
       "5": {
-        "en": "Implement monitoring during operation",
-        "fr": "Mettre en œuvre le suivi pendant l'exploitation"
+        "en": "LCA with real data",
+        "fr": "ACV données réelles"
       },
       "6": {
-        "en": "Carry out long-term testing",
-        "fr": "Réaliser des tests de longue durée"
+        "en": "LCA real case",
+        "fr": "ACV cas réel"
       },
       "7": {
-        "en": "Formalize and standardize O&M procedures",
-        "fr": "Formaliser et standardiser les procédures d'exploitation et de maintenance"
+        "en": "EPD publication",
+        "fr": "Publication FDES"
       },
       "8": {
-        "en": "Optimize and scale for multi-site sustainability",
-        "fr": "Optimiser et déployer pour une durabilité multi-sites"
+        "en": "FDES configurator / DPP",
+        "fr": "Configurateur FDES / DPP"
       }
     },
-
     "TRL_Q7": {
       "1": {
-        "en": "Initial qualitative assessment of environmental impact",
-        "fr": "Évaluation qualitative initiale de l'impact environnemental"
+        "en": "Expertise identification",
+        "fr": "Identification expertises"
       },
       "2": {
-        "en": "Identify sources of impact and collect environmental data",
-        "fr": "Identifier les sources d'impact et collecter des données environnementales"
+        "en": "Project team creation",
+        "fr": "Constituer équipe projet"
       },
       "3": {
-        "en": "Comparative environmental analysis (benchmark)",
-        "fr": "Analyse environnementale comparative (référentiel)"
+        "en": "Project structuring",
+        "fr": "Structuration projet"
       },
       "4": {
-        "en": "Complete life cycle assessment (LCA)",
-        "fr": "Réaliser une analyse complète du cycle de vie (ACV)"
+        "en": "Expertise mobilisation",
+        "fr": "Mobilisation expertises"
       },
       "5": {
-        "en": "Identify standards and applicable certifications",
-        "fr": "Identifier les normes et certifications applicables"
+        "en": "Pilot site identification",
+        "fr": "Identification site pilote"
       },
       "6": {
-        "en": "Verify compliance and initiate certification",
-        "fr": "Vérifier la conformité et engager le processus de certification"
+        "en": "Stakeholder engagement",
+        "fr": "Engagement parties prenantes"
       },
       "7": {
-        "en": "Integrate eco-design and sustainability principles",
-        "fr": "Intégrer les principes d'éco-conception et de durabilité"
+        "en": "Adoption tools",
+        "fr": "Outils adoption marché"
       },
       "8": {
-        "en": "Assess and communicate overall sustainability",
-        "fr": "Évaluer et communiquer la durabilité globale"
+        "en": "Product monitoring",
+        "fr": "Suivi et amélioration"
       }
     },
     "MkRL_Q1": {
       "1": {
-        "en": "Conduct an in-depth market analysis.",
-        "fr": "Mener une analyse de marché approfondie."
+        "en": "Market need analysis",
+        "fr": "Analyse besoin marché"
       },
       "2": {
-        "en": "Develop models or prototypes to validate value proposition.",
-        "fr": "Développer des modèles ou prototypes pour valider la proposition de valeur."
+        "en": "Market study",
+        "fr": "Étude de marché"
       },
       "3": {
-        "en": "Create a functional MVP (Minimum Viable Product).",
-        "fr": "Créer un MVP fonctionnel (Minimum Viable Product)."
+        "en": "Value proposition",
+        "fr": "Proposition de valeur"
       },
       "4": {
-        "en": "Establish feedback process and confirm benefits.",
-        "fr": "Mettre en place un processus de retour d’expérience et confirmer les bénéfices."
+        "en": "User validation",
+        "fr": "Validation utilisateurs"
       },
       "5": {
-        "en": "Consolidate test bench and validate performance.",
-        "fr": "Consolider le banc d’essai et valider les performances."
+        "en": "Market demonstration",
+        "fr": "Démonstration marché"
       },
       "6": {
-        "en": "Conduct post-use surveys and confirm alignment.",
-        "fr": "Mener des enquêtes post-usage et confirmer l’alignement avec les attentes."
+        "en": "Real‑use feedback",
+        "fr": "Retours usage réel"
       },
       "7": {
-        "en": "Deploy pilot projects or demonstrations.",
-        "fr": "Déployer des projets pilotes ou des démonstrations."
+        "en": "Multi‑site validation",
+        "fr": "Validation multi-sites"
       },
       "8": {
-        "en": "Implement sales and marketing strategy.",
-        "fr": "Mettre en œuvre une stratégie de vente et de marketing."
+        "en": "Market feedback analysis",
+        "fr": "Analyse retours marché"
       }
     },
     "MkRL_Q2": {
       "1": {
-        "en": "Define a clear development strategy aligned with market requirements.",
-        "fr": "Définir une stratégie de développement claire, alignée sur les exigences du marché."
+        "en": "Market requirements analysis",
+        "fr": "Analyse exigences marché"
       },
       "2": {
-        "en": "Carry out a detailed competitive analysis.",
-        "fr": "Réaliser une analyse concurrentielle détaillée."
+        "en": "Market potential validation",
+        "fr": "Validation potentiel marché"
       },
       "3": {
-        "en": "Formalize roles, responsibilities and stakeholder commitments.",
-        "fr": "Formaliser les rôles, les responsabilités et les engagements des parties prenantes."
+        "en": "Labels and certification roadmap",
+        "fr": "Identification démarches, labels et certifications"
       },
       "4": {
-        "en": "Formalize testing and engagement strategy.",
-        "fr": "Formaliser la stratégie de tests et d’engagement."
+        "en": "Performance roadmap & KPIs",
+        "fr": "Feuille de route performance et KPI"
       },
       "5": {
-        "en": "Define a plan for validating KPIs in real-life conditions.",
-        "fr": "Définir un plan de validation des indicateurs de performance (KPI) en conditions réelles."
+        "en": "KPI validation",
+        "fr": "Validation KPI"
       },
       "6": {
-        "en": "Implement success measurement tools at pilot site.",
-        "fr": "Mettre en place des outils de mesure du succès sur un site pilote."
+        "en": "Pilot site monitoring",
+        "fr": "Suivi site pilote"
       },
       "7": {
-        "en": "Test under extreme conditions and validate guarantees.",
-        "fr": "Tester en conditions extrêmes et valider les garanties."
+        "en": "Performance guarantee validation",
+        "fr": "Garantie performance"
       },
       "8": {
-        "en": "Structure customer return and continuous improvement processes.",
-        "fr": "Structurer les retours clients et les processus d’amélioration continue."
+        "en": "Commercial guarantee",
+        "fr": "Garantie commerciale"
       }
     },
     "MkRL_Q3": {
       "1": {
-        "en": "Conduct customer surveys to validate assumptions.",
-        "fr": "Mener des enquêtes clients pour valider les hypothèses."
+        "en": "Business model exploration",
+        "fr": "Exploration business model"
       },
       "2": {
-        "en": "Deploy real-life pricing and value tests (A/B testing).",
-        "fr": "Déployer des tests de prix et de valeur en conditions réelles (A/B testing)."
+        "en": "Market value testing",
+        "fr": "Test valeur marché"
       },
       "3": {
-        "en": "Conduct usage and pricing tests with the MVP.",
-        "fr": "Effectuer des tests d’usage et de tarification avec le MVP."
+        "en": "MVP testing",
+        "fr": "Test MVP"
       },
       "4": {
-        "en": "Identify and engage early adopters.",
-        "fr": "Identifier et engager les premiers utilisateurs (early adopters)."
+        "en": "Early adopters engagement",
+        "fr": "Engagement early adopters"
       },
       "5": {
-        "en": "Analyze real data from early users.",
-        "fr": "Analyser les données réelles des premiers utilisateurs."
+        "en": "Early adopters analysis",
+        "fr": "Analyse early adopters"
       },
       "6": {
-        "en": "Finalize and consolidate the Business Model.",
-        "fr": "Finaliser et consolider le business model."
+        "en": "Business model consolidation",
+        "fr": "Consolidation business model"
       },
       "7": {
-        "en": "Set up KPI monitoring dashboard.",
-        "fr": "Mettre en place un tableau de bord de suivi des KPI."
+        "en": "Commercial plan validation",
+        "fr": "Validation plan commercial"
       },
       "8": {
-        "en": "Deploy mechanism for continuous monitoring and adjustment.",
-        "fr": "Déployer un mécanisme de suivi et d’ajustement continus."
+        "en": "Business model monitoring",
+        "fr": "Suivi business model"
       }
     },
     "MkRL_Q4": {
       "1": {
-        "en": "Develop prototypes and models to refine cost estimates.",
-        "fr": "Développer des prototypes et des modèles pour affiner les estimations de coûts."
+        "en": "Cost estimation",
+        "fr": "Estimation coûts"
       },
       "2": {
-        "en": "Finalize integration of variants into cost calculation.",
-        "fr": "Finaliser l’intégration des variantes dans le calcul des coûts."
+        "en": "Cost analysis",
+        "fr": "Analyse coûts"
       },
       "3": {
-        "en": "Integrate pricing strategy and business plan into cost validation.",
-        "fr": "Intégrer la stratégie de tarification et le business plan dans la validation des coûts."
+        "en": "Life‑cycle cost analysis",
+        "fr": "Analyse coûts cycle de vie"
       },
       "4": {
-        "en": "Produce a prototype or small series to validate actual production cost.",
-        "fr": "Produire un prototype ou une petite série pour valider le coût réel de production."
+        "en": "Pricing strategy",
+        "fr": "Stratégie prix"
       },
       "5": {
-        "en": "Conduct final cost validation at first production site.",
-        "fr": "Réaliser la validation finale des coûts sur un premier site de production."
+        "en": "Prototype cost validation",
+        "fr": "Validation coûts prototype"
       },
       "6": {
-        "en": "Extend testing to several pilot projects.",
-        "fr": "Étendre les tests à plusieurs projets pilotes."
+        "en": "Pilot site cost validation",
+        "fr": "Validation coûts site pilote"
       },
       "7": {
-        "en": "Implement post-launch cost tracking system.",
-        "fr": "Mettre en place un système de suivi des coûts après le lancement."
+        "en": "Multi‑site cost validation",
+        "fr": "Validation coûts multi-sites"
       },
       "8": {
-        "en": "Implement market monitoring and price adjustment process.",
-        "fr": "Mettre en œuvre un processus de veille marché et d’ajustement des prix."
+        "en": "Market price validation",
+        "fr": "Validation prix marché"
       }
     },
     "MfRL_Q1": {
       "1": {
-        "en": "Detail organization, roles, skills and equipment.",
-        "fr": "Détailler l'organisation, les rôles, les compétences et les équipements."
+        "en": "Existing process analysis",
+        "fr": "Analyse procédés existants"
       },
       "2": {
-        "en": "Carry out pilot production tests.",
-        "fr": "Réaliser des essais de production pilote."
+        "en": "Industrial concept",
+        "fr": "Concept industriel"
       },
       "3": {
-        "en": "Compare organization and flows with digital models.",
-        "fr": "Comparer l'organisation et les flux avec des modèles numériques."
+        "en": "Industrial scenarios",
+        "fr": "Scénarios industriels"
       },
       "4": {
-        "en": "Plan and start small-scale prototype production.",
-        "fr": "Planifier et lancer la production de prototypes à petite échelle."
+        "en": "Manufacturing process selection",
+        "fr": "Choix procédé fabrication"
       },
       "5": {
-        "en": "Implement full-scale prototype in representative environment.",
-        "fr": "Mettre en œuvre un prototype à l’échelle réelle dans un environnement représentatif."
+        "en": "Equipment installation",
+        "fr": "Installation moyens"
       },
       "6": {
-        "en": "Conduct load and cadence testing.",
-        "fr": "Réaliser des tests de charge et de cadence."
+        "en": "Production line qualification",
+        "fr": "Qualification ligne"
       },
       "7": {
-        "en": "Obtain validation and qualification of the production line.",
-        "fr": "Obtenir la validation et la qualification de la ligne de production."
+        "en": "Initial series production",
+        "fr": "Production série initiale"
       },
       "8": {
-        "en": "Formalize and optimize S&OP processes.",
-        "fr": "Formaliser et optimiser les processus S&OP."
+        "en": "Production stabilisation",
+        "fr": "Stabilisation production"
       }
     },
     "MfRL_Q2": {
       "1": {
-        "en": "Confirm technical feasibility through engineering studies.",
-        "fr": "Confirmer la faisabilité technique au moyen d’études d’ingénierie."
+        "en": "Industrial capability analysis",
+        "fr": "Analyse capacité industrielle"
       },
       "2": {
-        "en": "Integrate exploratory components into mockups.",
-        "fr": "Intégrer les composants exploratoires dans les maquettes."
+        "en": "Industrial mock-ups",
+        "fr": "Maquettes industrielles"
       },
       "3": {
-        "en": "Conduct systematic laboratory testing of prototypes.",
-        "fr": "Effectuer des essais systématiques en laboratoire sur les prototypes."
+        "en": "Component prototypes",
+        "fr": "Prototypes composants"
       },
       "4": {
-        "en": "Implement complete prototypes on advanced test bench.",
-        "fr": "Mettre en œuvre des prototypes complets sur un banc d’essai avancé."
+        "en": "System prototype",
+        "fr": "Prototype système"
       },
       "5": {
-        "en": "Deploy the complete system in representative environment.",
-        "fr": "Déployer le système complet dans un environnement représentatif."
+        "en": "Full-scale prototype",
+        "fr": "Prototype échelle 1"
       },
       "6": {
-        "en": "Conduct real-life performance tests.",
-        "fr": "Réaliser des tests de performance en conditions réelles."
+        "en": "Real demonstrator",
+        "fr": "Démonstrateur réel"
       },
       "7": {
-        "en": "Confirm repeatability and reliability of operations.",
-        "fr": "Confirmer la répétabilité et la fiabilité des opérations."
+        "en": "Multi-site deployment",
+        "fr": "Déploiement multi-sites"
       },
       "8": {
-        "en": "Implement preventive and corrective maintenance plan.",
-        "fr": "Mettre en œuvre un plan de maintenance préventive et corrective."
+        "en": "Industrial production mastered",
+        "fr": "Production maîtrisée"
       }
     },
     "MfRL_Q3": {
       "1": {
-        "en": "Define detailed logistics flows (physical and information).",
-        "fr": "Définir des flux logistiques détaillés (physiques et informationnels)."
+        "en": "Logistics organisation",
+        "fr": "Organisation logistique"
       },
       "2": {
-        "en": "Ensure integration of supply chain with manufacturing processes.",
-        "fr": "Assurer l’intégration de la chaîne d’approvisionnement avec les processus de fabrication."
+        "en": "Documented supply chain",
+        "fr": "Supply chain documentée"
       },
       "3": {
-        "en": "Identify and contract with key logistics partners.",
-        "fr": "Identifier et contractualiser avec les partenaires logistiques clés."
+        "en": "Integrated logistics",
+        "fr": "Logistique intégrée"
       },
       "4": {
-        "en": "Model and refine logistics flows with partners.",
-        "fr": "Modéliser et affiner les flux logistiques avec les partenaires."
+        "en": "Logistics partners identified",
+        "fr": "Partenaires logistiques (transport, assembleurs, etc.) identifiés"
       },
       "5": {
-        "en": "Carry out quality and compliance audit on site.",
-        "fr": "Réaliser un audit qualité et conformité sur site."
+        "en": "Supplier planning",
+        "fr": "Planification fournisseurs"
       },
       "6": {
-        "en": "Deploy complete traceability system and formalize balancing rules.",
-        "fr": "Déployer un système complet de traçabilité et formaliser les règles d’équilibrage."
+        "en": "Logistics validation",
+        "fr": "Validation logistique"
       },
       "7": {
-        "en": "Ensure alignment of logistics with production plan (S&OP).",
-        "fr": "Assurer l’alignement de la logistique avec le plan de production (S&OP)."
+        "en": "Efficient logistics",
+        "fr": "Logistique performante"
       },
       "8": {
-        "en": "Establish feedback loop for continuous improvement.",
-        "fr": "Mettre en place une boucle de retour d’expérience pour l’amélioration continue."
+        "en": "Supply chain stabilised",
+        "fr": "Supply chain stabilisée"
       }
     },
     "MfRL_Q4": {
       "1": {
-        "en": "Write detailed technical and process specifications.",
-        "fr": "Rédiger des spécifications techniques et de procédé détaillées."
+        "en": "Quality analysis",
+        "fr": "Analyse qualité"
       },
       "2": {
-        "en": "Write specific quality control sheets for critical services.",
-        "fr": "Rédiger des fiches de contrôle qualité spécifiques pour les services critiques."
+        "en": "Technical specifications",
+        "fr": "Spécifications techniques"
       },
       "3": {
-        "en": "Install and validate production documentation on workstations.",
-        "fr": "Installer et valider la documentation de production sur les postes de travail."
+        "en": "Quality procedures",
+        "fr": "Procédures qualité"
       },
       "4": {
-        "en": "Validate and test industrial resources (machines, tools).",
-        "fr": "Valider et tester les moyens industriels (machines, outils)."
+        "en": "Production documentation",
+        "fr": "Documentation production"
       },
       "5": {
-        "en": "Designate and train a pilot operator.",
-        "fr": "Désigner et former un opérateur pilote."
+        "en": "Equipment qualification",
+        "fr": "Qualification équipements et production"
       },
       "6": {
-        "en": "Implement maintenance and update plan for measurement tools.",
-        "fr": "Mettre en œuvre un plan de maintenance et de mise à jour des outils de mesure."
+        "en": "Pilot quality validation",
+        "fr": "Validation qualité pilote"
       },
       "7": {
-        "en": "Certify qualified operator and standardize practices.",
-        "fr": "Certifier l’opérateur qualifié et standardiser les pratiques."
+        "en": "Training & maintenance",
+        "fr": "Formation & maintenance"
       },
       "8": {
-        "en": "Optimize non-conformity management and continuous improvement.",
-        "fr": "Optimiser la gestion des non-conformités et l’amélioration continue."
+        "en": "Continuous improvement",
+        "fr": "Amélioration continue"
       }
     }
   }
