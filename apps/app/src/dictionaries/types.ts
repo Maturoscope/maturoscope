@@ -41,6 +41,7 @@ export type Dictionary = {
     buttonNextLabel: string
     buttonPrevLabel: string
     commentPlaceholder: string
+    levelLabel: string
     stages: DictionaryStage[]
     leaveQuestionnaireModal: LeaveQuestionnaireModalProps
     checkpoint: {
