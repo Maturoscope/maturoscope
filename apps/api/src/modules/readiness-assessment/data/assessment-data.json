@@ -40,11 +40,11 @@
             },
             "8": {
               "en": "Several successful implementations covering the entire application domain have been completed.",
-              "fr": "Plusieurs opération de mise en oeuvres couvrant l'ensemble du domaine d’application ont été réalisées avec succès."
+              "fr": "Plusieurs opérations de mise en œuvre couvrant l'ensemble du domaine d’application ont été réalisées avec succès."
             },
             "9": {
               "en": "The technical approval file is consolidated with experimental data and references and is ready for commercial and insurance purposes.",
-              "fr": "Dossier technique consolidé avec données expérimentales et références, prêt à des fins commerciales et assurentielles."
+              "fr": "Le dossier technique, consolidé avec des données expérimentales et des références, est prêt à des fins commerciales et assurantielles."
             }
           },
           "question": {
@@ -171,7 +171,7 @@
             },
             "7": {
               "en": "The solution is implemented and monitored with instrumentation on a first real site.",
-              "fr": "La solution est mise en œuvre et suivie instrumentée sur un premier site réel."
+              "fr": "La solution est mise en œuvre avec suivi instrumenté sur un premier site réel."
             },
             "8": {
               "en": "The solution is tested and monitored across multiple representative sites.",
@@ -196,7 +196,7 @@
             },
             "2": {
               "en": "Regulatory, normative and certification requirements applicable to the solution are identified.",
-              "fr": "Les exigences réglementaires, normatives et les labels ou certifications applicables sont identifiées."
+              "fr": "Les exigences réglementaires, normatives et les labels ou certifications applicables sont identifiés."
             },
             "3": {
               "en": "A roadmap of tests and technical evidence has been defined.",
@@ -216,7 +216,7 @@
             },
             "7": {
               "en": "The test results are complete and have enabled authorisation for first real implementation.",
-              "fr": "Les résultats d’essais sont complets et ont permis d'obtenir les authorisations pour une mise en œuvre sur un premier site réel."
+              "fr": "Les résultats d’essais sont complets et ont permis d'obtenir les autorisations pour une mise en œuvre sur un premier site réel."
             },
             "8": {
               "en": "Test results enable an experimental technical evaluation covering the application domain.",
@@ -224,7 +224,7 @@
             },
             "9": {
               "en": "All required technical evaluations are obtained enabling commercialisation and insurability (technical approvals, CE marking, certifications or labels).",
-              "fr": "Les évaluations techniques requises sont obtenues et permet la commercialisation et assurabilité (ATEc, marquage CE, certifications ou labels applicables)."
+              "fr": "Les évaluations techniques requises sont obtenues et permettent la commercialisation et assurabilité (ATEc, marquage CE, certifications ou labels applicables)."
             }
           },
           "question": {
@@ -389,11 +389,11 @@
             },
             "2": {
               "en": "Market requirements have been identified and first client indicators defined (price, usage, benefits), but no strategy has yet been developed.",
-              "fr": "Les exigences ont été repérées et les premiers indicateurs clients identifiés (prix, usage, bénéfices), mais aucune startégie n'a encore été développée."
+              "fr": "Les exigences ont été repérées et les premiers indicateurs clients identifiés (prix, usage, bénéfices), mais aucune stratégie n'a encore été développée."
             },
             "3": {
               "en": "The proof of concept shows strong potential to meet strategic requirements competitively and highlights key development risks.",
-              "fr": "La preuve de concept indique un fort potentiel pour atteindre les exigences  startégiques de façon compétitive et mets en avant les principaux points de vigilence pour les développements à venir."
+              "fr": "La preuve de concept indique un fort potentiel pour atteindre les exigences stratégiques de façon compétitive et mets en avant les principaux points de vigilence pour les développements à venir."
             },
             "4": {
               "en": "Voluntary procedures required for market access are identified and initiated.",
@@ -634,7 +634,7 @@
               "fr": "Le schéma logistique intègre transport, stockage et pose."
             },
             "5": {
-              "en": "Partners (suppliers, transport, assemblers) are identified and logistics flows modelled.",
+              "en": "Partners (suppliers, carriers, assemblers) are identified and logistics flows modelled.",
               "fr": "Les partenaires sont identifiés (fournisseurs, transport, assembleurs, etc.)  et les flux logistiques modélisés."
             },
             "6": {

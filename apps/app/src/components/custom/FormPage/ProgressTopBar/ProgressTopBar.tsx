@@ -18,6 +18,7 @@ import { SIMPLE_FADE_DOWN_VARIANT } from "@/animations/common"
 
 interface ProgressTopBarProps {
   className?: string
+  levelLabel?: string
 }
 
 const STAGES_ICONS = {
@@ -26,7 +27,7 @@ const STAGES_ICONS = {
   mfrl: "/icons/homepage/criteria-mfrl.svg",
 } as const
 
-const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
+const ProgressTopBar = ({ className, levelLabel = "Level" }: ProgressTopBarProps) => {
   const { stages, currStage, currQuestionIndex, currQuestion, isCheckpoint } =
     useProgressContext()
   const { getValues } = useFormContext()
@@ -160,7 +161,7 @@ const ProgressTopBar = ({ className }: ProgressTopBarProps) => {
                       <span className="flex items-center gap-1">
                         <CheckIcon accent className="w-3 h-3 hidden md:block" />
                         <span className="text-xs font-semibold text-accent">
-                          Level {progress.minLevel}
+                          {levelLabel} {progress.minLevel}
                         </span>
                       </span>
                     )}
