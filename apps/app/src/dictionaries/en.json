@@ -76,6 +76,7 @@
     "buttonNextLabel": "Continue",
     "buttonPrevLabel": "Back",
     "commentPlaceholder": "Add specific notes for your final report (Optional)",
+    "levelLabel": "Level",
     "leaveQuestionnaireModal": {
       "title": "Leave questionnaire?",
       "description": "If you leave now, your responses will be lost.",
@@ -90,7 +91,7 @@
         "id": "trl",
         "icon": "/icons/form/trl.svg",
         "name": "TRL",
-        "title": "Technology Analysis Complete",
+        "title": "Technology Analysis Completed",
         "description": "One step down. Now, let's see if the market is ready for it.",
         "reviewLabel": "Review answers",
         "buttonLabel": "Continue to MkRL"
@@ -108,7 +109,7 @@
         "id": "mfrl",
         "icon": "/icons/form/mfrl.svg",
         "name": "MfRL",
-        "title": "Assessment Complete",
+        "title": "Assessment Completed",
         "description": "Your report is ready to be generated. (Last chance to review, answers cannot be changed after this step).",
         "reviewLabel": "Review answers",
         "buttonLabel": "See report"

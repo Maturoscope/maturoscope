@@ -76,6 +76,7 @@
     "buttonNextLabel": "Continuer",
     "buttonPrevLabel": "Retour",
     "commentPlaceholder": "Ajoutez des notes spécifiques pour votre rapport final (Optionnel)",
+    "levelLabel": "Niveau",
     "leaveQuestionnaireModal": {
       "title": "Quitter le questionnaire ?",
       "description": "Si vous quittez maintenant, vos réponses seront perdues.",
@@ -109,7 +110,7 @@
         "icon": "/icons/form/mfrl.svg",
         "name": "MfRL",
         "title": "Évaluation terminée",
-        "description": "Votre rapport est prêt à être généré. (Dernière chance de réviser, les réponses ne pourront plus être modifiées après cette étape).",
+        "description": "Votre rapport est prêt à être généré. (Dernière chance de le réviser, les réponses ne pourront plus être modifiées après cette étape).",
         "reviewLabel": "Voir les réponses",
         "buttonLabel": "Voir le rapport"
       }

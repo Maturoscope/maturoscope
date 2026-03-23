@@ -48,7 +48,7 @@ const FormPage = async ({ params }: FormPageProps) => {
         <ProgressProvider lang={lang} stages={stages}>
           <main className="w-full h-full flex flex-col items-center justify-start">
             <Header stringConnector={stringConnector} showBackButton leaveQuestionnaireModal={form.leaveQuestionnaireModal} />
-            <ProgressTopBar />
+            <ProgressTopBar levelLabel={form.levelLabel} />
             <CheckpointTopBar buttonLabel={form.checkpoint.buttonLabel} />
             <Form
               buttonNextLabel={form.buttonNextLabel}
