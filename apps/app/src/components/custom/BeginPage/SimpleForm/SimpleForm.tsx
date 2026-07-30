@@ -11,7 +11,7 @@ import LeaveQuestionnaireModal from "@/components/custom/FormPage/LeaveQuestionn
 // Dictionaries
 import { Locale } from "@/dictionaries/dictionaries"
 // Animations
-import { STAGGERED_LIST_ITEM_VARIANT, STAGGERED_LIST_VARIANT } from "@/animations/common"
+import { REVEAL_CONTAINER_VARIANT, REVEAL_ITEM_VARIANT } from "@/animations/common"
 // Types
 import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
 // Actions
@@ -79,10 +79,9 @@ const SimpleForm = ({
 
   return (
     <motion.div
-      variants={STAGGERED_LIST_VARIANT}
+      variants={REVEAL_CONTAINER_VARIANT}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
+      animate="visible"
       className="h-full w-full max-w-[750px] flex flex-col px-4 lg:box-content">
       {leaveQuestionnaireModal && (
         <LeaveQuestionnaireModal
@@ -95,19 +94,19 @@ const SimpleForm = ({
 
       <div className="w-full h-full flex flex-col gap-4 justify-center">
         <motion.h1
-          variants={STAGGERED_LIST_ITEM_VARIANT}
+          variants={REVEAL_ITEM_VARIANT}
           className="text-3xl lg:text-4xl font-bold mb-2 text-foreground"
         >
           {title}
         </motion.h1>
         <motion.p
-          variants={STAGGERED_LIST_ITEM_VARIANT}
+          variants={REVEAL_ITEM_VARIANT}
           className="text-2xl text-foreground font-semibold"
         >
           {label}
         </motion.p>
         <motion.input
-          variants={STAGGERED_LIST_ITEM_VARIANT}
+          variants={REVEAL_ITEM_VARIANT}
           placeholder={placeholder}
           value={projectName}
           onChange={(e) => setProjectName(e.target.value)}
@@ -117,7 +116,7 @@ const SimpleForm = ({
       </div>
 
       <motion.div
-        variants={STAGGERED_LIST_ITEM_VARIANT}
+        variants={REVEAL_ITEM_VARIANT}
         className="w-full mb-4 lg:mb-8 flex items-center justify-between gap-3">
         <Button variant="outline" size="lg" className="w-max" onClick={handleBackButtonClick}>
           <Image

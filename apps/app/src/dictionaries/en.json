@@ -20,7 +20,7 @@
         "noStored": "We don't store your information",
         "tooltip": "We do not store, retain, or reuse any of the information you enter. All data is processed temporarily and automatically discarded to ensure complete confidentiality.",
         "buttonLabel": "Let's begin",
-        "estimatedTime": "5 minutes"
+        "estimatedTime": "From 5 to 12 minutes"
       },
       "criteria": {
         "title": "It evaluates 3 key dimensions",
@@ -47,7 +47,7 @@
       }
     },
     "policy": {
-      "description": "METABUILDING LABS Project has received funding from the European Union's Horizon 2020 Research and Innovation Programme under Grant Agreement No. 953193. The sole responsibility for the content of this document lies entirely with the author's view. The European Commission is not responsible for any use that may be made of the information it contains.",
+      "description": "METABUILDING LABS Project has received funding from the European Union's Horizon 2020 Research and Innovation Programme under Grant Agreement No. 953193. The sole responsibility for the content of this document lies entirely with the author's view. The European Commission is not responsible for any use that may be made of the information it contains. The STAR*track project has received funding from the European Union's Horizon Europe research and innovation programme under Grant Agreement N°101147509",
       "copyright": "Developed by",
       "contactUsLabel": "Contact us",
       "privacyPolicyLabel": "Privacy policy",
@@ -172,8 +172,8 @@
       "title": "What's next?",
       "steps": [
         "Review your detailed results below.",
-        "Connect with the recommended experts to accelerate your success.",
-        "Download your report and keep it for future milestones."
+        "Download your report and keep it for future milestones.",
+        "Connect with the recommended experts to accelerate your success."
       ],
       "clarification": "After reviewing your results, save them and reach out to the recommended services. They'll help you close the gaps needed to improve your readiness level."
     },

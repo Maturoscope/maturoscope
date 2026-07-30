@@ -11,7 +11,7 @@ import KeysCriteria, {
   KeysCriteriaProps,
 } from "@/components/custom/Homepage/KeysCriteria/KeysCriteria"
 // Animations
-import { SIMPLE_FADE_VARIANT } from "@/animations/common"
+import { REVEAL_CONTAINER_VARIANT } from "@/animations/common"
 
 export interface HeroProps {
   heading: HeadingProps
@@ -23,13 +23,12 @@ const Hero = ({ heading, information, criteria }: HeroProps) => {
   return (
     <div className="flex lg:items-start justify-between w-full max-w-[1280px] gap-14 lg:gap-16 px-6 lg:flex-row flex-col items-center pt-11 pb-6">
       <motion.div
-        variants={SIMPLE_FADE_VARIANT}
+        variants={REVEAL_CONTAINER_VARIANT}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
+        animate="visible"
         className="flex flex-col items-start justify-start w-full lg:max-w-[584px] gap-9"
       >
-        <Heading {...heading} />
+        <Heading {...heading} animated />
         <Information {...information} />
       </motion.div>
 

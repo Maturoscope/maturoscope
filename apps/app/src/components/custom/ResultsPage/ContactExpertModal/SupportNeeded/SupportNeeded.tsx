@@ -118,6 +118,7 @@ const SupportNeeded = ({
     <Modal
       isOpen={isOpen}
       setIsOpen={setIsOpen}
+      closeOnOverlayClick={false}
       className="p-6 flex flex-col gap-4 max-w-[740px] h-[650px]"
     >
       {/* Header - Always visible */}

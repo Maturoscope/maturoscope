@@ -1,6 +1,7 @@
 // Packages
 import type { Metadata } from "next"
 import { Geist, Inter, Open_Sans, Poppins } from "next/font/google"
+import { MotionConfig } from "motion/react"
 // Dictionaries
 import { DEFAULT_LANGUAGE, Locale } from "@/dictionaries/dictionaries"
 // Actions
@@ -76,7 +77,9 @@ export default async function RootLayout({
           initialFont={font}
           fontClassNames={FONTS_CLASSNAMES}
         >
-          {children}
+          <MotionConfig reducedMotion="user">
+            {children}
+          </MotionConfig>
         </ThemeProvider>
       </body>
     </html>

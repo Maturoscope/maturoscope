@@ -2,8 +2,11 @@
 
 import { useParams, useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
+import { motion } from "motion/react"
 // Components
 import { Button } from "@/components/ui/button"
+// Animations
+import { REVEAL_GROUP_VARIANT, REVEAL_ITEM_VARIANT } from "@/animations/common"
 import {
   NoAccountIcon,
   NoStoredIcon,
@@ -75,8 +78,11 @@ const Information = ({
   }
 
   return (
-    <>
-      <div className="flex flex-col gap-2">
+    <motion.div
+      variants={REVEAL_GROUP_VARIANT}
+      className="w-full flex flex-col gap-9"
+    >
+      <motion.div variants={REVEAL_ITEM_VARIANT} className="flex flex-col gap-2">
         <div className="flex gap-2.5 items-center justify-start">
           <div className="p-2.5 rounded-md border border-border bg-[#FAFAF9] flex items-center justify-center">
             <NoAccountIcon accent className="w-5 h-5" />
@@ -107,20 +113,30 @@ const Information = ({
             </TooltipContent>
           </Tooltip>
         </div>
-      </div >
+      </motion.div>
 
-      <div className="w-full flex items-center justify-start gap-5 mt-7">
-        <Button
-          variant="default"
-          size="lg"
-          className="w-max h-9 px-4 rounded-md flex items-center justify-center gap-2"
-          accent
-          onClick={handleLetsBeginClick}
-          disabled={isLoading}
+      <motion.div
+        variants={REVEAL_ITEM_VARIANT}
+        className="w-full flex items-center justify-start gap-5 mt-7"
+      >
+        <motion.div
+          className="w-max"
+          whileHover={{ y: -2 }}
+          whileTap={{ scale: 0.97 }}
+          transition={{ type: "spring", stiffness: 400, damping: 25 }}
         >
-          {isLoading ? loadingLabel : buttonLabel}
-          {!isLoading && <ArrowNextIcon className="w-4 h-4" />}
-        </Button>
+          <Button
+            variant="default"
+            size="lg"
+            className="w-max h-9 px-4 rounded-md flex items-center justify-center gap-2"
+            accent
+            onClick={handleLetsBeginClick}
+            disabled={isLoading}
+          >
+            {isLoading ? loadingLabel : buttonLabel}
+            {!isLoading && <ArrowNextIcon className="w-4 h-4" />}
+          </Button>
+        </motion.div>
 
         <div className="flex items-center justify-start gap-1.5">
           <ClockIcon className="w-5 h-5 text-muted-foreground" />
@@ -128,8 +144,8 @@ const Information = ({
             {estimatedTime}
           </span>
         </div>
-      </div>
-    </>
+      </motion.div>
+    </motion.div>
   )
 }
 

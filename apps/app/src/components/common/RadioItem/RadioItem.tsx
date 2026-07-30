@@ -3,8 +3,11 @@
 // Packages
 import { useEffect, useRef } from "react"
 import { useController } from "react-hook-form"
+import { AnimatePresence, motion } from "motion/react"
 // Components
 import { CheckedIcon, UncheckedIcon } from "@/components/icons"
+// Animations
+import { EASE_OUT } from "@/animations/common"
 // Context
 import { useFormContext } from "@/context/FormContext"
 // Types
@@ -99,21 +102,32 @@ const RadioItem = ({
         <UncheckedIcon className="peer-checked:hidden block relative w-4 h-4" />
         <span className="text-sm font-medium leading-none">{title}</span>
       </div>
-      {isChecked && (
-        <div className="w-[calc(100%-56px)] p-3 pt-0 flex flex-col items-end gap-2 relative z-20">
-          <textarea
-            maxLength={280}
-            onChange={handleCommentChange}
-            value={optionComment}
-            placeholder={commentPlaceholder}
-            disabled={disabled}
-            className={`bg-white w-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none h-[130px] lg:h-[76px] ${disabled ? "cursor-not-allowed" : ""}`}
-          />
-          <span className="text-xs text-muted-foreground">
-            <span className="text-foreground">{charCount}</span>/280
-          </span>
-        </div>
-      )}
+      <AnimatePresence initial={false}>
+        {isChecked && (
+          <motion.div
+            key="comment"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.28, ease: EASE_OUT }}
+            className="w-full flex justify-center overflow-hidden relative z-20"
+          >
+            <div className="w-[calc(100%-56px)] p-3 pt-0 flex flex-col items-end gap-2">
+              <textarea
+                maxLength={280}
+                onChange={handleCommentChange}
+                value={optionComment}
+                placeholder={commentPlaceholder}
+                disabled={disabled}
+                className={`bg-white w-full resize-none border border-border rounded-md py-2 px-3 text-sm placeholder:text-muted-foreground outline-none h-[130px] lg:h-[76px] ${disabled ? "cursor-not-allowed" : ""}`}
+              />
+              <span className="text-xs text-muted-foreground">
+                <span className="text-foreground">{charCount}</span>/280
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </label>
   )
 }
