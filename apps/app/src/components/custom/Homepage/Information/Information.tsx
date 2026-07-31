@@ -16,7 +16,6 @@ import {
 // Dictionaries
 import { Locale } from "@/dictionaries/dictionaries"
 // Actions
-import { trackStartedAssessment } from "@/actions/tracking"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { InfoIcon } from "lucide-react"
 
@@ -38,7 +37,7 @@ const Information = ({
   loadingLabel = "Loading...",
 }: InformationProps) => {
   const { lang } = useParams<{ lang: Locale }>()
-  const nextPage = `/${lang}/begin`
+  const nextPage = `/${lang}/before-we-begin`
   const router = useRouter()
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
@@ -57,9 +56,8 @@ const Information = ({
     return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
-  const handleLetsBeginClick = async () => {
+  const handleLetsBeginClick = () => {
     setIsLoading(true)
-    await trackStartedAssessment()
     router.push(nextPage)
   }
 

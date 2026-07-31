@@ -35,6 +35,10 @@ export class Organization {
   @Column({ type: 'text', nullable: true })
   avatar: string;
 
+  // Website the host logo links to on the end-user questionnaire.
+  @Column({ type: 'text', nullable: true })
+  url: string;
+
   @Column({
     type: 'enum',
     enum: OrganizationStatus,

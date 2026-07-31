@@ -44,6 +44,8 @@ export interface FormProps {
   buttonNextLabel: string
   buttonPrevLabel: string
   commentPlaceholder: string
+  addNoteLabel: string
+  removeNoteLabel: string
   loadingLabel?: string
   // stages are not needed here - Form gets them from ProgressContext
 }
@@ -52,6 +54,8 @@ const Form = ({
   buttonNextLabel,
   buttonPrevLabel,
   commentPlaceholder,
+  addNoteLabel,
+  removeNoteLabel,
   loadingLabel,
 }: FormProps) => {
   const {
@@ -117,6 +121,8 @@ const Form = ({
             name={currStage.id}
             onQuestionClick={handleQuestionClick}
             commentPlaceholder={commentPlaceholder}
+            addNoteLabel={addNoteLabel}
+            removeNoteLabel={removeNoteLabel}
             disabled={isFormCompleted}
           />
         </motion.div>

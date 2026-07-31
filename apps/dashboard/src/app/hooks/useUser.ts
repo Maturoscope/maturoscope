@@ -19,6 +19,7 @@ export interface User {
     theme?: string;
     signature?: string;
     language?: string;
+    url?: string;
   };
   termsAccepted: boolean;
   isActive?: boolean;

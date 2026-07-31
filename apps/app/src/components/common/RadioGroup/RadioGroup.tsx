@@ -21,12 +21,19 @@ interface RadioGroupProps {
 
 const RadioGroup = ({ options, name, className }: RadioGroupProps) => {
   const { getValues } = useFormContext()
-  const [commentsPerOption, setCommentsPerOption] = useState<Record<string, string>>({})
 
   // Extract stage ID and question ID from name (e.g., "trl.questions.TRL_Q1")
   const [stageId, , questionId] = name.split(".") as [StageId, string, string]
 
-  // Initialize comments from saved form data - reset when question changes
+  // Initialize comments synchronously from saved form data so the note textarea
+  // is shown on the first render when returning to an answered question (no flash).
+  const [commentsPerOption, setCommentsPerOption] = useState<Record<string, string>>(() => {
+    const currentValue = getValues(`${stageId}.questions.${questionId}` as `${StageId}.questions.${string}`)
+    const currentComment = getValues(`${stageId}.comments.${questionId}` as `${StageId}.comments.${string}`)
+    return currentValue && currentComment ? { [currentValue]: currentComment } : {}
+  })
+
+  // Keep in sync if the question changes without a remount
   useEffect(() => {
     const currentValue = getValues(`${stageId}.questions.${questionId}` as `${StageId}.questions.${string}`)
     const currentComment = getValues(`${stageId}.comments.${questionId}` as `${StageId}.comments.${string}`)

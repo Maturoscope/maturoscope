@@ -15,7 +15,7 @@ import LeaveQuestionnaireModal from "@/components/custom/FormPage/LeaveQuestionn
 import { SIMPLE_FADE_VARIANT } from "@/animations/common"
 // Actions
 import { clearAssessmentTracking } from "@/actions/tracking"
-import { getOrganizationSignature } from "@/actions/organization"
+import { getOrganizationSignature, getOrganizationUrl } from "@/actions/organization"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
 import { BeforeYouGoModalProps } from "@/components/custom/ResultsPage/BeforeYouGoModal/BeforeYouGoModal"
@@ -42,6 +42,7 @@ const Header = ({
   const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
   const [isLeaveQuestionnaireModalOpen, setIsLeaveQuestionnaireModalOpen] = useState(false)
   const [signature, setSignature] = useState<string | null>(null)
+  const [logoUrl, setLogoUrl] = useState<string | null>(null)
   const router = useRouter()
   const pathname = usePathname()
   const params = useParams<{ lang?: Locale }>()
@@ -100,6 +101,15 @@ const Header = ({
     }
 
     loadSignature()
+  }, [])
+
+  useEffect(() => {
+    const loadLogoUrl = async () => {
+      const orgUrl = await getOrganizationUrl()
+      setLogoUrl(orgUrl)
+    }
+
+    loadLogoUrl()
   }, [])
 
   const isResultsPage = pathname.includes("/results")
@@ -203,12 +213,29 @@ const Header = ({
           {signature && (
             <>
               <span className="text-sm font-medium">{stringConnector}</span>
-              <Image
-                src={signature}
-                alt="Signature"
-                width={90}
-                height={28}
-              />
+              {logoUrl ? (
+                <a
+                  href={logoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center"
+                  aria-label="Visit organization website"
+                >
+                  <Image
+                    src={signature}
+                    alt="Signature"
+                    width={90}
+                    height={28}
+                  />
+                </a>
+              ) : (
+                <Image
+                  src={signature}
+                  alt="Signature"
+                  width={90}
+                  height={28}
+                />
+              )}
             </>
           )}
         </div>

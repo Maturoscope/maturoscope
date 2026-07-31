@@ -93,6 +93,7 @@ export class UsersService {
         language: user.organization.language,
         font: user.organization.font,
         theme: user.organization.theme,
+        url: user.organization.url,
       } : undefined,
     };
   }

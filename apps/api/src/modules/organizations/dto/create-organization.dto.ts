@@ -66,13 +66,21 @@ export class CreateOrganizationDto {
   @IsString()
   language?: string;
 
-  @ApiPropertyOptional({ 
+  @ApiPropertyOptional({
     description: 'URL to organization avatar/logo',
     example: 'https://storage.example.com/avatars/org-logo.png'
   })
   @IsOptional()
   @IsUrl()
   avatar?: string;
+
+  @ApiPropertyOptional({
+    description: 'Website the host logo links to on the questionnaire',
+    example: 'https://synopp.com'
+  })
+  @IsOptional()
+  @IsString()
+  url?: string;
 
   @ApiPropertyOptional({ 
     description: 'Organization status',

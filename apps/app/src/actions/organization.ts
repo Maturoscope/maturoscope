@@ -234,6 +234,25 @@ export const getOrganizationSignature = async (): Promise<string | null> => {
   }
 }
 
+export const getOrganizationUrl = async (): Promise<string | null> => {
+  try {
+    const organizationKey = await getOrganizationKeyFromCookies()
+    if (!organizationKey) {
+      return null
+    }
+
+    const organization = await getOrganizationByKey(organizationKey)
+    if (!organization || typeof organization !== 'object') {
+      return null
+    }
+
+    return organization.url || null
+  } catch (error) {
+    logger.error("Error fetching organization url", error)
+    return null
+  }
+}
+
 export const getOrganizationName = async (): Promise<string> => {
   try {
     const organizationKey = await getOrganizationKeyFromCookies()

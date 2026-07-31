@@ -17,6 +17,8 @@ import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/Leave
 // Actions
 import { clearAssessmentTracking } from "@/actions/tracking"
 
+const MAX_PROJECT_NAME_LENGTH = 60
+
 export interface SimpleFormProps {
   title: string
   label: string
@@ -105,14 +107,23 @@ const SimpleForm = ({
         >
           {label}
         </motion.p>
-        <motion.input
+        <motion.div
           variants={REVEAL_ITEM_VARIANT}
-          placeholder={placeholder}
-          value={projectName}
-          onChange={(e) => setProjectName(e.target.value)}
-          type="text"
-          className="w-full h-9 rounded-md border border-input bg-white px-3 py-2 text-sm ring-offset-background data-placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
-        />
+          className="w-full flex flex-col items-end gap-1"
+        >
+          <input
+            placeholder={placeholder}
+            value={projectName}
+            onChange={(e) => setProjectName(e.target.value)}
+            type="text"
+            maxLength={MAX_PROJECT_NAME_LENGTH}
+            className="w-full h-9 rounded-md border border-input bg-white px-3 py-2 text-sm ring-offset-background data-placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
+          />
+          <span className="text-xs text-muted-foreground">
+            <span className="text-foreground">{projectName.length}</span>/
+            {MAX_PROJECT_NAME_LENGTH}
+          </span>
+        </motion.div>
       </div>
 
       <motion.div

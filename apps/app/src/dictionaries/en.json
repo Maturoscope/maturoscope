@@ -65,6 +65,15 @@
     "title": "Page not found",
     "description": "Sorry, we couldn't find the page you're looking for."
   },
+  "beforeWeBegin": {
+    "title": "Before we begin",
+    "paragraphs": [
+      "Each answer describes a level you should fully meet. If you are hesitating between two answers, **select the lowest** maturity level.",
+      "If a question doesn't apply to the project you're assessing, **select \"Not applicable\"** and continue.",
+      "At the end of each scale you'll be able to review your answers and edit them if needed."
+    ],
+    "buttonLabel": "Start Assessment"
+  },
   "begin": {
     "title": "What are we evaluating today?",
     "label": "Name your project",
@@ -76,6 +85,8 @@
     "buttonNextLabel": "Continue",
     "buttonPrevLabel": "Back",
     "commentPlaceholder": "Add specific notes for your final report (Optional)",
+    "addNoteLabel": "Add Optional Note",
+    "removeNoteLabel": "Remove",
     "levelLabel": "Level",
     "leaveQuestionnaireModal": {
       "title": "Leave questionnaire?",

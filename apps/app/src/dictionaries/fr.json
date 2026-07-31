@@ -65,6 +65,15 @@
     "title": "Page non trouvée",
     "description": "Désolé, nous n'avons pas trouvé la page que vous cherchez."
   },
+  "beforeWeBegin": {
+    "title": "Avant de commencer",
+    "paragraphs": [
+      "Chaque réponse décrit un niveau que vous devez pleinement atteindre. Si vous hésitez entre deux réponses, **sélectionnez le niveau de maturité le plus bas**.",
+      "Si une question ne s'applique pas au projet que vous évaluez, **sélectionnez « Non applicable »** et continuez.",
+      "À la fin de chaque échelle, vous pourrez revoir vos réponses et les modifier si nécessaire."
+    ],
+    "buttonLabel": "Commencer l'évaluation"
+  },
   "begin": {
     "title": "Qu'évaluons-nous aujourd'hui ?",
     "label": "Nommez votre projet",
@@ -76,6 +85,8 @@
     "buttonNextLabel": "Continuer",
     "buttonPrevLabel": "Retour",
     "commentPlaceholder": "Ajoutez des notes spécifiques pour votre rapport final (Optionnel)",
+    "addNoteLabel": "Ajouter une note (facultatif)",
+    "removeNoteLabel": "Supprimer",
     "levelLabel": "Niveau",
     "leaveQuestionnaireModal": {
       "title": "Quitter le questionnaire ?",

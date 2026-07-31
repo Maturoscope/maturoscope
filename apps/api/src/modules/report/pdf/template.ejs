@@ -24,13 +24,8 @@
             <!-- Overview section -->
             <div class="flex flex-col gap-1.5 mb-9">
               <h1 class="text-3xl font-bold">
-                <%= t.report.title %>
+                <% if (reportData.projectName) { %><%= reportData.projectName %> <% } %><%= t.report.title %>
               </h1>
-              <% if (reportData.projectName) { %>
-                <p class="text-xl font-medium">
-                  <%= reportData.projectName %>
-                </p>
-              <% } %>
               <p class="text-sm text-muted-foreground">
                 <%= t.report.completedOn %>
                 <%= reportData.completedOn %>

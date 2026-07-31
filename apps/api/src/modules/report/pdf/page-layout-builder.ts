@@ -17,7 +17,7 @@ const USABLE_HEIGHT =
 // ≈ 1784px
 
 // Overview section (page 1)
-const OVERVIEW_TITLE_HEIGHT = 130; // title + project name + date
+const OVERVIEW_TITLE_HEIGHT = 130; // title (optionally prefixed with project name, may wrap) + date
 const OVERVIEW_CARDS_HEIGHT = 350; // 3 overview cards row
 const OVERVIEW_SECTION_GAP = 36; // mb-9
 const DETAILED_TITLE_HEIGHT = 80; // "Detailed report" heading + description
