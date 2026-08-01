@@ -113,7 +113,7 @@ export class ServicesService {
   async findAll(organizationId: string): Promise<ServiceSummaryDto[]> {
     const services = await this.serviceRepository.find({
       where: { organizationId },
-      relations: ['gapCoverages'],
+      relations: { gapCoverages: true },
       order: { createdAt: 'DESC' },
     });
 
@@ -129,7 +129,7 @@ export class ServicesService {
   ): Promise<ServiceResponseDto> {
     const service = await this.serviceRepository.findOne({
       where: { id, organizationId },
-      relations: ['gapCoverages'],
+      relations: { gapCoverages: true },
     });
 
     if (!service) {
@@ -149,7 +149,7 @@ export class ServicesService {
   ): Promise<ServiceResponseDto> {
     const service = await this.serviceRepository.findOne({
       where: { id, organizationId },
-      relations: ['gapCoverages'],
+      relations: { gapCoverages: true },
     });
 
     if (!service) {
@@ -272,7 +272,7 @@ export class ServicesService {
           questionId: gap.questionId,
           level: gap.level,
         },
-        relations: ['service'],
+        relations: { service: true },
       });
 
       // Filter by organization and map to DTO with I18nText structure

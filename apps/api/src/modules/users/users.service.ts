@@ -145,7 +145,7 @@ export class UsersService {
   async findAll(): Promise<UserResponseDto[]> {
     const users = await this.userRepository.find({
       order: { createdAt: 'DESC' },
-      relations: ['organization'],
+      relations: { organization: true },
     });
     return this.enrichUsersWithStatus(users);
   }
@@ -157,7 +157,7 @@ export class UsersService {
 
     const user = await this.userRepository.findOne({
       where: { id },
-      relations: ['organization'],
+      relations: { organization: true },
     });
 
     if (!user) {
@@ -170,7 +170,7 @@ export class UsersService {
   async findByEmail(email: string): Promise<UserResponseDto | null> {
     const user = await this.userRepository.findOne({
       where: { email },
-      relations: ['organization'],
+      relations: { organization: true },
     });
     return user ? this.enrichUserWithStatus(user) : null;
   }
@@ -178,14 +178,14 @@ export class UsersService {
   async findByUserEmail(email: string): Promise<User | null> {
     return await this.userRepository.findOne({
       where: { email },
-      relations: ['organization'],
+      relations: { organization: true },
     });
   }
 
   async findByAuthId(authId: string): Promise<User | null> {
     return await this.userRepository.findOne({
       where: { authId },
-      relations: ['organization'],
+      relations: { organization: true },
     });
   }
 
@@ -200,7 +200,7 @@ export class UsersService {
 
     const users = await this.userRepository.find({
       where: whereCondition,
-      relations: ['organization'],
+      relations: { organization: true },
       order: { createdAt: 'DESC' },
     });
     return this.enrichUsersWithStatus(users);
@@ -244,7 +244,7 @@ export class UsersService {
     // Get raw user for update
     const user = await this.userRepository.findOne({
       where: { id },
-      relations: ['organization'],
+      relations: { organization: true },
     });
 
     if (!user) {
