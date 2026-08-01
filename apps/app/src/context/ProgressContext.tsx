@@ -320,6 +320,9 @@ export const ProgressProvider = ({
     name: currStage.id,
     onQuestionClick: handleQuestionClick,
     commentPlaceholder: "",
+    // Overridden by Form with the translated labels
+    addNoteLabel: "",
+    removeNoteLabel: "",
   }
 
   // Initialize form position on mount (runs only once)

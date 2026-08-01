@@ -166,6 +166,34 @@ export class OrganizationService {
   }
 
   /**
+   * Update the organization website URL (the link the host logo points to).
+   * An empty string clears it.
+   * @param url - Website URL, or empty string to clear
+   */
+  static async updateUrl(url: string): Promise<{ url: string }> {
+    try {
+      const response = await fetch('/api/organizations/url', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url }),
+        credentials: 'include',
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.message || errorData.error || `HTTP error! status: ${response.status}`)
+      }
+
+      const result = await response.json()
+      return result
+    } catch (error) {
+      throw new Error(`${error instanceof Error ? error.message : 'Unknown error occurred while updating URL'}`)
+    }
+  }
+
+  /**
    * Upload organization avatar
    * @param file - Avatar file to upload
    * @returns Updated organization data with new avatar URL

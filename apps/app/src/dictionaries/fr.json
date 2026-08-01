@@ -20,7 +20,7 @@
         "noStored": "Nous ne stockons pas vos informations",
         "tooltip": "Nous ne stockons, ne conservons ni ne réutilisons aucune des informations que vous entrez. Toutes les données sont traitées temporairement et automatiquement supprimées pour garantir une confidentialité complète.",
         "buttonLabel": "Commençons",
-        "estimatedTime": "5 minutes"
+        "estimatedTime": "De 5 à 12 minutes"
       },
       "criteria": {
         "title": "Il évalue 3 dimensions clés",
@@ -47,7 +47,7 @@
       }
     },
     "policy": {
-      "description": "Le projet METABUILDING LABS a reçu un financement de la part de la Commission européenne dans le cadre du Programme européen de recherche et d'innovation Horizon 2020 sous le numéro de convention No. 953193. La responsabilité exclusive du contenu de ce document repose entièrement sur l'avis du déposant. La Commission européenne n'est pas responsable de l'utilisation qui peut en être faite.",
+      "description": "Le projet METABUILDING LABS a reçu un financement de la part de la Commission européenne dans le cadre du Programme européen de recherche et d'innovation Horizon 2020 sous le numéro de convention No. 953193. La responsabilité exclusive du contenu de ce document repose entièrement sur l'avis du déposant. La Commission européenne n'est pas responsable de l'utilisation qui peut en être faite. Le projet STAR*track a reçu un financement du programme de recherche et d'innovation Horizon Europe de l'Union européenne dans le cadre de la convention de subvention N°101147509",
       "copyright": "Développé par",
       "contactUsLabel": "Contactez-nous",
       "privacyPolicyLabel": "Politique de confidentialité",
@@ -65,6 +65,15 @@
     "title": "Page non trouvée",
     "description": "Désolé, nous n'avons pas trouvé la page que vous cherchez."
   },
+  "beforeWeBegin": {
+    "title": "Avant de commencer",
+    "paragraphs": [
+      "Chaque réponse décrit un niveau que vous devez pleinement atteindre. Si vous hésitez entre deux réponses, **sélectionnez le niveau de maturité le plus bas**.",
+      "Si une question ne s'applique pas au projet que vous évaluez, **sélectionnez « Non applicable »** et continuez.",
+      "À la fin de chaque échelle, vous pourrez revoir vos réponses et les modifier si nécessaire."
+    ],
+    "buttonLabel": "Commencer l'évaluation"
+  },
   "begin": {
     "title": "Qu'évaluons-nous aujourd'hui ?",
     "label": "Nommez votre projet",
@@ -76,6 +85,8 @@
     "buttonNextLabel": "Continuer",
     "buttonPrevLabel": "Retour",
     "commentPlaceholder": "Ajoutez des notes spécifiques pour votre rapport final (Optionnel)",
+    "addNoteLabel": "Ajouter une note (facultatif)",
+    "removeNoteLabel": "Supprimer",
     "levelLabel": "Niveau",
     "leaveQuestionnaireModal": {
       "title": "Quitter le questionnaire ?",
@@ -172,8 +183,8 @@
       "title": "Et ensuite ?",
       "steps": [
         "Analyser vos résultats personnalisés ci-dessous",
-        "Echangez avec des experts pour vous guider",
-        "Télécharger votre rapport pour planifier vos futures étapes"
+        "Télécharger votre rapport pour planifier vos futures étapes",
+        "Echangez avec des experts pour vous guider"
       ],
       "clarification": "Après avoir consulté vos résultats, enregistrez-les et contacter les spécialistes identifiés qui vous accompagneront dans le développement de votre innovation"
     },

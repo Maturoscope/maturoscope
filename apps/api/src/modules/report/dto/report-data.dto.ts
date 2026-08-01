@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
 import {
   IsString,
   IsBoolean,
@@ -6,7 +6,14 @@ import {
   IsArray,
   ValidateNested,
   IsOptional,
+  MaxLength,
 } from 'class-validator';
+
+// Strips control characters and trims surrounding whitespace.
+const sanitizeText = ({ value }: { value: unknown }) =>
+  typeof value === 'string'
+    ? value.replace(/[\x00-\x1F\x7F]+/g, '').trim()
+    : value;
 
 export class RecommendedServicePayload {
   @IsString()
@@ -82,7 +89,9 @@ export class ReportDataDto {
   @IsString()
   completedOn: string;
 
+  @Transform(sanitizeText)
   @IsString()
+  @MaxLength(60)
   @IsOptional()
   projectName?: string;
 

@@ -54,6 +54,8 @@ const FormPage = async ({ params }: FormPageProps) => {
               buttonNextLabel={form.buttonNextLabel}
               buttonPrevLabel={form.buttonPrevLabel}
               commentPlaceholder={form.commentPlaceholder}
+              addNoteLabel={form.addNoteLabel}
+              removeNoteLabel={form.removeNoteLabel}
               loadingLabel={loadingLabel}
             />
           </main>

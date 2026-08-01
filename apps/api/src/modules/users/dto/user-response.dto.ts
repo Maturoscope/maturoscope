@@ -13,6 +13,7 @@ export interface UserResponseDto extends Omit<User, 'organization'> {
     language?: string;
     font?: string;
     theme?: string;
+    url?: string;
   };
 }
 

@@ -14,6 +14,8 @@ export interface QuestionProps {
   title: string
   options: Option[]
   commentPlaceholder: string
+  addNoteLabel: string
+  removeNoteLabel: string
   onQuestionClick: () => void
   disabled?: boolean
 }
@@ -24,6 +26,8 @@ const Question = ({
   options: initOptions,
   onQuestionClick,
   commentPlaceholder,
+  addNoteLabel,
+  removeNoteLabel,
   disabled = false,
 }: QuestionProps) => {
   const radioGroupName =
@@ -33,6 +37,8 @@ const Question = ({
     name: radioGroupName,
     onClick: onQuestionClick,
     commentPlaceholder,
+    addNoteLabel,
+    removeNoteLabel,
     disabled,
   }))
 

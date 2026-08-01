@@ -65,10 +65,10 @@ export function ToolCustomizationSection({
   }
 
   const fontOptions = [
-    { value: 'geist', label: 'Geist' },
-    { value: 'open-sans', label: 'Open Sans' },
-    { value: 'inter', label: 'Inter' },
-    // { value: 'poppins', label: 'Poppins' }, // Temporarily hidden
+    { value: 'geist', label: 'Geist', fontFamily: 'var(--font-geist-sans)' },
+    { value: 'open-sans', label: 'Open Sans', fontFamily: 'var(--font-open-sans)' },
+    { value: 'inter', label: 'Inter', fontFamily: 'var(--font-inter)' },
+    // { value: 'poppins', label: 'Poppins', fontFamily: 'var(--font-poppins)' }, // Temporarily hidden
   ]
 
   const themeOptions = [
@@ -98,13 +98,20 @@ export function ToolCustomizationSection({
           >
             <SelectTrigger className="max-w-[228px]">
               <SelectValue placeholder={t('CUSTOMIZATION.FONT.PLACEHOLDER')}>
-                {fontOptions.find(opt => opt.value === customizationForm.font)?.label || customizationForm.font}
+                {(() => {
+                  const selectedFont = fontOptions.find(opt => opt.value === customizationForm.font)
+                  return (
+                    <span style={{ fontFamily: selectedFont?.fontFamily }}>
+                      {selectedFont?.label || customizationForm.font}
+                    </span>
+                  )
+                })()}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
               {fontOptions.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
-                  {option.label}
+                  <span style={{ fontFamily: option.fontFamily }}>{option.label}</span>
                 </SelectItem>
               ))}
             </SelectContent>

@@ -179,6 +179,29 @@ export class OrganizationsController {
     return this.organizationsService.updateLanguageByUserEmail(user?.email, updateLanguageDto.language);
   }
 
+  @Auth(ValidRoles.user)
+  @Patch('url')
+  @HttpCode(HttpStatus.OK)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary: 'Update organization website URL',
+    description:
+      "Updates the website URL the host logo links to on the questionnaire. Send an empty string to clear it.",
+  })
+  @ApiResponse({ status: 200, description: 'URL updated successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid URL' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  updateUrlForCurrentUser(
+    @Req() req: { user?: { email?: string } },
+    @Body() updateUrlDto: { url: string },
+  ) {
+    const user = req.user as { email?: string } | undefined;
+    return this.organizationsService.updateUrlByUserEmail(
+      user?.email,
+      updateUrlDto.url,
+    );
+  }
+
   // Specific routes must come before parameterized routes to avoid route conflicts
   @Get('key/:key')
   @ApiOperation({ 

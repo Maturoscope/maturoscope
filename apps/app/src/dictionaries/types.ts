@@ -6,6 +6,7 @@ import { HeroProps as HomepageHeroProps } from "@/components/custom/Homepage/Her
 import { PrivacyPolicyProps } from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
 import { GdprModalProps } from "@/components/custom/Homepage/GdprModal/GdprModal"
 import { SimpleFormProps } from "@/components/custom/BeginPage/SimpleForm/SimpleForm"
+import { BeforeWeBeginProps } from "@/components/custom/BeforeWeBeginPage/BeforeWeBegin"
 import { StageType } from "@/components/custom/FormPage/Form/Form"
 import { HeroProps as ReviewHeroProps } from "@/components/custom/ReviewPage/Hero/Hero"
 import { QuestionEditorProps } from "@/components/custom/ReviewPage/QuestionEditor/QuestionEditor"
@@ -36,11 +37,14 @@ export type Dictionary = {
     gdprModal: Pick<GdprModalProps, "message" | "learnMoreLabel">
   }
   notFound: NotFoundProps
+  beforeWeBegin: BeforeWeBeginProps
   begin: SimpleFormProps
   form: {
     buttonNextLabel: string
     buttonPrevLabel: string
     commentPlaceholder: string
+    addNoteLabel: string
+    removeNoteLabel: string
     levelLabel: string
     stages: DictionaryStage[]
     leaveQuestionnaireModal: LeaveQuestionnaireModalProps

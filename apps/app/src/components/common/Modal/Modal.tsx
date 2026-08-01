@@ -13,11 +13,22 @@ export interface ModalProps {
   setIsOpen: (isOpen: boolean) => void
   children: React.ReactNode
   className?: string
+  closeOnOverlayClick?: boolean
 }
 
-const Modal = ({ isOpen, setIsOpen, children, className }: ModalProps) => {
+const Modal = ({
+  isOpen,
+  setIsOpen,
+  children,
+  className,
+  closeOnOverlayClick = true,
+}: ModalProps) => {
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) =>
     e.stopPropagation()
+
+  const handleOverlayClick = () => {
+    if (closeOnOverlayClick) setIsOpen(false)
+  }
 
   useEffect(() => {
     if (isOpen) document.body.style.overflowY = "hidden"
@@ -37,7 +48,7 @@ const Modal = ({ isOpen, setIsOpen, children, className }: ModalProps) => {
           animate="visible"
           exit="hidden"
           transition={{ duration: 0.2 }}
-          onClick={() => setIsOpen(false)}
+          onClick={handleOverlayClick}
           className="w-full h-full fixed top-0 left-0 bg-black/40 z-50 px-4 lg:px-0 flex items-center justify-center"
         >
           <div

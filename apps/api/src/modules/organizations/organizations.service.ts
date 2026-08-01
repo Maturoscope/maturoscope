@@ -317,6 +317,55 @@ export class OrganizationsService {
     return await this.organizationRepository.save(organization);
   }
 
+  async updateUrlByUserEmail(
+    email: string | undefined,
+    url: string | undefined | null,
+  ): Promise<Organization> {
+    if (!email) {
+      throw new UnauthorizedException('Missing auth token or email claim');
+    }
+
+    const user = await this.usersService.findByUserEmail(email);
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+    if (!user.organizationId) {
+      throw new BadRequestException(
+        'User is not associated with an organization',
+      );
+    }
+
+    const organization = await this.findOne(user.organizationId);
+    organization.url = this.normalizeUrl(url);
+    return await this.organizationRepository.save(organization);
+  }
+
+  /**
+   * Normalizes an organization website URL. Empty values clear the field.
+   * Non-empty values get an https:// prefix if no protocol is present and are
+   * validated to be well-formed http(s) URLs.
+   */
+  private normalizeUrl(url: string | undefined | null): string {
+    const trimmed = (url ?? '').trim();
+    if (!trimmed) {
+      return '';
+    }
+
+    const withProtocol = /^https?:\/\//i.test(trimmed)
+      ? trimmed
+      : `https://${trimmed}`;
+
+    try {
+      const parsed = new URL(withProtocol);
+      if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+        throw new Error('Invalid protocol');
+      }
+      return parsed.toString();
+    } catch {
+      throw new BadRequestException('Invalid URL');
+    }
+  }
+
   async updateProfileByUserEmail(email: string | undefined, updateData: { name: string; key: string; email: string }): Promise<Organization> {
     if (!email) {
       throw new UnauthorizedException('Missing auth token or email claim');

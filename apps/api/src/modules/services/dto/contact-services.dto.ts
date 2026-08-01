@@ -6,9 +6,17 @@ import {
   IsOptional,
   IsNotEmpty,
   IsNumber,
+  MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
+
+// Strips control characters (incl. CR/LF, guarding against email header
+// injection) and trims surrounding whitespace.
+const sanitizeText = ({ value }: { value: unknown }) =>
+  typeof value === 'string'
+    ? value.replace(/[\x00-\x1F\x7F]+/g, '').trim()
+    : value;
 
 export class GapDto {
   @IsString()
@@ -60,7 +68,9 @@ export class ContactServicesDto {
   @IsOptional()
   additionalInformation?: string;
 
+  @Transform(sanitizeText)
   @IsString()
+  @MaxLength(60)
   @IsOptional()
   projectName?: string;
 
@@ -68,4 +78,3 @@ export class ContactServicesDto {
   @IsOptional()
   reportPdfBase64?: string;
 }
-

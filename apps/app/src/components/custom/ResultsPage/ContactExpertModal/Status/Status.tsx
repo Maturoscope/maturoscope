@@ -52,7 +52,12 @@ const Status = ({
   }
 
   return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen} className="max-w-[512px]">
+    <Modal
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      closeOnOverlayClick={false}
+      className="max-w-[512px]"
+    >
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
           <h1 className="text-base font-semibold">{title}</h1>

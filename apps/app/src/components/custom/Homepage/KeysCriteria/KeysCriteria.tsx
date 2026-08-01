@@ -6,11 +6,7 @@ import { motion } from "motion/react"
 import Box from "@/components/common/Box/Box"
 import { getIconComponent } from "@/components/icons/iconMap"
 // Animations
-import {
-  SIMPLE_FADE_VARIANT,
-  STAGGERED_LIST_ITEM_VARIANT,
-  STAGGERED_LIST_VARIANT,
-} from "@/animations/common"
+import { REVEAL_GROUP_VARIANT, REVEAL_ITEM_VARIANT } from "@/animations/common"
 // Types
 import { ListItem } from "@/types/list-item"
 
@@ -19,23 +15,34 @@ export interface KeysCriteriaProps {
   keys: ListItem[]
 }
 
+// Reveals the criteria column shortly after the left column starts, so the
+// whole hero cascades top-to-bottom as one coordinated entrance.
+const CRITERIA_CONTAINER_VARIANT = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.3,
+    },
+  },
+}
+
 const KeysCriteria = ({ title, keys }: KeysCriteriaProps) => {
   return (
-    <div className="flex flex-col items-start justify-start w-full lg:max-w-[584px] gap-5">
+    <motion.div
+      variants={CRITERIA_CONTAINER_VARIANT}
+      initial="hidden"
+      animate="visible"
+      className="flex flex-col items-start justify-start w-full lg:max-w-[584px] gap-5"
+    >
       <motion.span
-        variants={SIMPLE_FADE_VARIANT}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
+        variants={REVEAL_ITEM_VARIANT}
         className="text-sm font-semibold text-foreground uppercase"
       >
         {title}
       </motion.span>
       <motion.ul
-        variants={STAGGERED_LIST_VARIANT}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
+        variants={REVEAL_GROUP_VARIANT}
         className="flex flex-col items-start justify-start w-full gap-3"
       >
         {keys.map((key) => {
@@ -44,7 +51,11 @@ const KeysCriteria = ({ title, keys }: KeysCriteriaProps) => {
           return (
             <Box key={key.icon}>
               <motion.li
-                variants={STAGGERED_LIST_ITEM_VARIANT}
+                variants={REVEAL_ITEM_VARIANT}
+                whileHover={{
+                  y: -2,
+                  transition: { type: "spring", stiffness: 400, damping: 25 },
+                }}
                 className="flex items-start justify-start w-full gap-4 lg:flex-row flex-col"
               >
                 <div className="flex items-center justify-center aspect-square w-10 h-10 rounded-md bg-neutral-50 border border-border">
@@ -70,7 +81,7 @@ const KeysCriteria = ({ title, keys }: KeysCriteriaProps) => {
           )
         })}
       </motion.ul>
-    </div>
+    </motion.div>
   )
 }
 

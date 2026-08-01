@@ -14,6 +14,7 @@ import PrivacyPolicy from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPol
 import TrackCompletedAssessment from "@/components/common/TrackCompletedAssessment/TrackCompletedAssessment"
 import ResultsRedirectHandler from "@/components/common/ResultsRedirectHandler/ResultsRedirectHandler"
 import PdfPreloader from "@/components/common/PdfPreloader/PdfPreloader"
+import FadeIn from "@/components/common/FadeIn/FadeIn"
 
 type ResultsPageProps = {
   params: Promise<{ lang: string }>
@@ -39,13 +40,13 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
       <Header stringConnector={stringConnector} showBackButton beforeYouGoModal={beforeYouGoModal} />
       <ResultsPageWrapper dictionary={dictionary}>
         <ResultsTopBar {...topBar} lang={lang} />
-        <div className="pt-[195px] lg:pt-[142px]">
+        <FadeIn className="pt-[195px] lg:pt-[142px]">
           <Overview {...overview} />
           <UnlockNextLevel {...unlockNextLevel} />
           <DetailedReport {...detailedReport} />
           <CTABanner {...ctaBanner} />
           <PrivacyPolicy {...policy} />
-        </div>
+        </FadeIn>
       </ResultsPageWrapper>
     </main>
   )

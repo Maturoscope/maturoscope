@@ -71,6 +71,17 @@ export default function SettingsPage() {
   const [showRemoveSignatureDialog, setShowRemoveSignatureDialog] = useState(false);
   const [signatureToRemove, setSignatureToRemove] = useState(false);
 
+  // Organization website URL (the link the host logo points to on the questionnaire)
+  const [urlValue, setUrlValue] = useState('');
+  const [originalUrl, setOriginalUrl] = useState('');
+
+  // Keep the URL field in sync with the loaded organization
+  React.useEffect(() => {
+    const orgUrl = user?.organization?.url ?? '';
+    setUrlValue(orgUrl);
+    setOriginalUrl(orgUrl);
+  }, [user?.organization?.url]);
+
   // Use the custom hook for state management
   const settingsState = useToolSettingsState();
 
@@ -106,7 +117,8 @@ export default function SettingsPage() {
   };
 
   // Profile changes tracking
-  const hasProfileChanges = avatarFile !== null || avatarToRemove;
+  const hasUrlChange = urlValue.trim() !== originalUrl.trim();
+  const hasProfileChanges = avatarFile !== null || avatarToRemove || hasUrlChange;
 
   // Customization changes tracking (PDF Signature moved to Profile)
   const hasCustomizationChanges = 
@@ -191,7 +203,8 @@ export default function SettingsPage() {
       setAvatarFile(null);
       setAvatarToRemove(false);
       setAvatarPreview(null);
-      
+      setUrlValue(originalUrl);
+
       const input = document.getElementById("avatar-upload") as HTMLInputElement;
       if (input) {
         input.value = "";
@@ -286,8 +299,8 @@ export default function SettingsPage() {
   const handleUpdateProfile = async () => {
     const hasAvatarChanges = avatarFile || avatarToRemove;
     const hasSignatureChanges = settingsState.pdfSignatureForm.signatureFile || signatureToRemove;
-    
-    if (!hasAvatarChanges && !hasSignatureChanges) {
+
+    if (!hasAvatarChanges && !hasSignatureChanges && !hasUrlChange) {
       setErrorMessage("No changes to save.");
       setShowErrorToast(true);
       setTimeout(() => setShowErrorToast(false), 3000);
@@ -319,6 +332,15 @@ export default function SettingsPage() {
         if (input) {
           input.value = "";
         }
+      }
+
+      // Handle organization website URL
+      if (hasUrlChange) {
+        const trimmedUrl = urlValue.trim();
+        const result = await OrganizationService.updateUrl(trimmedUrl);
+        const savedUrl = result?.url ?? trimmedUrl;
+        setUrlValue(savedUrl);
+        setOriginalUrl(savedUrl);
       }
 
       // Handle PDF signature
@@ -537,13 +559,31 @@ export default function SettingsPage() {
                 </p>
               </div>
 
+              {/* Organization URL */}
+              <div className="space-y-2">
+                <Label htmlFor="organization-url">{tp("URL.LABEL")}</Label>
+                <Input
+                  id="organization-url"
+                  type="url"
+                  inputMode="url"
+                  placeholder={tp("URL.PLACEHOLDER")}
+                  value={urlValue}
+                  onChange={(e) => setUrlValue(e.target.value)}
+                  disabled={isUploadingAvatar}
+                />
+                <p className="text-xs text-gray-500">
+                  {tp("URL.DESCRIPTION")}
+                </p>
+              </div>
+
               {/* Save Button */}
               <div className="flex justify-start">
                 <Button
                   disabled={
-                    isUploadingAvatar || 
-                    ((!avatarFile && !avatarToRemove) && 
-                     (!settingsState.pdfSignatureForm.signatureFile && !signatureToRemove))
+                    isUploadingAvatar ||
+                    ((!avatarFile && !avatarToRemove) &&
+                     (!settingsState.pdfSignatureForm.signatureFile && !signatureToRemove) &&
+                     !hasUrlChange)
                   }
                   onClick={handleUpdateProfile}
                   className={'px-6'}

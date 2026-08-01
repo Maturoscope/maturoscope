@@ -423,6 +423,11 @@
       "COPY_BUTTON": "Copy",
       "COPIED_TO_CLIPBOARD": "Link copied!"
     },
+    "URL": {
+      "LABEL": "URL",
+      "PLACEHOLDER": "Organization URL",
+      "DESCRIPTION": "Visitors who click your logo on the questionnaire will land here."
+    },
     "UPDATE_BUTTON": "Update profile",
     "TOASTS": {
       "SUCCESS_TITLE": "Profile Information Updated",
