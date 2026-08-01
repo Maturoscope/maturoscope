@@ -6410,7 +6410,7 @@ __metadata:
     ts-loader: ^9.5.2
     ts-node: ^10.9.2
     tsconfig-paths: ^4.2.0
-    typeorm: ^0.3.26
+    typeorm: 0.3.28
     typescript: 5.8.3
     typescript-eslint: ^8.20.0
     uuid: ^11.1.0
@@ -16110,7 +16110,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.3.26":
+"typeorm@npm:0.3.28":
   version: 0.3.28
   resolution: "typeorm@npm:0.3.28"
   dependencies:
