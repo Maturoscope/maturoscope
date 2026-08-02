@@ -1,62 +1,38 @@
-"use client"
-
-// Packages
-import { motion } from "motion/react"
 // Components
 import Box from "@/components/common/Box/Box"
 import { getIconComponent } from "@/components/icons/iconMap"
-// Animations
-import { REVEAL_GROUP_VARIANT, REVEAL_ITEM_VARIANT } from "@/animations/common"
 // Types
 import { ListItem } from "@/types/list-item"
 
 export interface KeysCriteriaProps {
   title: string
   keys: ListItem[]
+  /** Base delay (seconds) for the reveal cascade of this column. */
+  revealDelay?: number
 }
 
-// Reveals the criteria column shortly after the left column starts, so the
-// whole hero cascades top-to-bottom as one coordinated entrance.
-const CRITERIA_CONTAINER_VARIANT = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.3,
-    },
-  },
-}
-
-const KeysCriteria = ({ title, keys }: KeysCriteriaProps) => {
+const KeysCriteria = ({ title, keys, revealDelay = 0 }: KeysCriteriaProps) => {
   return (
-    <motion.div
-      variants={CRITERIA_CONTAINER_VARIANT}
-      initial="hidden"
-      animate="visible"
-      className="flex flex-col items-start justify-start w-full lg:max-w-[584px] gap-5"
-    >
-      <motion.span
-        variants={REVEAL_ITEM_VARIANT}
-        className="text-sm font-semibold text-foreground uppercase"
+    <div className="flex flex-col items-start justify-start w-full lg:max-w-[584px] gap-5">
+      <span
+        className="reveal text-sm font-semibold text-foreground uppercase"
+        style={{ "--reveal-delay": `${revealDelay}s` } as React.CSSProperties}
       >
         {title}
-      </motion.span>
-      <motion.ul
-        variants={REVEAL_GROUP_VARIANT}
-        className="flex flex-col items-start justify-start w-full gap-3"
-      >
-        {keys.map((key) => {
+      </span>
+      <ul className="flex flex-col items-start justify-start w-full gap-3">
+        {keys.map((key, index) => {
           const IconComponent = getIconComponent(key.icon)
 
           return (
             <Box key={key.icon}>
-              <motion.li
-                variants={REVEAL_ITEM_VARIANT}
-                whileHover={{
-                  y: -2,
-                  transition: { type: "spring", stiffness: 400, damping: 25 },
-                }}
-                className="flex items-start justify-start w-full gap-4 lg:flex-row flex-col"
+              <li
+                className="reveal flex items-start justify-start w-full gap-4 lg:flex-row flex-col"
+                style={
+                  {
+                    "--reveal-delay": `${revealDelay + 0.1 + index * 0.08}s`,
+                  } as React.CSSProperties
+                }
               >
                 <div className="flex items-center justify-center aspect-square w-10 h-10 rounded-md bg-neutral-50 border border-border">
                   {IconComponent ?
@@ -76,12 +52,12 @@ const KeysCriteria = ({ title, keys }: KeysCriteriaProps) => {
                     </span>
                   )}
                 </div>
-              </motion.li>
+              </li>
             </Box>
           )
         })}
-      </motion.ul>
-    </motion.div>
+      </ul>
+    </div>
   )
 }
 

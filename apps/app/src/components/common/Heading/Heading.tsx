@@ -1,11 +1,5 @@
-"use client"
-
-// Packages
-import { motion } from "motion/react"
 // Utils
 import { cn } from "@/lib/utils"
-// Animations
-import { REVEAL_GROUP_VARIANT, REVEAL_ITEM_VARIANT } from "@/animations/common"
 
 export interface HeadingProps {
   title: string
@@ -14,9 +8,11 @@ export interface HeadingProps {
   className?: string
   /**
    * When true, the tagline/title/description reveal in a subtle staggered
-   * cascade. Inherits its trigger from a parent motion container.
+   * cascade (CSS-driven, so it stays smooth on mobile during hydration).
    */
   animated?: boolean
+  /** Base delay (seconds) for the reveal cascade of the animated variant. */
+  revealDelay?: number
 }
 
 const Heading = ({
@@ -25,6 +21,7 @@ const Heading = ({
   tagline,
   className,
   animated = false,
+  revealDelay = 0,
 }: HeadingProps) => {
   const containerClassName = cn(
     "flex flex-col items-start justify-start w-full gap-4",
@@ -49,31 +46,34 @@ const Heading = ({
     )
   }
 
+  const delayStyle = (offset: number) =>
+    ({ "--reveal-delay": `${revealDelay + offset}s` }) as React.CSSProperties
+
   return (
-    <motion.div variants={REVEAL_GROUP_VARIANT} className={containerClassName}>
+    <div className={containerClassName}>
       {tagline && (
-        <motion.span
-          variants={REVEAL_ITEM_VARIANT}
-          className="text-sm font-medium text-muted-foreground"
+        <span
+          className="reveal text-sm font-medium text-muted-foreground"
+          style={delayStyle(0)}
         >
           {tagline}
-        </motion.span>
+        </span>
       )}
-      <motion.h1
-        variants={REVEAL_ITEM_VARIANT}
-        className="text-4xl lg:text-5xl font-semibold"
+      <h1
+        className="reveal text-4xl lg:text-5xl font-semibold"
+        style={delayStyle(0.08)}
       >
         {title}
-      </motion.h1>
+      </h1>
       {description && (
-        <motion.p
-          variants={REVEAL_ITEM_VARIANT}
-          className="text-base text-muted-foreground whitespace-pre-line"
+        <p
+          className="reveal text-base text-muted-foreground whitespace-pre-line"
+          style={delayStyle(0.16)}
         >
           {description}
-        </motion.p>
+        </p>
       )}
-    </motion.div>
+    </div>
   )
 }
 

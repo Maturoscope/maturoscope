@@ -3,7 +3,6 @@
 // Packages
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { motion } from "motion/react"
 import { usePathname, useRouter, useParams } from "next/navigation"
 // Utils
 import { cn } from "@/lib/utils"
@@ -11,8 +10,6 @@ import { cn } from "@/lib/utils"
 import LanguageSelect from "@/components/common/LanguageSelect/LanguageSelect"
 import BeforeYouGoModal from "@/components/custom/ResultsPage/BeforeYouGoModal/BeforeYouGoModal"
 import LeaveQuestionnaireModal from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
-// Animations
-import { SIMPLE_FADE_VARIANT } from "@/animations/common"
 // Actions
 import { clearAssessmentTracking } from "@/actions/tracking"
 import { getOrganizationSignature, getOrganizationUrl } from "@/actions/organization"
@@ -144,13 +141,9 @@ const Header = ({
   }
 
   return (
-    <motion.header
-      variants={SIMPLE_FADE_VARIANT}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
+    <header
       className={cn(
-        "z-50 w-full pl-0.5 pr-4 lg:pl-2 lg:pr-6 h-14 flex items-center justify-between bg-white border border-b border-border shadow-sm shrink-0",
+        "reveal-fade z-50 w-full pl-0.5 pr-4 lg:pl-2 lg:pr-6 h-14 flex items-center justify-between bg-white border border-b border-border shadow-sm shrink-0",
         isResultsPage && "fixed top-0 left-0 right-0 bg-white"
       )}
     >
@@ -240,7 +233,7 @@ const Header = ({
         </div>
       </div>
       <LanguageSelect />
-    </motion.header>
+    </header>
   )
 }
 

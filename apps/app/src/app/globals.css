@@ -3,6 +3,102 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* --- Entrance reveal animations ------------------------------------------
+   Compositor-driven (opacity + transform) so they stay smooth on mobile even
+   while React hydrates. Same look as the previous JS animations: gentle fade
+   + rise, with a per-element `--reveal-delay` to build the staggered cascade.
+   ------------------------------------------------------------------------ */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reveal-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes reveal-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Desktop: the full guided cascade — gentle fade + rise, staggered via
+   `--reveal-delay`. Pure CSS so it runs on the compositor at first paint. */
+.reveal,
+.reveal-pop,
+.reveal-fade {
+  opacity: 0;
+}
+
+.reveal {
+  animation: reveal-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0s)
+    both;
+}
+
+.reveal-pop {
+  animation: reveal-pop 0.5s cubic-bezier(0.16, 1, 0.3, 1)
+    var(--reveal-delay, 0s) both;
+}
+
+.reveal-fade {
+  animation: reveal-fade 0.5s cubic-bezier(0.16, 1, 0.3, 1)
+    var(--reveal-delay, 0s) both;
+}
+
+/* Mobile / touch (< lg): keep the staggered cascade feel but as an
+   opacity-only fade (no movement, no forced GPU layers). Rich movement
+   animations exceed what lower-powered devices run smoothly during page load;
+   a staggered opacity fade is cheap and never janks. */
+@media (max-width: 1023px) {
+  .reveal,
+  .reveal-pop,
+  .reveal-fade {
+    animation: reveal-fade 0.45s ease-out var(--reveal-delay, 0s) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Respect reduced motion by dropping the movement, but keep a gentle opacity
+     fade so the entrance is still visible. */
+  .reveal,
+  .reveal-pop,
+  .reveal-fade {
+    animation: reveal-fade 0.4s ease-out both;
+  }
+}
+
+/* iOS Safari zooms the viewport when a focused form field has a font-size
+   below 16px. Force at least 16px on form controls on small screens so tapping
+   an input doesn't trigger that zoom. Desktop keeps its smaller sizes. */
+@media (max-width: 1023px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
 :root {
   --background: #F5F5F5;
   --foreground: #171717;
