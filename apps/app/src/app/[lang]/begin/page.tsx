@@ -1,5 +1,4 @@
 // Components
-import Header from "@/components/common/Header/Header"
 import SimpleForm from "@/components/custom/BeginPage/SimpleForm/SimpleForm"
 // Dictionaries
 import { getDictionary, Locale } from "@/dictionaries/dictionaries"
@@ -15,14 +14,12 @@ const BeginPage = async ({ params }: BeginPageProps) => {
 
   const {
     common: { loadingLabel },
-    header: { stringConnector },
     form: { leaveQuestionnaireModal },
     begin,
   } = dictionary
 
   return (
-    <main className="w-full flex flex-col items-center justify-between h-full">
-      <Header stringConnector={stringConnector} showBackButton leaveQuestionnaireModal={leaveQuestionnaireModal} />
+    <main className="w-full flex flex-col items-center justify-between flex-1 min-h-0">
       <SimpleForm {...begin} loadingLabel={loadingLabel} leaveQuestionnaireModal={leaveQuestionnaireModal} />
     </main>
   )

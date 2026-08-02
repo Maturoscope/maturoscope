@@ -1,9 +1,5 @@
-"use client"
-
-// Packages
-import { motion } from "motion/react"
-// Animations
-import { EASE_OUT, FADE_IN_UP_VARIANT } from "@/animations/common"
+// Utils
+import { cn } from "@/lib/utils"
 
 interface FadeInProps {
   children: React.ReactNode
@@ -13,20 +9,18 @@ interface FadeInProps {
 }
 
 /**
- * Subtle fade-up entrance wrapper. Motion is automatically disabled for users
- * who prefer reduced motion (handled globally via MotionConfig in the layout).
+ * Subtle fade-up entrance wrapper. CSS-driven (compositor) so it stays smooth
+ * on mobile during hydration; disabled under prefers-reduced-motion via the
+ * `.reveal` rule in globals.css.
  */
 const FadeIn = ({ children, className, delay = 0 }: FadeInProps) => {
   return (
-    <motion.div
-      className={className}
-      variants={FADE_IN_UP_VARIANT}
-      initial="hidden"
-      animate="visible"
-      transition={{ duration: 0.7, ease: EASE_OUT, delay }}
+    <div
+      className={cn("reveal", className)}
+      style={{ "--reveal-delay": `${delay}s` } as React.CSSProperties}
     >
       {children}
-    </motion.div>
+    </div>
   )
 }
 

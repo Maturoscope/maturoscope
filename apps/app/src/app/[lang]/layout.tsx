@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { Geist, Inter, Open_Sans, Poppins } from "next/font/google"
 import { MotionConfig } from "motion/react"
 // Dictionaries
-import { DEFAULT_LANGUAGE, Locale } from "@/dictionaries/dictionaries"
+import { DEFAULT_LANGUAGE, Locale, getDictionary } from "@/dictionaries/dictionaries"
 // Actions
 import {
   getOrganizationKeyFromCookies,
@@ -14,6 +14,7 @@ import {
 import { DEFAULT_ACCENT_THEME, DEFAULT_FONT_THEME, ThemeProvider } from "@/context/ThemeContext"
 // Components
 import OrganizationKeyHandler from "@/components/common/OrganizationKeyHandler/OrganizationKeyHandler"
+import Header from "@/components/common/Header/Header"
 // Types
 import { FontTheme } from "@/actions/organization"
 // Styles
@@ -63,6 +64,16 @@ export default async function RootLayout({
   const { accentColor, font } = (await getOrganizationTheme(organizationKey)) ?? { accentColor: DEFAULT_ACCENT_THEME, font: DEFAULT_FONT_THEME }
   const fontClassName = FONTS_CLASSNAMES[font]
 
+  // Header lives in the layout so it persists across navigations (no remount,
+  // no re-fetch of the logo, no re-animation) — the flow-specific back button
+  // and its modals are chosen by the Header from the current route.
+  const dictionary = await getDictionary(lang)
+  const {
+    header: { stringConnector },
+    form: { leaveQuestionnaireModal },
+    results: { beforeYouGoModal },
+  } = dictionary
+
   return (
     <html
       lang={lang}
@@ -78,6 +89,11 @@ export default async function RootLayout({
           fontClassNames={FONTS_CLASSNAMES}
         >
           <MotionConfig reducedMotion="user">
+            <Header
+              stringConnector={stringConnector}
+              leaveQuestionnaireModal={leaveQuestionnaireModal}
+              beforeYouGoModal={beforeYouGoModal}
+            />
             {children}
           </MotionConfig>
         </ThemeProvider>

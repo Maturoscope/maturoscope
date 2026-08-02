@@ -4,7 +4,6 @@ import { StageId } from "@/components/custom/FormPage/Form/Form"
 // Dictionaries
 import { getDictionary } from "@/dictionaries/dictionaries"
 // Components
-import Header from "@/components/common/Header/Header"
 import QuestionEditor from "@/components/custom/ReviewPage/QuestionEditor/QuestionEditor"
 // Actions
 import { getQuestions } from "@/actions/questions"
@@ -18,8 +17,6 @@ const QuestionPage = async ({ params }: QuestionPageProps) => {
   const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
   const dictionary = await getDictionary(lang)
   const {
-    header: { stringConnector },
-    form: { leaveQuestionnaireModal },
     singleReview,
   } = dictionary
 
@@ -42,8 +39,7 @@ const QuestionPage = async ({ params }: QuestionPageProps) => {
   // Since we can't access localStorage in server components, we'll handle it in the client component
 
   return (
-    <main className="w-full h-full flex flex-col items-center justify-start">
-      <Header stringConnector={stringConnector} showBackButton leaveQuestionnaireModal={leaveQuestionnaireModal} />
+    <main className="w-full flex-1 min-h-0 flex flex-col items-center justify-start">
       <QuestionEditor
         stageName={stage}
         lang={lang}

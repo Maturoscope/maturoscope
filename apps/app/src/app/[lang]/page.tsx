@@ -1,5 +1,4 @@
 // Components
-import Header from "@/components/common/Header/Header"
 import Hero from "@/components/custom/Homepage/Hero/Hero"
 import PrivacyPolicy from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
 import GdprModal from "@/components/custom/Homepage/GdprModal/GdprModal"
@@ -18,7 +17,6 @@ const HomePage = async ({ params }: HomePageProps) => {
 
   const {
     common: { loadingLabel },
-    header: { stringConnector },
     homepage: { hero, policy, gdprModal },
   } = dictionary
 
@@ -29,9 +27,8 @@ const HomePage = async ({ params }: HomePageProps) => {
   }
 
   return (
-    <main className="w-full flex flex-col items-center justify-between h-full">
+    <main className="w-full flex flex-col items-center justify-between flex-1 min-h-0">
       <FormRedirectHandler />
-      <Header stringConnector={stringConnector} />
       <Hero {...heroWithLoading} />
       <PrivacyPolicy {...policy} />
       <GdprModal

@@ -4,14 +4,11 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
-import { motion } from "motion/react"
 // Components
 import { Button } from "@/components/ui/button"
 import LeaveQuestionnaireModal from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
 // Dictionaries
 import { Locale } from "@/dictionaries/dictionaries"
-// Animations
-import { REVEAL_CONTAINER_VARIANT, REVEAL_ITEM_VARIANT } from "@/animations/common"
 // Types
 import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
 // Actions
@@ -80,11 +77,7 @@ const SimpleForm = ({
 
 
   return (
-    <motion.div
-      variants={REVEAL_CONTAINER_VARIANT}
-      initial="hidden"
-      animate="visible"
-      className="h-full w-full max-w-[750px] flex flex-col px-4 lg:box-content">
+    <div className="h-full w-full max-w-[750px] flex flex-col px-4 lg:box-content">
       {leaveQuestionnaireModal && (
         <LeaveQuestionnaireModal
           {...leaveQuestionnaireModal}
@@ -95,21 +88,21 @@ const SimpleForm = ({
       )}
 
       <div className="w-full h-full flex flex-col gap-4 justify-center">
-        <motion.h1
-          variants={REVEAL_ITEM_VARIANT}
-          className="text-3xl lg:text-4xl font-bold mb-2 text-foreground"
+        <h1
+          className="reveal text-3xl lg:text-4xl font-bold mb-2 text-foreground"
+          style={{ "--reveal-delay": "0.1s" } as React.CSSProperties}
         >
           {title}
-        </motion.h1>
-        <motion.p
-          variants={REVEAL_ITEM_VARIANT}
-          className="text-2xl text-foreground font-semibold"
+        </h1>
+        <p
+          className="reveal text-2xl text-foreground font-semibold"
+          style={{ "--reveal-delay": "0.18s" } as React.CSSProperties}
         >
           {label}
-        </motion.p>
-        <motion.div
-          variants={REVEAL_ITEM_VARIANT}
-          className="w-full flex flex-col items-end gap-1"
+        </p>
+        <div
+          className="reveal w-full flex flex-col items-end gap-1"
+          style={{ "--reveal-delay": "0.26s" } as React.CSSProperties}
         >
           <input
             placeholder={placeholder}
@@ -123,12 +116,13 @@ const SimpleForm = ({
             <span className="text-foreground">{projectName.length}</span>/
             {MAX_PROJECT_NAME_LENGTH}
           </span>
-        </motion.div>
+        </div>
       </div>
 
-      <motion.div
-        variants={REVEAL_ITEM_VARIANT}
-        className="w-full mb-4 lg:mb-8 flex items-center justify-between gap-3">
+      <div
+        className="reveal w-full mb-4 lg:mb-8 flex items-center justify-between gap-3"
+        style={{ "--reveal-delay": "0.34s" } as React.CSSProperties}
+      >
         <Button variant="outline" size="lg" className="w-max" onClick={handleBackButtonClick}>
           <Image
             src="/icons/form/arrow-prev.svg"
@@ -157,8 +151,8 @@ const SimpleForm = ({
             />
           )}
         </Button>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   )
 }
 

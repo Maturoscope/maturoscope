@@ -7,18 +7,6 @@ import Heading from "@/components/common/Heading/Heading"
 import { Button } from "@/components/ui/button"
 import { ArrowNextIcon } from "@/components/icons"
 import { getIconComponent } from "@/components/icons/iconMap"
-// Animations
-import { REVEAL_CONTAINER_VARIANT, REVEAL_ITEM_VARIANT } from "@/animations/common"
-
-// Gentle spring "pop" for the milestone icon — rewarding but restrained.
-const ICON_POP_VARIANT = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { type: "spring" as const, stiffness: 300, damping: 18 },
-  },
-}
 
 interface CheckpointScreenProps {
   icon: string
@@ -56,26 +44,22 @@ const CheckpointScreen = ({
   }
 
   return (
-    <motion.div
-      variants={REVEAL_CONTAINER_VARIANT}
-      initial="hidden"
-      animate="visible"
-      className="flex flex-col items-center justify-center w-full h-full max-w-[1280px] px-6 pb-26 pt-24 lg:pt-0"
-    >
+    <div className="flex flex-col items-center justify-center w-full h-full max-w-[1280px] px-6 pb-26 pt-24 lg:pt-0">
       {IconComponent && (
-        <motion.div variants={ICON_POP_VARIANT}>
+        <div className="reveal-pop">
           <IconComponent accent className="w-[60px] h-[60px]" />
-        </motion.div>
+        </div>
       )}
       <Heading
         title={title}
         description={description}
         animated
+        revealDelay={0.12}
         className="my-8 w-full max-w-[725px] text-center items-center gap-6 [&_h1]:font-bold"
       />
-      <motion.div
-        variants={REVEAL_ITEM_VARIANT}
-        className="flex items-center justify-between gap-3"
+      <div
+        className="reveal flex items-center justify-between gap-3"
+        style={{ "--reveal-delay": "0.34s" } as React.CSSProperties}
       >
         <motion.div
           whileHover={{ y: -2 }}
@@ -100,8 +84,8 @@ const CheckpointScreen = ({
             {!isButtonLoading && <ArrowNextIcon className="w-4 h-4" />}
           </Button>
         </motion.div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   )
 }
 

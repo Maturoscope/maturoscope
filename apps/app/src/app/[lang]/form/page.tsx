@@ -1,7 +1,6 @@
 // Packages
 import { Suspense } from "react"
 // Components
-import Header from "@/components/common/Header/Header"
 import Form from "@/components/custom/FormPage/Form/Form"
 import ProgressTopBar from "@/components/custom/FormPage/ProgressTopBar/ProgressTopBar"
 import CheckpointTopBar from "@/components/custom/FormPage/CheckpointTopBar/CheckpointTopBar"
@@ -26,7 +25,6 @@ const FormPage = async ({ params }: FormPageProps) => {
   const {
     common: { loadingLabel },
     form,
-    header: { stringConnector },
   } = dictionary
 
   const questionsStages = await getQuestions(lang)
@@ -46,8 +44,7 @@ const FormPage = async ({ params }: FormPageProps) => {
     <Suspense fallback={null}>
       <FormProvider>
         <ProgressProvider lang={lang} stages={stages}>
-          <main className="w-full h-full flex flex-col items-center justify-start">
-            <Header stringConnector={stringConnector} showBackButton leaveQuestionnaireModal={form.leaveQuestionnaireModal} />
+          <main className="w-full flex-1 min-h-0 flex flex-col items-center justify-start">
             <ProgressTopBar levelLabel={form.levelLabel} />
             <CheckpointTopBar buttonLabel={form.checkpoint.buttonLabel} />
             <Form

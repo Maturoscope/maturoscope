@@ -136,11 +136,11 @@ const RadioItem = ({
         {isChecked && !isNoteOpen && !disabled && (
           <motion.div
             key="add-note"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.28, ease: EASE_OUT }}
-            className="w-full overflow-hidden relative z-20"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.2, ease: EASE_OUT }}
+            className="w-full relative z-20"
           >
             <div className={NOTE_INDENT}>
               <button
@@ -158,11 +158,11 @@ const RadioItem = ({
         {isChecked && isNoteOpen && (
           <motion.div
             key="note-field"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.28, ease: EASE_OUT }}
-            className="w-full overflow-hidden relative z-20"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.2, ease: EASE_OUT }}
+            className="w-full relative z-20"
           >
             <div className={`${NOTE_INDENT} flex flex-col gap-2`}>
               <textarea

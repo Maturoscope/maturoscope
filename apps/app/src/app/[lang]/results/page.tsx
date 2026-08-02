@@ -3,7 +3,6 @@ import { getDictionary } from "@/dictionaries/dictionaries"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
 // Components
-import Header from "@/components/common/Header/Header"
 import ResultsPageWrapper from "@/components/custom/ResultsPage/ResultsPageWrapper/ResultsPageWrapper"
 import ResultsTopBar from "@/components/custom/ResultsPage/ResultsTopBar/ResultsTopBar"
 import Overview from "@/components/custom/ResultsPage/Overview/Overview"
@@ -26,8 +25,6 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
   const dictionary = await getDictionary(lang)
 
   const {
-    header: { stringConnector },
-    results: { beforeYouGoModal },
     homepage: { policy },
     results: { topBar, overview, unlockNextLevel, detailedReport, ctaBanner },
   } = dictionary
@@ -37,7 +34,6 @@ const ResultsPage = async ({ params }: ResultsPageProps) => {
       <ResultsRedirectHandler />
       <TrackCompletedAssessment />
       <PdfPreloader />
-      <Header stringConnector={stringConnector} showBackButton beforeYouGoModal={beforeYouGoModal} />
       <ResultsPageWrapper dictionary={dictionary}>
         <ResultsTopBar {...topBar} lang={lang} />
         <FadeIn className="pt-[195px] lg:pt-[142px]">

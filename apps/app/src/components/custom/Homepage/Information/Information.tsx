@@ -5,8 +5,6 @@ import { useState, useEffect } from "react"
 import { motion } from "motion/react"
 // Components
 import { Button } from "@/components/ui/button"
-// Animations
-import { REVEAL_GROUP_VARIANT, REVEAL_ITEM_VARIANT } from "@/animations/common"
 import {
   NoAccountIcon,
   NoStoredIcon,
@@ -26,6 +24,8 @@ export interface InformationProps {
   buttonLabel: string
   estimatedTime: string
   loadingLabel?: string
+  /** Base delay (seconds) for the reveal cascade. */
+  revealDelay?: number
 }
 
 const Information = ({
@@ -35,6 +35,7 @@ const Information = ({
   buttonLabel,
   estimatedTime,
   loadingLabel = "Loading...",
+  revealDelay = 0,
 }: InformationProps) => {
   const { lang } = useParams<{ lang: Locale }>()
   const nextPage = `/${lang}/before-we-begin`
@@ -76,11 +77,11 @@ const Information = ({
   }
 
   return (
-    <motion.div
-      variants={REVEAL_GROUP_VARIANT}
-      className="w-full flex flex-col gap-9"
-    >
-      <motion.div variants={REVEAL_ITEM_VARIANT} className="flex flex-col gap-2">
+    <div className="w-full flex flex-col gap-9">
+      <div
+        className="reveal flex flex-col gap-2"
+        style={{ "--reveal-delay": `${revealDelay}s` } as React.CSSProperties}
+      >
         <div className="flex gap-2.5 items-center justify-start">
           <div className="p-2.5 rounded-md border border-border bg-[#FAFAF9] flex items-center justify-center">
             <NoAccountIcon accent className="w-5 h-5" />
@@ -111,11 +112,13 @@ const Information = ({
             </TooltipContent>
           </Tooltip>
         </div>
-      </motion.div>
+      </div>
 
-      <motion.div
-        variants={REVEAL_ITEM_VARIANT}
-        className="w-full flex items-center justify-start gap-5 mt-7"
+      <div
+        className="reveal w-full flex items-center justify-start gap-5 mt-7"
+        style={
+          { "--reveal-delay": `${revealDelay + 0.08}s` } as React.CSSProperties
+        }
       >
         <motion.div
           className="w-max"
@@ -142,8 +145,8 @@ const Information = ({
             {estimatedTime}
           </span>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   )
 }
 
