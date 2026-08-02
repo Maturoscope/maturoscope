@@ -5,7 +5,6 @@ import { StageId } from "@/components/custom/FormPage/Form/Form"
 import { getDictionary } from "@/dictionaries/dictionaries"
 // Components
 import { Suspense } from "react"
-import Header from "@/components/common/Header/Header"
 import Hero from "@/components/custom/ReviewPage/Hero/Hero"
 import AnswersGroup from "@/components/custom/ReviewPage/AnswersGroup/AnswersGroup"
 import BackBar from "@/components/common/BackBar/BackBar"
@@ -21,8 +20,6 @@ const ReviewPage = async ({ params }: ReviewPageProps) => {
   const dictionary = await getDictionary(lang)
   const {
     common: { loadingLabel },
-    header: { stringConnector },
-    form: { leaveQuestionnaireModal },
     review,
     backBar,
     singleReview,
@@ -31,8 +28,7 @@ const ReviewPage = async ({ params }: ReviewPageProps) => {
   return (
     <Suspense fallback={null}>
       <ReviewPageWrapper toast={singleReview.toast}>
-        <main className="w-full flex flex-col items-center justify-start h-full">
-          <Header showBackButton stringConnector={stringConnector} leaveQuestionnaireModal={leaveQuestionnaireModal} />
+        <main className="w-full flex flex-col items-center justify-start flex-1 min-h-0">
           <BackBar buttonLabel={backBar.buttonLabel} loadingLabel={loadingLabel} />
           <Hero {...review} stageName={stage} />
           <AnswersGroup stageName={stage} lang={lang} />

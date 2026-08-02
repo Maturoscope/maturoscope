@@ -1,5 +1,4 @@
 // Components
-import Header from "@/components/common/Header/Header"
 import BeforeWeBegin from "@/components/custom/BeforeWeBeginPage/BeforeWeBegin"
 // Dictionaries
 import { getDictionary, Locale } from "@/dictionaries/dictionaries"
@@ -15,13 +14,11 @@ const BeforeWeBeginPage = async ({ params }: BeforeWeBeginPageProps) => {
 
   const {
     common: { loadingLabel },
-    header: { stringConnector },
     beforeWeBegin,
   } = dictionary
 
   return (
-    <main className="w-full flex flex-col items-center justify-start h-full">
-      <Header stringConnector={stringConnector} />
+    <main className="w-full flex flex-col items-center justify-start flex-1 min-h-0">
       <BeforeWeBegin {...beforeWeBegin} loadingLabel={loadingLabel} />
     </main>
   )

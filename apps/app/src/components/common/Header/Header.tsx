@@ -29,16 +29,11 @@ export interface HeaderProps {
   leaveQuestionnaireModal?: LeaveQuestionnaireModalProps
 }
 
-interface ExtraProps {
-  showBackButton?: boolean
-}
-
 const Header = ({
   stringConnector,
-  showBackButton = false,
   beforeYouGoModal,
   leaveQuestionnaireModal,
-}: HeaderProps & ExtraProps) => {
+}: HeaderProps) => {
   const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
   const [isLeaveQuestionnaireModalOpen, setIsLeaveQuestionnaireModalOpen] = useState(false)
   const [signature, setSignature] = useState<string | null>(null)
@@ -113,6 +108,10 @@ const Header = ({
   }, [])
 
   const isResultsPage = pathname.includes("/results")
+  // The back button (and its leave/before-you-go modals) only apply to the
+  // assessment flow. Derived from the route so the Header can live in the
+  // persistent layout instead of remounting on every page.
+  const showBackButton = /\/(begin|form|review|results)(\/|$)/.test(pathname)
 
   const handleBackButtonClick = () => {
     if (isResultsPage) setIsResetFormModalOpen(true)
