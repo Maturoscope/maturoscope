@@ -27,9 +27,11 @@ const HomePage = async ({ params }: HomePageProps) => {
   }
 
   return (
-    <main className="w-full flex flex-col items-center justify-between flex-1 min-h-0">
+    <main className="w-full flex flex-col items-center flex-1 min-h-0">
       <FormRedirectHandler />
-      <Hero {...heroWithLoading} />
+      <div className="w-full flex-1 flex items-center justify-center">
+        <Hero {...heroWithLoading} />
+      </div>
       <PrivacyPolicy {...policy} />
       <GdprModal
         {...gdprModal}
