@@ -105,13 +105,18 @@ const Header = ({
   }, [])
 
   const isResultsPage = pathname.includes("/results")
+  // The "before we begin" screen is pre-assessment: back just returns to the
+  // landing page, no leave/reset modal needed.
+  const isBeforeWeBegin = pathname.includes("/before-we-begin")
   // The back button (and its leave/before-you-go modals) only apply to the
   // assessment flow. Derived from the route so the Header can live in the
   // persistent layout instead of remounting on every page.
-  const showBackButton = /\/(begin|form|review|results)(\/|$)/.test(pathname)
+  const showBackButton =
+    isBeforeWeBegin || /\/(begin|form|review|results)(\/|$)/.test(pathname)
 
   const handleBackButtonClick = () => {
-    if (isResultsPage) setIsResetFormModalOpen(true)
+    if (isBeforeWeBegin) router.push(`/${lang}`)
+    else if (isResultsPage) setIsResetFormModalOpen(true)
     else setIsLeaveQuestionnaireModalOpen(true)
   }
 
