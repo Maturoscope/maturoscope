@@ -88,6 +88,9 @@ export class ServicesService {
       secondaryContactFirstName: createServiceDto.secondaryContactFirstName,
       secondaryContactLastName: createServiceDto.secondaryContactLastName,
       secondaryContactEmail: createServiceDto.secondaryContactEmail,
+      // New services are always created active, regardless of any isActive
+      // value in the DTO. Activation is managed afterwards via update.
+      isActive: true,
     });
 
     const savedService = await this.serviceRepository.save(service);

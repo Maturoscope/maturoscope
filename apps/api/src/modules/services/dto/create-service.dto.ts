@@ -207,7 +207,9 @@ export class CreateServiceDto {
   gapCoverages: GapCoverageDto[];
 
   @ApiPropertyOptional({
-    description: 'Whether the service is active and can be recommended',
+    description:
+      'Whether the service is active and can be recommended. Ignored on ' +
+      'creation (new services are always active); used only when updating.',
     example: true,
   })
   @IsOptional()
