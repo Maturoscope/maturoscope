@@ -39,14 +39,16 @@ export function useServices() {
           lastName: service.secondaryContact?.lastName || '',
           email: service.secondaryContact?.email || '',
         },
-        scales: Array.isArray(service.scales) 
+        scales: Array.isArray(service.scales)
           ? service.scales.map((scale) => ({
               type: scale.type,
-              levels: Array.isArray(scale.levels) 
+              levels: Array.isArray(scale.levels)
                 ? [...new Set(scale.levels)].sort((a, b) => a - b)
                 : [],
             }))
           : [],
+        // Default to active when the field is missing (older records / cache).
+        isActive: service.isActive ?? true,
       }));
 
       setServices(normalizedServices);
@@ -83,10 +85,44 @@ export function useServices() {
     [fetchServices]
   );
 
+  const toggleServiceActive = useCallback(
+    async (id: string, isActive: boolean) => {
+      // Optimistic update for a snappy switch; revert if the request fails.
+      setServices((prev) =>
+        prev.map((service) =>
+          service.id === id ? { ...service, isActive } : service
+        )
+      );
+
+      try {
+        const response = await fetch(`/api/services/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ isActive }),
+        });
+
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          throw new Error(data.message || "Failed to update service");
+        }
+      } catch (err) {
+        console.error("Error toggling service:", err);
+        setServices((prev) =>
+          prev.map((service) =>
+            service.id === id ? { ...service, isActive: !isActive } : service
+          )
+        );
+        throw err;
+      }
+    },
+    []
+  );
+
   return {
     services,
     loading,
     deleteService,
+    toggleServiceActive,
     fetchServices,
   };
 }

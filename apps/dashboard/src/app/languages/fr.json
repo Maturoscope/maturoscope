@@ -58,7 +58,8 @@
       "REMEMBER_ME": "Se souvenir de moi",
       "LOGIN_BUTTON": "Se connecter",
       "LOGIN_SUCCESS": "Connexion réussie !",
-      "INVALID_CREDENTIALS": "E-mail ou mot de passe invalide."
+      "INVALID_CREDENTIALS": "E-mail ou mot de passe invalide.",
+      "LOCK_WARNING": "Votre compte sera verrouillé après trop de tentatives échouées."
     },
     "BLOCKED_ACCOUNT": {
       "TITLE": "Votre connexion a été bloquée",
@@ -451,6 +452,10 @@
         "1_3": "Niveaux 1 à 3",
         "4_6": "Niveaux 4 à 6",
         "7_8": "Niveaux 7 à 8"
+      },
+      "STATUS": {
+        "ACTIVE": "Actif",
+        "INACTIVE": "Inactif"
       }
     },
     "SEARCH": {
@@ -462,11 +467,15 @@
         "CATEGORY_SCALE": "Catégorie et échelle",
         "MAIN_CONTACT": "Contact principal",
         "SECONDARY_CONTACT": "Contact secondaire",
+        "ACTIVE": "Actif",
         "ACTIONS": "Actions"
       },
+      "ACTIVE_TOOLTIP": "Les services inactifs ne sont pas recommandés aux utilisateurs à la fin de l'évaluation.",
       "LOADING": "Chargement des services...",
       "NO_RESULTS": "Aucun service trouvé",
       "EMPTY_DESCRIPTION": "Commencez par créer votre premier service pour aider à combler les lacunes de votre organisation.",
+      "NO_INACTIVE_SERVICES": "Aucun service inactif",
+      "NO_INACTIVE_SERVICES_DESCRIPTION": "Vous n'avez aucun service inactif.",
       "ACTIONS_MENU": {
         "EDIT": "Modifier",
         "DELETE": "Supprimer"
@@ -608,7 +617,21 @@
         "TITLE": "Service supprimé avec succès !",
         "DESCRIPTION": "{{name}} a été retiré de votre organisation."
       },
+      "SERVICE_DEACTIVATED": {
+        "TITLE": "Service désactivé avec succès !",
+        "DESCRIPTION": "{{name}} a été désactivé. Il ne sera plus recommandé aux utilisateurs."
+      },
+      "SERVICE_REACTIVATED": {
+        "TITLE": "Service réactivé avec succès !",
+        "DESCRIPTION": "{{name}} a été réactivé. Il peut désormais être recommandé aux utilisateurs."
+      },
       "UNDO": "Annuler"
+    },
+    "DEACTIVATE_SERVICE": {
+      "TITLE": "Vous êtes sur le point de désactiver {{name}}",
+      "MESSAGE": "Une fois désactivé, ce service ne sera plus recommandé aux utilisateurs à la fin de l'évaluation.",
+      "CONFIRM": "Oui, désactiver",
+      "CANCEL": "Annuler"
     },
     "CONTACT": {
       "TITLE": "Contacter les services",

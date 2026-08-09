@@ -64,6 +64,10 @@ export class Service {
   @Column({ type: 'varchar', length: 255, nullable: true })
   secondaryContactEmail: string;
 
+  // When false, the service is not recommended at the end of an assessment.
+  @Column({ type: 'boolean', default: true })
+  isActive: boolean;
+
   @OneToMany(() => ServiceGapCoverage, (coverage) => coverage.service, {
     cascade: true,
   })

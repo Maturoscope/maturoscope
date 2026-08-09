@@ -26,7 +26,7 @@ export default function ServicesPage() {
     }
     return service.nameEn;
   };
-  const { services, loading, deleteService, fetchServices } = useServices();
+  const { services, loading, deleteService, toggleServiceActive, fetchServices } = useServices();
   const {
     searchQuery,
     setSearchQuery,
@@ -34,6 +34,9 @@ export default function ServicesPage() {
     setScaleFilter,
     levelRangeFilter,
     setLevelRangeFilter,
+    activeFilter,
+    setActiveFilter,
+    statusCounts,
     filteredServices,
   } = useServiceFilters(services);
 
@@ -47,8 +50,12 @@ export default function ServicesPage() {
   const [showCreatedToast, setShowCreatedToast] = useState(false);
   const [showUpdatedToast, setShowUpdatedToast] = useState(false);
   const [showDeletedToast, setShowDeletedToast] = useState(false);
+  const [showDeactivateToast, setShowDeactivateToast] = useState(false);
+  const [showReactivateToast, setShowReactivateToast] = useState(false);
   const [toastServiceName, setToastServiceName] = useState("");
   const [createdServiceId, setCreatedServiceId] = useState<string | null>(null);
+  const [toggledServiceId, setToggledServiceId] = useState<string | null>(null);
+  const [toggledServiceName, setToggledServiceName] = useState("");
 
   const breadcrumbs = useMemo(() => {
     const organizationName = user?.organization?.name || tDashboard("ORGANIZATION");
@@ -79,6 +86,49 @@ export default function ServicesPage() {
   const handleDeleteService = (service: ServiceSummary) => {
     setServiceToDelete(service);
     setIsDeleteDialogOpen(true);
+  };
+
+  // Raw toggle (optimistic + reverts on failure). Used directly by Undo so it
+  // doesn't re-trigger a confirmation modal or another toast.
+  const toggleActive = async (service: ServiceSummary, isActive: boolean) => {
+    try {
+      await toggleServiceActive(service.id, isActive);
+    } catch (error) {
+      console.error("Error toggling service active state:", error);
+    }
+  };
+
+  // Called from the table (deactivation already confirmed via its modal).
+  // Shows the matching toast only once the toggle actually succeeds.
+  const handleToggleActive = async (
+    service: ServiceSummary,
+    isActive: boolean
+  ) => {
+    try {
+      await toggleServiceActive(service.id, isActive);
+      setToggledServiceId(service.id);
+      setToggledServiceName(getTranslatedServiceName(service));
+      if (isActive) {
+        setShowDeactivateToast(false);
+        setShowReactivateToast(true);
+      } else {
+        setShowReactivateToast(false);
+        setShowDeactivateToast(true);
+      }
+    } catch (error) {
+      console.error("Error toggling service active state:", error);
+    }
+  };
+
+  const handleUndoToggle = (reactivate: boolean) => {
+    if (toggledServiceId) {
+      const service = services.find((s) => s.id === toggledServiceId);
+      if (service) {
+        toggleActive(service, reactivate);
+      }
+    }
+    setShowDeactivateToast(false);
+    setShowReactivateToast(false);
   };
 
   const handleConfirmDelete = async () => {
@@ -133,6 +183,9 @@ export default function ServicesPage() {
           onScaleFilterChange={setScaleFilter}
           levelRangeFilter={levelRangeFilter}
           onLevelRangeChange={setLevelRangeFilter}
+          activeFilter={activeFilter}
+          onActiveFilterChange={setActiveFilter}
+          statusCounts={statusCounts}
           onAddService={handleAddService}
         />
 
@@ -143,6 +196,8 @@ export default function ServicesPage() {
         onEdit={handleEditService}
         onDelete={handleDeleteService}
         onView={handleViewService}
+        onToggleActive={handleToggleActive}
+        activeFilter={activeFilter}
       />
 
       {/* Service Sheet */}
@@ -203,6 +258,30 @@ export default function ServicesPage() {
         isVisible={showDeletedToast}
         onClose={() => setShowDeletedToast(false)}
         showIcon={true}
+      />
+
+      <Toast
+        title={t("TOASTS.SERVICE_DEACTIVATED.TITLE")}
+        description={t("TOASTS.SERVICE_DEACTIVATED.DESCRIPTION", {
+          name: toggledServiceName,
+        })}
+        isVisible={showDeactivateToast}
+        onClose={() => setShowDeactivateToast(false)}
+        onUndo={() => handleUndoToggle(true)}
+        undoText={t("TOASTS.UNDO")}
+        showIcon={false}
+      />
+
+      <Toast
+        title={t("TOASTS.SERVICE_REACTIVATED.TITLE")}
+        description={t("TOASTS.SERVICE_REACTIVATED.DESCRIPTION", {
+          name: toggledServiceName,
+        })}
+        isVisible={showReactivateToast}
+        onClose={() => setShowReactivateToast(false)}
+        onUndo={() => handleUndoToggle(false)}
+        undoText={t("TOASTS.UNDO")}
+        showIcon={false}
       />
       </div>
     </>

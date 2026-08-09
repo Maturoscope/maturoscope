@@ -58,7 +58,8 @@
       "REMEMBER_ME": "Remember me",
       "LOGIN_BUTTON": "Sign in",
       "LOGIN_SUCCESS": "Login successful!",
-      "INVALID_CREDENTIALS": "Invalid email or password."
+      "INVALID_CREDENTIALS": "Invalid email or password.",
+      "LOCK_WARNING": "Your account will be locked after too many failed attempts."
     },
     "BLOCKED_ACCOUNT": {
       "TITLE": "Your sign-in was blocked",
@@ -451,6 +452,10 @@
         "1_3": "Levels 1-3",
         "4_6": "Levels 4-6",
         "7_8": "Levels 7-8"
+      },
+      "STATUS": {
+        "ACTIVE": "Active",
+        "INACTIVE": "Inactive"
       }
     },
     "SEARCH": {
@@ -462,11 +467,15 @@
         "CATEGORY_SCALE": "Category & Scale",
         "MAIN_CONTACT": "Main Contact",
         "SECONDARY_CONTACT": "Secondary Contact",
+        "ACTIVE": "Active",
         "ACTIONS": "Actions"
       },
+      "ACTIVE_TOOLTIP": "Inactive services are not recommended to users at the end of the assessment.",
       "LOADING": "Loading services...",
       "NO_RESULTS": "No services found",
       "EMPTY_DESCRIPTION": "Get started by creating your first service to help address gaps in your organization.",
+      "NO_INACTIVE_SERVICES": "No inactive services",
+      "NO_INACTIVE_SERVICES_DESCRIPTION": "You don't have any inactive services.",
       "ACTIONS_MENU": {
         "EDIT": "Edit",
         "DELETE": "Delete"
@@ -608,7 +617,21 @@
         "TITLE": "Service deleted successfully!",
         "DESCRIPTION": "{{name}} has been removed from your organization."
       },
+      "SERVICE_DEACTIVATED": {
+        "TITLE": "Service deactivated successfully!",
+        "DESCRIPTION": "{{name}} has been deactivated. It will no longer be recommended to users."
+      },
+      "SERVICE_REACTIVATED": {
+        "TITLE": "Service reactivated successfully!",
+        "DESCRIPTION": "{{name}} has been reactivated. It can now be recommended to users."
+      },
       "UNDO": "Undo"
+    },
+    "DEACTIVATE_SERVICE": {
+      "TITLE": "You're about to deactivate {{name}}",
+      "MESSAGE": "Once deactivated, this service will no longer be recommended to users at the end of the assessment.",
+      "CONFIRM": "Yes, Deactivate",
+      "CANCEL": "Cancel"
     },
     "CONTACT": {
       "TITLE": "Contact Services",

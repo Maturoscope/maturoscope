@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   TableBody,
   TableCell,
@@ -14,7 +14,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import {
   Tooltip,
   TooltipContent,
@@ -26,9 +37,11 @@ import {
   Pencil,
   Trash2,
   FileText,
+  Info,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { ServiceSummary } from "../types/service";
+import { ActiveFilter } from "../hooks/useServiceFilters";
 
 interface ServicesTableProps {
   services: ServiceSummary[];
@@ -36,6 +49,8 @@ interface ServicesTableProps {
   onEdit: (service: ServiceSummary) => void;
   onDelete: (service: ServiceSummary) => void;
   onView?: (service: ServiceSummary) => void;
+  onToggleActive: (service: ServiceSummary, isActive: boolean) => void;
+  activeFilter: ActiveFilter;
 }
 
 const SCALE_RANGES = [
@@ -120,8 +135,23 @@ export function ServicesTable({
   onEdit,
   onDelete,
   onView,
+  onToggleActive,
+  activeFilter,
 }: ServicesTableProps) {
   const { t, i18n } = useTranslation("SERVICES");
+
+  // The generic "create your first service" copy only fits the active view;
+  // when filtering by inactive show a dedicated empty state instead.
+  const emptyState =
+    activeFilter === "inactive"
+      ? {
+          title: t("TABLE.NO_INACTIVE_SERVICES"),
+          description: t("TABLE.NO_INACTIVE_SERVICES_DESCRIPTION"),
+        }
+      : {
+          title: t("TABLE.NO_RESULTS"),
+          description: t("TABLE.EMPTY_DESCRIPTION"),
+        };
   const currentLanguageCode = i18n.language?.toUpperCase().startsWith("FR") ? "FR" : "EN";
 
   const getTranslatedName = (service: ServiceSummary) => {
@@ -132,6 +162,33 @@ export function ServicesTable({
       return service.nameEn;
     }
     return service.nameEn;
+  };
+
+  const [showDeactivateDialog, setShowDeactivateDialog] = useState(false);
+  const [serviceToDeactivate, setServiceToDeactivate] =
+    useState<ServiceSummary | null>(null);
+
+  const handleSwitchChange = (service: ServiceSummary, value: boolean) => {
+    // Deactivating requires confirmation; reactivating is immediate.
+    if (!value) {
+      setServiceToDeactivate(service);
+      setShowDeactivateDialog(true);
+    } else {
+      onToggleActive(service, true);
+    }
+  };
+
+  const handleConfirmDeactivate = () => {
+    if (serviceToDeactivate) {
+      onToggleActive(serviceToDeactivate, false);
+    }
+    setShowDeactivateDialog(false);
+    setServiceToDeactivate(null);
+  };
+
+  const handleCancelDeactivate = () => {
+    setShowDeactivateDialog(false);
+    setServiceToDeactivate(null);
   };
 
   if (loading) {
@@ -164,6 +221,23 @@ export function ServicesTable({
               </TableHead>
               <TableHead className="px-6 py-3 text-[#0A0A0A] font-medium align-middle bg-[#F5F5F5]">
                 {t("TABLE.HEADERS.SECONDARY_CONTACT")}
+              </TableHead>
+              <TableHead className="px-6 py-3 text-[#0A0A0A] font-medium align-middle bg-[#F5F5F5]">
+                <div className="flex items-center gap-1.5">
+                  <span>{t("TABLE.HEADERS.ACTIVE")}</span>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="h-3.5 w-3.5 text-[#0A0A0A] cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent
+                      side="top"
+                      className="max-w-[240px] bg-[#0A0A0A] text-white border-none"
+                      sideOffset={8}
+                    >
+                      {t("TABLE.ACTIVE_TOOLTIP")}
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
               </TableHead>
               <TableHead className="px-6 py-3 w-20 text-right align-middle bg-[#F5F5F5]">
               </TableHead>
@@ -218,8 +292,20 @@ export function ServicesTable({
                       lastName={service.secondaryContact.lastName}
                     />
                   </TableCell>
-                  <TableCell 
-                    className="px-6 py-4 text-right align-middle" 
+                  <TableCell
+                    className="px-6 py-4 align-middle"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Switch
+                      checked={service.isActive}
+                      onCheckedChange={(checked) =>
+                        handleSwitchChange(service, checked)
+                      }
+                      aria-label={t("TABLE.HEADERS.ACTIVE")}
+                    />
+                  </TableCell>
+                  <TableCell
+                    className="px-6 py-4 text-right align-middle"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <DropdownMenu>
@@ -266,14 +352,45 @@ export function ServicesTable({
         </div>
         <div className="flex flex-col items-center gap-2">
           <h3 className="text-lg font-semibold text-[#0A0A0A]">
-            {t("TABLE.NO_RESULTS")}
+            {emptyState.title}
           </h3>
           <p className="text-sm text-[#737373]">
-            {t("TABLE.EMPTY_DESCRIPTION")}
+            {emptyState.description}
           </p>
         </div>
       </div>
     )}
+
+    <AlertDialog open={showDeactivateDialog} onOpenChange={setShowDeactivateDialog}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            {t("DEACTIVATE_SERVICE.TITLE", {
+              name: serviceToDeactivate
+                ? getTranslatedName(serviceToDeactivate)
+                : "",
+            })}
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            {t("DEACTIVATE_SERVICE.MESSAGE")}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="mt-4">
+          <AlertDialogCancel
+            onClick={handleConfirmDeactivate}
+            className="text-red-600 hover:text-red-700 border-gray-300"
+          >
+            {t("DEACTIVATE_SERVICE.CONFIRM")}
+          </AlertDialogCancel>
+          <AlertDialogAction
+            onClick={handleCancelDeactivate}
+            className="bg-gray-900 hover:bg-gray-800 text-white"
+          >
+            {t("DEACTIVATE_SERVICE.CANCEL")}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
     </>
   );
 }

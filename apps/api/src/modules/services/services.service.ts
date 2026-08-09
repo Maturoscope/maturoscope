@@ -203,6 +203,9 @@ export class ServicesService {
       ...(updateServiceDto.secondaryContactEmail && {
         secondaryContactEmail: updateServiceDto.secondaryContactEmail,
       }),
+      ...(updateServiceDto.isActive !== undefined && {
+        isActive: updateServiceDto.isActive,
+      }),
     });
 
     const updatedService = await this.serviceRepository.save(service);
@@ -275,9 +278,14 @@ export class ServicesService {
         relations: { service: true },
       });
 
-      // Filter by organization and map to DTO with I18nText structure
+      // Filter by organization + only active services (inactive services must
+      // not be recommended at the end of an assessment) and map to DTO.
       const services = coverages
-        .filter((coverage) => coverage.service.organizationId === organizationId)
+        .filter(
+          (coverage) =>
+            coverage.service.organizationId === organizationId &&
+            coverage.service.isActive,
+        )
         .map((coverage) => this.mapToReadinessRecommendedServiceDto(coverage.service));
 
       // Remove duplicates
@@ -319,6 +327,7 @@ export class ServicesService {
         level: coverage.level,
         scaleType: coverage.scaleType,
       })),
+      isActive: service.isActive,
       createdAt: service.createdAt,
       updatedAt: service.updatedAt,
     };
@@ -363,6 +372,7 @@ export class ServicesService {
         email: service.secondaryContactEmail,
       },
       scales,
+      isActive: service.isActive,
     };
   }
 
@@ -472,11 +482,15 @@ export class ServicesService {
       throw new NotFoundException('No services found with the provided IDs');
     }
 
-    // Create a map of service ID to service for quick lookup
+    // Create a map of service ID to service for quick lookup.
+    // Skip inactive services so a deactivated service never gets contacted,
+    // even if it was still recommended in a stale client session.
     const serviceMap = new Map<string, Service>();
-    services.forEach((service) => {
-      serviceMap.set(service.id, service);
-    });
+    services
+      .filter((service) => service.isActive)
+      .forEach((service) => {
+        serviceMap.set(service.id, service);
+      });
 
     // Group gaps by service first, then by category within each service
     // This ensures we send ONE email per service with all categories grouped

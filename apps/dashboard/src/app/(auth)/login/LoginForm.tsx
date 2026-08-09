@@ -19,6 +19,30 @@ const isValidEmail = (email: string): boolean => {
   return emailRegex.test(email);
 };
 
+// Client-side courtesy warning (NOT a security control — Auth0 does the real
+// lockout). We track failed password attempts per email in localStorage so the
+// counter survives reloads, and surface a warning banner from the 2nd failure.
+const FAILED_ATTEMPTS_KEY = "loginFailedAttempts";
+const LOCK_WARNING_THRESHOLD = 2;
+
+type FailedAttempts = { email: string; count: number };
+
+const readFailedAttempts = (): FailedAttempts | null => {
+  try {
+    const raw = localStorage.getItem(FAILED_ATTEMPTS_KEY);
+    return raw ? (JSON.parse(raw) as FailedAttempts) : null;
+  } catch {
+    return null;
+  }
+};
+
+const shouldWarn = (email: string): boolean => {
+  const stored = readFailedAttempts();
+  return (
+    !!stored && stored.email === email && stored.count >= LOCK_WARNING_THRESHOLD
+  );
+};
+
 export default function LoginForm({
   className,
   setBlockedAccount,
@@ -37,6 +61,7 @@ export default function LoginForm({
 
   const [errorEmail, setErrorEmail] = useState(false);
   const [inactiveAccountError, setInactiveAccountError] = useState("");
+  const [showLockWarning, setShowLockWarning] = useState(false);
   const router = useRouter();
   const { t } = useTranslation("LOGIN");
 
@@ -44,6 +69,7 @@ export default function LoginForm({
     const savedEmail = localStorage.getItem("rememberedEmail");
     if (savedEmail) {
       setFormData((prev) => ({ ...prev, email: savedEmail, rememberMe: true }));
+      setShowLockWarning(shouldWarn(savedEmail));
     }
   }, []);
 
@@ -67,6 +93,9 @@ export default function LoginForm({
       setError("");
       setErrorEmail(false);
       setInactiveAccountError("");
+      // Warning is tied to the account being attempted: switching email hides it
+      // unless the new email already has past failures recorded.
+      setShowLockWarning(shouldWarn(email));
 
       if (formData.rememberMe && email && isValidEmail(email)) {
         localStorage.setItem("rememberedEmail", email);
@@ -131,10 +160,23 @@ export default function LoginForm({
             return;
           }
         }
+        // Wrong credentials: bump the per-email failed-attempt counter and warn
+        // from the 2nd failure that the account may get locked.
+        const stored = readFailedAttempts();
+        const count =
+          stored && stored.email === formData.email ? stored.count + 1 : 1;
+        localStorage.setItem(
+          FAILED_ATTEMPTS_KEY,
+          JSON.stringify({ email: formData.email, count })
+        );
+        setShowLockWarning(count >= LOCK_WARNING_THRESHOLD);
         setError(t("PAGE.INVALID_CREDENTIALS"));
         return;
       }
 
+      // Successful login resets the counter and clears the warning.
+      localStorage.removeItem(FAILED_ATTEMPTS_KEY);
+      setShowLockWarning(false);
       setSuccess(t("PAGE.LOGIN_SUCCESS"));
       setTimeout(() => {
         router.push("/dashboard");
@@ -176,6 +218,12 @@ export default function LoginForm({
         {success && (
           <div className="p-3 text-sm text-green-600 bg-green-50 border border-green-200 rounded-md">
             {success}
+          </div>
+        )}
+
+        {showLockWarning && !success && (
+          <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+            {t("PAGE.LOCK_WARNING")}
           </div>
         )}
 
