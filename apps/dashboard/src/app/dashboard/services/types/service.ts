@@ -39,6 +39,7 @@ export interface Service {
   secondaryContactLastName: string;
   secondaryContactEmail: string;
   gapCoverages: GapCoverage[];
+  isActive: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -53,6 +54,7 @@ export interface ServiceSummary {
   mainContact: Contact;
   secondaryContact: Contact;
   scales: ServiceScale[];
+  isActive: boolean;
 }
 
 export interface CreateServicePayload {

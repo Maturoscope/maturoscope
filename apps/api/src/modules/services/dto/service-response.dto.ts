@@ -23,6 +23,7 @@ export class ServiceResponseDto {
   secondaryContactLastName: string;
   secondaryContactEmail: string;
   gapCoverages: GapCoverageResponseDto[];
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -50,6 +51,7 @@ export class ServiceSummaryDto {
     type: ScaleType;
     levels: number[];
   }[];
+  isActive: boolean;
 }
 
 export class RecommendedServiceDto {

@@ -1,10 +1,14 @@
 import { useState, useMemo } from 'react';
 import { ServiceSummary, ScaleType, LevelRangeKey, LEVEL_RANGE_MAP } from '../types/service';
 
+export type ActiveFilter = 'active' | 'inactive';
+
 export function useServiceFilters(services: ServiceSummary[]) {
   const [searchQuery, setSearchQuery] = useState('');
   const [scaleFilter, setScaleFilter] = useState<ScaleType | 'All'>('All');
   const [levelRangeFilter, setLevelRangeFilter] = useState<LevelRangeKey | null>(null);
+  // Default to showing active services (matches the design's "Active (N)").
+  const [activeFilter, setActiveFilter] = useState<ActiveFilter>('active');
 
   const filteredServices = useMemo(() => {
     return services.filter((service) => {
@@ -33,9 +37,19 @@ export function useServiceFilters(services: ServiceSummary[]) {
           })
         );
 
-      return matchesSearch && matchesScale && matchesLevelRange;
+      // Active/Inactive filter
+      const matchesActive =
+        activeFilter === 'active' ? service.isActive : !service.isActive;
+
+      return matchesSearch && matchesScale && matchesLevelRange && matchesActive;
     });
-  }, [services, searchQuery, scaleFilter, levelRangeFilter]);
+  }, [services, searchQuery, scaleFilter, levelRangeFilter, activeFilter]);
+
+  // Count services by active status (for the filter dropdown labels)
+  const statusCounts = useMemo(() => {
+    const active = services.filter((service) => service.isActive).length;
+    return { active, inactive: services.length - active };
+  }, [services]);
 
   // Count services by scale
   const scaleCounts = useMemo(() => {
@@ -62,8 +76,11 @@ export function useServiceFilters(services: ServiceSummary[]) {
     setScaleFilter,
     levelRangeFilter,
     setLevelRangeFilter,
+    activeFilter,
+    setActiveFilter,
     filteredServices,
     scaleCounts,
+    statusCounts,
   };
 }
 

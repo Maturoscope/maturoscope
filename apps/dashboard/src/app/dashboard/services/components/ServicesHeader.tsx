@@ -11,6 +11,7 @@ import {
 import { Plus, Search, ChevronDown, BarChart } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LevelRangeKey, ScaleType } from "../types/service";
+import { ActiveFilter } from "../hooks/useServiceFilters";
 import { ScaleTabs } from "./ScaleTabs";
 
 interface ServicesHeaderProps {
@@ -20,6 +21,9 @@ interface ServicesHeaderProps {
   onScaleFilterChange: (filter: ScaleType | "All") => void;
   levelRangeFilter: LevelRangeKey | null;
   onLevelRangeChange: (range: LevelRangeKey | null) => void;
+  activeFilter: ActiveFilter;
+  onActiveFilterChange: (filter: ActiveFilter) => void;
+  statusCounts: { active: number; inactive: number };
   onAddService: () => void;
 }
 
@@ -30,9 +34,17 @@ export function ServicesHeader({
   onScaleFilterChange,
   levelRangeFilter,
   onLevelRangeChange,
+  activeFilter,
+  onActiveFilterChange,
+  statusCounts,
   onAddService,
 }: ServicesHeaderProps) {
   const { t } = useTranslation("SERVICES");
+
+  const activeFilterLabel =
+    activeFilter === "active"
+      ? `${t("FILTERS.STATUS.ACTIVE")} (${statusCounts.active})`
+      : `${t("FILTERS.STATUS.INACTIVE")} (${statusCounts.inactive})`;
 
   const LEVEL_RANGE_OPTIONS: Array<{ value: LevelRangeKey; label: string }> = [
     { value: "1-3", label: t("FILTERS.LEVEL_RANGES.1_3") },
@@ -76,7 +88,33 @@ export function ServicesHeader({
           onFilterChange={onScaleFilterChange}
         />
 
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="inline-flex h-9 items-center gap-2 rounded-[8px] border-slate-200 px-4"
+              >
+                <span>{activeFilterLabel}</span>
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-40">
+              <DropdownMenuItem
+                onClick={() => onActiveFilterChange("active")}
+                className="cursor-pointer text-[#0A0A0A]"
+              >
+                {t("FILTERS.STATUS.ACTIVE")}
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => onActiveFilterChange("inactive")}
+                className="cursor-pointer text-[#0A0A0A]"
+              >
+                {t("FILTERS.STATUS.INACTIVE")}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button

@@ -7,6 +7,7 @@ import {
   ArrayMinSize,
   IsEnum,
   IsInt,
+  IsBoolean,
   Min,
   Max,
   MinLength,
@@ -204,5 +205,15 @@ export class CreateServiceDto {
   @ValidateNested({ each: true })
   @Type(() => GapCoverageDto)
   gapCoverages: GapCoverageDto[];
+
+  @ApiPropertyOptional({
+    description:
+      'Whether the service is active and can be recommended. Ignored on ' +
+      'creation (new services are always active); used only when updating.',
+    example: true,
+  })
+  @IsOptional()
+  @IsBoolean()
+  isActive?: boolean;
 }
 
