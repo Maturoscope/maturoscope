@@ -16,6 +16,7 @@ import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 import { Locale } from "@/dictionaries/dictionaries"
 // Utils
 import { calcCheckpoint } from "@/lib/calcCheckpoint"
+import { getSelectedScales } from "@/lib/selectedScales"
 import { generateOrGetCachedPdf } from "@/hooks/useDownloadReport"
 // Actions
 import {
@@ -49,14 +50,6 @@ interface ProgressProviderProps {
   lang: Locale
   stages: StageType[]
   children: React.ReactNode
-}
-
-const DEFAULT_STAGE_ID: StageId = "trl"
-
-const STAGES_STEP_NUMBER: Record<StageId, number> = {
-  trl: 1,
-  mkrl: 2,
-  mfrl: 3,
 }
 
 const STAGE_TO_SCALE: Record<StageId, ScaleType> = {
@@ -133,15 +126,18 @@ const ProgressContext = createContext<ProgressContextType | null>(null)
 
 export const ProgressProvider = ({
   lang,
-  stages,
+  stages: allStages,
   children,
 }: ProgressProviderProps) => {
   const [isCheckpoint, setIsCheckpoint] = useState(false)
   const [isFormCompleted, setIsFormCompleted] = useState(false)
   const [isNextButtonEnabled, setIsNextButtonEnabled] = useState(false)
-  const [currStageId, setCurrStageId] = useState<StageId>(DEFAULT_STAGE_ID)
+  // The stages the user chose to assess. Defaults to all three (server render
+  // and first client paint) and is narrowed to the selection on mount.
+  const [stages, setStages] = useState<StageType[]>(allStages)
+  const [currStageId, setCurrStageId] = useState<StageId>(allStages[0].id)
   const [currQuestionId, setCurrQuestionId] = useState(
-    stages[0].questions[0].id
+    allStages[0].questions[0].id
   )
   const [isInitialized, setIsInitialized] = useState(false)
   const { getValues } = useFormContext()
@@ -156,7 +152,9 @@ export const ProgressProvider = ({
   const currQuestionIndex = currStage.questions.findIndex(
     (question) => question.id === currQuestionId
   )
-  const stageStepNumber = STAGES_STEP_NUMBER[currStage.id]
+  // Step number is the position within the selected stages (1-based), so it
+  // stays correct when the user assesses a subset (e.g. only MfRL => step 1).
+  const stageStepNumber = currStageIndex + 1
   const isFirstStage = currStageIndex === 0
   const isFirstQuestionOfStage = currQuestionIndex === 0
 
@@ -330,6 +328,14 @@ export const ProgressProvider = ({
     // Skip if already initialized
     if (isInitialized) return
 
+    // Narrow the flow to the scales the user chose to assess.
+    const selectedScales = getSelectedScales()
+    const selectedStages = allStages.filter((stage) =>
+      selectedScales.includes(stage.id)
+    )
+    const activeStages = selectedStages.length > 0 ? selectedStages : allStages
+    setStages(activeStages)
+
     // Check if form was already completed
     const completedOn = localStorage.getItem("completedOn")
     setIsFormCompleted(!!completedOn)
@@ -344,8 +350,8 @@ export const ProgressProvider = ({
       // Remove the query param from URL so reload goes to checkpoint
       router.replace(`/${lang}/form`, { scroll: false })
 
-      // Always show first question of TRL when coming from begin page
-      const firstStage = stages[0]
+      // Always show the first question of the first SELECTED stage
+      const firstStage = activeStages[0]
       const firstQuestion = firstStage.questions[0]
       setCurrStageId(firstStage.id)
       setCurrQuestionId(firstQuestion.id)
@@ -360,8 +366,9 @@ export const ProgressProvider = ({
       return
     }
 
-    // Use checkpoint logic (next question to answer) for all other cases
-    const checkpoint = calcCheckpoint(savedForm)
+    // Use checkpoint logic (next question to answer) for all other cases,
+    // restricted to the selected scales.
+    const checkpoint = calcCheckpoint(savedForm, selectedScales)
 
     if (!checkpoint) {
       setIsInitialized(true)
@@ -383,7 +390,7 @@ export const ProgressProvider = ({
     setCurrStageId(lastSavedStage)
     setCurrQuestionId(lastSavedQuestion)
     setIsInitialized(true)
-  }, [isInitialized, searchParams, stages])
+  }, [isInitialized, searchParams, allStages])
 
   // Save last viewed question whenever position changes
   useEffect(() => {
@@ -395,6 +402,10 @@ export const ProgressProvider = ({
       saveLastViewedQuestion(currStageId, currQuestionId, isCheckpoint)
     }
   }, [currStageId, currQuestionId, isCheckpoint, isInitialized])
+
+  // Hold rendering until we've read the selected scales and resolved the
+  // starting position, so the user never sees a flash of an unselected stage.
+  if (!isInitialized) return null
 
   return (
     <ProgressContext.Provider

@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import type { Swiper as SwiperType } from "swiper"
 // Utils
 import { cn } from "@/lib/utils"
+import { ALL_SCALES, getSelectedScales } from "@/lib/selectedScales"
 // Icons
 import {
   ArrowNextIcon,
@@ -71,8 +72,14 @@ const Overview = ({
   const [activeIndex, setActiveIndex] = useState(0)
   const [levelData, setLevelData] = useState<LevelStorage>({})
   const [phasesData, setPhasesData] = useState<PhasesStorage>({})
+  const [selectedScales, setSelectedScales] = useState<StageId[]>(ALL_SCALES)
 
-  const formattedStages = stages.map((stage) => {
+  // Only show the scales the user chose to assess.
+  const visibleStages = stages.filter((stage) =>
+    selectedScales.includes(LABEL_TO_KEY[stage.label])
+  )
+
+  const formattedStages = visibleStages.map((stage) => {
     const stageKey = LABEL_TO_KEY[stage.label]
     const icon = ICON_TO_KEY[stage.label]
     const value = levelData[stageKey] ?? 0
@@ -96,10 +103,11 @@ const Overview = ({
 
     if (storedLevel) setLevelData(JSON.parse(storedLevel))
     if (storedPhases) setPhasesData(JSON.parse(storedPhases))
+    setSelectedScales(getSelectedScales())
   }, [])
 
   const isBackButtonDisabled = activeIndex === 0
-  const isNextButtonDisabled = activeIndex === stages.length - 1
+  const isNextButtonDisabled = activeIndex === visibleStages.length - 1
 
   const handleNextSlide = () => swiperRef.current?.slideNext()
   const handlePrevSlide = () => swiperRef.current?.slidePrev()
@@ -128,10 +136,19 @@ const Overview = ({
         </div>
       </div>
 
-      <div className="w-full gap-6 mt-4 hidden lg:flex px-4 lg:px-6">
+      <div className="w-full gap-6 mt-4 hidden lg:flex justify-start px-4 lg:px-6">
         {formattedStages.map((stage) => {
           const stageKey = LABEL_TO_KEY[stage.label]
-          return <OverviewCard key={stage.label} {...stage} stageKey={stageKey} />
+          return (
+            // Cap each card to a third so a single/double selection stays
+            // left-aligned at its natural width instead of stretching.
+            <div
+              key={stage.label}
+              className="flex-1 lg:max-w-[calc((100%-3rem)/3)]"
+            >
+              <OverviewCard {...stage} stageKey={stageKey} />
+            </div>
+          )
         })}
       </div>
 
@@ -157,7 +174,7 @@ const Overview = ({
         </div>
 
         <div className="flex gap-1.5">
-          {stages.map((stage, index) => (
+          {visibleStages.map((stage, index) => (
             <div
               key={stage.label}
               className={cn(

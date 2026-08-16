@@ -11,10 +11,24 @@ import LeaveQuestionnaireModal from "@/components/custom/FormPage/LeaveQuestionn
 import { Locale } from "@/dictionaries/dictionaries"
 // Types
 import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
+import { StageId } from "@/components/custom/FormPage/Form/Form"
+// Utils
+import { cn } from "@/lib/utils"
+import {
+  ALL_SCALES,
+  getSelectedScales,
+  setSelectedScales,
+} from "@/lib/selectedScales"
 // Actions
 import { clearAssessmentTracking } from "@/actions/tracking"
 
 const MAX_PROJECT_NAME_LENGTH = 60
+
+export interface ScaleSelectorProps {
+  title: string
+  description: string
+  options: Record<StageId, { title: string; description: string }>
+}
 
 export interface SimpleFormProps {
   title: string
@@ -22,6 +36,7 @@ export interface SimpleFormProps {
   placeholder: string
   backButtonLabel: string
   nextButtonLabel: string
+  scaleSelector: ScaleSelectorProps
   loadingLabel?: string
   leaveQuestionnaireModal?: LeaveQuestionnaireModalProps
 }
@@ -32,15 +47,27 @@ const SimpleForm = ({
   placeholder,
   backButtonLabel,
   nextButtonLabel,
+  scaleSelector,
   loadingLabel = "Loading...",
   leaveQuestionnaireModal,
 }: SimpleFormProps) => {
   const [projectName, setProjectName] = useState("")
+  const [selectedScales, setSelectedScalesState] =
+    useState<StageId[]>(ALL_SCALES)
   const [isLoading, setIsLoading] = useState(false)
   const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false)
-  const isNextButtonDisabled = !projectName.trim() || isLoading
+  const isNextButtonDisabled =
+    !projectName.trim() || selectedScales.length === 0 || isLoading
   const router = useRouter()
   const { lang } = useParams<{ lang: Locale }>()
+
+  const toggleScale = (scale: StageId) => {
+    setSelectedScalesState((prev) =>
+      prev.includes(scale)
+        ? prev.filter((s) => s !== scale)
+        : [...prev, scale]
+    )
+  }
 
   const handleBackButtonClick = () => {
     setIsLeaveModalOpen(true)
@@ -58,14 +85,17 @@ const SimpleForm = ({
     localStorage.removeItem("report-pdf-cache")
     localStorage.removeItem("risks")
     localStorage.removeItem("projectName")
+    localStorage.removeItem("selectedScales")
 
     setIsLeaveModalOpen(false)
     router.push(`/${lang}/`)
   }
 
   const handleNextButtonClick = () => {
+    if (selectedScales.length === 0) return
     setIsLoading(true)
     localStorage.setItem("projectName", projectName)
+    setSelectedScales(selectedScales)
     // Add query param so form page knows we're coming from begin page
     router.push(`/${lang}/form?from=begin`)
   }
@@ -73,6 +103,7 @@ const SimpleForm = ({
   useEffect(() => {
     const savedProjectName = localStorage.getItem("projectName")
     if (savedProjectName) setProjectName(savedProjectName)
+    setSelectedScalesState(getSelectedScales())
   }, [])
 
 
@@ -116,6 +147,77 @@ const SimpleForm = ({
             <span className="text-foreground">{projectName.length}</span>/
             {MAX_PROJECT_NAME_LENGTH}
           </span>
+        </div>
+
+        <div
+          className="reveal w-full flex flex-col gap-3 mt-4"
+          style={{ "--reveal-delay": "0.34s" } as React.CSSProperties}
+        >
+          <div className="flex flex-col gap-1">
+            <p className="text-base font-semibold text-foreground">
+              {scaleSelector.title}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {scaleSelector.description}
+            </p>
+          </div>
+
+          <div className="w-full flex flex-col gap-2">
+            {ALL_SCALES.map((scale) => {
+              const option = scaleSelector.options[scale]
+              const isSelected = selectedScales.includes(scale)
+              return (
+                <button
+                  key={scale}
+                  type="button"
+                  role="checkbox"
+                  aria-checked={isSelected}
+                  onClick={() => toggleScale(scale)}
+                  className={cn(
+                    "w-full flex items-start gap-3 rounded-md border bg-white px-4 py-3 text-left transition-colors",
+                    isSelected
+                      ? "border-accent ring-1 ring-accent"
+                      : "border-input hover:border-muted-foreground/40"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border transition-colors",
+                      isSelected
+                        ? "border-accent bg-accent text-white"
+                        : "border-input"
+                    )}
+                  >
+                    {isSelected && (
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M10 3L4.5 8.5L2 6"
+                          stroke="currentColor"
+                          strokeWidth="1.75"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    )}
+                  </span>
+                  <span className="flex flex-col">
+                    <span className="text-sm font-medium text-foreground">
+                      {option.title}
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      {option.description}
+                    </span>
+                  </span>
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
 

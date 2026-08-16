@@ -3,6 +3,7 @@ import { StageId, QuestionData } from "@/components/custom/FormPage/Form/Form"
 import type { DevelopmentPhase, Gap, LocalizedText } from "@/actions/organization"
 import { ReportPayload } from "@/actions/report"
 import type { RiskData } from "@/actions/questions"
+import { getSelectedScales } from "@/lib/selectedScales"
 
 // ─── Storage types ────────────────────────────────────────────────────────────
 
@@ -131,12 +132,40 @@ export const buildReportPayload = async (
     // ignore
   }
 
+  // Organization accent colour (from the backend theme, applied as the --accent
+  // CSS variable). Used for the service links in the PDF so they match the web.
+  let accentColor = "#171717"
+  try {
+    const computed = getComputedStyle(document.documentElement)
+      .getPropertyValue("--accent")
+      .trim()
+    if (computed) accentColor = computed
+  } catch {
+    // ignore — fall back to the default accent
+  }
+
+  // Only include the scales the user chose to assess, so the PDF omits the
+  // blocks for the scales that were not evaluated.
+  const selectedScales = getSelectedScales()
+  const scalePayloads: Pick<ReportPayload, "trl" | "mkrl" | "mfrl"> = {}
+  selectedScales.forEach((scale) => {
+    scalePayloads[scale] = buildScalePayload(
+      scale,
+      lang,
+      questionsData,
+      formData,
+      levelData,
+      phasesData,
+      gapsData,
+      risksData
+    )
+  })
+
   return {
     completedOn,
     projectName,
     signature: signatureUrl,
-    trl: buildScalePayload("trl", lang, questionsData, formData, levelData, phasesData, gapsData, risksData),
-    mkrl: buildScalePayload("mkrl", lang, questionsData, formData, levelData, phasesData, gapsData, risksData),
-    mfrl: buildScalePayload("mfrl", lang, questionsData, formData, levelData, phasesData, gapsData, risksData),
+    accentColor,
+    ...scalePayloads,
   }
 }

@@ -137,8 +137,8 @@ const SCALE_TO_STAGE_ID: Record<ScaleAbbreviation, StageId> = {
 }
 
 interface GetRisksParams {
-  levels: Record<StageId, number>
-  phases: Record<StageId, number>
+  levels: Partial<Record<StageId, number>>
+  phases: Partial<Record<StageId, number>>
 }
 
 export const getRisks = async ({
@@ -148,11 +148,19 @@ export const getRisks = async ({
   const organizationKey = await getOrganizationKeyFromCookies()
   const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/readiness-assessment/analyze-risk${organizationKey ? `?organizationKey=${organizationKey}` : ""}`
 
-  const scales: ScaleInput[] = [
-    { scale: "TRL", readinessLevel: levels.trl, phase: phases.trl },
-    { scale: "MkRL", readinessLevel: levels.mkrl, phase: phases.mkrl },
-    { scale: "MfRL", readinessLevel: levels.mfrl, phase: phases.mfrl },
-  ]
+  // Only include the scales the user actually assessed. Unselected scales have
+  // no level/phase and must not be sent (they would fail validation and skew
+  // the "lowest scale" / primary-risk computation on the backend).
+  const scales: ScaleInput[] = (
+    [
+      { scale: "TRL", readinessLevel: levels.trl, phase: phases.trl },
+      { scale: "MkRL", readinessLevel: levels.mkrl, phase: phases.mkrl },
+      { scale: "MfRL", readinessLevel: levels.mfrl, phase: phases.mfrl },
+    ] as { scale: ScaleAbbreviation; readinessLevel?: number; phase?: number }[]
+  ).filter(
+    (s): s is ScaleInput =>
+      s.readinessLevel !== undefined && s.phase !== undefined
+  )
 
   const body: RiskAnalysisRequest = { scales }
 

@@ -79,7 +79,25 @@
     "label": "Name your project",
     "placeholder": "Solar Panel Prototype v2",
     "backButtonLabel": "Back",
-    "nextButtonLabel": "Continue"
+    "nextButtonLabel": "Continue",
+    "scaleSelector": {
+      "title": "Which readiness levels do you want to assess?",
+      "description": "Select at least one. You'll only answer the questions for the scales you choose.",
+      "options": {
+        "trl": {
+          "title": "TRL — Technology Readiness Level",
+          "description": "How advanced is your technology?"
+        },
+        "mkrl": {
+          "title": "MkRL — Market Readiness Level",
+          "description": "How ready is your product for the market?"
+        },
+        "mfrl": {
+          "title": "MfRL — Manufacturing Readiness Level",
+          "description": "How ready are you to manufacture it?"
+        }
+      }
+    }
   },
   "form": {
     "buttonNextLabel": "Continue",
@@ -95,35 +113,32 @@
       "cancelButtonLabel": "Cancel"
     },
     "checkpoint": {
-      "buttonLabel": "Back to"
+      "buttonLabel": "Back to",
+      "continueToLabel": "Continue to",
+      "seeReportLabel": "See report",
+      "intermediateTitle": "{scale} completed",
+      "intermediateDescription": "Great progress. Up next: {next}.",
+      "finalTitle": "Assessment completed",
+      "finalDescription": "Your report is ready to be generated. (Last chance to review — answers can't be changed after this step.)"
     },
     "stages": [
       {
         "id": "trl",
         "icon": "/icons/form/trl.svg",
         "name": "TRL",
-        "title": "Technology Analysis Completed",
-        "description": "One step down. Now, let's see if the market is ready for it.",
-        "reviewLabel": "Review answers",
-        "buttonLabel": "Continue to MkRL"
+        "reviewLabel": "Review answers"
       },
       {
         "id": "mkrl",
         "icon": "/icons/form/mkrl.svg",
         "name": "MkRL",
-        "title": "Market Context Secured",
-        "description": "You have covered the \"What\" and the \"Who.\" Now for the final piece: the \"How.\"",
-        "reviewLabel": "Review answers",
-        "buttonLabel": "Continue to MfRL"
+        "reviewLabel": "Review answers"
       },
       {
         "id": "mfrl",
         "icon": "/icons/form/mfrl.svg",
         "name": "MfRL",
-        "title": "Assessment Completed",
-        "description": "Your report is ready to be generated. (Last chance to review, answers cannot be changed after this step).",
-        "reviewLabel": "Review answers",
-        "buttonLabel": "See report"
+        "reviewLabel": "Review answers"
       }
     ]
   },
@@ -198,6 +213,9 @@
       "serviceLabel": "Service available",
       "servicesLabel": "Services available",
       "comingSoonLabel": "Coming soon",
+      "gapLabel": "Gap",
+      "servicesColumnLabel": "Services",
+      "descriptionColumnLabel": "Description",
       "focusLabel": "Current focus",
       "primaryRiskLabel": "Primary Risk to Mitigate"
     },

@@ -19,6 +19,9 @@ interface DetailedScaleProps {
   serviceLabel: string
   servicesLabel: string
   comingSoonLabel: string
+  gapLabel: string
+  servicesColumnLabel: string
+  descriptionColumnLabel: string
   focusLabel: string
   primaryRiskLabel: string
   strategicFocus?: LocalizedText
@@ -37,12 +40,6 @@ const COLOR_TO_KEY: Record<string, string> = {
   mfrl: "#2563EB",
 }
 
-const INDEX_COLOR_TO_KEY: Record<string, string> = {
-  trl: "bg-orange-50",
-  mkrl: "bg-teal-50",
-  mfrl: "bg-blue-50",
-}
-
 const DetailedScale = ({
   id,
   title,
@@ -54,6 +51,9 @@ const DetailedScale = ({
   serviceLabel,
   servicesLabel,
   comingSoonLabel,
+  gapLabel,
+  servicesColumnLabel,
+  descriptionColumnLabel,
   focusLabel,
   primaryRiskLabel,
   strategicFocus,
@@ -120,7 +120,7 @@ const DetailedScale = ({
       </div>
 
       <div className="w-full flex flex-col gap-2.5 p-6 rounded-3xl bg-white h-min">
-        <span className="font-semibold text-base lg:text-xl">
+        <span className="font-semibold text-base">
           {levelSummary}
         </span>
         <div className="flex flex-col">
@@ -128,13 +128,15 @@ const DetailedScale = ({
             <ServiceAccordion
               key={gap.questionId}
               index={index}
+              gapLabel={gapLabel}
               title={gap.gapDescription[lang]}
               serviceLabel={serviceLabel}
               servicesLabel={servicesLabel}
               comingSoonLabel={comingSoonLabel}
+              servicesColumnLabel={servicesColumnLabel}
+              descriptionColumnLabel={descriptionColumnLabel}
               recommendedServices={gap.recommendedServices}
               hasServices={gap.hasServices}
-              indexColor={INDEX_COLOR_TO_KEY[id]}
               lang={lang}
             />
           ))}

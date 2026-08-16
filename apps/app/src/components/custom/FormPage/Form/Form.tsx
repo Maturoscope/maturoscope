@@ -25,9 +25,6 @@ export interface StageType {
   id: StageId
   icon: string
   name: string
-  title: string
-  description: string
-  buttonLabel: string
   reviewLabel: string
   questions: QuestionData[]
 }
@@ -46,6 +43,12 @@ export interface FormProps {
   commentPlaceholder: string
   addNoteLabel: string
   removeNoteLabel: string
+  continueToLabel: string
+  seeReportLabel: string
+  intermediateTitle: string
+  intermediateDescription: string
+  finalTitle: string
+  finalDescription: string
   loadingLabel?: string
   // stages are not needed here - Form gets them from ProgressContext
 }
@@ -56,9 +59,16 @@ const Form = ({
   commentPlaceholder,
   addNoteLabel,
   removeNoteLabel,
+  continueToLabel,
+  seeReportLabel,
+  intermediateTitle,
+  intermediateDescription,
+  finalTitle,
+  finalDescription,
   loadingLabel,
 }: FormProps) => {
   const {
+    stages,
     currStage,
     currQuestion,
     isCheckpoint,
@@ -70,6 +80,24 @@ const Form = ({
     handlePrevButtonClick,
     handleNextButtonClick,
   } = useProgressContext()
+
+  // The checkpoint CTA points to the next SELECTED scale, or "See report" when
+  // the current scale is the last one selected (order: TRL → MkRL → MfRL).
+  const currStageIndex = stages.findIndex((stage) => stage.id === currStage.id)
+  const nextStage = stages[currStageIndex + 1]
+  const checkpointButtonLabel = nextStage
+    ? `${continueToLabel} ${nextStage.name}`
+    : seeReportLabel
+
+  // Copy is generic and derived from the selected scales, so it stays correct
+  // for any subset/order. Intermediate checkpoints reference the current and
+  // next scale; the final one is scale-agnostic.
+  const checkpointTitle = nextStage
+    ? intermediateTitle.replace("{scale}", currStage.name)
+    : finalTitle
+  const checkpointDescription = nextStage
+    ? intermediateDescription.replace("{next}", nextStage.name)
+    : finalDescription
 
   // Track navigation direction so the question crossfade slides the right way.
   const [direction, setDirection] = useState(0)
@@ -88,10 +116,10 @@ const Form = ({
     return (
       <CheckpointScreen
         icon={currStage.icon}
-        title={currStage.title}
-        description={currStage.description}
+        title={checkpointTitle}
+        description={checkpointDescription}
         reviewLabel={currStage.reviewLabel}
-        buttonLabel={currStage.buttonLabel}
+        buttonLabel={checkpointButtonLabel}
         loadingLabel={loadingLabel}
         onReviewClick={handleReviewClick}
         onButtonClick={handleCheckpointButtonClick}

@@ -36,7 +36,10 @@
     "completeTheGapsBelow": "Complétez ces étapes",
     "serviceAvailable": "Service disponible",
     "servicesAvailable": "Services disponibles",
-    "comingSoon": "Bientôt disponible"
+    "comingSoon": "Bientôt disponible",
+    "gapLabel": "Écart",
+    "servicesColumnLabel": "Services",
+    "descriptionColumnLabel": "Description"
   },
   "answers": {
     "title": "Vos réponses",

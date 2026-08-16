@@ -99,15 +99,25 @@ export class ReportDataDto {
   @IsOptional()
   signature?: string;
 
-  @ValidateNested()
-  @Type(() => ScaleDataDto)
-  trl: ScaleDataDto;
+  // Organization accent colour (hex) — used for the service links.
+  @IsString()
+  @IsOptional()
+  accentColor?: string;
 
+  // The user chooses which scales to assess (1, 2 or all 3), so each scale is
+  // optional; only the assessed ones are sent and rendered in the PDF.
+  @IsOptional()
   @ValidateNested()
   @Type(() => ScaleDataDto)
-  mkrl: ScaleDataDto;
+  trl?: ScaleDataDto;
 
+  @IsOptional()
   @ValidateNested()
   @Type(() => ScaleDataDto)
-  mfrl: ScaleDataDto;
+  mkrl?: ScaleDataDto;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => ScaleDataDto)
+  mfrl?: ScaleDataDto;
 }

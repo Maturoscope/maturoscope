@@ -21,6 +21,9 @@ export interface DetailedReportProps {
   serviceLabel: string
   servicesLabel: string
   comingSoonLabel: string
+  gapLabel: string
+  servicesColumnLabel: string
+  descriptionColumnLabel: string
   focusLabel: string
   primaryRiskLabel: string
 }
@@ -64,6 +67,9 @@ const DetailedReport = ({
   serviceLabel,
   servicesLabel,
   comingSoonLabel,
+  gapLabel,
+  servicesColumnLabel,
+  descriptionColumnLabel,
   focusLabel,
   primaryRiskLabel,
   className,
@@ -74,30 +80,26 @@ const DetailedReport = ({
 
   const fetchRisks = useCallback(
     async (levels: LevelStorage, phases: PhasesStorage) => {
-      const hasAllLevels =
-        levels.trl !== undefined &&
-        levels.mkrl !== undefined &&
-        levels.mfrl !== undefined
-      const hasAllPhases =
-        phases.trl?.phase !== undefined &&
-        phases.mkrl?.phase !== undefined &&
-        phases.mfrl?.phase !== undefined
+      // Only consider the scales that were actually assessed (a scale has both
+      // a level and a phase). This supports assessing 1, 2 or all 3 scales.
+      const partialLevels: Partial<Record<StageId, number>> = {}
+      const partialPhases: Partial<Record<StageId, number>> = {}
 
-      if (!hasAllLevels || !hasAllPhases) return
+      ;(["trl", "mkrl", "mfrl"] as StageId[]).forEach((scale) => {
+        const level = levels[scale]
+        const phase = phases[scale]?.phase
+        if (level !== undefined && phase !== undefined) {
+          partialLevels[scale] = level
+          partialPhases[scale] = phase
+        }
+      })
+
+      if (Object.keys(partialLevels).length === 0) return
 
       try {
-        // Extract the phase number from each DevelopmentPhase object
         const risks = await getRisks({
-          levels: {
-            trl: levels.trl as number,
-            mkrl: levels.mkrl as number,
-            mfrl: levels.mfrl as number,
-          },
-          phases: {
-            trl: phases.trl!.phase,
-            mkrl: phases.mkrl!.phase,
-            mfrl: phases.mfrl!.phase,
-          },
+          levels: partialLevels,
+          phases: partialPhases,
         })
 
         setRisksData(risks)
@@ -131,7 +133,7 @@ const DetailedReport = ({
     >
       <div className="flex flex-col gap-1.5">
         <h2 className="text-2xl font-medium">{title}</h2>
-        <p className="text-sm text-[#171717]">{description}</p>
+        <p className="text-base text-[#171717]">{description}</p>
       </div>
 
       {Object.entries(gapsData).map(([stageKey, gaps]) => {
@@ -150,6 +152,9 @@ const DetailedReport = ({
             serviceLabel={serviceLabel}
             servicesLabel={servicesLabel}
             comingSoonLabel={comingSoonLabel}
+            gapLabel={gapLabel}
+            servicesColumnLabel={servicesColumnLabel}
+            descriptionColumnLabel={descriptionColumnLabel}
             focusLabel={focusLabel}
             primaryRiskLabel={primaryRiskLabel}
             strategicFocus={riskData?.strategicFocus}

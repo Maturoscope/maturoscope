@@ -79,7 +79,25 @@
     "label": "Nommez votre projet",
     "placeholder": "Prototype de panneau solaire v2",
     "backButtonLabel": "Retour",
-    "nextButtonLabel": "Continuer"
+    "nextButtonLabel": "Continuer",
+    "scaleSelector": {
+      "title": "Quels niveaux de maturité souhaitez-vous évaluer ?",
+      "description": "Sélectionnez-en au moins un. Vous ne répondrez qu'aux questions des échelles choisies.",
+      "options": {
+        "trl": {
+          "title": "TRL — Niveau de maturité technologique",
+          "description": "Quel est le niveau d'avancement de votre technologie ?"
+        },
+        "mkrl": {
+          "title": "MkRL — Niveau de maturité du marché",
+          "description": "Votre produit est-il prêt pour le marché ?"
+        },
+        "mfrl": {
+          "title": "MfRL — Niveau de maturité de la fabrication",
+          "description": "Êtes-vous prêt à le fabriquer ?"
+        }
+      }
+    }
   },
   "form": {
     "buttonNextLabel": "Continuer",
@@ -95,35 +113,32 @@
       "cancelButtonLabel": "Annuler"
     },
     "checkpoint": {
-      "buttonLabel": "Retour à"
+      "buttonLabel": "Retour à",
+      "continueToLabel": "Continuer à",
+      "seeReportLabel": "Voir le rapport",
+      "intermediateTitle": "{scale} terminé",
+      "intermediateDescription": "Beau progrès. Prochaine étape : {next}.",
+      "finalTitle": "Évaluation terminée",
+      "finalDescription": "Votre rapport est prêt à être généré. (Dernière chance de le réviser, les réponses ne pourront plus être modifiées après cette étape.)"
     },
     "stages": [
       {
         "id": "trl",
         "icon": "/icons/form/trl.svg",
         "name": "TRL",
-        "title": "Analyse technologique terminée",
-        "description": "Une étape de franchie. Voyons maintenant si le marché est prêt.",
-        "reviewLabel": "Voir les réponses",
-        "buttonLabel": "Continuer à MkRL"
+        "reviewLabel": "Voir les réponses"
       },
       {
         "id": "mkrl",
         "icon": "/icons/form/mkrl.svg",
         "name": "MkRL",
-        "title": "Contexte de marché validé",
-        "description": "Vous avez couvert le « Quoi? » et le « Qui? ». Passons maintenant à la dernière pièce : le « Comment? ».",
-        "reviewLabel": "Voir les réponses",
-        "buttonLabel": "Continuer à MfRL"
+        "reviewLabel": "Voir les réponses"
       },
       {
         "id": "mfrl",
         "icon": "/icons/form/mfrl.svg",
         "name": "MfRL",
-        "title": "Évaluation terminée",
-        "description": "Votre rapport est prêt à être généré. (Dernière chance de le réviser, les réponses ne pourront plus être modifiées après cette étape).",
-        "reviewLabel": "Voir les réponses",
-        "buttonLabel": "Voir le rapport"
+        "reviewLabel": "Voir les réponses"
       }
     ]
   },
@@ -198,6 +213,9 @@
       "serviceLabel": "Service disponible",
       "servicesLabel": "Services disponibles",
       "comingSoonLabel": "Bientôt disponible",
+      "gapLabel": "Écart",
+      "servicesColumnLabel": "Services",
+      "descriptionColumnLabel": "Description",
       "focusLabel": "Focus actuel",
       "primaryRiskLabel": "Risque principal à mitiger"
     },

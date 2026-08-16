@@ -56,7 +56,7 @@
         <% gapSlices.forEach(function(slice) { %>
           <% var gap = scale.gaps[slice.gapIndex]; %>
           <%- include(baseDir + '/pdf/detailed-gap.ejs' , {
-            t, gap, index: slice.gapIndex, indexBgColor,
+            t, gap, index: slice.gapIndex, indexBgColor, accentColor,
             showGapHeader: slice.showGapHeader,
             serviceStartIndex: slice.serviceStartIndex,
             serviceEndIndex: slice.serviceEndIndex
@@ -75,7 +75,7 @@
         <% gapSlices.forEach(function(slice) { %>
           <% var gap = scale.gaps[slice.gapIndex]; %>
           <%- include(baseDir + '/pdf/detailed-gap.ejs' , {
-            t, gap, index: slice.gapIndex, indexBgColor,
+            t, gap, index: slice.gapIndex, indexBgColor, accentColor,
             showGapHeader: slice.showGapHeader,
             serviceStartIndex: slice.serviceStartIndex,
             serviceEndIndex: slice.serviceEndIndex

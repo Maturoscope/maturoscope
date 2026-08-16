@@ -5,6 +5,7 @@ import { StageId } from "@/components/custom/FormPage/Form/Form"
 import { getDictionary } from "@/dictionaries/dictionaries"
 // Components
 import QuestionEditor from "@/components/custom/ReviewPage/QuestionEditor/QuestionEditor"
+import ReviewStageGuard from "@/components/common/ReviewStageGuard/ReviewStageGuard"
 // Actions
 import { getQuestions } from "@/actions/questions"
 
@@ -40,6 +41,7 @@ const QuestionPage = async ({ params }: QuestionPageProps) => {
 
   return (
     <main className="w-full flex-1 min-h-0 flex flex-col items-center justify-start">
+      <ReviewStageGuard stage={stage} lang={lang} />
       <QuestionEditor
         stageName={stage}
         lang={lang}

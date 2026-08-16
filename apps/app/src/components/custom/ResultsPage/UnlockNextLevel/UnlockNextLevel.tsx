@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react"
 // Utils
 import { cn } from "@/lib/utils"
+import { getSelectedScales } from "@/lib/selectedScales"
 
 export interface UnlockNextLevelProps {
   title: string
@@ -30,16 +31,17 @@ const UnlockNextLevel = ({
   const [shouldShow, setShouldShow] = useState(true)
 
   useEffect(() => {
-    // Check if all levels are at maximum (9)
+    // Check if all ASSESSED levels are at maximum (9). Only the scales the
+    // user chose to assess are considered.
     const storedLevel = localStorage.getItem("level")
     if (storedLevel) {
       try {
         const levelData: LevelStorage = JSON.parse(storedLevel)
-        const allAtMaxLevel = 
-          levelData.trl === 9 && 
-          levelData.mkrl === 9 && 
-          levelData.mfrl === 9
-        
+        const selectedScales = getSelectedScales()
+        const allAtMaxLevel = selectedScales.every(
+          (scale) => levelData[scale] === 9
+        )
+
         setShouldShow(!allAtMaxLevel)
       } catch (error) {
         console.error("Error parsing level data:", error)

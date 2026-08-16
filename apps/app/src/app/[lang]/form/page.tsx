@@ -53,6 +53,12 @@ const FormPage = async ({ params }: FormPageProps) => {
               commentPlaceholder={form.commentPlaceholder}
               addNoteLabel={form.addNoteLabel}
               removeNoteLabel={form.removeNoteLabel}
+              continueToLabel={form.checkpoint.continueToLabel}
+              seeReportLabel={form.checkpoint.seeReportLabel}
+              intermediateTitle={form.checkpoint.intermediateTitle}
+              intermediateDescription={form.checkpoint.intermediateDescription}
+              finalTitle={form.checkpoint.finalTitle}
+              finalDescription={form.checkpoint.finalDescription}
               loadingLabel={loadingLabel}
             />
           </main>

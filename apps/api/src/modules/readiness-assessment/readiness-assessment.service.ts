@@ -259,17 +259,10 @@ export class ReadinessAssessmentService {
   analyzeRisk(riskAnalysisDto: RiskAnalysisDto): RiskAnalysisResultI18nDto {
     const { scales } = riskAnalysisDto;
 
-    // Validate we have all three scales
-    const requiredScales = [ScaleType.TRL, ScaleType.MkRL, ScaleType.MfRL];
-    const providedScales = scales.map((s) => s.scale);
-
-    const missingScales = requiredScales.filter(
-      (scale) => !providedScales.includes(scale),
-    );
-    if (missingScales.length > 0) {
-      throw new BadRequestException(
-        `Missing scale assessments: ${missingScales.join(', ')}`,
-      );
+    // The user chooses which scales to assess (1, 2 or all 3), so we only
+    // require at least one scale rather than the full set.
+    if (!scales || scales.length === 0) {
+      throw new BadRequestException('At least one scale assessment is required');
     }
 
     const readinessLevels = scales.map((s) => s.readinessLevel);
@@ -277,8 +270,15 @@ export class ReadinessAssessmentService {
 
     const readinessLevelsMatch = readinessLevels.every((r) => r === readinessLevels[0]);
 
+    // When a single scale is assessed it is, by definition, the focus for the
+    // primary risk. With multiple scales we flag the weakest one (unless they
+    // are all tied, in which case none is singled out).
+    const isSingleScale = scales.length === 1;
+
     const risks = scales.map((scaleInput) => {
-      const isLowest = scaleInput.readinessLevel === lowestReadinessLevel && !readinessLevelsMatch;
+      const isLowest =
+        scaleInput.readinessLevel === lowestReadinessLevel &&
+        (isSingleScale || !readinessLevelsMatch);
       let strategicFocus: I18nText | undefined;
       let primaryRisk: I18nText | undefined;
 

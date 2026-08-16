@@ -72,6 +72,7 @@ const CTABanner = ({
     localStorage.removeItem("report-pdf-cache")
     localStorage.removeItem("risks")
     localStorage.removeItem("projectName")
+    localStorage.removeItem("selectedScales")
     setIsResetFormModalOpen(false)
   }
 

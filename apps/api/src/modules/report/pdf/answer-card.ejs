@@ -1,7 +1,7 @@
-<div class="w-full p-6 bg-white rounded-2xl border border-border shadow-xs flex flex-col">
-  <span class="text-lg font-semibold"><%= answer.question %></span>
-  <span class="text-[#171717]"><%= answer.answer %></span>
-  <span class="text-sm text-muted-foreground max-w-[900px]">
+<div class="w-full p-6 bg-white rounded-2xl border border-border shadow-xs flex flex-col min-w-0">
+  <span class="text-lg font-semibold break-words"><%= answer.question %></span>
+  <span class="text-[#171717] break-words"><%= answer.answer %></span>
+  <span class="text-sm text-muted-foreground max-w-[900px] break-words">
     <% if (answer.comment) { %>
       <span><%= t.answers.commentLabel %>: <%= answer.comment %></span>
     <% } else { %>

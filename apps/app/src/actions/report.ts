@@ -40,9 +40,12 @@ export interface ReportPayload {
   completedOn: string
   projectName?: string
   signature?: string
-  trl: ScalePayload
-  mkrl: ScalePayload
-  mfrl: ScalePayload
+  // Organization accent colour (hex) from the backend theme.
+  accentColor?: string
+  // Only the scales the user chose to assess are present.
+  trl?: ScalePayload
+  mkrl?: ScalePayload
+  mfrl?: ScalePayload
 }
 
 interface GenerateReportResponse {

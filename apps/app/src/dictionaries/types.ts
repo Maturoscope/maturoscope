@@ -50,6 +50,12 @@ export type Dictionary = {
     leaveQuestionnaireModal: LeaveQuestionnaireModalProps
     checkpoint: {
       buttonLabel: string
+      continueToLabel: string
+      seeReportLabel: string
+      intermediateTitle: string
+      intermediateDescription: string
+      finalTitle: string
+      finalDescription: string
     },
   }
   review: ReviewHeroProps
