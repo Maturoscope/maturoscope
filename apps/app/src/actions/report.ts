@@ -10,6 +10,7 @@ interface AnswerPayload {
   question: string
   answer: string
   comment: string
+  notApplicable?: boolean
 }
 
 interface RecommendedServicePayload {
@@ -32,6 +33,7 @@ interface ScalePayload {
   strategicFocus: string
   primaryRisk: string
   isLowest: boolean
+  notScored: boolean
   gaps: GapPayload[]
   answers: AnswerPayload[]
 }

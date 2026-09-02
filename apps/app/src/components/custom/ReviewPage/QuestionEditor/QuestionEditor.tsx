@@ -14,6 +14,7 @@ import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 import { UnsavedChangesModalProps } from "@/components/custom/ReviewPage/UnsavedChangesModal/UnsavedChangesModal"
 // Utils
 import { cn } from "@/lib/utils"
+import { NOT_APPLICABLE_VALUE } from "@/lib/notApplicable"
 // Actions
 import { submitAssessment, ScaleType } from "@/actions/organization"
 
@@ -34,12 +35,15 @@ export interface ExtraProps {
   stageName: StageId
   lang: Locale
   question: QuestionData
+  // From common.notApplicableLabel — a runtime prop, not part of singleReview.
+  notApplicableLabel: string
 }
 
 const QuestionEditor = ({
   saveButtonLabel,
   cancelButtonLabel,
   commentPlaceholder,
+  notApplicableLabel,
   unsavedChangesModal,
   stageName,
   lang,
@@ -221,6 +225,40 @@ const QuestionEditor = ({
             </label>
           )
         })}
+
+        {/* Not Applicable — mutually exclusive with the levels, no comment. */}
+        <label className="relative w-full flex items-start justify-start gap-3 rounded-lg border border-input cursor-pointer bg-white p-3">
+          <input
+            type="radio"
+            name={radioGroupName}
+            value={NOT_APPLICABLE_VALUE}
+            checked={selectedOptionId === NOT_APPLICABLE_VALUE}
+            onChange={() => handleOptionChange(NOT_APPLICABLE_VALUE)}
+            className="peer appearance-none absolute outline-none"
+          />
+          <div
+            className={cn(
+              "absolute top-0 left-0 w-full h-full rounded-[10px] bg-accent/10 border border-accent",
+              selectedOptionId === NOT_APPLICABLE_VALUE ? "block" : "hidden"
+            )}
+          />
+          <CheckedIcon
+            accent
+            className={cn(
+              "relative w-4 h-4",
+              selectedOptionId === NOT_APPLICABLE_VALUE ? "block" : "hidden"
+            )}
+          />
+          <UncheckedIcon
+            className={cn(
+              "relative w-4 h-4",
+              selectedOptionId === NOT_APPLICABLE_VALUE ? "hidden" : "block"
+            )}
+          />
+          <span className="text-sm font-medium leading-none">
+            {notApplicableLabel}
+          </span>
+        </label>
       </div>
       <div className="w-full flex items-center justify-between gap-3 bg-background lg:bg-none py-4 lg:pt-6 lg:pb-8">
         <Button variant="outline" onClick={handleCancelClick}>

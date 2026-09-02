@@ -28,6 +28,7 @@ export type Dictionary = {
   lang: Locale
   common: {
     loadingLabel: string
+    notApplicableLabel: string
   }
   header: HeaderProps
   backBar: BackToHomeBarProps

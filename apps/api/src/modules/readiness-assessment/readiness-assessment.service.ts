@@ -152,12 +152,30 @@ export class ReadinessAssessmentService {
       selectedLevel: string;
     }> = [];
 
+    let scoredCount = 0;
     Object.entries(answers).forEach(([, level]) => {
       const levelNum = parseInt(level, 10);
+      // "Not applicable" answers (non-numeric) are excluded from every result
+      // calculation.
+      if (Number.isNaN(levelNum)) return;
+      scoredCount += 1;
       if (levelNum < minLevel) {
         minLevel = levelNum;
       }
     });
+
+    // If every question was marked "Not applicable" the scale has no score:
+    // no level, no phase, no gaps. The UI shows a dedicated "Not scored" state.
+    if (scoredCount === 0) {
+      return {
+        scale,
+        readinessLevel: 0,
+        lowestLevels: [],
+        developmentPhase: null,
+        gaps: [],
+        notScored: true,
+      };
+    }
 
     // Find all questions with the minimum level
     Object.entries(answers).forEach(([questionId, level]) => {
@@ -186,6 +204,7 @@ export class ReadinessAssessmentService {
       lowestLevels,
       developmentPhase: phaseInfo,
       gaps,
+      notScored: false,
     };
   }
 

@@ -1,7 +1,8 @@
 {
   "lang": "fr",
   "common": {
-    "loadingLabel": "Chargement..."
+    "loadingLabel": "Chargement...",
+    "notApplicableLabel": "Non applicable"
   },
   "header": {
     "stringConnector": "par"
@@ -75,27 +76,36 @@
     "buttonLabel": "Commencer l'évaluation"
   },
   "begin": {
-    "title": "Qu'évaluons-nous aujourd'hui ?",
+    "title": "Parlez-nous de votre innovation",
     "label": "Nommez votre projet",
     "placeholder": "Prototype de panneau solaire v2",
     "backButtonLabel": "Retour",
     "nextButtonLabel": "Continuer",
-    "scaleSelector": {
-      "title": "Quels niveaux de maturité souhaitez-vous évaluer ?",
-      "description": "Sélectionnez-en au moins un. Vous ne répondrez qu'aux questions des échelles choisies.",
-      "options": {
-        "trl": {
-          "title": "TRL — Niveau de maturité technologique",
-          "description": "Quel est le niveau d'avancement de votre technologie ?"
+    "evaluation": {
+      "title": "Qu'évaluez-vous ?",
+      "description": "Sélectionnez ci-dessous les échelles sur lesquelles vous souhaitez évaluer votre innovation. Chaque échelle a ses spécificités et est recommandée ou non selon le type d'innovation.",
+      "availableDimensionsTitle": "Dimensions disponibles",
+      "availableDimensionsDescription": "Choisissez celles que vous voulez évaluer.",
+      "recommendedLabel": "Recommandé",
+      "disclaimer": "TRL et MfRL ont été conçus pour des produits physiques. Si certaines questions ne s'appliquent pas, marquez-les comme Non applicable.",
+      "types": {
+        "product": {
+          "label": "Produit",
+          "description": "Quelque chose qui se fabrique"
         },
-        "mkrl": {
-          "title": "MkRL — Niveau de maturité du marché",
-          "description": "Votre produit est-il prêt pour le marché ?"
+        "software": {
+          "label": "Logiciel",
+          "description": "Une app, plateforme ou outil numérique"
         },
-        "mfrl": {
-          "title": "MfRL — Niveau de maturité de la fabrication",
-          "description": "Êtes-vous prêt à le fabriquer ?"
+        "service": {
+          "label": "Service",
+          "description": "Conseil, installation, opérations"
         }
+      },
+      "dimensions": {
+        "trl": "TRL — Niveau de maturité technologique",
+        "mkrl": "MkRL — Niveau de maturité du marché",
+        "mfrl": "MfRL — Niveau de maturité de la fabrication"
       }
     }
   },
@@ -179,6 +189,8 @@
       "title": "Aperçu",
       "learnMoreButtonLabel": "En savoir plus",
       "resultsSufixLabel": "Résultats",
+      "notScoredLabel": "Non évalué",
+      "notScoredDescription": "Toutes les questions marquées Non applicable",
       "stages": [
         {
           "label": "TRL",
@@ -217,7 +229,9 @@
       "servicesColumnLabel": "Services",
       "descriptionColumnLabel": "Description",
       "focusLabel": "Focus actuel",
-      "primaryRiskLabel": "Risque principal à mitiger"
+      "primaryRiskLabel": "Risque principal à mitiger",
+      "noScoreTitle": "Aucun score {scale}",
+      "noScoreDescription": "Vous avez marqué toutes les questions {scale} comme Non applicable, il n'y a ni écarts ni services disponibles."
     },
     "ctaBanner": {
       "title": "Transformez ce plan en réalité.",

@@ -31,6 +31,14 @@ export interface OverviewProps {
   }[]
   learnMoreButtonLabel: string
   resultsSufixLabel: string
+  notScoredLabel: string
+  notScoredDescription: string
+}
+
+interface NotScoredStorage {
+  trl?: boolean
+  mkrl?: boolean
+  mfrl?: boolean
 }
 
 interface ExtraProps {
@@ -65,6 +73,8 @@ const Overview = ({
   title,
   learnMoreButtonLabel,
   resultsSufixLabel,
+  notScoredLabel,
+  notScoredDescription,
   stages,
   className,
 }: OverviewProps & ExtraProps) => {
@@ -72,6 +82,7 @@ const Overview = ({
   const [activeIndex, setActiveIndex] = useState(0)
   const [levelData, setLevelData] = useState<LevelStorage>({})
   const [phasesData, setPhasesData] = useState<PhasesStorage>({})
+  const [notScoredData, setNotScoredData] = useState<NotScoredStorage>({})
   const [selectedScales, setSelectedScales] = useState<StageId[]>(ALL_SCALES)
 
   // Only show the scales the user chose to assess.
@@ -85,6 +96,7 @@ const Overview = ({
     const value = levelData[stageKey] ?? 0
     const maxValue = 9
     const phase = phasesData[stageKey] as DevelopmentPhase
+    const notScored = notScoredData[stageKey] ?? false
 
     return {
       ...stage,
@@ -94,15 +106,20 @@ const Overview = ({
       resultsSufixLabel,
       icon,
       phase,
+      notScored,
+      notScoredLabel,
+      notScoredDescription,
     }
   })
 
   useEffect(() => {
     const storedLevel = localStorage.getItem("level")
     const storedPhases = localStorage.getItem("phases")
+    const storedNotScored = localStorage.getItem("notScored")
 
     if (storedLevel) setLevelData(JSON.parse(storedLevel))
     if (storedPhases) setPhasesData(JSON.parse(storedPhases))
+    if (storedNotScored) setNotScoredData(JSON.parse(storedNotScored))
     setSelectedScales(getSelectedScales())
   }, [])
 

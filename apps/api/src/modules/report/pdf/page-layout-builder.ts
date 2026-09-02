@@ -9,7 +9,10 @@ import {
 // ── Height estimation constants (pixels) ──────────────────────────────
 const PAGE_HEIGHT = 2040;
 const NAV_HEIGHT = 80; // h-20
-const FOOTER_HEIGHT = 96; // h-24
+// The footer renders on every page. Its EU funding text wraps to ~4 lines
+// (text-xs, max-w-[680px]) inside p-6, so it is ~120px tall — noticeably more
+// than the old 96px estimate, which let content bleed over it.
+const FOOTER_HEIGHT = 130;
 const PAGE_GAPS = 48; // gap-4 (16px) × 3 slots between nav/content/footer
 const CONTENT_TOP_PADDING = 32; // mt-8 or top spacing inside content div
 
@@ -56,9 +59,17 @@ const SERVICE_DESC_CHARS_PER_LINE = 72; // ~620px "Description" column
 // Answers section
 const ANSWERS_TITLE_HEIGHT = 60; // "Your answers" heading
 const ANSWERS_SCALE_LABEL_HEIGHT = 50; // scale label (e.g., "TRL") + margin
+// Base assumes a single-line question and a single-line answer (e.g. the short
+// "Not Applicable"). Extra lines for long questions/answers are added on top.
 const ANSWER_CARD_BASE_HEIGHT = 110; // p-6(48) + question(28) + answer(24) + gap-2(8) + border/margin
+const ANSWER_QUESTION_LINE_HEIGHT = 28; // each extra line of the question (text-lg)
+const ANSWER_QUESTION_CHARS_PER_LINE = 100; // ~1030px card width / ~10px per char at text-lg
+const ANSWER_TEXT_LINE_HEIGHT = 24; // each extra line of the answer text
+const ANSWER_TEXT_CHARS_PER_LINE = 118; // ~1030px card width / ~8.7px per char
 const ANSWER_COMMENT_LINE_HEIGHT = 20; // each line of comment text (text-sm)
 const ANSWER_COMMENT_CHARS_PER_LINE = 108; // ~900px max-width / ~8.3px per char at text-sm
+const ANSWER_CARD_GAP = 8; // gap-2 between answer cards
+const ANSWER_NOT_APPLICABLE_EXTRA = 16; // divider (my-3 + h-px) minus the absent comment line
 const ANSWERS_SECTION_GAP = 36; // mb-9
 
 // Disclaimer
@@ -166,9 +177,28 @@ function estimateGapHeaderHeight(gap: GapDto): number {
 }
 
 function estimateAnswerHeight(answer: AnswerDto): number {
-  const commentText = answer.comment || '-';
-  const commentLines = estimateTextLines(commentText, ANSWER_COMMENT_CHARS_PER_LINE);
-  return ANSWER_CARD_BASE_HEIGHT + commentLines * ANSWER_COMMENT_LINE_HEIGHT;
+  // The base already covers one line of question + one line of answer; only the
+  // extra wrapped lines are added. "Not Applicable" is a single short line, so
+  // its card estimates at the (generous) base.
+  const questionLines = estimateTextLines(
+    answer.question,
+    ANSWER_QUESTION_CHARS_PER_LINE,
+  );
+  const answerLines = estimateTextLines(answer.answer, ANSWER_TEXT_CHARS_PER_LINE);
+  // "Not applicable" cards have no comment but add a divider; scored cards show
+  // the comment (or "-").
+  const commentLines = answer.notApplicable
+    ? 0
+    : estimateTextLines(answer.comment || '-', ANSWER_COMMENT_CHARS_PER_LINE);
+  const notApplicableExtra = answer.notApplicable ? ANSWER_NOT_APPLICABLE_EXTRA : 0;
+  return (
+    ANSWER_CARD_GAP +
+    ANSWER_CARD_BASE_HEIGHT +
+    Math.max(0, questionLines - 1) * ANSWER_QUESTION_LINE_HEIGHT +
+    Math.max(0, answerLines - 1) * ANSWER_TEXT_LINE_HEIGHT +
+    commentLines * ANSWER_COMMENT_LINE_HEIGHT +
+    notApplicableExtra
+  );
 }
 
 // ── Page layout builder ────────────────────────────────────────────────

@@ -50,6 +50,11 @@ export class AnswerDto {
   @IsString()
   @IsOptional()
   comment: string;
+
+  // When true the answer is "Not applicable": no comment line is rendered.
+  @IsBoolean()
+  @IsOptional()
+  notApplicable?: boolean;
 }
 
 export class ScaleDataDto {
@@ -73,6 +78,11 @@ export class ScaleDataDto {
 
   @IsBoolean()
   isLowest: boolean;
+
+  // True when the scale was fully marked "Not applicable": no score/gaps.
+  @IsBoolean()
+  @IsOptional()
+  notScored?: boolean;
 
   @IsArray()
   @ValidateNested({ each: true })

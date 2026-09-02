@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 // Utils
 import { cn } from "@/lib/utils"
 import { getSelectedScales } from "@/lib/selectedScales"
+import { areAllScalesNotScored } from "@/lib/notApplicable"
 
 export interface UnlockNextLevelProps {
   title: string
@@ -31,6 +32,13 @@ const UnlockNextLevel = ({
   const [shouldShow, setShouldShow] = useState(true)
 
   useEffect(() => {
+    // Hidden when there is nothing to act on: either everything is maxed out,
+    // or every assessed scale was marked Not Applicable (no gaps/services).
+    if (areAllScalesNotScored()) {
+      setShouldShow(false)
+      return
+    }
+
     // Check if all ASSESSED levels are at maximum (9). Only the scales the
     // user chose to assess are considered.
     const storedLevel = localStorage.getItem("level")

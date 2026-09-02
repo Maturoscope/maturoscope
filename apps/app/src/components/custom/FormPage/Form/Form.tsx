@@ -43,6 +43,7 @@ export interface FormProps {
   commentPlaceholder: string
   addNoteLabel: string
   removeNoteLabel: string
+  notApplicableLabel: string
   continueToLabel: string
   seeReportLabel: string
   intermediateTitle: string
@@ -59,6 +60,7 @@ const Form = ({
   commentPlaceholder,
   addNoteLabel,
   removeNoteLabel,
+  notApplicableLabel,
   continueToLabel,
   seeReportLabel,
   intermediateTitle,
@@ -151,6 +153,7 @@ const Form = ({
             commentPlaceholder={commentPlaceholder}
             addNoteLabel={addNoteLabel}
             removeNoteLabel={removeNoteLabel}
+            notApplicableLabel={notApplicableLabel}
             disabled={isFormCompleted}
           />
         </motion.div>

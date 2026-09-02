@@ -19,6 +19,8 @@ import { BeforeYouGoModalProps } from "@/components/custom/ResultsPage/BeforeYou
 import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/LeaveQuestionnaireModal/LeaveQuestionnaireModal"
 // Hooks
 import { useDownloadReport } from "@/hooks/useDownloadReport"
+// Utils
+import { areAllScalesNotScored } from "@/lib/notApplicable"
 
 export interface HeaderProps {
   stringConnector: string
@@ -35,6 +37,7 @@ const Header = ({
   const [isLeaveQuestionnaireModalOpen, setIsLeaveQuestionnaireModalOpen] = useState(false)
   const [signature, setSignature] = useState<string | null>(null)
   const [logoUrl, setLogoUrl] = useState<string | null>(null)
+  const [allNotScored, setAllNotScored] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   const params = useParams<{ lang?: Locale }>()
@@ -104,6 +107,12 @@ const Header = ({
     loadLogoUrl()
   }, [])
 
+  // Whether every assessed scale was marked Not Applicable (nothing to
+  // download). Recomputed on navigation so it reflects the current assessment.
+  useEffect(() => {
+    setAllNotScored(areAllScalesNotScored())
+  }, [pathname])
+
   const isResultsPage = pathname.includes("/results")
   // The "before we begin" screen is pre-assessment: back just returns to the
   // landing page, no leave/reset modal needed.
@@ -116,8 +125,12 @@ const Header = ({
 
   const handleBackButtonClick = () => {
     if (isBeforeWeBegin) router.push(`/${lang}`)
-    else if (isResultsPage) setIsResetFormModalOpen(true)
-    else setIsLeaveQuestionnaireModalOpen(true)
+    else if (isResultsPage) {
+      // Nothing to download (every scale marked Not Applicable): skip the
+      // "before you go" modal and just reset everything and leave.
+      if (allNotScored) handleResetButtonClick()
+      else setIsResetFormModalOpen(true)
+    } else setIsLeaveQuestionnaireModalOpen(true)
   }
 
   const handleResetForm = async () => {
@@ -132,6 +145,8 @@ const Header = ({
     localStorage.removeItem("risks")
     localStorage.removeItem("projectName")
     localStorage.removeItem("selectedScales")
+    localStorage.removeItem("evaluationType")
+    localStorage.removeItem("notScored")
     setIsResetFormModalOpen(false)
   }
 

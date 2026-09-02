@@ -66,7 +66,7 @@ export class ScaleResultI18nDto {
     phaseName: I18nText;
     focusGoal: I18nText;
     scaleRange: string;
-  };
+  } | null;
   gaps: Array<{
     questionId: string;
     level: number;
@@ -74,6 +74,9 @@ export class ScaleResultI18nDto {
     hasServices: boolean;
     recommendedServices: RecommendedServiceDto[];
   }>;
+  // True when every question was marked "Not applicable": the scale has no
+  // score, phase or gaps.
+  notScored: boolean;
 }
 
 export class RiskAnalysisResultI18nDto {

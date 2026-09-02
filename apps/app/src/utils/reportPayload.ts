@@ -4,6 +4,7 @@ import type { DevelopmentPhase, Gap, LocalizedText } from "@/actions/organizatio
 import { ReportPayload } from "@/actions/report"
 import type { RiskData } from "@/actions/questions"
 import { getSelectedScales } from "@/lib/selectedScales"
+import { isNotApplicable } from "@/lib/notApplicable"
 
 // ─── Storage types ────────────────────────────────────────────────────────────
 
@@ -37,7 +38,8 @@ export const buildScalePayload = (
   levelData: LevelStorage,
   phasesData: PhasesStorage,
   gapsData: GapsStorage,
-  risksData: RisksStorage | null
+  risksData: RisksStorage | null,
+  notScoredData: Partial<Record<StageId, boolean>>
 ) => {
   const stageQuestions = questionsData.find((s) => s.id === stageId)?.questions || []
   const stageForm = formData[stageId]
@@ -45,10 +47,23 @@ export const buildScalePayload = (
   const phase = phasesData[stageId]
   const gaps = gapsData[stageId] ?? []
   const risk = risksData?.[stageId]
+  const notScored = notScoredData[stageId] ?? false
 
   const answers = stageQuestions.map((q) => {
     const answerId = stageForm?.questions?.[q.id] ?? ""
     const comment = stageForm?.comments?.[q.id] ?? ""
+
+    // "Not applicable" answers never carry a comment. The label is resolved by
+    // the PDF locale (t.answers.notApplicable), not sent from the client.
+    if (isNotApplicable(answerId)) {
+      return {
+        question: q.title,
+        answer: "",
+        comment: "",
+        notApplicable: true,
+      }
+    }
+
     const answerOption = q.options.find((opt) => opt.id === answerId)
     return {
       question: q.title,
@@ -75,6 +90,7 @@ export const buildScalePayload = (
     strategicFocus: (risk?.strategicFocus as LocalizedText)?.[lang] ?? "",
     primaryRisk: (risk?.primaryRisk as LocalizedText)?.[lang] ?? "",
     isLowest: risk?.isLowest ?? false,
+    notScored,
     gaps: gapsPayload,
     answers,
   }
@@ -96,6 +112,9 @@ export const buildReportPayload = async (
   const levelData: LevelStorage = JSON.parse(localStorage.getItem("level") || "{}")
   const phasesData: PhasesStorage = JSON.parse(localStorage.getItem("phases") || "{}")
   const gapsData: GapsStorage = JSON.parse(localStorage.getItem("gaps") || "{}")
+  const notScoredData: Partial<Record<StageId, boolean>> = JSON.parse(
+    localStorage.getItem("notScored") || "{}"
+  )
 
   // Read risks from localStorage (pre-saved by ProgressContext after last checkpoint)
   let risksData: RisksStorage | null = null
@@ -157,7 +176,8 @@ export const buildReportPayload = async (
       levelData,
       phasesData,
       gapsData,
-      risksData
+      risksData,
+      notScoredData
     )
   })
 

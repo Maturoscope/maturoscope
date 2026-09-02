@@ -18,6 +18,7 @@ const QuestionPage = async ({ params }: QuestionPageProps) => {
   const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
   const dictionary = await getDictionary(lang)
   const {
+    common: { notApplicableLabel },
     singleReview,
   } = dictionary
 
@@ -49,6 +50,7 @@ const QuestionPage = async ({ params }: QuestionPageProps) => {
         saveButtonLabel={singleReview.saveButtonLabel}
         cancelButtonLabel={singleReview.cancelButtonLabel}
         commentPlaceholder={singleReview.commentPlaceholder}
+        notApplicableLabel={notApplicableLabel}
         unsavedChangesModal={singleReview.unsavedChangesModal}
       />
     </main>

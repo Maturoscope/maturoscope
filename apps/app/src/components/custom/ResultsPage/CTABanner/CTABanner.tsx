@@ -21,6 +21,8 @@ import { StageId } from "@/components/custom/FormPage/Form/Form"
 import { clearAssessmentTracking } from "@/actions/tracking"
 // Hooks
 import { useDownloadReport } from "@/hooks/useDownloadReport"
+// Utils
+import { areAllScalesNotScored } from "@/lib/notApplicable"
 
 interface LevelStorage {
   trl?: number
@@ -55,6 +57,9 @@ const CTABanner = ({
   const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
   const [isTalkToExpertButtonDisabled, setIsTalkToExpertButtonDisabled] = useState<boolean>(false)
   const [isAllLevelsMax, setIsAllLevelsMax] = useState<boolean>(false)
+  // Hide the "Turn this plan into reality" banner when there are no gaps at all
+  // (every assessed scale was marked Not Applicable).
+  const [hideBanner, setHideBanner] = useState<boolean>(false)
   const router = useRouter()
   const params = useParams<{ lang?: Locale }>()
   const lang = params.lang || "en"
@@ -73,6 +78,8 @@ const CTABanner = ({
     localStorage.removeItem("risks")
     localStorage.removeItem("projectName")
     localStorage.removeItem("selectedScales")
+    localStorage.removeItem("evaluationType")
+    localStorage.removeItem("notScored")
     setIsResetFormModalOpen(false)
   }
 
@@ -89,6 +96,8 @@ const CTABanner = ({
   }
 
   useEffect(() => {
+    setHideBanner(areAllScalesNotScored())
+
     const storedGaps = localStorage.getItem("gaps")
     const storedLevel = localStorage.getItem("level")
 
@@ -141,7 +150,7 @@ const CTABanner = ({
         onResetClick={handleResetButtonClick}
       />
 
-      {!isAllLevelsMax && (
+      {!isAllLevelsMax && !hideBanner && (
         <>
           <div
             className={cn(

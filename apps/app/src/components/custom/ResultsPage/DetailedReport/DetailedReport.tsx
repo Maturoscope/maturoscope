@@ -26,10 +26,18 @@ export interface DetailedReportProps {
   descriptionColumnLabel: string
   focusLabel: string
   primaryRiskLabel: string
+  noScoreTitle: string
+  noScoreDescription: string
 }
 
 interface ExtraProps {
   className?: string
+}
+
+interface NotScoredStorage {
+  trl?: boolean
+  mkrl?: boolean
+  mfrl?: boolean
 }
 
 interface GapsStorage {
@@ -72,10 +80,13 @@ const DetailedReport = ({
   descriptionColumnLabel,
   focusLabel,
   primaryRiskLabel,
+  noScoreTitle,
+  noScoreDescription,
   className,
 }: DetailedReportProps & ExtraProps) => {
   const [gapsData, setGapsData] = useState<GapsStorage>({})
   const [levelData, setLevelData] = useState<LevelStorage>({})
+  const [notScoredData, setNotScoredData] = useState<NotScoredStorage>({})
   const [risksData, setRisksData] = useState<RisksRecord | null>(null)
 
   const fetchRisks = useCallback(
@@ -114,8 +125,10 @@ const DetailedReport = ({
     const storedGaps = localStorage.getItem("gaps")
     const storedLevel = localStorage.getItem("level")
     const storedPhases = localStorage.getItem("phases")
+    const storedNotScored = localStorage.getItem("notScored")
 
     if (storedGaps) setGapsData(JSON.parse(storedGaps))
+    if (storedNotScored) setNotScoredData(JSON.parse(storedNotScored))
 
     const parsedLevels: LevelStorage =
       storedLevel ? JSON.parse(storedLevel) : {}
@@ -157,6 +170,9 @@ const DetailedReport = ({
             descriptionColumnLabel={descriptionColumnLabel}
             focusLabel={focusLabel}
             primaryRiskLabel={primaryRiskLabel}
+            noScoreTitle={noScoreTitle}
+            noScoreDescription={noScoreDescription}
+            notScored={notScoredData[stageKey as keyof NotScoredStorage] ?? false}
             strategicFocus={riskData?.strategicFocus}
             primaryRisk={riskData?.primaryRisk}
             gaps={gaps ?? []}

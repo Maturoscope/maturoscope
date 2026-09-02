@@ -9,11 +9,11 @@
   </div>
 
   <div class="flex flex-col gap-2 items-center">
-    <%- include(baseDir + '/pdf/circle-progress.ejs', { percentage: percentage, size: '170px', color: color, level: scale.level, showMaxLevel: true, strokeWidthParam: 12 }) %>
+    <%- include(baseDir + '/pdf/circle-progress.ejs', { percentage: percentage, size: '170px', color: color, level: scale.level, showMaxLevel: true, strokeWidthParam: 12, notScored: scale.notScored }) %>
   </div>
 
   <div class="flex flex-col gap-2 items-center">
-    <span class="text-sm font-medium"><%= scale.phaseName %></span>
-    <span class="text-sm text-muted-foreground"><%= scale.phaseGoal %></span>
+    <span class="text-sm font-medium"><%= scale.notScored ? t.overview.notScoredLabel : scale.phaseName %></span>
+    <span class="text-sm text-muted-foreground"><%= scale.notScored ? t.overview.notScoredDescription : scale.phaseGoal %></span>
   </div>
 </div>

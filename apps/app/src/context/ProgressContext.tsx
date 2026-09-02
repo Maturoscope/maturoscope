@@ -63,6 +63,7 @@ const STORAGE_KEYS = {
   gaps: "gaps",
   level: "level",
   phases: "phases",
+  notScored: "notScored",
   lastViewedQuestion: "lastViewedQuestion",
 } as const
 
@@ -94,6 +95,12 @@ interface PhasesStorage {
   mfrl?: DevelopmentPhase
 }
 
+interface NotScoredStorage {
+  trl?: boolean
+  mkrl?: boolean
+  mfrl?: boolean
+}
+
 const saveAssessmentToLocalStorage = (
   stageId: StageId,
   data: AssessmentResponse
@@ -114,12 +121,27 @@ const saveAssessmentToLocalStorage = (
   existingLevel[scaleKey] = data.readinessLevel
   localStorage.setItem(STORAGE_KEYS.level, JSON.stringify(existingLevel))
 
-  // Save phases
+  // Save phases (null when the scale was not scored — omit it so risk analysis
+  // skips this scale).
   const existingPhases: PhasesStorage = JSON.parse(
     localStorage.getItem(STORAGE_KEYS.phases) || "{}"
   )
-  existingPhases[scaleKey] = data.developmentPhase
+  if (data.developmentPhase) {
+    existingPhases[scaleKey] = data.developmentPhase
+  } else {
+    delete existingPhases[scaleKey]
+  }
   localStorage.setItem(STORAGE_KEYS.phases, JSON.stringify(existingPhases))
+
+  // Save "not scored" flag (all questions marked Not Applicable)
+  const existingNotScored: NotScoredStorage = JSON.parse(
+    localStorage.getItem(STORAGE_KEYS.notScored) || "{}"
+  )
+  existingNotScored[scaleKey] = data.notScored
+  localStorage.setItem(
+    STORAGE_KEYS.notScored,
+    JSON.stringify(existingNotScored)
+  )
 }
 
 const ProgressContext = createContext<ProgressContextType | null>(null)
@@ -321,6 +343,7 @@ export const ProgressProvider = ({
     // Overridden by Form with the translated labels
     addNoteLabel: "",
     removeNoteLabel: "",
+    notApplicableLabel: "",
   }
 
   // Initialize form position on mount (runs only once)

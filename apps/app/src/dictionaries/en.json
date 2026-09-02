@@ -1,7 +1,8 @@
 {
   "lang": "en",
   "common": {
-    "loadingLabel": "Loading..."
+    "loadingLabel": "Loading...",
+    "notApplicableLabel": "Not Applicable"
   },
   "header": {
     "stringConnector": "by"
@@ -75,27 +76,36 @@
     "buttonLabel": "Start Assessment"
   },
   "begin": {
-    "title": "What are we evaluating today?",
+    "title": "Tell us about your innovation",
     "label": "Name your project",
     "placeholder": "Solar Panel Prototype v2",
     "backButtonLabel": "Back",
     "nextButtonLabel": "Continue",
-    "scaleSelector": {
-      "title": "Which readiness levels do you want to assess?",
-      "description": "Select at least one. You'll only answer the questions for the scales you choose.",
-      "options": {
-        "trl": {
-          "title": "TRL — Technology Readiness Level",
-          "description": "How advanced is your technology?"
+    "evaluation": {
+      "title": "What are you evaluating?",
+      "description": "Select below on which scales you want to evaluate your innovation. Each scale has its specificities and is recommended or not according to your innovation type.",
+      "availableDimensionsTitle": "Available Dimensions",
+      "availableDimensionsDescription": "Choose the ones you want to assess.",
+      "recommendedLabel": "Recommended",
+      "disclaimer": "TRL and MfRL were designed for physical products. If some questions don't fit, mark them as Not Applicable.",
+      "types": {
+        "product": {
+          "label": "Product",
+          "description": "Something that gets manufactured"
         },
-        "mkrl": {
-          "title": "MkRL — Market Readiness Level",
-          "description": "How ready is your product for the market?"
+        "software": {
+          "label": "Software",
+          "description": "An app, platform or digital tool"
         },
-        "mfrl": {
-          "title": "MfRL — Manufacturing Readiness Level",
-          "description": "How ready are you to manufacture it?"
+        "service": {
+          "label": "Service",
+          "description": "Consulting, installation, operations"
         }
+      },
+      "dimensions": {
+        "trl": "TRL — Technology Readiness Level",
+        "mkrl": "MkRL — Market Readiness Level",
+        "mfrl": "MfRL — Manufacturing Readiness Level"
       }
     }
   },
@@ -179,6 +189,8 @@
       "title": "Overview",
       "learnMoreButtonLabel": "Learn more",
       "resultsSufixLabel": "Results",
+      "notScoredLabel": "Not Scored",
+      "notScoredDescription": "All questions marked Not Applicable",
       "stages": [
         {
           "label": "TRL",
@@ -217,7 +229,9 @@
       "servicesColumnLabel": "Services",
       "descriptionColumnLabel": "Description",
       "focusLabel": "Current focus",
-      "primaryRiskLabel": "Primary Risk to Mitigate"
+      "primaryRiskLabel": "Primary Risk to Mitigate",
+      "noScoreTitle": "No {scale} score",
+      "noScoreDescription": "You marked all {scale} questions as Not Applicable, there are no gaps or services available."
     },
     "ctaBanner": {
       "title": "Turn this plan into reality.",
