@@ -28,6 +28,7 @@ export type Dictionary = {
   lang: Locale
   common: {
     loadingLabel: string
+    notApplicableLabel: string
   }
   header: HeaderProps
   backBar: BackToHomeBarProps
@@ -50,6 +51,12 @@ export type Dictionary = {
     leaveQuestionnaireModal: LeaveQuestionnaireModalProps
     checkpoint: {
       buttonLabel: string
+      continueToLabel: string
+      seeReportLabel: string
+      intermediateTitle: string
+      intermediateDescription: string
+      finalTitle: string
+      finalDescription: string
     },
   }
   review: ReviewHeroProps

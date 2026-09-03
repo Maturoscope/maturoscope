@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import type { Swiper as SwiperType } from "swiper"
 // Utils
 import { cn } from "@/lib/utils"
+import { ALL_SCALES, getSelectedScales } from "@/lib/selectedScales"
 // Icons
 import {
   ArrowNextIcon,
@@ -30,6 +31,14 @@ export interface OverviewProps {
   }[]
   learnMoreButtonLabel: string
   resultsSufixLabel: string
+  notScoredLabel: string
+  notScoredDescription: string
+}
+
+interface NotScoredStorage {
+  trl?: boolean
+  mkrl?: boolean
+  mfrl?: boolean
 }
 
 interface ExtraProps {
@@ -64,6 +73,8 @@ const Overview = ({
   title,
   learnMoreButtonLabel,
   resultsSufixLabel,
+  notScoredLabel,
+  notScoredDescription,
   stages,
   className,
 }: OverviewProps & ExtraProps) => {
@@ -71,13 +82,28 @@ const Overview = ({
   const [activeIndex, setActiveIndex] = useState(0)
   const [levelData, setLevelData] = useState<LevelStorage>({})
   const [phasesData, setPhasesData] = useState<PhasesStorage>({})
+  const [notScoredData, setNotScoredData] = useState<NotScoredStorage>({})
+  const [selectedScales, setSelectedScales] = useState<StageId[]>(ALL_SCALES)
+  // Cards are held until the localStorage-backed data is read on the client, so
+  // a single-scale assessment never flashes all three cards first. Starting at
+  // false also matches the server render (no hydration mismatch).
+  const [isHydrated, setIsHydrated] = useState(false)
 
-  const formattedStages = stages.map((stage) => {
+  // Only show the scales the user chose to assess. Empty until hydrated so the
+  // cards are never rendered with the default (all-scales) placeholder values.
+  const visibleStages = isHydrated
+    ? stages.filter((stage) =>
+        selectedScales.includes(LABEL_TO_KEY[stage.label])
+      )
+    : []
+
+  const formattedStages = visibleStages.map((stage) => {
     const stageKey = LABEL_TO_KEY[stage.label]
     const icon = ICON_TO_KEY[stage.label]
     const value = levelData[stageKey] ?? 0
     const maxValue = 9
     const phase = phasesData[stageKey] as DevelopmentPhase
+    const notScored = notScoredData[stageKey] ?? false
 
     return {
       ...stage,
@@ -87,19 +113,26 @@ const Overview = ({
       resultsSufixLabel,
       icon,
       phase,
+      notScored,
+      notScoredLabel,
+      notScoredDescription,
     }
   })
 
   useEffect(() => {
     const storedLevel = localStorage.getItem("level")
     const storedPhases = localStorage.getItem("phases")
+    const storedNotScored = localStorage.getItem("notScored")
 
     if (storedLevel) setLevelData(JSON.parse(storedLevel))
     if (storedPhases) setPhasesData(JSON.parse(storedPhases))
+    if (storedNotScored) setNotScoredData(JSON.parse(storedNotScored))
+    setSelectedScales(getSelectedScales())
+    setIsHydrated(true)
   }, [])
 
   const isBackButtonDisabled = activeIndex === 0
-  const isNextButtonDisabled = activeIndex === stages.length - 1
+  const isNextButtonDisabled = activeIndex === visibleStages.length - 1
 
   const handleNextSlide = () => swiperRef.current?.slideNext()
   const handlePrevSlide = () => swiperRef.current?.slidePrev()
@@ -128,10 +161,19 @@ const Overview = ({
         </div>
       </div>
 
-      <div className="w-full gap-6 mt-4 hidden lg:flex px-4 lg:px-6">
+      <div className="w-full gap-6 mt-4 hidden lg:flex justify-start px-4 lg:px-6">
         {formattedStages.map((stage) => {
           const stageKey = LABEL_TO_KEY[stage.label]
-          return <OverviewCard key={stage.label} {...stage} stageKey={stageKey} />
+          return (
+            // Cap each card to a third so a single/double selection stays
+            // left-aligned at its natural width instead of stretching.
+            <div
+              key={stage.label}
+              className="flex-1 lg:max-w-[calc((100%-3rem)/3)]"
+            >
+              <OverviewCard {...stage} stageKey={stageKey} />
+            </div>
+          )
         })}
       </div>
 
@@ -157,7 +199,7 @@ const Overview = ({
         </div>
 
         <div className="flex gap-1.5">
-          {stages.map((stage, index) => (
+          {visibleStages.map((stage, index) => (
             <div
               key={stage.label}
               className={cn(

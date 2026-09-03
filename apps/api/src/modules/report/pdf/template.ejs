@@ -37,10 +37,20 @@
                 <%= t.overview.title %>
               </h2>
 
-              <div class="flex gap-6 items-center justify-between">
-                <%- include(baseDir + '/pdf/overview-card.ejs' , { t, scale: reportData.trl, stageTranslation: t.overview.stages.trl, color: '#EA580C' , baseDir }) %>
-                <%- include(baseDir + '/pdf/overview-card.ejs' , { t, scale: reportData.mkrl, stageTranslation: t.overview.stages.mkrl, color: '#0D9488' , baseDir }) %>
-                <%- include(baseDir + '/pdf/overview-card.ejs' , { t, scale: reportData.mfrl, stageTranslation: t.overview.stages.mfrl, color: '#2563EB' , baseDir }) %>
+              <%
+                var overviewScales = [
+                  { key: 'trl', color: '#EA580C' },
+                  { key: 'mkrl', color: '#0D9488' },
+                  { key: 'mfrl', color: '#2563EB' }
+                ].filter(function (s) { return reportData[s.key]; });
+              %>
+              <div class="flex gap-6 items-stretch justify-start">
+                <% overviewScales.forEach(function (s) { %>
+                  <!-- Cap each card to a third so 1-2 selected scales stay left-aligned -->
+                  <div class="w-[calc((100%-3rem)/3)]">
+                    <%- include(baseDir + '/pdf/overview-card.ejs' , { t, scale: reportData[s.key], stageTranslation: t.overview.stages[s.key], color: s.color, baseDir }) %>
+                  </div>
+                <% }); %>
               </div>
             </div>
 
@@ -66,6 +76,7 @@
                 scale: scaleInfo.data,
                 stageTranslation: scaleInfo.stageTranslation,
                 color: block.color,
+                accentColor: reportData.accentColor || '#171717',
                 indexBgColor: block.indexBgColor,
                 baseDir,
                 gapSlices: block.gapSlices,

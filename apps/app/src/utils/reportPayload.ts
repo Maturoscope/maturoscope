@@ -3,6 +3,8 @@ import { StageId, QuestionData } from "@/components/custom/FormPage/Form/Form"
 import type { DevelopmentPhase, Gap, LocalizedText } from "@/actions/organization"
 import { ReportPayload } from "@/actions/report"
 import type { RiskData } from "@/actions/questions"
+import { getSelectedScales } from "@/lib/selectedScales"
+import { isNotApplicable } from "@/lib/notApplicable"
 
 // ─── Storage types ────────────────────────────────────────────────────────────
 
@@ -36,7 +38,8 @@ export const buildScalePayload = (
   levelData: LevelStorage,
   phasesData: PhasesStorage,
   gapsData: GapsStorage,
-  risksData: RisksStorage | null
+  risksData: RisksStorage | null,
+  notScoredData: Partial<Record<StageId, boolean>>
 ) => {
   const stageQuestions = questionsData.find((s) => s.id === stageId)?.questions || []
   const stageForm = formData[stageId]
@@ -44,10 +47,23 @@ export const buildScalePayload = (
   const phase = phasesData[stageId]
   const gaps = gapsData[stageId] ?? []
   const risk = risksData?.[stageId]
+  const notScored = notScoredData[stageId] ?? false
 
   const answers = stageQuestions.map((q) => {
     const answerId = stageForm?.questions?.[q.id] ?? ""
     const comment = stageForm?.comments?.[q.id] ?? ""
+
+    // "Not applicable" answers never carry a comment. The label is resolved by
+    // the PDF locale (t.answers.notApplicable), not sent from the client.
+    if (isNotApplicable(answerId)) {
+      return {
+        question: q.title,
+        answer: "",
+        comment: "",
+        notApplicable: true,
+      }
+    }
+
     const answerOption = q.options.find((opt) => opt.id === answerId)
     return {
       question: q.title,
@@ -74,6 +90,7 @@ export const buildScalePayload = (
     strategicFocus: (risk?.strategicFocus as LocalizedText)?.[lang] ?? "",
     primaryRisk: (risk?.primaryRisk as LocalizedText)?.[lang] ?? "",
     isLowest: risk?.isLowest ?? false,
+    notScored,
     gaps: gapsPayload,
     answers,
   }
@@ -95,6 +112,9 @@ export const buildReportPayload = async (
   const levelData: LevelStorage = JSON.parse(localStorage.getItem("level") || "{}")
   const phasesData: PhasesStorage = JSON.parse(localStorage.getItem("phases") || "{}")
   const gapsData: GapsStorage = JSON.parse(localStorage.getItem("gaps") || "{}")
+  const notScoredData: Partial<Record<StageId, boolean>> = JSON.parse(
+    localStorage.getItem("notScored") || "{}"
+  )
 
   // Read risks from localStorage (pre-saved by ProgressContext after last checkpoint)
   let risksData: RisksStorage | null = null
@@ -131,12 +151,41 @@ export const buildReportPayload = async (
     // ignore
   }
 
+  // Organization accent colour (from the backend theme, applied as the --accent
+  // CSS variable). Used for the service links in the PDF so they match the web.
+  let accentColor = "#171717"
+  try {
+    const computed = getComputedStyle(document.documentElement)
+      .getPropertyValue("--accent")
+      .trim()
+    if (computed) accentColor = computed
+  } catch {
+    // ignore — fall back to the default accent
+  }
+
+  // Only include the scales the user chose to assess, so the PDF omits the
+  // blocks for the scales that were not evaluated.
+  const selectedScales = getSelectedScales()
+  const scalePayloads: Pick<ReportPayload, "trl" | "mkrl" | "mfrl"> = {}
+  selectedScales.forEach((scale) => {
+    scalePayloads[scale] = buildScalePayload(
+      scale,
+      lang,
+      questionsData,
+      formData,
+      levelData,
+      phasesData,
+      gapsData,
+      risksData,
+      notScoredData
+    )
+  })
+
   return {
     completedOn,
     projectName,
     signature: signatureUrl,
-    trl: buildScalePayload("trl", lang, questionsData, formData, levelData, phasesData, gapsData, risksData),
-    mkrl: buildScalePayload("mkrl", lang, questionsData, formData, levelData, phasesData, gapsData, risksData),
-    mfrl: buildScalePayload("mfrl", lang, questionsData, formData, levelData, phasesData, gapsData, risksData),
+    accentColor,
+    ...scalePayloads,
   }
 }

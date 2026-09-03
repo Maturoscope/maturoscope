@@ -19,10 +19,16 @@ interface DetailedScaleProps {
   serviceLabel: string
   servicesLabel: string
   comingSoonLabel: string
+  gapLabel: string
+  servicesColumnLabel: string
+  descriptionColumnLabel: string
   focusLabel: string
   primaryRiskLabel: string
+  noScoreTitle: string
+  noScoreDescription: string
   strategicFocus?: LocalizedText
   primaryRisk?: LocalizedText
+  notScored?: boolean
   gaps: Gap[]
 }
 
@@ -37,12 +43,6 @@ const COLOR_TO_KEY: Record<string, string> = {
   mfrl: "#2563EB",
 }
 
-const INDEX_COLOR_TO_KEY: Record<string, string> = {
-  trl: "bg-orange-50",
-  mkrl: "bg-teal-50",
-  mfrl: "bg-blue-50",
-}
-
 const DetailedScale = ({
   id,
   title,
@@ -54,15 +54,24 @@ const DetailedScale = ({
   serviceLabel,
   servicesLabel,
   comingSoonLabel,
+  gapLabel,
+  servicesColumnLabel,
+  descriptionColumnLabel,
   focusLabel,
   primaryRiskLabel,
+  noScoreTitle,
+  noScoreDescription,
   strategicFocus,
   primaryRisk,
+  notScored = false,
   gaps,
   className,
 }: DetailedScaleProps & ExtraProps) => {
   const { lang } = useParams<{ lang: Locale }>()
   const levelSummary = level === 9 ? `${copyLevelLabel} ${level}: ${copyHighestLevel}` : `${copyPreLevel} ${level + 1}: ${copyPostLevel}`
+  // "No {scale} score" copy for the fully-N/A case.
+  const scoreTitle = noScoreTitle.replace("{scale}", title)
+  const scoreDescription = noScoreDescription.replace("{scale}", title)
 
   return (
     <div
@@ -91,7 +100,7 @@ const DetailedScale = ({
             >
               <div className="flex items-end">
                 <span className="text-3xl lg:text-5xl font-medium text-center leading-[0.88]">
-                  {level}
+                  {notScored ? "-" : level}
                 </span>
               </div>
             </CircularProgressbarWithChildren>
@@ -120,25 +129,36 @@ const DetailedScale = ({
       </div>
 
       <div className="w-full flex flex-col gap-2.5 p-6 rounded-3xl bg-white h-min">
-        <span className="font-semibold text-base lg:text-xl">
-          {levelSummary}
-        </span>
-        <div className="flex flex-col">
-          {gaps.map((gap, index) => (
-            <ServiceAccordion
-              key={gap.questionId}
-              index={index}
-              title={gap.gapDescription[lang]}
-              serviceLabel={serviceLabel}
-              servicesLabel={servicesLabel}
-              comingSoonLabel={comingSoonLabel}
-              recommendedServices={gap.recommendedServices}
-              hasServices={gap.hasServices}
-              indexColor={INDEX_COLOR_TO_KEY[id]}
-              lang={lang}
-            />
-          ))}
-        </div>
+        {notScored ? (
+          <div className="flex flex-col gap-1">
+            <span className="font-semibold text-base">{scoreTitle}</span>
+            <span className="text-sm text-muted-foreground">
+              {scoreDescription}
+            </span>
+          </div>
+        ) : (
+          <>
+            <span className="font-semibold text-base">{levelSummary}</span>
+            <div className="flex flex-col">
+              {gaps.map((gap, index) => (
+                <ServiceAccordion
+                  key={gap.questionId}
+                  index={index}
+                  gapLabel={gapLabel}
+                  title={gap.gapDescription[lang]}
+                  serviceLabel={serviceLabel}
+                  servicesLabel={servicesLabel}
+                  comingSoonLabel={comingSoonLabel}
+                  servicesColumnLabel={servicesColumnLabel}
+                  descriptionColumnLabel={descriptionColumnLabel}
+                  recommendedServices={gap.recommendedServices}
+                  hasServices={gap.hasServices}
+                  lang={lang}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

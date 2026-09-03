@@ -88,8 +88,10 @@ export interface Gap {
 export interface AssessmentResponse {
   scale: ScaleType
   readinessLevel: number
-  developmentPhase: DevelopmentPhase
+  developmentPhase: DevelopmentPhase | null
   gaps: Gap[]
+  // True when every question was marked "Not applicable".
+  notScored: boolean
 }
 
 interface SubmitAssessmentParams {

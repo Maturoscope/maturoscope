@@ -34,9 +34,9 @@
       stroke-dashoffset="<%= strokeDashoffset %>"
     />
   </svg>
-  <!-- Center content (level number) -->
+  <!-- Center content (level number, or "-" when the scale was not scored) -->
   <div class="relative z-10 flex items-end justify-center">
-    <span class="text-5xl font-medium text-foreground"><%= level %></span>
+    <span class="text-5xl font-medium text-foreground"><%= (typeof notScored !== 'undefined' && notScored) ? '-' : level %></span>
     <% if (showMaxLevel) { %>
       <span class="text-lg text-muted-foreground">/ 9</span>
     <% } %>

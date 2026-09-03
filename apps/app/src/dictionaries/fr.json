@@ -1,7 +1,8 @@
 {
   "lang": "fr",
   "common": {
-    "loadingLabel": "Chargement..."
+    "loadingLabel": "Chargement...",
+    "notApplicableLabel": "Non applicable"
   },
   "header": {
     "stringConnector": "par"
@@ -75,11 +76,38 @@
     "buttonLabel": "Commencer l'évaluation"
   },
   "begin": {
-    "title": "Qu'évaluons-nous aujourd'hui ?",
+    "title": "Parlez-nous de votre innovation",
     "label": "Nommez votre projet",
     "placeholder": "Prototype de panneau solaire v2",
     "backButtonLabel": "Retour",
-    "nextButtonLabel": "Continuer"
+    "nextButtonLabel": "Continuer",
+    "evaluation": {
+      "title": "Qu'évaluez-vous ?",
+      "description": "Sélectionnez ci-dessous les échelles sur lesquelles vous souhaitez évaluer votre innovation. Chaque échelle a ses spécificités et est recommandée ou non selon le type d'innovation.",
+      "availableDimensionsTitle": "Dimensions disponibles",
+      "availableDimensionsDescription": "Choisissez celles que vous voulez évaluer.",
+      "recommendedLabel": "Recommandé",
+      "disclaimer": "TRL et MfRL ont été conçus pour des produits physiques. Si certaines questions ne s'appliquent pas, marquez-les comme Non applicable.",
+      "types": {
+        "product": {
+          "label": "Produit",
+          "description": "Quelque chose qui se fabrique"
+        },
+        "software": {
+          "label": "Logiciel",
+          "description": "Une app, plateforme ou outil numérique"
+        },
+        "service": {
+          "label": "Service",
+          "description": "Conseil, installation, opérations"
+        }
+      },
+      "dimensions": {
+        "trl": "TRL — Niveau de maturité technologique",
+        "mkrl": "MkRL — Niveau de maturité du marché",
+        "mfrl": "MfRL — Niveau de maturité de la fabrication"
+      }
+    }
   },
   "form": {
     "buttonNextLabel": "Continuer",
@@ -95,35 +123,32 @@
       "cancelButtonLabel": "Annuler"
     },
     "checkpoint": {
-      "buttonLabel": "Retour à"
+      "buttonLabel": "Retour à",
+      "continueToLabel": "Continuer à",
+      "seeReportLabel": "Voir le rapport",
+      "intermediateTitle": "{scale} terminé",
+      "intermediateDescription": "Beau progrès. Prochaine étape : {next}.",
+      "finalTitle": "Évaluation terminée",
+      "finalDescription": "Votre rapport est prêt à être généré. (Dernière chance de le réviser, les réponses ne pourront plus être modifiées après cette étape.)"
     },
     "stages": [
       {
         "id": "trl",
         "icon": "/icons/form/trl.svg",
         "name": "TRL",
-        "title": "Analyse technologique terminée",
-        "description": "Une étape de franchie. Voyons maintenant si le marché est prêt.",
-        "reviewLabel": "Voir les réponses",
-        "buttonLabel": "Continuer à MkRL"
+        "reviewLabel": "Voir les réponses"
       },
       {
         "id": "mkrl",
         "icon": "/icons/form/mkrl.svg",
         "name": "MkRL",
-        "title": "Contexte de marché validé",
-        "description": "Vous avez couvert le « Quoi? » et le « Qui? ». Passons maintenant à la dernière pièce : le « Comment? ».",
-        "reviewLabel": "Voir les réponses",
-        "buttonLabel": "Continuer à MfRL"
+        "reviewLabel": "Voir les réponses"
       },
       {
         "id": "mfrl",
         "icon": "/icons/form/mfrl.svg",
         "name": "MfRL",
-        "title": "Évaluation terminée",
-        "description": "Votre rapport est prêt à être généré. (Dernière chance de le réviser, les réponses ne pourront plus être modifiées après cette étape).",
-        "reviewLabel": "Voir les réponses",
-        "buttonLabel": "Voir le rapport"
+        "reviewLabel": "Voir les réponses"
       }
     ]
   },
@@ -164,6 +189,8 @@
       "title": "Aperçu",
       "learnMoreButtonLabel": "En savoir plus",
       "resultsSufixLabel": "Résultats",
+      "notScoredLabel": "Non évalué",
+      "notScoredDescription": "Toutes les questions marquées Non applicable",
       "stages": [
         {
           "label": "TRL",
@@ -198,8 +225,13 @@
       "serviceLabel": "Service disponible",
       "servicesLabel": "Services disponibles",
       "comingSoonLabel": "Bientôt disponible",
+      "gapLabel": "Écart",
+      "servicesColumnLabel": "Services",
+      "descriptionColumnLabel": "Description",
       "focusLabel": "Focus actuel",
-      "primaryRiskLabel": "Risque principal à mitiger"
+      "primaryRiskLabel": "Risque principal à mitiger",
+      "noScoreTitle": "Aucun score {scale}",
+      "noScoreDescription": "Vous avez marqué toutes les questions {scale} comme Non applicable, il n'y a ni écarts ni services disponibles."
     },
     "ctaBanner": {
       "title": "Transformez ce plan en réalité.",

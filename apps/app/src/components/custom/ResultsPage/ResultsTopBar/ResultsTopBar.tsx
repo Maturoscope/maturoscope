@@ -15,6 +15,8 @@ import { Gap } from "@/actions/organization"
 import { StageId } from "@/components/custom/FormPage/Form/Form"
 // Hooks
 import { useDownloadReport } from "@/hooks/useDownloadReport"
+// Utils
+import { areAllScalesNotScored } from "@/lib/notApplicable"
 
 interface LevelStorage {
   trl?: number
@@ -45,6 +47,9 @@ const ResultsTopBar = ({
   const [completedOnDate, setCompletedOnDate] = useState<string>("")
   const [isTalkToExpertButtonDisabled, setIsTalkToExpertButtonDisabled] = useState<boolean>(false)
   const [isAllLevelsMax, setIsAllLevelsMax] = useState<boolean>(false)
+  // When every assessed scale is "Not scored" there is nothing to download or
+  // consult about, so both CTAs are hidden.
+  const [hideActions, setHideActions] = useState<boolean>(false)
   const { openModal } = useContactExpertContext()
   const { downloadReport, isLoading } = useDownloadReport(lang)
   const pathname = usePathname()
@@ -67,9 +72,11 @@ const ResultsTopBar = ({
   }, [lang])
 
   useEffect(() => {
+    setHideActions(areAllScalesNotScored())
+
     const storedGaps = localStorage.getItem("gaps")
     const storedLevel = localStorage.getItem("level")
-    
+
     // Check if all levels are at maximum (9)
     if (storedLevel) {
       try {
@@ -123,25 +130,27 @@ const ResultsTopBar = ({
           {completedOnDate}
         </p>
       </div>
-      <div className="flex gap-2">
-        <Button
-          variant="outline"
-          onClick={handleDownloadClick}
-          disabled={isLoading}
-        >
-          {isLoading ? "Loading..." : downloadButtonLabel}
-        </Button>
-        {!isAllLevelsMax && (
+      {!hideActions && (
+        <div className="flex gap-2">
           <Button
-            variant="default"
-            accent
-            onClick={handleTalkButtonClick}
-            disabled={isTalkToExpertButtonDisabled}
+            variant="outline"
+            onClick={handleDownloadClick}
+            disabled={isLoading}
           >
-            {talkButtonLabel}
+            {isLoading ? "Loading..." : downloadButtonLabel}
           </Button>
-        )}
-      </div>
+          {!isAllLevelsMax && (
+            <Button
+              variant="default"
+              accent
+              onClick={handleTalkButtonClick}
+              disabled={isTalkToExpertButtonDisabled}
+            >
+              {talkButtonLabel}
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   )
 }

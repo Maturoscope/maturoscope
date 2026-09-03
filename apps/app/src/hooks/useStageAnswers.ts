@@ -8,6 +8,8 @@ import { Locale } from "@/dictionaries/dictionaries"
 import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 // Actions
 import { getQuestions } from "@/actions/questions"
+// Utils
+import { isNotApplicable } from "@/lib/notApplicable"
 
 export interface QuestionAnswer {
   questionId: string
@@ -16,7 +18,11 @@ export interface QuestionAnswer {
   answer: string
 }
 
-const useStageAnswers = (stageName: StageId, lang: Locale) => {
+const useStageAnswers = (
+  stageName: StageId,
+  lang: Locale,
+  notApplicableLabel: string
+) => {
   const [questionsAndAnswers, setQuestionsAndAnswers] = useState<
     QuestionAnswer[]
   >([])
@@ -50,6 +56,16 @@ const useStageAnswers = (stageName: StageId, lang: Locale) => {
               return null
             }
 
+            // "Not applicable" has no matching option — show the label instead.
+            if (isNotApplicable(answerId)) {
+              return {
+                questionId: question.id,
+                question: question.title,
+                answerId,
+                answer: notApplicableLabel,
+              }
+            }
+
             // Find the answer text from the question's options
             const selectedOption = question.options.find(
               (option) => option.id === answerId
@@ -72,7 +88,7 @@ const useStageAnswers = (stageName: StageId, lang: Locale) => {
     }
 
     fetchQuestionsAndAnswers()
-  }, [stageName, lang])
+  }, [stageName, lang, notApplicableLabel])
 
   return questionsAndAnswers
 }

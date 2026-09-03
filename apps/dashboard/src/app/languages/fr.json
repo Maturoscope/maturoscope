@@ -59,11 +59,11 @@
       "LOGIN_BUTTON": "Se connecter",
       "LOGIN_SUCCESS": "Connexion réussie !",
       "INVALID_CREDENTIALS": "E-mail ou mot de passe invalide.",
-      "LOCK_WARNING": "Votre compte sera verrouillé après trop de tentatives échouées."
+      "LOCK_WARNING": "Votre compte sera bloqué après trop de tentatives échouées."
     },
     "BLOCKED_ACCOUNT": {
       "TITLE": "Votre connexion a été bloquée",
-      "MESSAGE": "Pour des raisons de sécurité, votre compte a été verrouillé après plusieurs tentatives de connexion échouées.",
+      "MESSAGE": "Pour des raisons de sécurité, votre compte a été bloqué après plusieurs tentatives de connexion échouées.",
       "EMAIL_SENT": "Nous vous avons envoyé un e-mail avec des instructions pour déverrouiller votre compte et réinitialiser votre mot de passe.",
       "GO_BACK_TO": "Aller à",
       "SIGN_IN": "Se connecter"

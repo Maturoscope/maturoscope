@@ -18,9 +18,12 @@ interface OverviewCardProps {
   resultsSufixLabel: string
   value: number
   maxValue: number
-  phase: DevelopmentPhase
+  phase: DevelopmentPhase | null
   icon: React.ReactNode
   stageKey?: string
+  notScored?: boolean
+  notScoredLabel: string
+  notScoredDescription: string
 }
 
 const COLOR_TO_KEY: Record<string, string> = {
@@ -39,10 +42,13 @@ const OverviewCard = ({
   phase,
   icon,
   stageKey,
+  notScored = false,
+  notScoredLabel,
+  notScoredDescription,
 }: OverviewCardProps) => {
   const { lang } = useParams<{ lang: Locale }>()
-  const phaseName = phase?.phaseName?.[lang]
-  const focusGoal = phase?.focusGoal?.[lang]
+  const phaseName = notScored ? notScoredLabel : phase?.phaseName?.[lang]
+  const focusGoal = notScored ? notScoredDescription : phase?.focusGoal?.[lang]
 
   const handleLearnMoreClick = () => {
     if (stageKey) {
@@ -90,7 +96,7 @@ const OverviewCard = ({
           >
             <div className="flex items-end">
               <span className="text-5xl font-medium text-center leading-[0.88]">
-                {value}
+                {notScored ? "-" : value}
               </span>
               <span className="text-sm text-muted-foreground">/{maxValue}</span>
             </div>

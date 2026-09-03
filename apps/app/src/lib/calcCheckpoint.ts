@@ -2,11 +2,17 @@
 import { StageId } from "@/components/custom/FormPage/Form/Form"
 import { DefaultValues } from "@/components/custom/FormPage/Form/default"
 
-export const calcCheckpoint = (defaultValues: DefaultValues) => {
+export const calcCheckpoint = (
+  defaultValues: DefaultValues,
+  selectedScales: StageId[] = ["trl", "mkrl", "mfrl"]
+) => {
   const defaultValuesAreEmpty = Object.keys(defaultValues).length === 0
   if (defaultValuesAreEmpty) return null
 
-  const stagesOrdered: StageId[] = ["trl", "mkrl", "mfrl"]
+  // Only walk the scales the user chose to assess, in canonical order.
+  const stagesOrdered: StageId[] = (["trl", "mkrl", "mfrl"] as StageId[]).filter(
+    (stageId) => selectedScales.includes(stageId)
+  )
   const orderedStages = stagesOrdered.map(
     (stageId) => defaultValues[stageId as StageId]
   )
@@ -29,7 +35,10 @@ export const calcCheckpoint = (defaultValues: DefaultValues) => {
       if (questionIsNotFilled) {
         const isFirstQuestionNotFilled = j === 0
 
-        if (isFirstQuestionNotFilled) {
+        if (isFirstQuestionNotFilled && i === 0) {
+          // Nothing answered yet in the first selected stage: start there.
+          checkpoint = { lastSavedStage: stageId, lastSavedQuestion: question }
+        } else if (isFirstQuestionNotFilled) {
           const prevStage = stagesOrdered[i - 1]
           const prevStageQuestions = Object.keys(orderedStages[i - 1].questions)
           const lastQuestionIdOfPrevStage =

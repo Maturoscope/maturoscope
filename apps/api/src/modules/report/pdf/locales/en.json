@@ -10,6 +10,8 @@
   "overview": {
     "title": "Overview",
     "phaseLabel": "Phase",
+    "notScoredLabel": "Not Scored",
+    "notScoredDescription": "All questions marked Not Applicable",
     "stages": {
       "trl": {
         "label": "TRL",
@@ -36,11 +38,16 @@
     "completeTheGapsBelow": "Complete the gaps below",
     "serviceAvailable": "Service available",
     "servicesAvailable": "Services available",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "gapLabel": "Gap",
+    "servicesColumnLabel": "Services",
+    "descriptionColumnLabel": "Description",
+    "noScoreTitle": "No {scale} score",
+    "noScoreDescription": "You marked all {scale} questions as Not Applicable, there are no gaps or services available."
   },
   "answers": {
     "title": "Your answers",
-    "commentLabel": "Comment"
+    "notApplicable": "Not Applicable"
   },
   "footer": {
     "disclaimer": "Although the tool was designed by professionals from the building sector, the results of this test do not constitute a formal certificate and are provided for informational purposes only.",

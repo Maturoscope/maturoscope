@@ -7,6 +7,7 @@ import {
   ValidateNested,
   IsOptional,
   MaxLength,
+  Matches,
 } from 'class-validator';
 
 // Strips control characters and trims surrounding whitespace.
@@ -50,6 +51,11 @@ export class AnswerDto {
   @IsString()
   @IsOptional()
   comment: string;
+
+  // When true the answer is "Not applicable": no comment line is rendered.
+  @IsBoolean()
+  @IsOptional()
+  notApplicable?: boolean;
 }
 
 export class ScaleDataDto {
@@ -73,6 +79,11 @@ export class ScaleDataDto {
 
   @IsBoolean()
   isLowest: boolean;
+
+  // True when the scale was fully marked "Not applicable": no score/gaps.
+  @IsBoolean()
+  @IsOptional()
+  notScored?: boolean;
 
   @IsArray()
   @ValidateNested({ each: true })
@@ -99,15 +110,27 @@ export class ReportDataDto {
   @IsOptional()
   signature?: string;
 
-  @ValidateNested()
-  @Type(() => ScaleDataDto)
-  trl: ScaleDataDto;
+  // Organization accent colour (hex) — used for the service links. Restricted
+  // to a hex value since it is interpolated into an inline `style` attribute.
+  @IsString()
+  @IsOptional()
+  @Matches(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)
+  accentColor?: string;
 
+  // The user chooses which scales to assess (1, 2 or all 3), so each scale is
+  // optional; only the assessed ones are sent and rendered in the PDF.
+  @IsOptional()
   @ValidateNested()
   @Type(() => ScaleDataDto)
-  mkrl: ScaleDataDto;
+  trl?: ScaleDataDto;
 
+  @IsOptional()
   @ValidateNested()
   @Type(() => ScaleDataDto)
-  mfrl: ScaleDataDto;
+  mkrl?: ScaleDataDto;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => ScaleDataDto)
+  mfrl?: ScaleDataDto;
 }

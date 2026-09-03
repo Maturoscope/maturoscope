@@ -1,11 +1,18 @@
-<div class="w-full p-6 bg-white rounded-2xl border border-border shadow-xs flex flex-col">
-  <span class="text-lg font-semibold"><%= answer.question %></span>
-  <span class="text-[#171717]"><%= answer.answer %></span>
-  <span class="text-sm text-muted-foreground max-w-[900px]">
+<div class="w-full p-6 bg-white rounded-2xl border border-border shadow-xs flex flex-col min-w-0">
+  <!-- Question -->
+  <span class="text-lg font-semibold break-words"><%= answer.question %></span>
+
+  <!-- Divider -->
+  <div class="w-full h-px bg-border my-3"></div>
+
+  <% if (answer.notApplicable) { %>
+    <!-- Not applicable: no comment. -->
+    <span class="text-[#171717] font-medium break-words"><%= t.answers.notApplicable %></span>
+  <% } else { %>
+    <!-- Answer (bold) + optional comment (grey, no label). -->
+    <span class="text-[#171717] font-medium break-words"><%= answer.answer %></span>
     <% if (answer.comment) { %>
-      <span><%= t.answers.commentLabel %>: <%= answer.comment %></span>
-    <% } else { %>
-      <span><%= t.answers.commentLabel %>: -</span>
+      <span class="mt-1 text-sm text-muted-foreground break-words"><%= answer.comment %></span>
     <% } %>
-  </span>
+  <% } %>
 </div>

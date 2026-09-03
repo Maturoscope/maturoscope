@@ -1,6 +1,7 @@
 import {
   ReportDataDto,
   AnswerDto,
+  GapDto,
   RecommendedServicePayload,
   ScaleDataDto,
 } from '../dto/report-data.dto';
@@ -8,7 +9,10 @@ import {
 // ── Height estimation constants (pixels) ──────────────────────────────
 const PAGE_HEIGHT = 2040;
 const NAV_HEIGHT = 80; // h-20
-const FOOTER_HEIGHT = 96; // h-24
+// The footer renders on every page. Its EU funding text wraps to ~4 lines
+// (text-xs, max-w-[680px]) inside p-6, so it is ~120px tall — noticeably more
+// than the old 96px estimate, which let content bleed over it.
+const FOOTER_HEIGHT = 130;
 const PAGE_GAPS = 48; // gap-4 (16px) × 3 slots between nav/content/footer
 const CONTENT_TOP_PADDING = 32; // mt-8 or top spacing inside content div
 
@@ -33,25 +37,41 @@ const DETAILED_CARD_HEADER_HEIGHT = 60; // "To reach Level N" heading + gap
 const DETAILED_CARD_SECTION_GAP = 24; // gap-6 between cards
 const DETAILED_CARD_WRAPPER_PADDING = 48; // p-6 top + bottom on the white card
 
-// Gap heights
-const GAP_HEADER_HEIGHT = 80; // gap description text + pt-4/pb-6 padding + border
-const GAP_SERVICE_LABEL_HEIGHT = 26; // "SERVICE AVAILABLE" label + margin
-const GAP_SERVICE_NAME_HEIGHT = 24; // service name line (text-base font-medium)
-const GAP_SERVICE_DESC_LINE_HEIGHT = 20; // each line of description text (text-sm)
-const GAP_SERVICE_URL_HEIGHT = 30; // URL row with globe icon (mt-2.5 = 10px + text)
-const GAP_SERVICE_SEPARATOR_HEIGHT = 28; // border-t + pt-3(12px) + mt-4(16px) between services
-const GAP_SERVICE_ITEM_GAP = 8; // gap-1 within service (name/desc spacing)
-const GAP_COMING_SOON_HEIGHT = 20; // "COMING SOON" label
+// Gap heights (services rendered as a 2-column table: Services | Description)
+// Values are deliberately a touch generous so pagination breaks EARLY rather
+// than risking a row/section being cut across a page boundary.
+const GAP_HEADER_VPAD = 44; // "Gap N:" row pt-4 + spacing before the table
+const GAP_HEADER_DESC_LINE_HEIGHT = 26; // each line of the gap description (text-base font-semibold)
+const GAP_HEADER_DESC_CHARS_PER_LINE = 118; // ~1080px inner width / ~9px per char
+const GAP_HEADER_PREFIX_CHARS = 9; // "Gap 12: " prefix added to the description
+const GAP_HEADER_BADGE_HEIGHT = 26; // status badge (SERVICES AVAILABLE / COMING SOON) + margin
 
-// Text estimation for service descriptions
-const SERVICE_DESC_CHARS_PER_LINE = 108; // ~900px max-width / ~8.3px per char at text-sm
+// Services table
+const TABLE_COLUMN_HEADER_HEIGHT = 44; // "Services | Description" header row (bg, py-2.5)
+const TABLE_ROW_VPAD = 32; // each row px-4 py-4 → 16 top + 16 bottom
+const SERVICE_NAME_LINE_HEIGHT = 24; // service name (text-base font-semibold)
+const SERVICE_NAME_CHARS_PER_LINE = 40; // ~380px "Services" column
+const SERVICE_NAME_LINK_GAP = 6; // gap-1.5 between name and url
+const SERVICE_LINK_HEIGHT = 24; // url row (text-sm + external-link icon)
+const SERVICE_DESC_LINE_HEIGHT = 20; // each line of description (text-sm)
+const SERVICE_DESC_CHARS_PER_LINE = 72; // ~620px "Description" column
 
 // Answers section
-const ANSWERS_TITLE_HEIGHT = 60; // "Your answers" heading
-const ANSWERS_SCALE_LABEL_HEIGHT = 50; // scale label (e.g., "TRL") + margin
-const ANSWER_CARD_BASE_HEIGHT = 110; // p-6(48) + question(28) + answer(24) + gap-2(8) + border/margin
+const ANSWERS_TITLE_HEIGHT = 92; // "Your answers": mt-8(32) + text-2xl(~32) + mb-6(24)
+const ANSWERS_SCALE_LABEL_HEIGHT = 50; // scale label text-xl(~28) + gap-4(16) to first card
+// Base assumes a single-line question + divider + single-line answer. Extra
+// lines for long questions/answers and the optional comment are added on top.
+const ANSWER_CARD_BASE_HEIGHT = 135; // p-6(48) + question(28) + divider(my-3=24+1) + answer(24) + margins
+const ANSWER_QUESTION_LINE_HEIGHT = 28; // each extra line of the question (text-lg)
+const ANSWER_QUESTION_CHARS_PER_LINE = 100; // ~1030px card width / ~10px per char at text-lg
+const ANSWER_TEXT_LINE_HEIGHT = 24; // each extra line of the answer text
+const ANSWER_TEXT_CHARS_PER_LINE = 118; // ~1030px card width / ~8.7px per char
 const ANSWER_COMMENT_LINE_HEIGHT = 20; // each line of comment text (text-sm)
-const ANSWER_COMMENT_CHARS_PER_LINE = 108; // ~900px max-width / ~8.3px per char at text-sm
+// Comment now spans the full card width (~1344px, no max-w) → ~140 chars/line
+// at text-sm (kept slightly conservative so it never underestimates).
+const ANSWER_COMMENT_CHARS_PER_LINE = 140;
+const ANSWER_COMMENT_TOP_GAP = 4; // mt-1 above the comment
+const ANSWER_CARD_GAP = 8; // gap-2 between answer cards
 const ANSWERS_SECTION_GAP = 36; // mb-9
 
 // Disclaimer
@@ -128,29 +148,63 @@ function estimateTextLines(text: string, charsPerLine: number): number {
   return Math.max(1, Math.ceil(text.length / charsPerLine));
 }
 
-function estimateServiceItemHeight(
-  service: RecommendedServicePayload,
-  isFirst: boolean,
-): number {
+// A single service row in the table. Its height is the taller of the two
+// columns (name+link on the left, description on the right), plus row padding.
+// Rows are treated as atomic — never split across a page.
+function estimateServiceRowHeight(service: RecommendedServicePayload): number {
+  const nameLines = estimateTextLines(service.name, SERVICE_NAME_CHARS_PER_LINE);
   const descLines = estimateTextLines(
     service.description,
     SERVICE_DESC_CHARS_PER_LINE,
   );
-  const urlHeight = service.url ? GAP_SERVICE_URL_HEIGHT : 0;
-  const separatorHeight = isFirst ? 0 : GAP_SERVICE_SEPARATOR_HEIGHT;
+  const leftHeight =
+    nameLines * SERVICE_NAME_LINE_HEIGHT +
+    (service.url ? SERVICE_NAME_LINK_GAP + SERVICE_LINK_HEIGHT : 0);
+  const rightHeight = descLines * SERVICE_DESC_LINE_HEIGHT;
+  return TABLE_ROW_VPAD + Math.max(leftHeight, rightHeight);
+}
+
+// "Gap N: {description}" heading + status badge. The description can wrap.
+function estimateGapHeaderHeight(gap: GapDto): number {
+  const descLength = (gap.gapDescription || '').length + GAP_HEADER_PREFIX_CHARS;
+  const descLines = Math.max(
+    1,
+    Math.ceil(descLength / GAP_HEADER_DESC_CHARS_PER_LINE),
+  );
   return (
-    separatorHeight +
-    GAP_SERVICE_NAME_HEIGHT +
-    descLines * GAP_SERVICE_DESC_LINE_HEIGHT +
-    GAP_SERVICE_ITEM_GAP +
-    urlHeight
+    GAP_HEADER_VPAD +
+    descLines * GAP_HEADER_DESC_LINE_HEIGHT +
+    GAP_HEADER_BADGE_HEIGHT
   );
 }
 
 function estimateAnswerHeight(answer: AnswerDto): number {
-  const commentText = answer.comment || '-';
-  const commentLines = estimateTextLines(commentText, ANSWER_COMMENT_CHARS_PER_LINE);
-  return ANSWER_CARD_BASE_HEIGHT + commentLines * ANSWER_COMMENT_LINE_HEIGHT;
+  // Every card is: question + divider + answer (all covered by the base). Only
+  // the extra wrapped lines and the optional comment are added on top.
+  const questionLines = estimateTextLines(
+    answer.question,
+    ANSWER_QUESTION_CHARS_PER_LINE,
+  );
+  // "Not applicable" renders a single short line where the answer would be.
+  const answerLines = answer.notApplicable
+    ? 1
+    : estimateTextLines(answer.answer, ANSWER_TEXT_CHARS_PER_LINE);
+  // Comment is only rendered when present (no "-" placeholder anymore). When it
+  // is, it adds its own top gap (mt-1) plus one row per wrapped line.
+  const hasComment = !answer.notApplicable && !!answer.comment;
+  const commentLines = hasComment
+    ? estimateTextLines(answer.comment, ANSWER_COMMENT_CHARS_PER_LINE)
+    : 0;
+  const commentHeight = hasComment
+    ? ANSWER_COMMENT_TOP_GAP + commentLines * ANSWER_COMMENT_LINE_HEIGHT
+    : 0;
+  return (
+    ANSWER_CARD_GAP +
+    ANSWER_CARD_BASE_HEIGHT +
+    Math.max(0, questionLines - 1) * ANSWER_QUESTION_LINE_HEIGHT +
+    Math.max(0, answerLines - 1) * ANSWER_TEXT_LINE_HEIGHT +
+    commentHeight
+  );
 }
 
 // ── Page layout builder ────────────────────────────────────────────────
@@ -223,14 +277,14 @@ class PageBuilder {
     let usedHeight = getWrapperHeight(currentBlockIsFirst);
 
     // Ensure space for the wrapper + at least something
-    this.ensureSpace(usedHeight + GAP_HEADER_HEIGHT);
+    this.ensureSpace(usedHeight + estimateGapHeaderHeight(scale.gaps[0]));
 
     for (let gapIdx = 0; gapIdx < scale.gaps.length; gapIdx++) {
       const gap = scale.gaps[gapIdx];
 
       // Gap with no services (COMING SOON) - treat as atomic
       if (!gap.hasServices || gap.recommendedServices.length === 0) {
-        const gapHeight = GAP_HEADER_HEIGHT + GAP_COMING_SOON_HEIGHT;
+        const gapHeight = estimateGapHeaderHeight(gap);
 
         if (usedHeight + gapHeight > this.remainingHeight) {
           // Flush current block
@@ -263,66 +317,59 @@ class PageBuilder {
         continue;
       }
 
-      // Gap with services - can be split across pages
+      // Gap with services — the table can be split across pages, but never in
+      // the middle of a row. Each slice repeats the "Services | Description"
+      // header; the gap heading shows only once (first slice of the gap).
+      const gapHeaderHeight = estimateGapHeaderHeight(gap);
       let serviceIdx = 0;
       let showGapHeader = true;
-
-      let isFirstServiceInSlice = true; // first service of the current visual slice
+      let startingNewSlice = true;
 
       while (serviceIdx < gap.recommendedServices.length) {
         const service = gap.recommendedServices[serviceIdx];
-        const serviceHeight = estimateServiceItemHeight(service, isFirstServiceInSlice);
+        const rowHeight = estimateServiceRowHeight(service);
 
-        // Height needed to place this service
-        let neededForThis = serviceHeight;
-        if (showGapHeader) {
-          neededForThis += GAP_HEADER_HEIGHT + GAP_SERVICE_LABEL_HEIGHT;
-        }
+        // Fixed cost to open this service's slice on the current page.
+        let sliceOverhead = 0;
+        if (startingNewSlice) sliceOverhead += TABLE_COLUMN_HEADER_HEIGHT;
+        if (showGapHeader) sliceOverhead += gapHeaderHeight;
 
-        if (usedHeight + neededForThis > this.remainingHeight) {
-          // Doesn't fit - flush current block and start new page
-          if (currentSlices.length > 0) {
-            this.addBlock(
-              {
-                type: 'detailed-card',
-                scaleKey: config.key,
-                color: config.color,
-                indexBgColor: config.indexBgColor,
-                isFirstPageOfScale: currentBlockIsFirst,
-                gapSlices: currentSlices,
-              },
-              usedHeight,
-            );
-            currentSlices = [];
-            currentBlockIsFirst = false;
-          }
+        const isPageEmpty = currentSlices.length === 0;
+
+        if (
+          usedHeight + sliceOverhead + rowHeight > this.remainingHeight &&
+          !isPageEmpty
+        ) {
+          // Doesn't fit and there's content to flush → break to a new page and
+          // retry this same service (re-opening the slice with its header).
+          this.addBlock(
+            {
+              type: 'detailed-card',
+              scaleKey: config.key,
+              color: config.color,
+              indexBgColor: config.indexBgColor,
+              isFirstPageOfScale: currentBlockIsFirst,
+              gapSlices: currentSlices,
+            },
+            usedHeight,
+          );
+          currentSlices = [];
+          currentBlockIsFirst = false;
           this.startNewPage();
           usedHeight = getWrapperHeight(false);
-          isFirstServiceInSlice = true; // reset for new page slice
-
-          // If gap header hasn't been shown yet, we still need it
-          // If it was already shown, continuation won't show it
-          // showGapHeader stays as-is
-
-          // Recalculate service height now that it's first in slice
-          const recalcHeight = estimateServiceItemHeight(service, true);
-          neededForThis = recalcHeight;
-          if (showGapHeader) {
-            neededForThis += GAP_HEADER_HEIGHT + GAP_SERVICE_LABEL_HEIGHT;
-          }
+          startingNewSlice = true; // new page → repeat the table header
+          continue;
         }
 
-        // Start or extend a slice for this gap
+        // Place the service: open a new slice or extend the current one.
         const lastSlice =
           currentSlices.length > 0
             ? currentSlices[currentSlices.length - 1]
             : null;
 
-        if (lastSlice && lastSlice.gapIndex === gapIdx) {
-          // Extend existing slice
+        if (!startingNewSlice && lastSlice && lastSlice.gapIndex === gapIdx) {
           lastSlice.serviceEndIndex = serviceIdx + 1;
         } else {
-          // Start new slice
           currentSlices.push({
             gapIndex: gapIdx,
             serviceStartIndex: serviceIdx,
@@ -331,14 +378,9 @@ class PageBuilder {
           });
         }
 
-        // Use recalculated height if page break happened
-        const finalServiceHeight = estimateServiceItemHeight(service, isFirstServiceInSlice);
-        if (showGapHeader) {
-          usedHeight += GAP_HEADER_HEIGHT + GAP_SERVICE_LABEL_HEIGHT;
-          showGapHeader = false;
-        }
-        usedHeight += finalServiceHeight;
-        isFirstServiceInSlice = false;
+        usedHeight += sliceOverhead + rowHeight;
+        startingNewSlice = false;
+        showGapHeader = false;
         serviceIdx++;
       }
     }
@@ -366,7 +408,9 @@ class PageBuilder {
 
     // ── Detailed cards for each scale ──
     for (const config of SCALE_CONFIGS) {
-      const scale: ScaleDataDto = reportData[config.key];
+      const scale = reportData[config.key];
+      // Scale not assessed — skip its section entirely.
+      if (!scale) continue;
       this.buildDetailedScale(config, scale, true);
     }
 
@@ -374,9 +418,9 @@ class PageBuilder {
     let isFirstAnswerBlock = true;
 
     for (const config of SCALE_CONFIGS) {
-      const scale: ScaleDataDto = reportData[config.key];
+      const scale = reportData[config.key];
 
-      if (scale.answers.length === 0) continue;
+      if (!scale || scale.answers.length === 0) continue;
 
       let answerIndex = 0;
       let showLabel = true;

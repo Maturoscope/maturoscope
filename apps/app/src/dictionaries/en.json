@@ -1,7 +1,8 @@
 {
   "lang": "en",
   "common": {
-    "loadingLabel": "Loading..."
+    "loadingLabel": "Loading...",
+    "notApplicableLabel": "Not Applicable"
   },
   "header": {
     "stringConnector": "by"
@@ -75,11 +76,38 @@
     "buttonLabel": "Start Assessment"
   },
   "begin": {
-    "title": "What are we evaluating today?",
+    "title": "Tell us about your innovation",
     "label": "Name your project",
     "placeholder": "Solar Panel Prototype v2",
     "backButtonLabel": "Back",
-    "nextButtonLabel": "Continue"
+    "nextButtonLabel": "Continue",
+    "evaluation": {
+      "title": "What are you evaluating?",
+      "description": "Select below on which scales you want to evaluate your innovation. Each scale has its specificities and is recommended or not according to your innovation type.",
+      "availableDimensionsTitle": "Available Dimensions",
+      "availableDimensionsDescription": "Choose the ones you want to assess.",
+      "recommendedLabel": "Recommended",
+      "disclaimer": "TRL and MfRL were designed for physical products. If some questions don't fit, mark them as Not Applicable.",
+      "types": {
+        "product": {
+          "label": "Product",
+          "description": "Something that gets manufactured"
+        },
+        "software": {
+          "label": "Software",
+          "description": "An app, platform or digital tool"
+        },
+        "service": {
+          "label": "Service",
+          "description": "Consulting, installation, operations"
+        }
+      },
+      "dimensions": {
+        "trl": "TRL — Technology Readiness Level",
+        "mkrl": "MkRL — Market Readiness Level",
+        "mfrl": "MfRL — Manufacturing Readiness Level"
+      }
+    }
   },
   "form": {
     "buttonNextLabel": "Continue",
@@ -95,35 +123,32 @@
       "cancelButtonLabel": "Cancel"
     },
     "checkpoint": {
-      "buttonLabel": "Back to"
+      "buttonLabel": "Back to",
+      "continueToLabel": "Continue to",
+      "seeReportLabel": "See report",
+      "intermediateTitle": "{scale} completed",
+      "intermediateDescription": "Great progress. Up next: {next}.",
+      "finalTitle": "Assessment completed",
+      "finalDescription": "Your report is ready to be generated. (Last chance to review — answers can't be changed after this step.)"
     },
     "stages": [
       {
         "id": "trl",
         "icon": "/icons/form/trl.svg",
         "name": "TRL",
-        "title": "Technology Analysis Completed",
-        "description": "One step down. Now, let's see if the market is ready for it.",
-        "reviewLabel": "Review answers",
-        "buttonLabel": "Continue to MkRL"
+        "reviewLabel": "Review answers"
       },
       {
         "id": "mkrl",
         "icon": "/icons/form/mkrl.svg",
         "name": "MkRL",
-        "title": "Market Context Secured",
-        "description": "You have covered the \"What\" and the \"Who.\" Now for the final piece: the \"How.\"",
-        "reviewLabel": "Review answers",
-        "buttonLabel": "Continue to MfRL"
+        "reviewLabel": "Review answers"
       },
       {
         "id": "mfrl",
         "icon": "/icons/form/mfrl.svg",
         "name": "MfRL",
-        "title": "Assessment Completed",
-        "description": "Your report is ready to be generated. (Last chance to review, answers cannot be changed after this step).",
-        "reviewLabel": "Review answers",
-        "buttonLabel": "See report"
+        "reviewLabel": "Review answers"
       }
     ]
   },
@@ -164,6 +189,8 @@
       "title": "Overview",
       "learnMoreButtonLabel": "Learn more",
       "resultsSufixLabel": "Results",
+      "notScoredLabel": "Not Scored",
+      "notScoredDescription": "All questions marked Not Applicable",
       "stages": [
         {
           "label": "TRL",
@@ -198,8 +225,13 @@
       "serviceLabel": "Service available",
       "servicesLabel": "Services available",
       "comingSoonLabel": "Coming soon",
+      "gapLabel": "Gap",
+      "servicesColumnLabel": "Services",
+      "descriptionColumnLabel": "Description",
       "focusLabel": "Current focus",
-      "primaryRiskLabel": "Primary Risk to Mitigate"
+      "primaryRiskLabel": "Primary Risk to Mitigate",
+      "noScoreTitle": "No {scale} score",
+      "noScoreDescription": "You marked all {scale} questions as Not Applicable, there are no gaps or services available."
     },
     "ctaBanner": {
       "title": "Turn this plan into reality.",

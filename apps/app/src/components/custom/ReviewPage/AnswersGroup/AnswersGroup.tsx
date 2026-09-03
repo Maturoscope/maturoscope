@@ -11,10 +11,15 @@ import Answer from "@/components/custom/ReviewPage/Answer/Answer"
 interface AnswersGroupProps {
   stageName: StageId
   lang: Locale
+  notApplicableLabel: string
 }
 
-const AnswersGroup = ({ stageName, lang }: AnswersGroupProps) => {
-  const questionsAndAnswers = useStageAnswers(stageName, lang)
+const AnswersGroup = ({
+  stageName,
+  lang,
+  notApplicableLabel,
+}: AnswersGroupProps) => {
+  const questionsAndAnswers = useStageAnswers(stageName, lang, notApplicableLabel)
 
   return (
     <div className="w-full flex flex-col items-center justify-start gap-3 px-4 lg:p-6 !pt-0">
