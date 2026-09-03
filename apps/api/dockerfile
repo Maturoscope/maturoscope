@@ -50,8 +50,14 @@ COPY --from=prunner /app/out/full/ .
 # Copy complete API package.json
 COPY apps/api/package.json ./apps/api/package.json
 
-# Install all API dependencies explicitly
-RUN yarn add @nestjs/typeorm typeorm @nestjs/core @nestjs/common @nestjs/platform-express
+# Install all API runtime dependencies explicitly. turbo prune + the non-frozen
+# lockfile can resolve a non-deterministic tree, so the @nestjs/* packages that
+# app.module loads at startup are pinned here to guarantee they end up hoisted
+# in /app/node_modules (the only node_modules copied into the runner stage).
+RUN yarn add \
+    @nestjs/typeorm typeorm \
+    @nestjs/core @nestjs/common @nestjs/platform-express \
+    @nestjs/config @nestjs/swagger @nestjs/jwt @nestjs/passport @nestjs/mapped-types
 
 # Compile the API
 RUN yarn turbo run build --filter=api
