@@ -84,11 +84,18 @@ const Overview = ({
   const [phasesData, setPhasesData] = useState<PhasesStorage>({})
   const [notScoredData, setNotScoredData] = useState<NotScoredStorage>({})
   const [selectedScales, setSelectedScales] = useState<StageId[]>(ALL_SCALES)
+  // Cards are held until the localStorage-backed data is read on the client, so
+  // a single-scale assessment never flashes all three cards first. Starting at
+  // false also matches the server render (no hydration mismatch).
+  const [isHydrated, setIsHydrated] = useState(false)
 
-  // Only show the scales the user chose to assess.
-  const visibleStages = stages.filter((stage) =>
-    selectedScales.includes(LABEL_TO_KEY[stage.label])
-  )
+  // Only show the scales the user chose to assess. Empty until hydrated so the
+  // cards are never rendered with the default (all-scales) placeholder values.
+  const visibleStages = isHydrated
+    ? stages.filter((stage) =>
+        selectedScales.includes(LABEL_TO_KEY[stage.label])
+      )
+    : []
 
   const formattedStages = visibleStages.map((stage) => {
     const stageKey = LABEL_TO_KEY[stage.label]
@@ -121,6 +128,7 @@ const Overview = ({
     if (storedPhases) setPhasesData(JSON.parse(storedPhases))
     if (storedNotScored) setNotScoredData(JSON.parse(storedNotScored))
     setSelectedScales(getSelectedScales())
+    setIsHydrated(true)
   }, [])
 
   const isBackButtonDisabled = activeIndex === 0

@@ -84,7 +84,11 @@ const QuestionEditor = ({
 
   const handleOptionChange = (optionId: string) => {
     setSelectedOptionId(optionId)
-    // Comments are now stored per option, no need to clear
+    // A "not applicable" answer never carries a note, so clear any previously
+    // entered comment (matches the form's NotApplicableOption behaviour).
+    if (optionId === NOT_APPLICABLE_VALUE) {
+      setCommentsPerOption({})
+    }
   }
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

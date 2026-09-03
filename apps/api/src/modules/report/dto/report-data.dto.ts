@@ -7,6 +7,7 @@ import {
   ValidateNested,
   IsOptional,
   MaxLength,
+  Matches,
 } from 'class-validator';
 
 // Strips control characters and trims surrounding whitespace.
@@ -109,9 +110,11 @@ export class ReportDataDto {
   @IsOptional()
   signature?: string;
 
-  // Organization accent colour (hex) — used for the service links.
+  // Organization accent colour (hex) — used for the service links. Restricted
+  // to a hex value since it is interpolated into an inline `style` attribute.
   @IsString()
   @IsOptional()
+  @Matches(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)
   accentColor?: string;
 
   // The user chooses which scales to assess (1, 2 or all 3), so each scale is
