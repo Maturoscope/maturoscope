@@ -259,6 +259,9 @@
   .my-3 {
     margin-block: calc(var(--spacing) * 3);
   }
+  .mt-1 {
+    margin-top: calc(var(--spacing) * 1);
+  }
   .mt-4 {
     margin-top: calc(var(--spacing) * 4);
   }
@@ -342,9 +345,6 @@
   }
   .max-w-\[825px\] {
     max-width: 825px;
-  }
-  .max-w-\[900px\] {
-    max-width: 900px;
   }
   .min-w-0 {
     min-width: calc(var(--spacing) * 0);

@@ -57,19 +57,21 @@ const SERVICE_DESC_LINE_HEIGHT = 20; // each line of description (text-sm)
 const SERVICE_DESC_CHARS_PER_LINE = 72; // ~620px "Description" column
 
 // Answers section
-const ANSWERS_TITLE_HEIGHT = 60; // "Your answers" heading
-const ANSWERS_SCALE_LABEL_HEIGHT = 50; // scale label (e.g., "TRL") + margin
-// Base assumes a single-line question and a single-line answer (e.g. the short
-// "Not Applicable"). Extra lines for long questions/answers are added on top.
-const ANSWER_CARD_BASE_HEIGHT = 110; // p-6(48) + question(28) + answer(24) + gap-2(8) + border/margin
+const ANSWERS_TITLE_HEIGHT = 92; // "Your answers": mt-8(32) + text-2xl(~32) + mb-6(24)
+const ANSWERS_SCALE_LABEL_HEIGHT = 50; // scale label text-xl(~28) + gap-4(16) to first card
+// Base assumes a single-line question + divider + single-line answer. Extra
+// lines for long questions/answers and the optional comment are added on top.
+const ANSWER_CARD_BASE_HEIGHT = 135; // p-6(48) + question(28) + divider(my-3=24+1) + answer(24) + margins
 const ANSWER_QUESTION_LINE_HEIGHT = 28; // each extra line of the question (text-lg)
 const ANSWER_QUESTION_CHARS_PER_LINE = 100; // ~1030px card width / ~10px per char at text-lg
 const ANSWER_TEXT_LINE_HEIGHT = 24; // each extra line of the answer text
 const ANSWER_TEXT_CHARS_PER_LINE = 118; // ~1030px card width / ~8.7px per char
 const ANSWER_COMMENT_LINE_HEIGHT = 20; // each line of comment text (text-sm)
-const ANSWER_COMMENT_CHARS_PER_LINE = 108; // ~900px max-width / ~8.3px per char at text-sm
+// Comment now spans the full card width (~1344px, no max-w) → ~140 chars/line
+// at text-sm (kept slightly conservative so it never underestimates).
+const ANSWER_COMMENT_CHARS_PER_LINE = 140;
+const ANSWER_COMMENT_TOP_GAP = 4; // mt-1 above the comment
 const ANSWER_CARD_GAP = 8; // gap-2 between answer cards
-const ANSWER_NOT_APPLICABLE_EXTRA = 16; // divider (my-3 + h-px) minus the absent comment line
 const ANSWERS_SECTION_GAP = 36; // mb-9
 
 // Disclaimer
@@ -177,27 +179,31 @@ function estimateGapHeaderHeight(gap: GapDto): number {
 }
 
 function estimateAnswerHeight(answer: AnswerDto): number {
-  // The base already covers one line of question + one line of answer; only the
-  // extra wrapped lines are added. "Not Applicable" is a single short line, so
-  // its card estimates at the (generous) base.
+  // Every card is: question + divider + answer (all covered by the base). Only
+  // the extra wrapped lines and the optional comment are added on top.
   const questionLines = estimateTextLines(
     answer.question,
     ANSWER_QUESTION_CHARS_PER_LINE,
   );
-  const answerLines = estimateTextLines(answer.answer, ANSWER_TEXT_CHARS_PER_LINE);
-  // "Not applicable" cards have no comment but add a divider; scored cards show
-  // the comment (or "-").
-  const commentLines = answer.notApplicable
-    ? 0
-    : estimateTextLines(answer.comment || '-', ANSWER_COMMENT_CHARS_PER_LINE);
-  const notApplicableExtra = answer.notApplicable ? ANSWER_NOT_APPLICABLE_EXTRA : 0;
+  // "Not applicable" renders a single short line where the answer would be.
+  const answerLines = answer.notApplicable
+    ? 1
+    : estimateTextLines(answer.answer, ANSWER_TEXT_CHARS_PER_LINE);
+  // Comment is only rendered when present (no "-" placeholder anymore). When it
+  // is, it adds its own top gap (mt-1) plus one row per wrapped line.
+  const hasComment = !answer.notApplicable && !!answer.comment;
+  const commentLines = hasComment
+    ? estimateTextLines(answer.comment, ANSWER_COMMENT_CHARS_PER_LINE)
+    : 0;
+  const commentHeight = hasComment
+    ? ANSWER_COMMENT_TOP_GAP + commentLines * ANSWER_COMMENT_LINE_HEIGHT
+    : 0;
   return (
     ANSWER_CARD_GAP +
     ANSWER_CARD_BASE_HEIGHT +
     Math.max(0, questionLines - 1) * ANSWER_QUESTION_LINE_HEIGHT +
     Math.max(0, answerLines - 1) * ANSWER_TEXT_LINE_HEIGHT +
-    commentLines * ANSWER_COMMENT_LINE_HEIGHT +
-    notApplicableExtra
+    commentHeight
   );
 }
 

@@ -59,11 +59,11 @@
       "LOGIN_BUTTON": "Sign in",
       "LOGIN_SUCCESS": "Login successful!",
       "INVALID_CREDENTIALS": "Invalid email or password.",
-      "LOCK_WARNING": "Your account will be locked after too many failed attempts."
+      "LOCK_WARNING": "Your account will be blocked after too many failed attempts."
     },
     "BLOCKED_ACCOUNT": {
       "TITLE": "Your sign-in was blocked",
-      "MESSAGE": "For security reasons, your account was locked after multiple failed sign-in attempts.",
+      "MESSAGE": "For security reasons, your account was blocked after multiple failed sign-in attempts.",
       "EMAIL_SENT": "We've sent you an email with instructions to unlock your account and reset your password.",
       "GO_BACK_TO": "Go to",
       "SIGN_IN": "Sign in"

@@ -144,17 +144,18 @@ const SimpleForm = ({
         >
           {title}
         </h1>
-        <p
-          className="reveal text-2xl text-foreground font-semibold"
-          style={{ "--reveal-delay": "0.18s" } as React.CSSProperties}
-        >
-          {label}
-        </p>
         <div
           className="reveal w-full flex flex-col items-end gap-1"
-          style={{ "--reveal-delay": "0.26s" } as React.CSSProperties}
+          style={{ "--reveal-delay": "0.18s" } as React.CSSProperties}
         >
+          <label
+            htmlFor="project-name"
+            className="w-full text-sm font-medium text-foreground"
+          >
+            {label}
+          </label>
           <input
+            id="project-name"
             placeholder={placeholder}
             value={projectName}
             onChange={(e) => setProjectName(e.target.value)}
