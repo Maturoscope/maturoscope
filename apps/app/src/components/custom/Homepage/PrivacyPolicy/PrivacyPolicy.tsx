@@ -14,6 +14,7 @@ import { Locale } from "@/dictionaries/dictionaries"
 
 export interface PrivacyPolicyProps {
   description: string
+  conceivedByLabel: string
   copyright: string
   contactUsLabel: string
   privacyPolicyLabel: string
@@ -24,9 +25,10 @@ export interface PrivacyPolicyProps {
 }
 
 const SYNOPP_URL = "https://synopp.io/"
+const NOBATEK_URL = "https://www.nobatek.com/"
 const EMAIL_ADDRESS = "communication@nobatek.com"
 
-const PrivacyPolicy = ({ description, copyright, contactUsLabel, privacyPolicyLabel, privacyPolicyModal }: PrivacyPolicyProps) => {
+const PrivacyPolicy = ({ description, conceivedByLabel, copyright, contactUsLabel, privacyPolicyLabel, privacyPolicyModal }: PrivacyPolicyProps) => {
   const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false)
   const { lang } = useParams<{ lang: Locale }>()
 
@@ -64,7 +66,16 @@ const PrivacyPolicy = ({ description, copyright, contactUsLabel, privacyPolicyLa
             </button>
           </div>
           <p className="text-sm text-muted-foreground w-max">
-            {copyright}{" "}
+            {conceivedByLabel}{" "}
+            <a
+              href={NOBATEK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline font-medium"
+            >
+              Nobatek
+            </a>{" "}
+            / {copyright}{" "}
             <a
               href={SYNOPP_URL}
               target="_blank"
