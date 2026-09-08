@@ -132,6 +132,21 @@
       "TOOLTIP_LEVEL": "Level",
       "USERS": "users"
     },
+    "SCALE_FUNNEL": {
+      "TITLE": "Assessments by scale",
+      "DESCRIPTION": "Started vs. completed vs. abandoned for each scale, to see which one is selected the most.",
+      "STARTED": "Started",
+      "COMPLETED": "Completed",
+      "ABANDONED": "Abandoned",
+      "COMPLETION": "completion",
+      "ASSESSMENTS": "assessments"
+    },
+    "SERVICE_CONSULTATIONS": {
+      "TITLE": "Most consulted services",
+      "DESCRIPTION": "How many times each service has been consulted through the contact flow.",
+      "CONSULTATIONS": "consultations",
+      "NO_DATA": "No services have been consulted yet."
+    },
     "LOADING": "Loading...",
     "REPORTS_FILTER": {
       "SELECT_ORGANIZATION": "Select organization",

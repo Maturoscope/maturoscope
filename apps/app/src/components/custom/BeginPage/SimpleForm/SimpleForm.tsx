@@ -24,7 +24,7 @@ import {
   setEvaluationType,
 } from "@/lib/evaluation"
 // Actions
-import { clearAssessmentTracking } from "@/actions/tracking"
+import { clearAssessmentTracking, trackStartedScales } from "@/actions/tracking"
 
 const MAX_PROJECT_NAME_LENGTH = 60
 
@@ -109,6 +109,15 @@ const SimpleForm = ({
     localStorage.setItem("projectName", projectName)
     setSelectedScales(selectedScales)
     setEvaluationType(evaluationType)
+    // Track one "started" per chosen scale (fire-and-forget).
+    const SCALE_LABELS: Record<StageId, "TRL" | "MkRL" | "MfRL"> = {
+      trl: "TRL",
+      mkrl: "MkRL",
+      mfrl: "MfRL",
+    }
+    trackStartedScales(selectedScales.map((s) => SCALE_LABELS[s])).catch(() => {
+      // Best-effort tracking — never block the flow.
+    })
     // Add query param so form page knows we're coming from begin page
     router.push(`/${lang}/form?from=begin`)
   }
