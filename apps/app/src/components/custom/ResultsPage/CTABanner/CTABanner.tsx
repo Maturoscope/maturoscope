@@ -188,7 +188,11 @@ const CTABanner = ({
       )}
 
       <Button
-        onClick={() => setIsResetFormModalOpen(true)}
+        onClick={() =>
+          hideBanner
+            ? handleResetButtonClick()
+            : setIsResetFormModalOpen(true)
+        }
         variant="outline"
         icon={<ResetIcon />}
       >
