@@ -7824,6 +7824,7 @@ __metadata:
     class-variance-authority: ^0.7.1
     clsx: ^2.1.1
     constate: ^3.3.2
+    driver.js: ^1.8.0
     eslint: ^9
     eslint-config-next: 15.5.9
     framer-motion: ^12.23.12
@@ -8145,6 +8146,13 @@ __metadata:
   version: 17.3.1
   resolution: "dotenv@npm:17.3.1"
   checksum: 3723ef6766ce91b0b9fa68fd5bf0fd6b77e316daa2ac8746bacbe301608b311b4abae63e475cacd5901cb3ad9cb6b07d0719fd1a030162fe09c56a583dd1ec50
+  languageName: node
+  linkType: hard
+
+"driver.js@npm:^1.8.0":
+  version: 1.8.0
+  resolution: "driver.js@npm:1.8.0"
+  checksum: ae52d0948636f2ec27ec9fd34699a342912cf384b024e55ee5812c0a4ace3ff20d0acadf41ada1aa6883c01e952f977b81cb8c67fc0ccabe5abee17061182655
   languageName: node
   linkType: hard
 

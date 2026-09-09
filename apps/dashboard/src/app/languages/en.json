@@ -136,6 +136,41 @@
     "REPORTS_FILTER": {
       "SELECT_ORGANIZATION": "Select organization",
       "ALL_ORGANIZATIONS": "All organizations"
+    },
+    "ONBOARDING": {
+      "WELCOME": {
+        "TITLE": "Welcome to Maturoscope! 👋",
+        "DESCRIPTION": "Let's take a quick tour to show you around your back office. It only takes a few seconds."
+      },
+      "NAV_DASHBOARD": {
+        "TITLE": "Dashboard",
+        "DESCRIPTION": "Your home base — track key metrics and how users progress through the assessment."
+      },
+      "NAV_SERVICES": {
+        "TITLE": "Services",
+        "DESCRIPTION": "Create and manage the services your organization offers. They're recommended to users based on their results."
+      },
+      "NAV_MEMBERS": {
+        "TITLE": "Members",
+        "DESCRIPTION": "Invite teammates and manage who has access to your organization."
+      },
+      "NAV_SETTINGS": {
+        "TITLE": "Settings",
+        "DESCRIPTION": "Customize your organization branding and manage your account and password."
+      },
+      "KPIS": {
+        "TITLE": "Key metrics",
+        "DESCRIPTION": "Keep an eye on assessments started, completion rate and how many users reach out to your experts."
+      },
+      "DONE": {
+        "TITLE": "You're all set! 🎉",
+        "DESCRIPTION": "That's the tour. You can always reach us from “Need help? Contact us” in the sidebar. Enjoy Maturoscope!"
+      },
+      "BUTTONS": {
+        "NEXT": "Next",
+        "PREV": "Back",
+        "DONE": "Got it"
+      }
     }
   },
   "MEMBERS": {

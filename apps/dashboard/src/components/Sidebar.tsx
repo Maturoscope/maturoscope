@@ -34,21 +34,25 @@ const generateNavData = (user: User | null, t: (key: string) => string) => {
       title: user?.organization?.name || "Organization",
       items: [
         {
+          key: "dashboard",
           title: t('DASHBOARD'),
           url: "/dashboard/overview",
           icon: LayoutDashboard,
         },
         {
+          key: "services",
           title: t('SERVICES'),
           url: "/dashboard/services",
           icon: File,
         },
         {
+          key: "members",
           title: t('MEMBERS'),
           url: "/dashboard/members",
           icon: Users,
         },
         {
+          key: "settings",
           title: t('SETTINGS'),
           url: "/dashboard/settings",
           icon: Settings,
@@ -56,19 +60,21 @@ const generateNavData = (user: User | null, t: (key: string) => string) => {
       ],
     });
   }
-  
+
   const hasAdminAccess = userRoles.includes('admin');
-  
+
   if (hasAdminAccess) {
     sections.push({
       title: t('SUPER_ADMIN'),
       items: [
         {
+          key: "reports",
           title: t('REPORTS'),
           url: "/dashboard/reports",
           icon: SquareUser,
         },
         {
+          key: "organizations",
           title: t('ORGANIZATIONS'),
           url: "/dashboard/organizations",
           icon: LineChart,
@@ -146,7 +152,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       return (
                         <SidebarMenuItem key={item.title}>
                           <SidebarMenuButton asChild isActive={isActive} className="px-6">
-                            <Link href={item.url} className="flex items-center gap-3">
+                            <Link
+                              href={item.url}
+                              data-tour={`nav-${item.key}`}
+                              className="flex items-center gap-3"
+                            >
                               <item.icon className="h-4 w-4" />
                               {item.title}
                             </Link>

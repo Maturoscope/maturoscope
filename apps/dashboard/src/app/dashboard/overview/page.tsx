@@ -10,6 +10,7 @@ import { formatKPINumber, formatYAxisLabel, formatTooltipValue, getYTickValues }
 import { Info } from "lucide-react";
 import { Tooltip as UITooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { WelcomeModal } from "@/components/WelcomeModal";
+import { useOnboardingTour } from "@/hooks/useOnboardingTour";
 
 interface DashboardStatistics {
   analysisCompletionRate: number;
@@ -75,6 +76,10 @@ export default function Page() {
   const [statistics, setStatistics] = useState<DashboardStatistics | null>(null);
   const [loading, setLoading] = useState(true);
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+
+  // First-time guided tour — runs once the overview is loaded and the welcome
+  // modal (if any) has been dismissed, so every step target is visible.
+  useOnboardingTour(!loading && !!statistics && !showWelcomeModal);
 
   // Check if user needs to see welcome modal
   useEffect(() => {
@@ -204,7 +209,7 @@ export default function Page() {
         {!loading && statistics && (
           <>
             {/* KPIs */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-h-[150px]">
+            <div data-tour="kpis" className="grid grid-cols-1 md:grid-cols-3 gap-6 max-h-[150px]">
               <div className="bg-white rounded-lg border border-gray-200 p-6 max-h-[150px]">
                 <div className="text-sm font-medium text-gray-600 mb-2">
                   {t('KPIS.TOTAL_ASSESSMENTS_STARTED')}
@@ -256,7 +261,7 @@ export default function Page() {
             </div>
 
             {/* Chart */}
-            <div className="bg-white rounded-lg border border-gray-200 p-6 ">
+            <div data-tour="chart" className="bg-white rounded-lg border border-gray-200 p-6 ">
               <div className="mb-8">
                 <h2 className="text-xl font-bold text-gray-900 mb-2">
                   {t('CHART.TITLE')}
