@@ -23,7 +23,7 @@ export class TrackingSession {
   sessionId: string;
 
   @Column({ type: 'varchar', length: 20 })
-  event: 'started' | 'completed' | 'category';
+  event: 'started' | 'completed' | 'category' | 'scale_started';
 
   @Column({ type: 'varchar', length: 10, nullable: true })
   category: string | null;

@@ -132,6 +132,21 @@
       "TOOLTIP_LEVEL": "Niveau",
       "USERS": "utilisateurs"
     },
+    "SCALE_FUNNEL": {
+      "TITLE": "Évaluations par échelle",
+      "DESCRIPTION": "Commencées vs. complétées vs. abandonnées pour chaque échelle, pour voir laquelle est la plus sélectionnée.",
+      "STARTED": "Commencées",
+      "COMPLETED": "Complétées",
+      "ABANDONED": "Abandonnées",
+      "COMPLETION": "complétion",
+      "ASSESSMENTS": "évaluations"
+    },
+    "SERVICE_CONSULTATIONS": {
+      "TITLE": "Services les plus consultés",
+      "DESCRIPTION": "Combien de fois chaque service a été consulté via le formulaire de contact.",
+      "CONSULTATIONS": "consultations",
+      "NO_DATA": "Aucun service n'a encore été consulté."
+    },
     "LOADING": "Chargement...",
     "REPORTS_FILTER": {
       "SELECT_ORGANIZATION": "Sélectionner une organisation",

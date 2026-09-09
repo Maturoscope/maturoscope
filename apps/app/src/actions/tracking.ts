@@ -125,6 +125,42 @@ const trackCompletedCategory = async (category: "TRL" | "MkRL" | "MfRL", level: 
   return response.json()
 }
 
+// Records one "started" per selected scale, used by the
+// started-vs-completed-vs-abandoned chart. Deduplicated via cookie (and again
+// server-side per session) so a reload doesn't double count.
+const trackStartedScales = async (scales: Array<"TRL" | "MkRL" | "MfRL">) => {
+  const cookieStore = await cookies()
+  if (cookieStore.get("tracked-scales-started")?.value) {
+    return { success: false, error: "Scales already tracked" }
+  }
+  if (scales.length === 0) {
+    return { success: false, error: "No scales selected" }
+  }
+
+  const organizationKey = await getOrganizationKeyFromCookies()
+  if (!organizationKey) {
+    return { success: false, error: "Organization key not found" }
+  }
+
+  const sessionId = await getOrCreateSessionId()
+
+  const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/statistics/track-scales-started?organizationKey=${organizationKey}`
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Session-Id": sessionId,
+    },
+    body: JSON.stringify({ scales }),
+  })
+
+  if (response.ok) {
+    cookieStore.set("tracked-scales-started", "true")
+  }
+
+  return response.json()
+}
+
 const clearAssessmentTracking = async () => {
   const cookieStore = await cookies()
   cookieStore.delete("started-assessment")
@@ -132,10 +168,11 @@ const clearAssessmentTracking = async () => {
   cookieStore.delete("tracked-category-TRL")
   cookieStore.delete("tracked-category-MkRL")
   cookieStore.delete("tracked-category-MfRL")
+  cookieStore.delete("tracked-scales-started")
   // Clear the session ID so a new one is generated for the next assessment.
   // This allows the same user to generate multiple reports, each counting
   // as a separate entry in statistics.
   cookieStore.delete(SESSION_ID_COOKIE)
 }
 
-export { trackStartedAssessment, trackCompletedAssessment, trackCompletedCategory, clearAssessmentTracking }
+export { trackStartedAssessment, trackCompletedAssessment, trackCompletedCategory, trackStartedScales, clearAssessmentTracking }

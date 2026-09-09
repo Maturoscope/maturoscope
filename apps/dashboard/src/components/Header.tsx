@@ -17,7 +17,7 @@ import { UserDropdown } from "./DropdownMenu"
   
   export function PageHeader({ breadcrumbs }: PageHeaderProps) {
     return (
-      <header className="bg-background sticky top-0 flex h-16 shrink-0 items-center justify-between border-b px-4">
+      <header className="bg-background sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b px-4">
         <div className="flex items-center gap-2">
           <SidebarTrigger className="-ml-1" />
           <Separator

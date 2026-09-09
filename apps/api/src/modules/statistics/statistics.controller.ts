@@ -9,6 +9,7 @@ import { ForbiddenException } from '@nestjs/common';
 import { OrganizationsService } from '../organizations/organizations.service';
 import { ValidRoles } from 'src/common/auth-module/interfaces/valid-roles';
 import { IncrementUserStatisticsDto } from './dto/increment-user-statistics.dto';
+import { TrackStartedScalesDto } from './dto/track-started-scales.dto';
 
 @ApiTags('statistics')
 @Controller('statistics')
@@ -112,6 +113,10 @@ export class StatisticsController {
       analysisCompletionRate,
       contactRate,
       chartData,
+      assessmentsByScale: statistics.assessmentsByScale,
+      serviceConsultations: await this.statisticsService.resolveServiceConsultations(
+        statistics.consultationsByService,
+      ),
       rawStatistics: {
         startedAssessments: statistics.startedAssessments,
         completedAssessments: statistics.completedAssessments,
@@ -207,6 +212,10 @@ export class StatisticsController {
       analysisCompletionRate,
       contactRate,
       chartData,
+      assessmentsByScale: statistics.assessmentsByScale,
+      serviceConsultations: await this.statisticsService.resolveServiceConsultations(
+        statistics.consultationsByService,
+      ),
       rawStatistics: {
         startedAssessments: statistics.startedAssessments,
         completedAssessments: statistics.completedAssessments,
@@ -301,6 +310,38 @@ export class StatisticsController {
       success: true,
       message: `User count incremented for category ${incrementUserDto.category} at level ${incrementUserDto.level}`,
     };
+  }
+
+  /**
+   * POST /statistics/track-scales-started?organizationKey=synopp
+   * Track which scales the user chose to assess (one "started" per scale).
+   * PUBLIC endpoint - No authentication required
+   */
+  @Post('track-scales-started')
+  @ApiOperation({
+    summary: 'Track started scales (PUBLIC)',
+    description:
+      'Records one "started" per selected scale (TRL/MkRL/MfRL), used by the started-vs-completed-vs-abandoned chart. PUBLIC endpoint called from the end-user application.',
+  })
+  @ApiQuery({ name: 'organizationKey', required: true, description: 'Organization unique key', example: 'synopp' })
+  @ApiResponse({ status: 200, description: 'Started scales tracked successfully' })
+  @ApiResponse({ status: 403, description: 'Forbidden - organizationKey required' })
+  async trackStartedScales(
+    @Query('organizationKey') organizationKey: string,
+    @Body() trackStartedScalesDto: TrackStartedScalesDto,
+    @Headers('x-session-id') sessionId?: string,
+  ) {
+    if (!organizationKey) {
+      throw new ForbiddenException('organizationKey query parameter is required');
+    }
+
+    await this.statisticsService.incrementStartedScales(
+      organizationKey,
+      trackStartedScalesDto.scales,
+      sessionId,
+    );
+
+    return { success: true, message: 'Started scales tracked' };
   }
 }
 

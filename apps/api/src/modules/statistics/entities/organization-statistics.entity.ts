@@ -55,6 +55,33 @@ export class OrganizationStatistics {
     MfRL: Record<string, number>;
   };
 
+  /**
+   * Started vs completed counts per scale. "abandoned" is derived as
+   * started - completed. Lets us see which scale is selected/completed the most.
+   * Format: { "TRL": { "started": 10, "completed": 6 }, "MkRL": {...}, "MfRL": {...} }
+   */
+  @Column({
+    type: 'jsonb',
+    default: {
+      TRL: { started: 0, completed: 0 },
+      MkRL: { started: 0, completed: 0 },
+      MfRL: { started: 0, completed: 0 },
+    },
+  })
+  assessmentsByScale: {
+    TRL: { started: number; completed: number };
+    MkRL: { started: number; completed: number };
+    MfRL: { started: number; completed: number };
+  };
+
+  /**
+   * How many times each service has been consulted (contacted through the
+   * "talk to an expert" flow). Keyed by service id.
+   * Format: { "<serviceId>": 12, ... }
+   */
+  @Column({ type: 'jsonb', default: {} })
+  consultationsByService: Record<string, number>;
+
   @CreateDateColumn()
   createdAt: Date;
 
