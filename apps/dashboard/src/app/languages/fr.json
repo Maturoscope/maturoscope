@@ -132,10 +132,60 @@
       "TOOLTIP_LEVEL": "Niveau",
       "USERS": "utilisateurs"
     },
+    "SCALE_FUNNEL": {
+      "TITLE": "Évaluations par échelle",
+      "DESCRIPTION": "Commencées vs. complétées vs. abandonnées pour chaque échelle, pour voir laquelle est la plus sélectionnée.",
+      "STARTED": "Commencées",
+      "COMPLETED": "Complétées",
+      "ABANDONED": "Abandonnées",
+      "COMPLETION": "complétion",
+      "ASSESSMENTS": "évaluations"
+    },
+    "SERVICE_CONSULTATIONS": {
+      "TITLE": "Services les plus consultés",
+      "DESCRIPTION": "Combien de fois chaque service a été consulté via le formulaire de contact.",
+      "CONSULTATIONS": "consultations",
+      "NO_DATA": "Aucun service n'a encore été consulté."
+    },
     "LOADING": "Chargement...",
     "REPORTS_FILTER": {
       "SELECT_ORGANIZATION": "Sélectionner une organisation",
       "ALL_ORGANIZATIONS": "Toutes les organisations"
+    },
+    "ONBOARDING": {
+      "WELCOME": {
+        "TITLE": "Bienvenue sur Maturoscope ! 👋",
+        "DESCRIPTION": "Faisons une visite rapide pour découvrir votre back office. Cela ne prend que quelques secondes."
+      },
+      "NAV_DASHBOARD": {
+        "TITLE": "Tableau de bord",
+        "DESCRIPTION": "Votre point de départ — suivez les indicateurs clés et la progression des utilisateurs dans l'évaluation."
+      },
+      "NAV_SERVICES": {
+        "TITLE": "Services",
+        "DESCRIPTION": "Créez et gérez les services proposés par votre organisation. Ils sont recommandés aux utilisateurs selon leurs résultats."
+      },
+      "NAV_MEMBERS": {
+        "TITLE": "Membres",
+        "DESCRIPTION": "Invitez des collègues et gérez les accès à votre organisation."
+      },
+      "NAV_SETTINGS": {
+        "TITLE": "Paramètres",
+        "DESCRIPTION": "Personnalisez l'identité de votre organisation et gérez votre compte et votre mot de passe."
+      },
+      "KPIS": {
+        "TITLE": "Indicateurs clés",
+        "DESCRIPTION": "Gardez un œil sur les évaluations commencées, le taux de complétion et le nombre d'utilisateurs qui contactent vos experts."
+      },
+      "DONE": {
+        "TITLE": "Tout est prêt ! 🎉",
+        "DESCRIPTION": "C'est la fin de la visite. Vous pouvez nous joindre à tout moment via « Besoin d'aide ? Contactez-nous » dans le menu. Profitez de Maturoscope !"
+      },
+      "BUTTONS": {
+        "NEXT": "Suivant",
+        "PREV": "Retour",
+        "DONE": "Compris"
+      }
     }
   },
   "MEMBERS": {

@@ -4,6 +4,7 @@ import { StatisticsService } from './statistics.service';
 import { StatisticsController } from './statistics.controller';
 import { OrganizationStatistics } from './entities/organization-statistics.entity';
 import { TrackingSession } from './entities/tracking-session.entity';
+import { Service } from '../services/entities/service.entity';
 import { OrganizationsModule } from '../organizations/organizations.module';
 import { UsersModule } from '../users/users.module';
 import { IntegrationAuth0Module } from '../integration-auth0/integration-auth0.module';
@@ -11,7 +12,7 @@ import { AuthModule } from '../../common/auth-module/auth.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([OrganizationStatistics, TrackingSession]),
+    TypeOrmModule.forFeature([OrganizationStatistics, TrackingSession, Service]),
     OrganizationsModule,
     UsersModule,
     IntegrationAuth0Module,

@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, IsNull } from 'typeorm';
+import { In } from 'typeorm';
 import { OrganizationStatistics } from './entities/organization-statistics.entity';
 import { TrackingSession } from './entities/tracking-session.entity';
+import { Service } from '../services/entities/service.entity';
 import { OrganizationsService } from '../organizations/organizations.service';
 import { ScaleType } from '../readiness-assessment/dto/readiness-assessment.dto';
 import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
@@ -16,6 +18,8 @@ export class StatisticsService {
     private readonly statisticsRepository: Repository<OrganizationStatistics>,
     @InjectRepository(TrackingSession)
     private readonly trackingSessionRepository: Repository<TrackingSession>,
+    @InjectRepository(Service)
+    private readonly serviceRepository: Repository<Service>,
     private readonly organizationsService: OrganizationsService,
     structuredLogger: StructuredLoggerService,
   ) {
@@ -29,7 +33,7 @@ export class StatisticsService {
   private async isDuplicateSession(
     organizationId: string,
     sessionId: string | undefined,
-    event: 'started' | 'completed' | 'category',
+    event: 'started' | 'completed' | 'category' | 'scale_started',
     category: string | null = null,
   ): Promise<boolean> {
     if (!sessionId) return false;
@@ -55,7 +59,7 @@ export class StatisticsService {
   private async recordSession(
     organizationId: string,
     sessionId: string | undefined,
-    event: 'started' | 'completed' | 'category',
+    event: 'started' | 'completed' | 'category' | 'scale_started',
     category: string | null = null,
   ): Promise<void> {
     if (!sessionId) return;
@@ -75,6 +79,39 @@ export class StatisticsService {
   }
 
   /**
+   * Zeroed data columns for a statistics row (no id/timestamps), used both to
+   * create a new record and to build in-memory fallbacks.
+   */
+  private defaultStatsColumns(organizationId: string) {
+    return {
+      organizationId,
+      startedAssessments: 0,
+      completedAssessments: 0,
+      contactedServices: 0,
+      usersByCategoryAndLevel: { TRL: {}, MkRL: {}, MfRL: {} },
+      assessmentsByScale: {
+        TRL: { started: 0, completed: 0 },
+        MkRL: { started: 0, completed: 0 },
+        MfRL: { started: 0, completed: 0 },
+      },
+      consultationsByService: {} as Record<string, number>,
+    };
+  }
+
+  /**
+   * Build a zeroed statistics object (with id/timestamps) for the in-memory
+   * fallbacks when no record exists yet.
+   */
+  private buildEmptyStatistics(organizationId: string): OrganizationStatistics {
+    return {
+      id: '',
+      ...this.defaultStatsColumns(organizationId),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    } as OrganizationStatistics;
+  }
+
+  /**
    * Get or create statistics record for an organization
    */
   private async getOrCreateStatistics(organizationId: string): Promise<OrganizationStatistics> {
@@ -83,18 +120,22 @@ export class StatisticsService {
     });
 
     if (!statistics) {
-      statistics = this.statisticsRepository.create({
-        organizationId,
-        startedAssessments: 0,
-        completedAssessments: 0,
-        contactedServices: 0,
-        usersByCategoryAndLevel: {
-          TRL: {},
-          MkRL: {},
-          MfRL: {},
-        },
-      });
+      statistics = this.statisticsRepository.create(
+        this.defaultStatsColumns(organizationId),
+      );
       statistics = await this.statisticsRepository.save(statistics);
+    } else {
+      // Backfill the newer JSONB columns for rows created before they existed.
+      if (!statistics.assessmentsByScale) {
+        statistics.assessmentsByScale = {
+          TRL: { started: 0, completed: 0 },
+          MkRL: { started: 0, completed: 0 },
+          MfRL: { started: 0, completed: 0 },
+        };
+      }
+      if (!statistics.consultationsByService) {
+        statistics.consultationsByService = {};
+      }
     }
 
     return statistics;
@@ -160,6 +201,81 @@ export class StatisticsService {
   }
 
   /**
+   * Increment the "started" counter for each scale the user chose to assess.
+   * Deduplicated per session and scale so a reload doesn't double count.
+   */
+  async incrementStartedScales(
+    organizationKey: string,
+    scales: ScaleType[],
+    sessionId?: string,
+  ): Promise<void> {
+    try {
+      const organization = await this.organizationsService.findByKey(organizationKey);
+      const statistics = await this.getOrCreateStatistics(organization.id);
+
+      const updated = { ...statistics.assessmentsByScale };
+      let changed = false;
+
+      for (const scale of scales) {
+        if (
+          await this.isDuplicateSession(
+            organization.id,
+            sessionId,
+            'scale_started',
+            scale,
+          )
+        ) {
+          continue;
+        }
+
+        const scaleData = updated[scale] || { started: 0, completed: 0 };
+        updated[scale] = { ...scaleData, started: scaleData.started + 1 };
+        changed = true;
+
+        await this.recordSession(organization.id, sessionId, 'scale_started', scale);
+      }
+
+      if (changed) {
+        statistics.assessmentsByScale = updated;
+        await this.statisticsRepository.save(statistics);
+      }
+    } catch (error) {
+      this.logger.error('Failed to increment started scales', error, {
+        organizationKey,
+      });
+    }
+  }
+
+  /**
+   * Increment the consultation counter for each contacted service. Not
+   * deduplicated: every contact form submission counts +1 per service, which
+   * reflects real demand for each service.
+   */
+  async incrementServiceConsultations(
+    organizationKey: string,
+    serviceIds: string[],
+  ): Promise<void> {
+    if (serviceIds.length === 0) return;
+
+    try {
+      const organization = await this.organizationsService.findByKey(organizationKey);
+      const statistics = await this.getOrCreateStatistics(organization.id);
+
+      const updated = { ...statistics.consultationsByService };
+      for (const serviceId of serviceIds) {
+        updated[serviceId] = (updated[serviceId] || 0) + 1;
+      }
+
+      statistics.consultationsByService = updated;
+      await this.statisticsRepository.save(statistics);
+    } catch (error) {
+      this.logger.error('Failed to increment service consultations', error, {
+        organizationKey,
+      });
+    }
+  }
+
+  /**
    * Increment user count for a specific category and level
    */
   async incrementUserByCategoryAndLevel(
@@ -187,6 +303,17 @@ export class StatisticsService {
         [category]: categoryData,
       };
 
+      // Completing a category also counts as a completed assessment for that
+      // scale (used by the started-vs-completed-vs-abandoned chart).
+      const scaleData = statistics.assessmentsByScale[category] || {
+        started: 0,
+        completed: 0,
+      };
+      statistics.assessmentsByScale = {
+        ...statistics.assessmentsByScale,
+        [category]: { ...scaleData, completed: scaleData.completed + 1 },
+      };
+
       await this.statisticsRepository.save(statistics);
 
       await this.recordSession(organization.id, sessionId, 'category', category);
@@ -209,21 +336,7 @@ export class StatisticsService {
     });
 
     if (!statistics) {
-      // Return default statistics if none exist
-      return {
-        id: '',
-        organizationId: organization.id,
-        startedAssessments: 0,
-        completedAssessments: 0,
-        contactedServices: 0,
-        usersByCategoryAndLevel: {
-          TRL: {},
-          MkRL: {},
-          MfRL: {},
-        },
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      } as OrganizationStatistics;
+      return this.buildEmptyStatistics(organization.id);
     }
 
     return statistics;
@@ -238,21 +351,7 @@ export class StatisticsService {
     });
 
     if (!statistics) {
-      // Return default statistics if none exist
-      return {
-        id: '',
-        organizationId,
-        startedAssessments: 0,
-        completedAssessments: 0,
-        contactedServices: 0,
-        usersByCategoryAndLevel: {
-          TRL: {},
-          MkRL: {},
-          MfRL: {},
-        },
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      } as OrganizationStatistics;
+      return this.buildEmptyStatistics(organizationId);
     }
 
     return statistics;
@@ -270,21 +369,8 @@ export class StatisticsService {
 
     // Aggregate statistics from all organizations
     const allStatistics = await this.statisticsRepository.find();
-    
-    const aggregated = {
-      id: '',
-      organizationId: '',
-      startedAssessments: 0,
-      completedAssessments: 0,
-      contactedServices: 0,
-      usersByCategoryAndLevel: {
-        TRL: {},
-        MkRL: {},
-        MfRL: {},
-      },
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    } as OrganizationStatistics;
+
+    const aggregated = this.buildEmptyStatistics('');
 
     // Sum up all statistics
     for (const stats of allStatistics) {
@@ -299,10 +385,53 @@ export class StatisticsService {
           aggregated.usersByCategoryAndLevel[category][level] =
             (aggregated.usersByCategoryAndLevel[category][level] || 0) + count;
         }
+
+        // Aggregate started/completed per scale
+        const scaleData = stats.assessmentsByScale?.[category];
+        if (scaleData) {
+          aggregated.assessmentsByScale[category].started += scaleData.started || 0;
+          aggregated.assessmentsByScale[category].completed +=
+            scaleData.completed || 0;
+        }
+      }
+
+      // Aggregate consultations per service
+      for (const [serviceId, count] of Object.entries(
+        stats.consultationsByService || {},
+      )) {
+        aggregated.consultationsByService[serviceId] =
+          (aggregated.consultationsByService[serviceId] || 0) + count;
       }
     }
 
     return aggregated;
+  }
+
+  /**
+   * Resolve the per-service consultation counts into a display-ready list with
+   * the service name, sorted by count (desc). Services that no longer exist are
+   * still shown (labelled generically) so historical counts aren't lost.
+   */
+  async resolveServiceConsultations(
+    consultationsByService: Record<string, number>,
+  ): Promise<Array<{ serviceId: string; name: string; count: number }>> {
+    const entries = Object.entries(consultationsByService || {});
+    if (entries.length === 0) return [];
+
+    const services = await this.serviceRepository.find({
+      where: { id: In(entries.map(([id]) => id)) },
+    });
+    const nameById = new Map(
+      services.map((s) => [s.id, s.nameEn || s.name || s.nameFr || 'Service']),
+    );
+
+    return entries
+      .map(([serviceId, count]) => ({
+        serviceId,
+        name: nameById.get(serviceId) ?? 'Deleted service',
+        count,
+      }))
+      .sort((a, b) => b.count - a.count);
   }
 }
 

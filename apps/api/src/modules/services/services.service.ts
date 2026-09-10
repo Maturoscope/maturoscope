@@ -685,10 +685,18 @@ export class ServicesService {
 
     await Promise.all(emailPromises);
 
-    // Track service contact
+    // Track service contact (overall counter + per-service consultations).
     this.statisticsService.incrementContactedServices(organizationKey).catch((error) => {
       this.logger.error('Failed to track service contact', error, { organizationKey });
     });
+    // Count one consultation per service that was actually contacted.
+    this.statisticsService
+      .incrementServiceConsultations(organizationKey, Array.from(serviceMap.keys()))
+      .catch((error) => {
+        this.logger.error('Failed to track service consultations', error, {
+          organizationKey,
+        });
+      });
 
     return {
       message: 'Emails sent successfully',

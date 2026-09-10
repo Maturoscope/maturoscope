@@ -33,8 +33,11 @@ const Header = ({
   beforeYouGoModal,
   leaveQuestionnaireModal,
 }: HeaderProps) => {
-  const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
-  const [isLeaveQuestionnaireModalOpen, setIsLeaveQuestionnaireModalOpen] = useState(false)
+  // The back button can open one of two mutually-exclusive modals: the
+  // "leave questionnaire" prompt (during the assessment) or the "before you go"
+  // prompt (on results). A single discriminated state makes it impossible for
+  // both to be open at once.
+  const [activeModal, setActiveModal] = useState<"leave" | "beforeYouGo" | null>(null)
   const [signature, setSignature] = useState<string | null>(null)
   const [logoUrl, setLogoUrl] = useState<string | null>(null)
   const [allNotScored, setAllNotScored] = useState(false)
@@ -113,6 +116,14 @@ const Header = ({
     setAllNotScored(areAllScalesNotScored())
   }, [pathname])
 
+  // The Header lives in the persistent layout, so its modal state survives
+  // navigation. Close any open modal whenever the route changes so a modal
+  // opened on one step (e.g. "leave questionnaire") can't reappear after
+  // restarting the flow and landing on "before we begin".
+  useEffect(() => {
+    setActiveModal(null)
+  }, [pathname])
+
   const isResultsPage = pathname.includes("/results")
   // The "before we begin" screen is pre-assessment: back just returns to the
   // landing page, no leave/reset modal needed.
@@ -129,8 +140,8 @@ const Header = ({
       // Nothing to download (every scale marked Not Applicable): skip the
       // "before you go" modal and just reset everything and leave.
       if (allNotScored) handleResetButtonClick()
-      else setIsResetFormModalOpen(true)
-    } else setIsLeaveQuestionnaireModalOpen(true)
+      else setActiveModal("beforeYouGo")
+    } else setActiveModal("leave")
   }
 
   const handleResetForm = async () => {
@@ -147,7 +158,7 @@ const Header = ({
     localStorage.removeItem("selectedScales")
     localStorage.removeItem("evaluationType")
     localStorage.removeItem("notScored")
-    setIsResetFormModalOpen(false)
+    setActiveModal(null)
   }
 
   const handleResetButtonClick = () => {
@@ -174,8 +185,8 @@ const Header = ({
             {leaveQuestionnaireModal && (
               <LeaveQuestionnaireModal
                 {...leaveQuestionnaireModal}
-                isOpen={isLeaveQuestionnaireModalOpen}
-                setIsOpen={setIsLeaveQuestionnaireModalOpen}
+                isOpen={activeModal === "leave"}
+                setIsOpen={(open) => setActiveModal(open ? "leave" : null)}
                 onResetClick={handleResetButtonClick}
               />
             )}
@@ -183,8 +194,8 @@ const Header = ({
               <BeforeYouGoModal
                 {...beforeYouGoModal}
                 downloadIsLoading={isLoading}
-                isOpen={isResetFormModalOpen}
-                setIsOpen={setIsResetFormModalOpen}
+                isOpen={activeModal === "beforeYouGo"}
+                setIsOpen={(open) => setActiveModal(open ? "beforeYouGo" : null)}
                 onDownloadClick={handleDownloadButtonClick}
                 onResetClick={handleResetButtonClick}
               />
