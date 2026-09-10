@@ -34,10 +34,14 @@ export default function LoginPage({children}: Readonly<{
 
       {/* Right Section */}
       <div className="relative hidden bg-muted lg:block">
-        <img
-          src='/img/auth_bg.webp'
+        <Image
+          src="/img/auth_bg.webp"
           alt="Image"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          fill
+          // Only shown on lg+ (right half of the screen); tell the optimizer so
+          // it serves an appropriately sized, format-negotiated image.
+          sizes="(min-width: 1024px) 50vw, 0px"
+          className="object-cover dark:brightness-[0.2] dark:grayscale"
         />
       </div>
     </div>
