@@ -35,6 +35,69 @@ export class UsersService {
     });
   }
 
+  /** A single membership for (user, organization), if any. */
+  async getMembership(
+    userId: string,
+    organizationId: string,
+  ): Promise<UserOrganization | null> {
+    return this.membershipRepository.findOne({
+      where: { userId, organizationId },
+    });
+  }
+
+  /**
+   * Ensures an invited membership exists for (user, organization). If one already
+   * exists it is returned untouched (its invitedAt is refreshed). The first
+   * membership a user ever gets becomes their default.
+   */
+  async createInvitedMembership(
+    userId: string,
+    organizationId: string,
+  ): Promise<UserOrganization> {
+    const existing = await this.getMembership(userId, organizationId);
+    if (existing) {
+      existing.invitedAt = new Date();
+      return this.membershipRepository.save(existing);
+    }
+
+    const membershipsCount = await this.membershipRepository.count({
+      where: { userId },
+    });
+
+    const membership = this.membershipRepository.create({
+      userId,
+      organizationId,
+      status: MembershipStatus.INVITED,
+      isDefault: membershipsCount === 0,
+      invitedAt: new Date(),
+    });
+    return this.membershipRepository.save(membership);
+  }
+
+  /**
+   * Activates a membership (invited -> active). If the user has no default active
+   * organization yet, this one becomes the default.
+   */
+  async activateMembership(
+    userId: string,
+    organizationId: string,
+  ): Promise<UserOrganization | null> {
+    const membership = await this.getMembership(userId, organizationId);
+    if (!membership) return null;
+
+    membership.status = MembershipStatus.ACTIVE;
+    membership.joinedAt = membership.joinedAt ?? new Date();
+
+    const hasDefault = await this.membershipRepository.count({
+      where: { userId, status: MembershipStatus.ACTIVE, isDefault: true },
+    });
+    if (hasDefault === 0) {
+      membership.isDefault = true;
+    }
+
+    return this.membershipRepository.save(membership);
+  }
+
   /** Whether the user has an active membership in the given organization. */
   async hasActiveMembership(userId: string, organizationId: string): Promise<boolean> {
     const count = await this.membershipRepository.count({

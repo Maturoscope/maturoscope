@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
@@ -16,8 +16,20 @@ export interface InvitationPayload {
   roles: string[];
   organizationId: string;
   type: 'invitation';
+  // Association invites (joining an additional organization) require explicit
+  // acceptance from the profile; primary invites (first organization) activate
+  // the membership when the account is created. Absent = primary (legacy tokens).
+  isAssociation?: boolean;
   iat?: number;
   exp?: number;
+}
+
+export type InvitationCheckStatus = 'NEW' | 'IN_ORG' | 'IN_OTHER_ORG';
+
+export interface InvitationCheckResult {
+  status: InvitationCheckStatus;
+  // Whether the existing user has already finished creating their account.
+  hasAccount: boolean;
 }
 
 @Injectable()
@@ -68,10 +80,29 @@ export class UserInvitationService {
     return this.configService.get<string>('INVITATION_PATH') || '/complete-registration';
   }
 
-  private buildMagicLink(token: string): string {
+  private getOrganizationsSectionPath(): string {
+    return (
+      this.configService.get<string>('ORGANIZATIONS_SECTION_PATH') ||
+      '/dashboard/settingsUser/organizations'
+    );
+  }
+
+  private buildMagicLink(token: string, redirectPath?: string): string {
     const baseUrl = this.getDashboardUrl();
     const path = this.getInvitationPath();
-    return `${baseUrl}${path}?token=${token}`;
+    const redirect = redirectPath
+      ? `&redirect=${encodeURIComponent(redirectPath)}`
+      : '';
+    return `${baseUrl}${path}?token=${token}${redirect}`;
+  }
+
+  /**
+   * Link for association invites to a user that already has an account: goes to
+   * login with a redirect to the organizations section, where they accept/decline.
+   */
+  private buildLoginRedirectLink(redirectPath: string): string {
+    const baseUrl = this.getDashboardUrl();
+    return `${baseUrl}/login?redirect=${encodeURIComponent(redirectPath)}`;
   }
 
   private isAdminUser(roles: string[]): boolean {
@@ -174,48 +205,108 @@ export class UserInvitationService {
     }
   }
 
+  /**
+   * Pre-check used by the invite form to decide which screen to show: the email
+   * is new, already in this organization, or already a user of another one.
+   */
+  async checkInvitation(email: string, organizationId: string): Promise<InvitationCheckResult> {
+    const existingUser = await this.usersService.findByUserEmail(email);
+
+    if (!existingUser) {
+      return { status: 'NEW', hasAccount: false };
+    }
+
+    const membership = await this.usersService.getMembership(existingUser.id, organizationId);
+    const hasAccount = !!existingUser.authId;
+
+    return {
+      status: membership ? 'IN_ORG' : 'IN_OTHER_ORG',
+      hasAccount,
+    };
+  }
+
   async inviteUser(createUserInvitationDto: CreateUserInvitationDto, invitedBy?: { email?: string; name?: string }) {
     const { email, firstName, lastName, roles, organizationId } = createUserInvitationDto;
 
-    // Check if email exists in organizations
+    // Block an email that is another organization's own account email.
     const existingOrganization = await this.organizationsService.findByEmail(email);
-    if (existingOrganization) {
-      // Allow the email if it's the organization's own email and it's for the same organization
-      if (existingOrganization.id !== organizationId) {
-        throw new BadRequestException('This email address is already registered in our database. Please use a different one.');
-      }
-      // If it's the same organization, we allow it (it's the first user being created for this org)
+    if (existingOrganization && existingOrganization.id !== organizationId) {
+      throw new BadRequestException('This email address is already registered in our database. Please use a different one.');
     }
 
-    // Check if this will be the first user BEFORE creating them
-    // This is important for determining which email template to use
+    const existingUser = await this.usersService.findByUserEmail(email);
+
+    // --- Case 3: the email already belongs to a user (associate to a new org) ---
+    if (existingUser) {
+      const membership = await this.usersService.getMembership(existingUser.id, organizationId);
+      if (membership) {
+        // Case 2: already a member (active or invited) of this organization.
+        throw new ConflictException({
+          message: 'This user already belongs to this organization.',
+          code: 'USER_ALREADY_IN_ORG',
+        });
+      }
+
+      // Create a pending membership. Roles are global, so we do NOT touch the
+      // existing user's roles when associating them to another organization.
+      await this.usersService.createInvitedMembership(existingUser.id, organizationId);
+
+      const hasAccount = !!existingUser.authId;
+      const sectionPath = this.getOrganizationsSectionPath();
+
+      const token = this.jwtService.sign(
+        {
+          email,
+          firstName: existingUser.firstName,
+          lastName: existingUser.lastName,
+          roles: existingUser.roles || [],
+          organizationId,
+          type: 'invitation',
+          isAssociation: true,
+        },
+        { expiresIn: this.getInvitationExpiration() },
+      );
+
+      // Users with an account get a normal login link (they accept from the
+      // profile); users that never finished registration get a magic link that
+      // completes the account first, then lands on the same section.
+      const link = hasAccount
+        ? this.buildLoginRedirectLink(sectionPath)
+        : this.buildMagicLink(token, sectionPath);
+
+      const { companyName, companyLogoUrl, organizationLanguage } = await this.getOrganizationDetails(
+        organizationId,
+        invitedBy,
+      );
+
+      await this.userInvitationMailService.sendAssociationInvitationEmail({
+        inviteeEmail: email,
+        inviteeFirstName: existingUser.firstName,
+        link,
+        companyName,
+        companyLogoUrl,
+        hasAccount,
+        expirationDays: this.getInvitationExpirationDays(),
+        language: organizationLanguage,
+      });
+
+      this.logger.info('Association invitation sent', { email, organizationId, hasAccount });
+      return { message: 'Invitation sent successfully', email };
+    }
+
+    // --- Case 1: brand-new user (first organization) ---
     const existingUsersInOrg = await this.usersService.findByOrganization(organizationId);
     const isFirstUser = existingUsersInOrg.length === 0;
 
-    const existingUser = await this.usersService.findByEmail(email);
-
-    if (existingUser) {
-      if (existingUser.authId) {
-        throw new BadRequestException('This email address is already registered in our database. Please use a different one.');
-      }
-
-      await this.usersService.updateByEmail(email, {
-        firstName,
-        lastName,
-        roles,
-        organizationId,
-        isActive: true,
-      });
-    } else {
-      await this.usersService.create({
-        organizationId,
-        firstName,
-        lastName,
-        email,
-        roles,
-        isActive: true,
-      });
-    }
+    const createdUser = await this.usersService.create({
+      organizationId,
+      firstName,
+      lastName,
+      email,
+      roles,
+      isActive: true,
+    });
+    await this.usersService.createInvitedMembership(createdUser.id, organizationId);
 
     const { companyName, companyLogoUrl, organizationLanguage } = await this.getOrganizationDetails(
       organizationId,
@@ -232,6 +323,7 @@ export class UserInvitationService {
         roles,
         organizationId,
         type: 'invitation',
+        isAssociation: false,
       },
       {
         expiresIn: this.getInvitationExpiration(),
@@ -289,10 +381,29 @@ export class UserInvitationService {
       isActive: true,
     });
 
-    this.logger.info('User invitation completed', { email: payload.email, organizationId: payload.organizationId });
+    if (payload.isAssociation) {
+      // The account was created through an association link: activate the user's
+      // primary (default/first) organization so they have somewhere to land, and
+      // leave the association membership pending for explicit acceptance.
+      const primaryOrganizationId = user.organizationId;
+      if (primaryOrganizationId) {
+        await this.usersService.activateMembership(user.id, primaryOrganizationId);
+      }
+    } else {
+      // Primary invite: activate the membership for the invited organization.
+      await this.usersService.activateMembership(user.id, payload.organizationId);
+    }
+
+    this.logger.info('User invitation completed', {
+      email: payload.email,
+      organizationId: payload.organizationId,
+      isAssociation: !!payload.isAssociation,
+    });
     return {
       message: 'Invitation completed successfully',
       user: updatedUser,
+      isAssociation: !!payload.isAssociation,
+      redirectPath: payload.isAssociation ? this.getOrganizationsSectionPath() : undefined,
     };
   }
 

@@ -28,6 +28,28 @@ export class UserInvitationController {
     return this.userInvitationService.inviteUser(createUserInvitationDto, req.user);
   }
 
+  @Get('check')
+  @Auth()
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary: 'Check an email before inviting',
+    description:
+      'Returns whether the email is new, already in the organization, or an existing user of another organization, so the UI can show the right screen.',
+  })
+  @ApiQuery({ name: 'email', required: true, description: 'Email to check' })
+  @ApiQuery({ name: 'organizationId', required: true, description: 'Target organization UUID' })
+  @ApiResponse({ status: 200, description: 'Check result' })
+  @ApiResponse({ status: 400, description: 'email and organizationId are required' })
+  checkInvitation(
+    @Query('email') email: string,
+    @Query('organizationId') organizationId: string,
+  ) {
+    if (!email || !organizationId) {
+      throw new BadRequestException('email and organizationId are required');
+    }
+    return this.userInvitationService.checkInvitation(email, organizationId);
+  }
+
   @Get('verify')
   @ApiOperation({ 
     summary: 'Verify invitation token (PUBLIC)',
