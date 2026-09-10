@@ -23,6 +23,10 @@ export interface User {
   };
   termsAccepted: boolean;
   isActive?: boolean;
+  // Multi-organization context.
+  isSuperAdmin?: boolean;
+  defaultOrganizationId?: string;
+  pendingInvitationsCount?: number;
 }
 
 export const useUser = () => {

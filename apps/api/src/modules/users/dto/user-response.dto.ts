@@ -3,6 +3,9 @@ import { User } from '../entities/user.entity';
 
 export interface UserResponseDto extends Omit<User, 'organization' | 'memberships'> {
   registrationStatus: RegistrationStatus;
+  // Multi-organization context (populated when memberships are loaded).
+  defaultOrganizationId?: string;
+  pendingInvitationsCount?: number;
   organization?: {
     id: string;
     key: string;

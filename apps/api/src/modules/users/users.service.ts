@@ -106,6 +106,60 @@ export class UsersService {
     return count > 0;
   }
 
+  /** All memberships for a user (active + invited), with the organization. */
+  async getMembershipsOverview(userId: string): Promise<UserOrganization[]> {
+    return this.membershipRepository.find({
+      where: { userId },
+      relations: { organization: true },
+      order: { isDefault: 'DESC', createdAt: 'ASC' },
+    });
+  }
+
+  /** Accept a pending invitation: invited -> active. */
+  async acceptInvitation(userId: string, organizationId: string): Promise<UserOrganization> {
+    const membership = await this.getMembership(userId, organizationId);
+    if (!membership || membership.status !== MembershipStatus.INVITED) {
+      throw new NotFoundException('No pending invitation for this organization');
+    }
+    return (await this.activateMembership(userId, organizationId))!;
+  }
+
+  /** Decline a pending invitation: remove the invited membership. */
+  async declineInvitation(userId: string, organizationId: string): Promise<void> {
+    const membership = await this.getMembership(userId, organizationId);
+    if (!membership || membership.status !== MembershipStatus.INVITED) {
+      throw new NotFoundException('No pending invitation for this organization');
+    }
+    await this.membershipRepository.remove(membership);
+  }
+
+  /** Leave an organization: remove the active membership (never the default). */
+  async leaveOrganization(userId: string, organizationId: string): Promise<void> {
+    const membership = await this.getMembership(userId, organizationId);
+    if (!membership || membership.status !== MembershipStatus.ACTIVE) {
+      throw new NotFoundException('You are not a member of this organization');
+    }
+    if (membership.isDefault) {
+      throw new BadRequestException(
+        'You cannot leave your default organization. Set another one as default first.',
+      );
+    }
+    await this.membershipRepository.remove(membership);
+  }
+
+  /** Change the default organization (must be an active membership). */
+  async setDefaultOrganization(userId: string, organizationId: string): Promise<void> {
+    const membership = await this.getMembership(userId, organizationId);
+    if (!membership || membership.status !== MembershipStatus.ACTIVE) {
+      throw new BadRequestException('You can only set an active organization as default');
+    }
+    await this.membershipRepository.update({ userId, isDefault: true }, { isDefault: false });
+    membership.isDefault = true;
+    await this.membershipRepository.save(membership);
+    // Keep the legacy organizationId column in sync with the default membership.
+    await this.userRepository.update({ id: userId }, { organizationId });
+  }
+
   /** The user's default active organization id, if any. */
   async getDefaultOrganizationId(userId: string): Promise<string | null> {
     const membership = await this.membershipRepository.findOne({
@@ -194,6 +248,18 @@ export class UsersService {
       invitationExpirationDays,
     );
 
+    // Derive multi-organization context when memberships have been loaded.
+    let defaultOrganizationId: string | undefined;
+    let pendingInvitationsCount: number | undefined;
+    if (user.memberships) {
+      defaultOrganizationId = user.memberships.find(
+        (m) => m.status === MembershipStatus.ACTIVE && m.isDefault,
+      )?.organizationId;
+      pendingInvitationsCount = user.memberships.filter(
+        (m) => m.status === MembershipStatus.INVITED,
+      ).length;
+    }
+
     return {
       id: user.id,
       organizationId: user.organizationId,
@@ -206,6 +272,8 @@ export class UsersService {
       isActive: user.isActive,
       createdAt: user.createdAt,
       registrationStatus,
+      defaultOrganizationId,
+      pendingInvitationsCount,
       organization: user.organization ? {
         id: user.organization.id,
         key: user.organization.key,
@@ -293,7 +361,7 @@ export class UsersService {
   async findByEmail(email: string): Promise<UserResponseDto | null> {
     const user = await this.userRepository.findOne({
       where: { email },
-      relations: { organization: true },
+      relations: { organization: true, memberships: { organization: true } },
     });
     return user ? this.enrichUserWithStatus(user) : null;
   }

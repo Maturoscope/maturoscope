@@ -167,4 +167,114 @@ export class UsersController {
   remove(@Param() params: UuidParamDto) {
     return this.usersService.remove(params.id);
   }
+
+  // --- Current user's organization memberships (multi-organization) ---
+
+  private async getRequesterId(req: Request & { user?: AuthenticatedUser }): Promise<string> {
+    const email = req.user?.email;
+    if (!email) {
+      throw new ForbiddenException('Unable to determine requester identity');
+    }
+    const requester = await this.usersService.findByUserEmail(email);
+    if (!requester) {
+      throw new ForbiddenException('User not found');
+    }
+    return requester.id;
+  }
+
+  @Get('me/organizations')
+  @Auth()
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary: "Current user's organizations",
+    description: 'Active memberships (with the default flagged) and pending invitations.',
+  })
+  @ApiResponse({ status: 200, description: 'Memberships overview' })
+  async getMyOrganizations(@Req() req: Request & { user?: AuthenticatedUser }) {
+    const userId = await this.getRequesterId(req);
+    const memberships = await this.usersService.getMembershipsOverview(userId);
+
+    const toSummary = (m: (typeof memberships)[number]) => ({
+      id: m.organization.id,
+      key: m.organization.key,
+      name: m.organization.name,
+      avatar: m.organization.avatar,
+      isDefault: m.isDefault,
+      invitedAt: m.invitedAt,
+      joinedAt: m.joinedAt,
+    });
+
+    return {
+      active: memberships
+        .filter((m) => m.status === 'active')
+        .map(toSummary),
+      pending: memberships
+        .filter((m) => m.status === 'invited')
+        .map(toSummary),
+    };
+  }
+
+  @Post('me/organizations/:organizationId/accept')
+  @Auth()
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Accept a pending organization invitation' })
+  @ApiParam({ name: 'organizationId', description: 'Organization UUID' })
+  @ApiResponse({ status: 201, description: 'Invitation accepted' })
+  async acceptInvitation(
+    @Param('organizationId') organizationId: string,
+    @Req() req: Request & { user?: AuthenticatedUser },
+  ) {
+    const userId = await this.getRequesterId(req);
+    await this.usersService.acceptInvitation(userId, organizationId);
+    return { message: 'Invitation accepted' };
+  }
+
+  @Post('me/organizations/:organizationId/decline')
+  @Auth()
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Decline a pending organization invitation' })
+  @ApiParam({ name: 'organizationId', description: 'Organization UUID' })
+  @ApiResponse({ status: 201, description: 'Invitation declined' })
+  async declineInvitation(
+    @Param('organizationId') organizationId: string,
+    @Req() req: Request & { user?: AuthenticatedUser },
+  ) {
+    const userId = await this.getRequesterId(req);
+    await this.usersService.declineInvitation(userId, organizationId);
+    return { message: 'Invitation declined' };
+  }
+
+  @Post('me/organizations/:organizationId/leave')
+  @Auth()
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Leave an organization (not the default one)' })
+  @ApiParam({ name: 'organizationId', description: 'Organization UUID' })
+  @ApiResponse({ status: 201, description: 'Left the organization' })
+  @ApiResponse({ status: 400, description: 'Cannot leave the default organization' })
+  async leaveOrganization(
+    @Param('organizationId') organizationId: string,
+    @Req() req: Request & { user?: AuthenticatedUser },
+  ) {
+    const userId = await this.getRequesterId(req);
+    await this.usersService.leaveOrganization(userId, organizationId);
+    return { message: 'Left the organization' };
+  }
+
+  @Patch('me/organizations/default')
+  @Auth()
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Set the default organization' })
+  @ApiResponse({ status: 200, description: 'Default organization updated' })
+  @ApiResponse({ status: 400, description: 'Organization must be an active membership' })
+  async setDefaultOrganization(
+    @Body('organizationId') organizationId: string,
+    @Req() req: Request & { user?: AuthenticatedUser },
+  ) {
+    if (!organizationId) {
+      throw new ForbiddenException('organizationId is required');
+    }
+    const userId = await this.getRequesterId(req);
+    await this.usersService.setDefaultOrganization(userId, organizationId);
+    return { message: 'Default organization updated' };
+  }
 }

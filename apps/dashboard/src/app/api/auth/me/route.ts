@@ -93,6 +93,10 @@ export async function GET(req: NextRequest) {
       organization: userApiData?.organization,
       registrationStatus: userApiData?.registrationStatus,
       isActive: userApiData?.isActive,
+      // Multi-organization context.
+      isSuperAdmin: userApiData?.isSuperAdmin ?? false,
+      defaultOrganizationId: userApiData?.defaultOrganizationId,
+      pendingInvitationsCount: userApiData?.pendingInvitationsCount ?? 0,
       termsAccepted: userApiData?.termsAccepted || false,
     });
 
