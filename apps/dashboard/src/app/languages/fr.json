@@ -116,6 +116,11 @@
     "REPORTS": "Rapports",
     "ORGANIZATIONS": "Organisations",
     "LOG_OUT": "Se déconnecter",
+    "ORG_SWITCHER": {
+      "TITLE": "Changer d'organisation",
+      "MANAGE": "Gérer les organisations",
+      "INVITATIONS": "invitation(s)"
+    },
     "NEED_HELP_CONTACT_US": "Besoin d'aide ? Contactez-nous",
     "KPIS": {
       "ANALYSIS_COMPLETION_RATE": "Taux de complétion de l'analyse",
@@ -361,6 +366,45 @@
       "MESSAGE": "Vous avez des modifications non sauvegardées. Si vous partez maintenant, vos dernières mises à jour seront perdues.",
       "CANCEL": "Annuler",
       "LEAVE_ANYWAY": "Partir quand même"
+    },
+    "ORGANIZATIONS": {
+      "TITLE": "Organisations",
+      "YOUR_ORGANIZATIONS": "Vos organisations",
+      "DESCRIPTION": "Choisissez l'organisation qui s'ouvre à la connexion. Vous pouvez en changer à tout moment depuis la barre supérieure.",
+      "DEFAULT_BADGE": "Par défaut",
+      "SET_AS_DEFAULT": "Définir par défaut",
+      "LEAVE": "Quitter",
+      "PENDING_TITLE": "Invitations en attente",
+      "INVITED_AGO": "Invité {{time}}",
+      "JOIN": "Rejoindre",
+      "DECLINE": "Refuser",
+      "EMPTY_PENDING": "Vous n'avez aucune invitation en attente.",
+      "LOAD_ERROR": "Impossible de charger vos organisations. Veuillez réessayer.",
+      "LEAVE_DIALOG": {
+        "TITLE": "Quitter {{name}} ?",
+        "MESSAGE": "Vous perdrez l'accès à cette organisation. Vous pourrez être réinvité plus tard.",
+        "CONFIRM": "Quitter",
+        "CANCEL": "Annuler"
+      },
+      "SET_DEFAULT_DIALOG": {
+        "TITLE": "Définir {{name}} par défaut ?",
+        "MESSAGE": "Vous démarrerez sur cette organisation lors de votre prochaine connexion.",
+        "CONFIRM": "Définir par défaut",
+        "CANCEL": "Annuler"
+      },
+      "DECLINE_DIALOG": {
+        "TITLE": "Refuser l'invitation ?",
+        "MESSAGE": "Vous pourrez être réinvité plus tard si nécessaire.",
+        "CONFIRM": "Refuser",
+        "CANCEL": "Annuler"
+      },
+      "TOASTS": {
+        "DEFAULT_UPDATED": "Organisation par défaut mise à jour",
+        "LEFT": "Vous avez quitté l'organisation",
+        "JOINED": "Vous avez rejoint l'organisation",
+        "DECLINED": "Invitation refusée",
+        "ERROR": "Une erreur s'est produite. Veuillez réessayer."
+      }
     }
   },
   "TOOL_SETTINGS": {

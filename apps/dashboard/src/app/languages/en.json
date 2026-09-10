@@ -116,6 +116,11 @@
     "REPORTS": "Reports",
     "ORGANIZATIONS": "Organizations",
     "LOG_OUT": "Log Out",
+    "ORG_SWITCHER": {
+      "TITLE": "Switch organization",
+      "MANAGE": "Manage organizations",
+      "INVITATIONS": "invitation(s)"
+    },
     "NEED_HELP_CONTACT_US": "Need help? Contact us",
     "KPIS": {
       "ANALYSIS_COMPLETION_RATE": "Analysis completion rate",
@@ -361,6 +366,45 @@
       "MESSAGE": "You have unsaved changes. If you leave now, your latest updates will be lost.",
       "CANCEL": "Cancel",
       "LEAVE_ANYWAY": "Leave Anyway"
+    },
+    "ORGANIZATIONS": {
+      "TITLE": "Organisations",
+      "YOUR_ORGANIZATIONS": "Your organisations",
+      "DESCRIPTION": "Choose which organisation opens when you log in. You can switch at any time from the top bar.",
+      "DEFAULT_BADGE": "Default",
+      "SET_AS_DEFAULT": "Set as Default",
+      "LEAVE": "Leave",
+      "PENDING_TITLE": "Pending Invitations",
+      "INVITED_AGO": "Invited {{time}}",
+      "JOIN": "Join",
+      "DECLINE": "Decline",
+      "EMPTY_PENDING": "You have no pending invitations.",
+      "LOAD_ERROR": "We couldn't load your organisations. Please try again.",
+      "LEAVE_DIALOG": {
+        "TITLE": "Leave {{name}}?",
+        "MESSAGE": "You'll lose access to this organisation. You can be invited again later.",
+        "CONFIRM": "Leave",
+        "CANCEL": "Cancel"
+      },
+      "SET_DEFAULT_DIALOG": {
+        "TITLE": "Set {{name}} as default?",
+        "MESSAGE": "You'll start on this organisation the next time you log in.",
+        "CONFIRM": "Set as default",
+        "CANCEL": "Cancel"
+      },
+      "DECLINE_DIALOG": {
+        "TITLE": "Decline invitation?",
+        "MESSAGE": "You can be invited again later if needed.",
+        "CONFIRM": "Decline",
+        "CANCEL": "Cancel"
+      },
+      "TOASTS": {
+        "DEFAULT_UPDATED": "Default organisation updated",
+        "LEFT": "You left the organisation",
+        "JOINED": "You joined the organisation",
+        "DECLINED": "Invitation declined",
+        "ERROR": "Something went wrong. Please try again."
+      }
     }
   },
   "TOOL_SETTINGS": {

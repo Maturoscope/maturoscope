@@ -1,6 +1,7 @@
 import { verifyToken } from '@/app/utils/authDecode';
 import { NextRequest, NextResponse } from 'next/server';
 import { createStructuredLogger } from '@/lib/structured-logger';
+import { ACTIVE_ORG_COOKIE } from '@/lib/apiProxy';
 
 const logger = createStructuredLogger('auth/me');
 
@@ -82,20 +83,44 @@ export async function GET(req: NextRequest) {
       });
     }
 
+    // Reflect the active organization (cookie) so the whole app — header, avatar,
+    // signature — matches the organization the user has switched to.
+    const activeOrganizationId = cookies.get(ACTIVE_ORG_COOKIE)?.value;
+    let organization = userApiData?.organization;
+    if (
+      activeOrganizationId &&
+      userApiData &&
+      organization?.id !== activeOrganizationId &&
+      process.env.NEXT_PUBLIC_API_BASE_URL
+    ) {
+      try {
+        const orgRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/organizations/${activeOrganizationId}`,
+          { headers: { Authorization: `Bearer ${token.value}` } },
+        );
+        if (orgRes.ok) {
+          organization = await orgRes.json();
+        }
+      } catch (orgError) {
+        logger.warn('Failed to resolve active organization', { error: String(orgError) });
+      }
+    }
+
     return NextResponse.json({
       userId: decoded.sub,
       email: decoded.userEmail,
       name: userApiData ? `${userApiData.firstName} ${userApiData.lastName}` : decoded.userName,
-      picture: userApiData?.organization?.avatar || decoded.userPicture,
+      picture: organization?.avatar || decoded.userPicture,
       roles: decoded.userRoles || [],
       firstName: userApiData?.firstName,
       lastName: userApiData?.lastName,
-      organization: userApiData?.organization,
+      organization,
       registrationStatus: userApiData?.registrationStatus,
       isActive: userApiData?.isActive,
       // Multi-organization context.
       isSuperAdmin: userApiData?.isSuperAdmin ?? false,
       defaultOrganizationId: userApiData?.defaultOrganizationId,
+      activeOrganizationId: activeOrganizationId || userApiData?.organization?.id,
       pendingInvitationsCount: userApiData?.pendingInvitationsCount ?? 0,
       termsAccepted: userApiData?.termsAccepted || false,
     });

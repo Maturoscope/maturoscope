@@ -26,6 +26,7 @@ export interface User {
   // Multi-organization context.
   isSuperAdmin?: boolean;
   defaultOrganizationId?: string;
+  activeOrganizationId?: string;
   pendingInvitationsCount?: number;
 }
 

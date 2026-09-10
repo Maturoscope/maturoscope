@@ -83,7 +83,7 @@ export class UserInvitationService {
   private getOrganizationsSectionPath(): string {
     return (
       this.configService.get<string>('ORGANIZATIONS_SECTION_PATH') ||
-      '/dashboard/settingsUser/organizations'
+      '/dashboard/settingsUser?section=organizations'
     );
   }
 
