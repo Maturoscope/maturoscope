@@ -39,6 +39,11 @@ function CompleteRegistrationForm() {
   const [passwordsMatchError, setPasswordsMatchError] = useState(false);
 
   const token = useMemo(() => searchParams.get('token') || '', [searchParams]);
+  // Association magic links carry a redirect to the organizations section.
+  const redirect = useMemo(() => {
+    const value = searchParams.get('redirect');
+    return value && value.startsWith('/') ? value : '/dashboard/overview';
+  }, [searchParams]);
 
   // Password validation
   const passwordValidation = useMemo<PasswordValidation>(() => {
@@ -133,7 +138,7 @@ function CompleteRegistrationForm() {
       setSuccessMessage(t('SUCCESS.MESSAGE'));
 
       setTimeout(() => {
-        router.replace('/dashboard/overview');
+        router.replace(redirect);
       }, 2000);
     } catch (err) {
       console.error('Error completing registration:', err);

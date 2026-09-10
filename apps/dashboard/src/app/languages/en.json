@@ -291,7 +291,14 @@
         "EMAILS_DONT_MATCH": "The emails do not match.",
         "ORGANIZATION_MISSING": "Organization context is missing.",
         "CREATE_FAILED": "Failed to create member.",
-        "UNEXPECTED_ERROR": "Unexpected error creating member."
+        "UNEXPECTED_ERROR": "Unexpected error creating member.",
+        "ALREADY_IN_ORG": "This user already belongs to this organization."
+      },
+      "ASSOCIATION_MODAL": {
+        "TITLE": "User already exists",
+        "MESSAGE": "{{name}} already has an account in another organization. Do you want to invite them to this organization too?",
+        "CONFIRM": "Send invitation",
+        "CANCEL": "Cancel"
       }
     },
     "UNSAVED_CHANGES": {

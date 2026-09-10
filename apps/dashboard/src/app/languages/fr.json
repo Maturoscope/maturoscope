@@ -291,7 +291,14 @@
         "EMAILS_DONT_MATCH": "Les e-mails ne correspondent pas.",
         "ORGANIZATION_MISSING": "Le contexte de l'organisation est manquant.",
         "CREATE_FAILED": "Échec de la création du membre.",
-        "UNEXPECTED_ERROR": "Erreur inattendue lors de la création du membre."
+        "UNEXPECTED_ERROR": "Erreur inattendue lors de la création du membre.",
+        "ALREADY_IN_ORG": "Cet utilisateur appartient déjà à cette organisation."
+      },
+      "ASSOCIATION_MODAL": {
+        "TITLE": "L'utilisateur existe déjà",
+        "MESSAGE": "{{name}} possède déjà un compte dans une autre organisation. Voulez-vous l'inviter également à cette organisation ?",
+        "CONFIRM": "Envoyer l'invitation",
+        "CANCEL": "Annuler"
       }
     },
     "UNSAVED_CHANGES": {
