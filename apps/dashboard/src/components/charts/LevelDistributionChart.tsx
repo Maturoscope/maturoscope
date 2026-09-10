@@ -19,8 +19,27 @@ import {
 } from "@/utils/numberFormat";
 import {
   DashboardStatistics,
+  ScaleKey,
   SCALE_COLORS,
 } from "@/types/statistics";
+
+// Legend rendered manually so the order stays TRL → MkRL → MfRL (recharts
+// reverses it) and the markers are circles instead of squares.
+const LEGEND_SCALES: ScaleKey[] = ["TRL", "MkRL", "MfRL"];
+
+const ScaleLegend = () => (
+  <ul className="flex items-center justify-center gap-6 list-none m-0 p-0">
+    {LEGEND_SCALES.map((scale) => (
+      <li key={scale} className="flex items-center gap-2">
+        <span
+          className="w-2.5 h-2.5 rounded-full"
+          style={{ backgroundColor: SCALE_COLORS[scale] }}
+        />
+        <span className="text-sm text-gray-700">{scale}</span>
+      </li>
+    ))}
+  </ul>
+);
 
 interface TooltipEntry {
   name: string;
@@ -113,7 +132,10 @@ const LevelDistributionChart = ({
             content={<CustomTooltip />}
             cursor={{ fill: "rgba(0,0,0,0.04)" }}
           />
-          <Legend wrapperStyle={{ bottom: -20, right: 0 }} />
+          <Legend
+            wrapperStyle={{ bottom: -20, right: 0 }}
+            content={<ScaleLegend />}
+          />
           <Bar dataKey="TRL" fill={SCALE_COLORS.TRL} name="TRL" radius={[4, 4, 0, 0]} />
           <Bar dataKey="MkRL" fill={SCALE_COLORS.MkRL} name="MkRL" radius={[4, 4, 0, 0]} />
           <Bar dataKey="MfRL" fill={SCALE_COLORS.MfRL} name="MfRL" radius={[4, 4, 0, 0]} />
