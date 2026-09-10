@@ -37,8 +37,12 @@ const ScaleFunnelChart = ({
           const { started = 0, completed = 0 } =
             assessmentsByScale?.[scale] ?? {};
           const abandoned = Math.max(0, started - completed);
+          // Cap at 100%: completed can briefly exceed started (e.g. a failed
+          // "started" POST, or resuming the flow without passing through begin).
           const completionRate =
-            started > 0 ? Math.round((completed / started) * 100) : 0;
+            started > 0
+              ? Math.min(100, Math.round((completed / started) * 100))
+              : 0;
           const color = SCALE_COLORS[scale];
 
           return (
