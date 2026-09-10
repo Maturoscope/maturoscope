@@ -78,7 +78,12 @@ export class UsersController {
 
     const requester = await this.usersService.findByUserEmail(requesterEmail);
 
-    if (!requester || requester.organizationId !== organizationId) {
+    // Access is allowed for platform super-admins, or for members with an active
+    // membership in the requested organization (multi-organization aware).
+    const isMember =
+      !!requester &&
+      (await this.usersService.hasActiveMembership(requester.id, organizationId));
+    if (!requester || (!requester.isSuperAdmin && !isMember)) {
       throw new ForbiddenException('You do not have access to this organization');
     }
 

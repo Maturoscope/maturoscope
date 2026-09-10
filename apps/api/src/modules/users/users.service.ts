@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Not, FindOperator } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { User } from './entities/user.entity';
+import { UserOrganization, MembershipStatus } from './entities/user-organization.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Organization } from '../organizations/entities/organization.entity';
@@ -15,10 +16,68 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(UserOrganization)
+    private readonly membershipRepository: Repository<UserOrganization>,
     @InjectRepository(Organization)
     private readonly organizationRepository: Repository<Organization>,
     private readonly configService: ConfigService,
   ) {}
+
+  /**
+   * Active memberships for a user, ordered with the default first, then by join
+   * date. Includes the organization relation.
+   */
+  async getActiveMemberships(userId: string): Promise<UserOrganization[]> {
+    return this.membershipRepository.find({
+      where: { userId, status: MembershipStatus.ACTIVE },
+      relations: { organization: true },
+      order: { isDefault: 'DESC', createdAt: 'ASC' },
+    });
+  }
+
+  /** Whether the user has an active membership in the given organization. */
+  async hasActiveMembership(userId: string, organizationId: string): Promise<boolean> {
+    const count = await this.membershipRepository.count({
+      where: { userId, organizationId, status: MembershipStatus.ACTIVE },
+    });
+    return count > 0;
+  }
+
+  /** The user's default active organization id, if any. */
+  async getDefaultOrganizationId(userId: string): Promise<string | null> {
+    const membership = await this.membershipRepository.findOne({
+      where: { userId, status: MembershipStatus.ACTIVE, isDefault: true },
+    });
+    return membership?.organizationId ?? null;
+  }
+
+  /**
+   * Resolves which organization a request should operate on. A requested id
+   * (from the active-organization header/cookie) is honoured only if the user
+   * has an active membership for it; otherwise we fall back to their default
+   * membership, and finally to the legacy `organizationId` column.
+   */
+  async resolveActiveOrganizationId(
+    email: string,
+    requestedOrganizationId?: string,
+  ): Promise<string | null> {
+    const user = await this.findByUserEmail(email);
+    if (!user) return null;
+
+    if (requestedOrganizationId) {
+      const membership = await this.membershipRepository.findOne({
+        where: {
+          userId: user.id,
+          organizationId: requestedOrganizationId,
+          status: MembershipStatus.ACTIVE,
+        },
+      });
+      if (membership) return membership.organizationId;
+    }
+
+    const defaultOrganizationId = await this.getDefaultOrganizationId(user.id);
+    return defaultOrganizationId ?? user.organizationId ?? null;
+  }
 
   private getInvitationExpirationDays(): number {
     // First try to use INVITATION_TOKEN_EXPIRATION (same as JWT token expiration)

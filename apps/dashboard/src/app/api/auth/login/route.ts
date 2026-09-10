@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { decryptPassword } from '@/app/utils/crypto';
 import { createStructuredLogger } from '@/lib/structured-logger';
+import { ACTIVE_ORG_COOKIE } from '@/lib/apiProxy';
 
 const logger = createStructuredLogger('auth/login');
 
@@ -43,6 +44,10 @@ export const POST = async (req: Request) => {
       return NextResponse.json({ error: data.error_description || 'Error en autenticación' }, { status: 400 });
     }
 
+    // The organization the session starts on. Login always lands on the user's
+    // default organization; switching happens later from the profile.
+    let activeOrganizationId: string | undefined;
+
     // Check if the user is active in our database and if the organization is active
     try {
       const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
@@ -56,7 +61,11 @@ export const POST = async (req: Request) => {
 
       if (userResponse.ok) {
         const userData = await userResponse.json();
-        
+
+        // Default organization for the session (backfill keeps organizationId in
+        // sync with the default membership).
+        activeOrganizationId = userData.defaultOrganizationId || userData.organizationId || undefined;
+
         // Check if the user is inactive
         if (userData.isActive === false) {
           return NextResponse.json(
@@ -103,6 +112,13 @@ export const POST = async (req: Request) => {
 
     const responseHeaders = new Headers();
     responseHeaders.append('Set-Cookie', `token=${data.access_token}; Path=/; HttpOnly; Secure; SameSite=Strict`);
+    // Start the session on the default organization.
+    if (activeOrganizationId) {
+      responseHeaders.append(
+        'Set-Cookie',
+        `${ACTIVE_ORG_COOKIE}=${activeOrganizationId}; Path=/; HttpOnly; Secure; SameSite=Strict`,
+      );
+    }
 
     return new NextResponse(JSON.stringify({ message: 'Login successfully' }), {
       status: 200,
