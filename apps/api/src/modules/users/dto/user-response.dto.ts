@@ -1,7 +1,7 @@
 import { RegistrationStatus } from '../helpers/registration-status.helper';
 import { User } from '../entities/user.entity';
 
-export interface UserResponseDto extends Omit<User, 'organization'> {
+export interface UserResponseDto extends Omit<User, 'organization' | 'memberships'> {
   registrationStatus: RegistrationStatus;
   organization?: {
     id: string;

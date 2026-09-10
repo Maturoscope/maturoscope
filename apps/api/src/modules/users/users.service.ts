@@ -79,6 +79,7 @@ export class UsersService {
       firstName: user.firstName,
       lastName: user.lastName,
       roles: user.roles,
+      isSuperAdmin: user.isSuperAdmin,
       email: user.email,
       isActive: user.isActive,
       createdAt: user.createdAt,
