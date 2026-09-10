@@ -21,29 +21,25 @@ export default function Page() {
   const [statistics, setStatistics] = useState<DashboardStatistics | null>(null);
   const [loading, setLoading] = useState(true);
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [tourResolved, setTourResolved] = useState(false);
 
-  // First-time guided tour — runs once the overview is loaded and the welcome
-  // modal (if any) has been dismissed, so every step target is visible.
-  useOnboardingTour(!loading && !!statistics && !showWelcomeModal);
+  // First-time guided tour — runs once the overview content is rendered so every
+  // step target exists. When it's out of the way (finished, dismissed, or
+  // already seen) we let the profile-setup modal take its turn.
+  useOnboardingTour(!loading && !!statistics, () => setTourResolved(true));
 
-  // Check if user needs to see welcome modal
+  // Profile-setup modal — only after the tour is resolved, and only if the
+  // organization is still missing its avatar or signature.
   useEffect(() => {
-    if (userLoading || !user) return;
+    if (!tourResolved || userLoading || !user) return;
 
-    // Check if user has already dismissed the modal
-    const dismissedKey = `welcome_modal_dismissed_${user.organization?.id}`;
-    const dismissed = localStorage.getItem(dismissedKey);
-    
-    if (dismissed) return;
-
-    // Check if user is missing avatar or signature
     const hasAvatar = user.organization?.avatar;
     const hasSignature = user.organization?.signature;
-    
+
     if (!hasAvatar || !hasSignature) {
       setShowWelcomeModal(true);
     }
-  }, [user, userLoading]);
+  }, [tourResolved, user, userLoading]);
 
   useEffect(() => {
     const fetchStatistics = async () => {

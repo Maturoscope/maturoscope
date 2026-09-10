@@ -16,17 +16,30 @@ const storageKey = (userId: string) => `dashboard_onboarding_completed_${userId}
  * they land on the overview. A localStorage flag (per user) makes sure it never
  * shows again. `enabled` should be true once the overview content (KPIs/chart)
  * is rendered so every step target exists.
+ *
+ * `onResolved` is called once the tour is out of the way — whether it finished,
+ * was dismissed, or had already been seen before — so the caller can chain the
+ * next first-run step (e.g. the profile-setup modal) after it.
  */
-export function useOnboardingTour(enabled: boolean) {
+export function useOnboardingTour(enabled: boolean, onResolved?: () => void) {
   const { t } = useTranslation("DASHBOARD");
   const { user, loading } = useUserContext();
   const hasRunRef = useRef(false);
+  // Keep the latest callback without making it an effect dependency (an inline
+  // callback would otherwise re-run the effect and tear down a running tour).
+  const onResolvedRef = useRef(onResolved);
+  onResolvedRef.current = onResolved;
 
   useEffect(() => {
     if (!enabled || loading || !user?.userId || hasRunRef.current) return;
 
     const key = storageKey(user.userId);
-    if (localStorage.getItem(key)) return;
+    if (localStorage.getItem(key)) {
+      // Already seen: nothing to show, but let the caller proceed.
+      hasRunRef.current = true;
+      onResolvedRef.current?.();
+      return;
+    }
 
     hasRunRef.current = true;
 
@@ -104,8 +117,12 @@ export function useOnboardingTour(enabled: boolean) {
       prevBtnText: t("ONBOARDING.BUTTONS.PREV"),
       doneBtnText: t("ONBOARDING.BUTTONS.DONE"),
       steps: availableSteps,
-      // Fires when the tour finishes or is dismissed — mark as seen either way.
-      onDestroyed: markCompleted,
+      // Fires when the tour finishes or is dismissed — mark as seen either way
+      // and let the caller run whatever comes next.
+      onDestroyed: () => {
+        markCompleted();
+        onResolvedRef.current?.();
+      },
     });
 
     driverObj.drive();
