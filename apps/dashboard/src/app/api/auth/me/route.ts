@@ -36,9 +36,29 @@ export async function GET(req: NextRequest) {
         clearTimeout(timeoutId);
         
         if (userData.ok) {
-          // The user-by-email endpoint can return an empty body when the user
-          // isn't found; parse defensively so we fall back instead of throwing.
+          // The user-by-email endpoint returns an empty body when the user
+          // isn't found; parse defensively.
           userApiData = await userData.json().catch(() => null);
+
+          // Authenticated in Auth0 but not provisioned in our database: deny
+          // access and clear the session so the app never loads half-broken.
+          if (!userApiData || !userApiData.id) {
+            logger.warn('Authenticated user not found in database', { email: decoded.userEmail });
+            const denied = NextResponse.json(
+              { error: 'Unauthorized', message: 'Account not found', code: 'ACCOUNT_NOT_FOUND' },
+              { status: 401 },
+            );
+            ['token', 'next-auth.session-token', ACTIVE_ORG_COOKIE].forEach((name) => {
+              denied.cookies.set(name, '', {
+                path: '/',
+                expires: new Date(0),
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+              });
+            });
+            return denied;
+          }
         } else {
           const errorText = await userData.text();
           logger.error('User API returned non-OK status', new Error(errorText || String(userData.status)), {

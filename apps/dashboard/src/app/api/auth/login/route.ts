@@ -48,6 +48,12 @@ export const POST = async (req: Request) => {
     // default organization; switching happens later from the profile.
     let activeOrganizationId: string | undefined;
 
+    // Whether the authenticated identity is provisioned in our database. A user
+    // can exist in Auth0 but not here; in that case we must not grant access.
+    // We only treat a definitive "not found" as a block — transient API errors
+    // stay tolerant so an outage doesn't lock everyone out.
+    let userFound = true;
+
     // Check if the user is active in our database and if the organization is active
     try {
       const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
@@ -59,8 +65,9 @@ export const POST = async (req: Request) => {
         },
       });
 
-      if (userResponse.ok) {
-        const userData = await userResponse.json();
+      const userData = userResponse.ok ? await userResponse.json().catch(() => null) : null;
+
+      if (userResponse.ok && userData && userData.id) {
 
         // Default organization for the session (backfill keeps organizationId in
         // sync with the default membership).
@@ -103,9 +110,23 @@ export const POST = async (req: Request) => {
             }
           }
         }
+      } else if (userResponse.ok || userResponse.status === 404) {
+        // Reachable API with a definitive "not found": the identity exists in
+        // Auth0 but not in our database, so access must be denied.
+        userFound = false;
       }
     } catch (error) {
       logger.error('Error checking user active status', error);
+    }
+
+    if (!userFound) {
+      return NextResponse.json(
+        {
+          error: 'Your account is not set up in Maturoscope. Please contact your administrator.',
+          code: 'ACCOUNT_NOT_FOUND',
+        },
+        { status: 403 },
+      );
     }
 
     logger.info('Login success');

@@ -359,25 +359,18 @@ export class UsersService {
   }
 
   async findByEmail(email: string): Promise<UserResponseDto | null> {
-    // Case-insensitive so a differently-cased email from the identity provider
-    // still resolves to the stored user.
-    const user = await this.userRepository
-      .createQueryBuilder('user')
-      .leftJoinAndSelect('user.organization', 'organization')
-      .leftJoinAndSelect('user.memberships', 'membership')
-      .leftJoinAndSelect('membership.organization', 'membershipOrganization')
-      .where('LOWER(user.email) = LOWER(:email)', { email })
-      .getOne();
+    const user = await this.userRepository.findOne({
+      where: { email },
+      relations: { organization: true, memberships: { organization: true } },
+    });
     return user ? this.enrichUserWithStatus(user) : null;
   }
 
   async findByUserEmail(email: string): Promise<User | null> {
-    // Case-insensitive (see findByEmail).
-    return await this.userRepository
-      .createQueryBuilder('user')
-      .leftJoinAndSelect('user.organization', 'organization')
-      .where('LOWER(user.email) = LOWER(:email)', { email })
-      .getOne();
+    return await this.userRepository.findOne({
+      where: { email },
+      relations: { organization: true },
+    });
   }
 
   async findByAuthId(authId: string): Promise<User | null> {
