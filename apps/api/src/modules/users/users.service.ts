@@ -1,6 +1,6 @@
 import { Injectable, ConflictException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Not, FindOperator } from 'typeorm';
+import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { User } from './entities/user.entity';
 import { UserOrganization, MembershipStatus } from './entities/user-organization.entity';
@@ -380,20 +380,20 @@ export class UsersService {
     });
   }
 
-  async findByOrganization(organizationId: string, excludeEmail?: string): Promise<UserResponseDto[]> {
-    const whereCondition: { organizationId: string; email?: FindOperator<string> } = { 
-      organizationId 
-    };
-    
-    // Note: excludeEmail parameter is kept for backward compatibility but not used
-    // We want to show all users including the admin (user with same email as organization)
-    // The admin's switch will be disabled in the frontend instead
-
-    const users = await this.userRepository.find({
-      where: whereCondition,
-      relations: { organization: true },
+  async findByOrganization(organizationId: string, _excludeEmail?: string): Promise<UserResponseDto[]> {
+    // Membership-based: a user belongs to an organization through user_organizations
+    // (active or invited), not through the legacy organizationId column — otherwise
+    // users associated to additional organizations would be missing here.
+    const memberships = await this.membershipRepository.find({
+      where: { organizationId },
+      relations: { user: { organization: true } },
       order: { createdAt: 'DESC' },
     });
+
+    const users = memberships
+      .map((membership) => membership.user)
+      .filter((user): user is User => !!user);
+
     return this.enrichUsersWithStatus(users);
   }
 
