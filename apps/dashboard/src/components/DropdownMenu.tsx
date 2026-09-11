@@ -10,7 +10,7 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
   import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-  import { Settings, LogOut, ChevronDown, Check, Building2 } from "lucide-react"
+  import { Settings, LogOut, ChevronDown, Check, Mail } from "lucide-react"
   import { useUserContext } from "@/app/hooks/contexts/UserProvider"
   import { useRouter } from "next/navigation"
   import { useTranslation } from "react-i18next"
@@ -45,6 +45,25 @@ import {
   const getOrganizationName = (user: UserAvatarData | null): string => {
     return user?.organization?.name || "Organización";
   };
+
+  /** Small circular organization avatar for the switcher rows. */
+  function OrgAvatar({ org }: { org: OrgOption }) {
+    if (org.avatar) {
+      // eslint-disable-next-line @next/next/no-img-element
+      return (
+        <img
+          src={org.avatar}
+          alt={org.name}
+          className="h-6 w-6 rounded-full object-cover shrink-0"
+        />
+      )
+    }
+    return (
+      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-semibold text-gray-700">
+        {org.name?.slice(0, 1).toUpperCase()}
+      </span>
+    )
+  }
   
   export function UserDropdown() {
     const [isOpen, setIsOpen] = useState(false)
@@ -152,10 +171,10 @@ import {
           />
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className={UI_CONSTANTS.DROPDOWN_WIDTH}>
-          {orgs.length > 1 && (
+        <DropdownMenuContent className="w-64" align="end">
+          {orgs.length > 0 && (
             <>
-              <DropdownMenuLabel className="text-xs text-muted-foreground">
+              <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
                 {t('ORG_SWITCHER.TITLE')}
               </DropdownMenuLabel>
               {orgs.map((org) => (
@@ -165,10 +184,15 @@ import {
                   disabled={switching}
                   onClick={() => handleSwitchOrg(org.id)}
                 >
-                  <Building2 className="h-4 w-4 text-muted-foreground" />
+                  <OrgAvatar org={org} />
                   <span className="truncate">{org.name}</span>
+                  {org.isDefault && (
+                    <span className="ml-auto rounded-md border border-gray-200 px-2 py-0.5 text-xs font-medium text-gray-700">
+                      {t('ORG_SWITCHER.DEFAULT')}
+                    </span>
+                  )}
                   {org.id === activeOrgId && (
-                    <Check className="ml-auto h-4 w-4 text-gray-900" />
+                    <Check className={`${org.isDefault ? '' : 'ml-auto'} h-4 w-4 text-gray-900`} />
                   )}
                 </DropdownMenuItem>
               ))}
@@ -178,15 +202,16 @@ import {
 
           <DropdownMenuItem className="flex items-center gap-2" asChild>
             <Link href="/dashboard/settingsUser?section=organizations">
-              <Building2 className="h-4 w-4" />
-              <span>{t('ORG_SWITCHER.MANAGE')}</span>
+              <Mail className="h-4 w-4" />
+              <span>{t('ORG_SWITCHER.PENDING_INVITATIONS')}</span>
               {pendingCount > 0 && (
-                <span className="ml-auto rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-medium text-white">
+                <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[11px] font-medium text-white">
                   {pendingCount}
                 </span>
               )}
             </Link>
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem className="flex items-center gap-2" asChild>
             <Link href="/dashboard/settingsUser">
               <Settings className="h-4 w-4" />

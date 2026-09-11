@@ -117,8 +117,9 @@
     "ORGANIZATIONS": "Organizations",
     "LOG_OUT": "Log Out",
     "ORG_SWITCHER": {
-      "TITLE": "Switch organization",
-      "MANAGE": "Manage organizations",
+      "TITLE": "Organisation(s)",
+      "DEFAULT": "Default",
+      "PENDING_INVITATIONS": "Pending Invitations",
       "INVITATIONS": "invitation(s)"
     },
     "NEED_HELP_CONTACT_US": "Need help? Contact us",
