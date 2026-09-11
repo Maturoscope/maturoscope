@@ -227,24 +227,28 @@ export function OrganizationsSection() {
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   {!org.isDefault && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      disabled={busyId === org.id}
-                      onClick={() => setDialog({ type: 'setDefault', org })}
-                    >
-                      {t('ORGANIZATIONS.SET_AS_DEFAULT')}
-                    </Button>
+                    <>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={busyId === org.id}
+                        onClick={() => setDialog({ type: 'setDefault', org })}
+                      >
+                        {t('ORGANIZATIONS.SET_AS_DEFAULT')}
+                      </Button>
+                      {/* You can never leave your default organization, so the
+                          action only exists for the others. */}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-gray-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+                        disabled={busyId === org.id}
+                        onClick={() => setDialog({ type: 'leave', org })}
+                      >
+                        {t('ORGANIZATIONS.LEAVE')}
+                      </Button>
+                    </>
                   )}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-gray-200 text-red-600 hover:bg-red-50 hover:text-red-700"
-                    disabled={org.isDefault || busyId === org.id}
-                    onClick={() => setDialog({ type: 'leave', org })}
-                  >
-                    {t('ORGANIZATIONS.LEAVE')}
-                  </Button>
                 </div>
               </div>
             ))}
