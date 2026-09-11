@@ -36,7 +36,9 @@ export async function GET(req: NextRequest) {
         clearTimeout(timeoutId);
         
         if (userData.ok) {
-          userApiData = await userData.json();
+          // The user-by-email endpoint can return an empty body when the user
+          // isn't found; parse defensively so we fall back instead of throwing.
+          userApiData = await userData.json().catch(() => null);
         } else {
           const errorText = await userData.text();
           logger.error('User API returned non-OK status', new Error(errorText || String(userData.status)), {
