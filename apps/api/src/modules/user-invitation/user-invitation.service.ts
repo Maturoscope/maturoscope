@@ -279,6 +279,7 @@ export class UserInvitationService {
         link,
         companyName,
         companyLogoUrl,
+        inviterName: invitedBy?.name,
         hasAccount,
         expirationDays: this.getInvitationExpirationDays(),
         language: organizationLanguage,

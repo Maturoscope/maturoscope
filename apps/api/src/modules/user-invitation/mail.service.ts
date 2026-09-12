@@ -32,6 +32,8 @@ interface AssociationInvitationEmailPayload {
   link: string;
   companyName: string;
   companyLogoUrl?: string;
+  // Name of the person who sent the invitation (shown in the body).
+  inviterName?: string;
   // Whether the invitee already has an account (login link) or not (magic link).
   hasAccount: boolean;
   expirationDays: number;
@@ -172,18 +174,23 @@ export class UserInvitationMailService extends BaseMailService implements OnModu
     language: string,
     companyName: string,
     hasAccount: boolean,
+    inviterName?: string,
   ): EmailContent {
     const lang = language?.toUpperCase() === 'FR' ? 'FR' : 'EN';
+    const inviter = inviterName?.trim();
 
     const translations = {
       EN: {
         subject: `You've been invited to join ${companyName}`,
         greeting: 'Hi',
-        welcomeMessage: `You've been invited to join ${companyName} on Maturoscope.`,
+        welcomeMessage: inviter
+          ? `${inviter} invited you to join <strong>${companyName}</strong> on Maturoscope.`
+          : `You've been invited to join <strong>${companyName}</strong> on Maturoscope.`,
         instructionMessage: hasAccount
-          ? `Sign in to review the invitation and choose whether to join ${companyName}.`
+          ? `You already have an account, so there's nothing to set up. You can switch accounts whenever you like.`
           : `You're one click away from creating your account. Once it's ready, you'll be able to join ${companyName}.`,
-        buttonText: hasAccount ? 'View invitation' : 'Create my account',
+        buttonText: hasAccount ? 'Review Invitation' : 'Create my account',
+        // Existing accounts get a normal login link that doesn't expire.
         expirationMessage: (days: number) =>
           hasAccount
             ? ''
@@ -193,11 +200,13 @@ export class UserInvitationMailService extends BaseMailService implements OnModu
       FR: {
         subject: `Vous êtes invité à rejoindre ${companyName}`,
         greeting: 'Bonjour',
-        welcomeMessage: `Vous avez été invité à rejoindre ${companyName} sur Maturoscope.`,
+        welcomeMessage: inviter
+          ? `${inviter} vous a invité à rejoindre <strong>${companyName}</strong> sur Maturoscope.`
+          : `Vous avez été invité à rejoindre <strong>${companyName}</strong> sur Maturoscope.`,
         instructionMessage: hasAccount
-          ? `Connectez-vous pour consulter l'invitation et choisir de rejoindre ${companyName}.`
+          ? `Vous avez déjà un compte, il n'y a donc rien à configurer. Vous pouvez changer de compte à tout moment.`
           : `Vous n'êtes qu'à un clic de créer votre compte. Une fois prêt, vous pourrez rejoindre ${companyName}.`,
-        buttonText: hasAccount ? "Voir l'invitation" : 'Créer mon compte',
+        buttonText: hasAccount ? "Consulter l'invitation" : 'Créer mon compte',
         expirationMessage: (days: number) =>
           hasAccount
             ? ''
@@ -215,13 +224,14 @@ export class UserInvitationMailService extends BaseMailService implements OnModu
     link,
     companyName,
     companyLogoUrl,
+    inviterName,
     hasAccount,
     expirationDays,
     language = 'EN',
   }: AssociationInvitationEmailPayload) {
     const safeCompanyName =
       companyName || this.configService.get<string>('APP_NAME') || 'Maturoscope';
-    const content = this.getAssociationEmailContent(language, safeCompanyName, hasAccount);
+    const content = this.getAssociationEmailContent(language, safeCompanyName, hasAccount, inviterName);
 
     let safeName: string;
     if (inviteeFirstName?.trim()) {
