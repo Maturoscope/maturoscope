@@ -31,7 +31,6 @@ interface MembershipsResponse {
 
 type PendingDialog =
   | { type: 'leave'; org: OrganizationSummary }
-  | { type: 'setDefault'; org: OrganizationSummary }
   | { type: 'decline'; org: OrganizationSummary }
   | null
 
@@ -156,7 +155,6 @@ export function OrganizationsSection() {
     setDialog(null)
     if (type === 'leave') await membershipAction(org, 'leave', 'ORGANIZATIONS.TOASTS.LEFT')
     else if (type === 'decline') await membershipAction(org, 'decline', 'ORGANIZATIONS.TOASTS.DECLINED')
-    else if (type === 'setDefault') await setDefault(org)
   }
 
   if (loading) {
@@ -179,12 +177,6 @@ export function OrganizationsSection() {
           message: t('ORGANIZATIONS.LEAVE_DIALOG.MESSAGE'),
           confirm: t('ORGANIZATIONS.LEAVE_DIALOG.CONFIRM'),
           cancel: t('ORGANIZATIONS.LEAVE_DIALOG.CANCEL'),
-        },
-        setDefault: {
-          title: t('ORGANIZATIONS.SET_DEFAULT_DIALOG.TITLE', { name: dialog.org.name }),
-          message: t('ORGANIZATIONS.SET_DEFAULT_DIALOG.MESSAGE'),
-          confirm: t('ORGANIZATIONS.SET_DEFAULT_DIALOG.CONFIRM'),
-          cancel: t('ORGANIZATIONS.SET_DEFAULT_DIALOG.CANCEL'),
         },
         decline: {
           title: t('ORGANIZATIONS.DECLINE_DIALOG.TITLE'),
@@ -232,7 +224,7 @@ export function OrganizationsSection() {
                         variant="outline"
                         size="sm"
                         disabled={busyId === org.id}
-                        onClick={() => setDialog({ type: 'setDefault', org })}
+                        onClick={() => setDefault(org)}
                       >
                         {t('ORGANIZATIONS.SET_AS_DEFAULT')}
                       </Button>
@@ -311,32 +303,18 @@ export function OrganizationsSection() {
             <AlertDialogTitle>{dialogCopy?.title}</AlertDialogTitle>
             <AlertDialogDescription>{dialogCopy?.message}</AlertDialogDescription>
           </AlertDialogHeader>
+          {/* Destructive (leave/decline): red-outline confirm on the left,
+              dark Cancel on the right. */}
           <AlertDialogFooter className="mt-6">
-            {dialog?.type === 'setDefault' ? (
-              <>
-                <AlertDialogCancel>{dialogCopy?.cancel}</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={confirmDialog}
-                  className="bg-gray-900 hover:bg-gray-800 text-white"
-                >
-                  {dialogCopy?.confirm}
-                </AlertDialogAction>
-              </>
-            ) : (
-              /* Destructive (leave/decline): red-outline confirm on the left,
-                 dark Cancel on the right. */
-              <>
-                <AlertDialogAction
-                  onClick={confirmDialog}
-                  className="mt-2 sm:mt-0 bg-white border border-gray-200 text-red-600 shadow-none hover:bg-red-50 hover:text-red-700"
-                >
-                  {dialogCopy?.confirm}
-                </AlertDialogAction>
-                <AlertDialogCancel className="mt-0 border-0 bg-gray-900 text-white hover:bg-gray-800 hover:text-white">
-                  {dialogCopy?.cancel}
-                </AlertDialogCancel>
-              </>
-            )}
+            <AlertDialogAction
+              onClick={confirmDialog}
+              className="mt-2 sm:mt-0 bg-white border border-gray-200 text-red-600 shadow-none hover:bg-red-50 hover:text-red-700"
+            >
+              {dialogCopy?.confirm}
+            </AlertDialogAction>
+            <AlertDialogCancel className="mt-0 border-0 bg-gray-900 text-white hover:bg-gray-800 hover:text-white">
+              {dialogCopy?.cancel}
+            </AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
