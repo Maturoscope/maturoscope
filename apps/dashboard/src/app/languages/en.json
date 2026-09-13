@@ -390,8 +390,8 @@
       "LOAD_ERROR": "We couldn't load your organisations. Please try again.",
       "LEAVE_DIALOG": {
         "TITLE": "Leave {{name}}?",
-        "MESSAGE": "You'll lose access to this organisation. You can be invited again later.",
-        "CONFIRM": "Leave",
+        "MESSAGE": "You'll lose access to its dashboard, services and members. Your other organisations aren't affected, and an admin can invite you again later.",
+        "CONFIRM": "Yes, Leave",
         "CANCEL": "Cancel"
       },
       "SET_DEFAULT_DIALOG": {

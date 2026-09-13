@@ -312,17 +312,31 @@ export function OrganizationsSection() {
             <AlertDialogDescription>{dialogCopy?.message}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>{dialogCopy?.cancel}</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={confirmDialog}
-              className={
-                dialog?.type === 'setDefault'
-                  ? 'bg-gray-900 hover:bg-gray-800 text-white'
-                  : 'bg-red-600 hover:bg-red-700 text-white'
-              }
-            >
-              {dialogCopy?.confirm}
-            </AlertDialogAction>
+            {dialog?.type === 'setDefault' ? (
+              <>
+                <AlertDialogCancel>{dialogCopy?.cancel}</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={confirmDialog}
+                  className="bg-gray-900 hover:bg-gray-800 text-white"
+                >
+                  {dialogCopy?.confirm}
+                </AlertDialogAction>
+              </>
+            ) : (
+              /* Destructive (leave/decline): red-outline confirm on the left,
+                 dark Cancel on the right. */
+              <>
+                <AlertDialogAction
+                  onClick={confirmDialog}
+                  className="mt-2 sm:mt-0 bg-white border border-gray-200 text-red-600 shadow-none hover:bg-red-50 hover:text-red-700"
+                >
+                  {dialogCopy?.confirm}
+                </AlertDialogAction>
+                <AlertDialogCancel className="mt-0 border-0 bg-gray-900 text-white hover:bg-gray-800 hover:text-white">
+                  {dialogCopy?.cancel}
+                </AlertDialogCancel>
+              </>
+            )}
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

@@ -390,8 +390,8 @@
       "LOAD_ERROR": "Impossible de charger vos organisations. Veuillez réessayer.",
       "LEAVE_DIALOG": {
         "TITLE": "Quitter {{name}} ?",
-        "MESSAGE": "Vous perdrez l'accès à cette organisation. Vous pourrez être réinvité plus tard.",
-        "CONFIRM": "Quitter",
+        "MESSAGE": "Vous perdrez l'accès à son tableau de bord, ses services et ses membres. Vos autres organisations ne sont pas affectées, et un administrateur pourra vous réinviter plus tard.",
+        "CONFIRM": "Oui, quitter",
         "CANCEL": "Annuler"
       },
       "SET_DEFAULT_DIALOG": {
