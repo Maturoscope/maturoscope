@@ -311,7 +311,7 @@ export function OrganizationsSection() {
             <AlertDialogTitle>{dialogCopy?.title}</AlertDialogTitle>
             <AlertDialogDescription>{dialogCopy?.message}</AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="mt-6">
             {dialog?.type === 'setDefault' ? (
               <>
                 <AlertDialogCancel>{dialogCopy?.cancel}</AlertDialogCancel>

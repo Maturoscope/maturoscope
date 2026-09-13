@@ -307,7 +307,7 @@ export function NewMemberSheet({
               {t("NEW_MEMBER.ASSOCIATION_MODAL.MESSAGE", { name: pendingInviteName() })}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="mt-6">
             <AlertDialogCancel onClick={cancelAssociation}>
               {t("NEW_MEMBER.ASSOCIATION_MODAL.CANCEL")}
             </AlertDialogCancel>
