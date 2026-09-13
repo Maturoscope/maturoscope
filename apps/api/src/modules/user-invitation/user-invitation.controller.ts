@@ -43,11 +43,12 @@ export class UserInvitationController {
   checkInvitation(
     @Query('email') email: string,
     @Query('organizationId') organizationId: string,
+    @Req() req: Request & { user?: AuthenticatedUser },
   ) {
     if (!email || !organizationId) {
       throw new BadRequestException('email and organizationId are required');
     }
-    return this.userInvitationService.checkInvitation(email, organizationId);
+    return this.userInvitationService.checkInvitation(email, organizationId, req.user?.email);
   }
 
   @Get('verify')

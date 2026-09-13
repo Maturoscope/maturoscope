@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { UploadedFile } from '../types/uploaded-file.type';
 import { StructuredLoggerService } from '../logger/structured-logger.service';
 
@@ -72,6 +72,17 @@ export class OvhS3Service {
     } catch (error) {
       this.logger.error('S3 upload failed', error, { key });
       throw new InternalServerErrorException('Error uploading file to object storage');
+    }
+  }
+
+  /** Best-effort delete; never throws (cleanup should not block the request). */
+  async deleteObject(key: string): Promise<void> {
+    try {
+      await this.s3.send(
+        new DeleteObjectCommand({ Bucket: this.bucketName, Key: key }),
+      );
+    } catch (error) {
+      this.logger.warn('S3 delete failed', { key, error: String(error) });
     }
   }
 }

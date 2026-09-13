@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
@@ -206,10 +206,39 @@ export class UserInvitationService {
   }
 
   /**
+   * Ensures the caller may manage members of the given organization: platform
+   * super-admins, or users with an active membership in that organization.
+   * Prevents cross-organization invites and email enumeration via /check.
+   */
+  private async assertCallerCanManageOrganization(
+    callerEmail: string | undefined,
+    organizationId: string,
+  ): Promise<void> {
+    if (!callerEmail) {
+      throw new ForbiddenException('Unable to determine requester identity');
+    }
+    const caller = await this.usersService.findByUserEmail(callerEmail);
+    if (!caller) {
+      throw new ForbiddenException('Requester not found');
+    }
+    if (caller.isSuperAdmin) return;
+    const isMember = await this.usersService.hasActiveMembership(caller.id, organizationId);
+    if (!isMember) {
+      throw new ForbiddenException('You do not have access to this organization');
+    }
+  }
+
+  /**
    * Pre-check used by the invite form to decide which screen to show: the email
    * is new, already in this organization, or already a user of another one.
    */
-  async checkInvitation(email: string, organizationId: string): Promise<InvitationCheckResult> {
+  async checkInvitation(
+    email: string,
+    organizationId: string,
+    callerEmail?: string,
+  ): Promise<InvitationCheckResult> {
+    await this.assertCallerCanManageOrganization(callerEmail, organizationId);
+
     const existingUser = await this.usersService.findByUserEmail(email);
 
     if (!existingUser) {
@@ -227,6 +256,9 @@ export class UserInvitationService {
 
   async inviteUser(createUserInvitationDto: CreateUserInvitationDto, invitedBy?: { email?: string; name?: string }) {
     const { email, firstName, lastName, roles, organizationId } = createUserInvitationDto;
+
+    // Only members (or super-admins) of the target organization may invite.
+    await this.assertCallerCanManageOrganization(invitedBy?.email, organizationId);
 
     const existingUser = await this.usersService.findByUserEmail(email);
 
@@ -411,6 +443,9 @@ export class UserInvitationService {
 
   async resendInvitation(createUserInvitationDto: CreateUserInvitationDto, invitedBy?: { email?: string; name?: string }) {
     const { email, firstName, lastName, roles, organizationId } = createUserInvitationDto;
+
+    // Only members (or super-admins) of the target organization may resend.
+    await this.assertCallerCanManageOrganization(invitedBy?.email, organizationId);
 
     const existingUser = await this.usersService.findByUserEmail(email);
 

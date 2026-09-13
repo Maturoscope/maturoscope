@@ -26,28 +26,50 @@ export class UsersService {
     private readonly ovhS3: OvhS3Service,
   ) {}
 
+  // Allowed avatar types (validated server-side, not only in the Next proxy).
+  private static readonly AVATAR_ALLOWED_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'image/svg+xml',
+  ];
+  private static readonly AVATAR_MAX_SIZE = 4 * 1024 * 1024; // 4MB
+
+  /** Stable per-user avatar key (no extension) so replacing overwrites in place. */
+  private avatarKey(userId: string): string {
+    return `users/${userId}/avatar`;
+  }
+
   /** Uploads a profile picture to object storage and stores its URL on the user. */
   async updateAvatarByEmail(email: string, file: UploadedFile): Promise<UserResponseDto> {
     if (!file || !file.buffer || !file.mimetype) {
       throw new BadRequestException('Invalid file upload');
     }
+    // Validate on the backend too: a direct API call must not bypass the proxy.
+    if (!UsersService.AVATAR_ALLOWED_TYPES.includes(file.mimetype)) {
+      throw new BadRequestException('Invalid file type. Only JPG, PNG or SVG are allowed.');
+    }
+    if (file.buffer.length > UsersService.AVATAR_MAX_SIZE) {
+      throw new BadRequestException('File size exceeds 4MB limit.');
+    }
     const user = await this.findByUserEmail(email);
     if (!user) {
       throw new NotFoundException(`User with email ${email} not found`);
     }
-    const extension = file.mimetype.split('/')[1] || 'bin';
-    const key = `users/${user.id}/avatar.${extension}`;
-    const { url } = await this.ovhS3.uploadObject(file, key);
+    // Fixed key (no extension) — avoids orphaned objects when the type changes.
+    const { url } = await this.ovhS3.uploadObject(file, this.avatarKey(user.id));
     user.avatar = url;
     await this.userRepository.save(user);
     return (await this.findByEmail(email))!;
   }
 
-  /** Clears the user's profile picture. */
+  /** Clears the user's profile picture (also removes the object from storage). */
   async removeAvatarByEmail(email: string): Promise<UserResponseDto> {
     const user = await this.findByUserEmail(email);
     if (!user) {
       throw new NotFoundException(`User with email ${email} not found`);
+    }
+    if (user.avatar) {
+      await this.ovhS3.deleteObject(this.avatarKey(user.id));
     }
     user.avatar = null as unknown as string;
     await this.userRepository.save(user);
@@ -184,11 +206,13 @@ export class UsersService {
     if (!membership || membership.status !== MembershipStatus.ACTIVE) {
       throw new BadRequestException('You can only set an active organization as default');
     }
-    await this.membershipRepository.update({ userId, isDefault: true }, { isDefault: false });
-    membership.isDefault = true;
-    await this.membershipRepository.save(membership);
-    // Keep the legacy organizationId column in sync with the default membership.
-    await this.userRepository.update({ id: userId }, { organizationId });
+    // Atomic: unset the previous default, set the new one, and keep the legacy
+    // organizationId column in sync — so a failure can't leave the user default-less.
+    await this.membershipRepository.manager.transaction(async (tx) => {
+      await tx.update(UserOrganization, { userId, isDefault: true }, { isDefault: false });
+      await tx.update(UserOrganization, { id: membership.id }, { isDefault: true });
+      await tx.update(User, { id: userId }, { organizationId });
+    });
   }
 
   /** The user's default active organization id, if any. */
