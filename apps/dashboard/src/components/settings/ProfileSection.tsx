@@ -51,13 +51,32 @@ export function ProfileSection({
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [avatarBusy, setAvatarBusy] = useState(false)
   const [avatarToast, setAvatarToast] = useState<string | null>(null)
+  // Deferred like the organization avatar: selecting/removing only updates the
+  // preview; the actual upload/delete happens on "Update profile".
+  const [pendingFile, setPendingFile] = useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [markedForRemoval, setMarkedForRemoval] = useState(false)
 
   const initials =
     `${ctxUser?.firstName?.trim()?.charAt(0) ?? ''}${ctxUser?.lastName?.trim()?.charAt(0) ?? ''}`.toUpperCase() ||
     'U'
-  const avatarUrl = ctxUser?.avatar ? getVersionedUrl(ctxUser.avatar) : null
+  const avatarDirty = !!pendingFile || markedForRemoval
+  const displayAvatarUrl = previewUrl
+    ? previewUrl
+    : markedForRemoval
+      ? null
+      : ctxUser?.avatar
+        ? getVersionedUrl(ctxUser.avatar)
+        : null
 
-  const handleAvatarFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const clearPendingAvatar = () => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl)
+    setPreviewUrl(null)
+    setPendingFile(null)
+    setMarkedForRemoval(false)
+  }
+
+  const handleAvatarFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     e.target.value = ''
     if (!file) return
@@ -71,35 +90,47 @@ export function ProfileSection({
       return
     }
 
-    setAvatarBusy(true)
-    try {
-      const body = new FormData()
-      body.append('file', file)
-      const res = await fetch('/api/users/avatar', { method: 'PATCH', body, credentials: 'include' })
-      if (!res.ok) throw new Error()
-      await refetch()
-      updateVersion()
-      setAvatarToast(t('PROFILE.AVATAR.UPDATED'))
-    } catch {
-      setAvatarToast(t('PROFILE.AVATAR.ERROR'))
-    } finally {
-      setAvatarBusy(false)
-    }
+    if (previewUrl) URL.revokeObjectURL(previewUrl)
+    setPendingFile(file)
+    setPreviewUrl(URL.createObjectURL(file))
+    setMarkedForRemoval(false)
   }
 
-  const handleRemoveAvatar = async () => {
-    setAvatarBusy(true)
-    try {
-      const res = await fetch('/api/users/avatar', { method: 'DELETE', credentials: 'include' })
-      if (!res.ok) throw new Error()
-      await refetch()
-      updateVersion()
-      setAvatarToast(t('PROFILE.AVATAR.REMOVED'))
-    } catch {
-      setAvatarToast(t('PROFILE.AVATAR.ERROR'))
-    } finally {
+  const handleRemoveAvatar = () => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl)
+    setPreviewUrl(null)
+    setPendingFile(null)
+    setMarkedForRemoval(true)
+  }
+
+  // Flush the pending avatar change (if any), then persist the profile fields.
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (avatarDirty) {
+      setAvatarBusy(true)
+      try {
+        if (pendingFile) {
+          const body = new FormData()
+          body.append('file', pendingFile)
+          const res = await fetch('/api/users/avatar', { method: 'PATCH', body, credentials: 'include' })
+          if (!res.ok) throw new Error()
+        } else if (markedForRemoval) {
+          const res = await fetch('/api/users/avatar', { method: 'DELETE', credentials: 'include' })
+          if (!res.ok) throw new Error()
+        }
+        await refetch()
+        updateVersion()
+        clearPendingAvatar()
+      } catch {
+        setAvatarBusy(false)
+        setAvatarToast(t('PROFILE.AVATAR.ERROR'))
+        return
+      }
       setAvatarBusy(false)
     }
+
+    onSubmit(e)
   }
 
   // Check if user is the first admin member (email matches organization email)
@@ -137,7 +168,7 @@ export function ProfileSection({
       
       <Separator />
       
-      <form onSubmit={onSubmit} className="space-y-4">
+      <form onSubmit={handleFormSubmit} className="space-y-4">
         {errors.general && (
           <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
             {errors.general}
@@ -186,9 +217,9 @@ export function ProfileSection({
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="relative w-16 h-16 rounded-full border-2 border-gray-200 overflow-hidden">
-                {avatarUrl ? (
+                {displayAvatarUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={avatarUrl} alt={initials} className="w-full h-full object-cover" />
+                  <img src={displayAvatarUrl} alt={initials} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full bg-gray-100 flex items-center justify-center">
                     <span className="text-lg font-medium text-gray-600">{initials}</span>
@@ -203,7 +234,7 @@ export function ProfileSection({
                 onClick={() => fileInputRef.current?.click()}
                 disabled={avatarBusy}
               >
-                {avatarBusy ? <Loader2 className="size-4 animate-spin" /> : t('PROFILE.AVATAR.UPLOAD')}
+                {t('PROFILE.AVATAR.UPLOAD')}
               </Button>
             </div>
 
@@ -212,7 +243,7 @@ export function ProfileSection({
               variant="destructive"
               size="sm"
               onClick={handleRemoveAvatar}
-              disabled={avatarBusy || !ctxUser?.avatar}
+              disabled={avatarBusy || (!ctxUser?.avatar && !pendingFile)}
             >
               {t('PROFILE.AVATAR.REMOVE')}
             </Button>
@@ -253,10 +284,10 @@ export function ProfileSection({
         
         <Button 
           type="submit" 
-          className="w-full sm:w-auto sm:min-w-[150px]" 
-          disabled={isUpdating || !hasChanges || Object.keys(errors).length > 0 || isFirstAdminMember}
+          className="w-full sm:w-auto sm:min-w-[150px]"
+          disabled={isUpdating || avatarBusy || (!hasChanges && !avatarDirty) || Object.keys(errors).length > 0 || isFirstAdminMember}
         >
-          {isUpdating ? <Loader2 className="size-4 animate-spin" /> : t('PROFILE.UPDATE_PROFILE')}
+          {isUpdating || avatarBusy ? <Loader2 className="size-4 animate-spin" /> : t('PROFILE.UPDATE_PROFILE')}
         </Button>
       </form>
 
