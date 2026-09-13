@@ -343,7 +343,13 @@
         "TOO_LARGE": "File size exceeds 4MB limit.",
         "UPDATED": "Profile picture updated",
         "REMOVED": "Profile picture removed",
-        "ERROR": "Something went wrong. Please try again."
+        "ERROR": "Something went wrong. Please try again.",
+        "REMOVE_DIALOG": {
+          "TITLE": "Remove avatar",
+          "MESSAGE": "You're about to delete your profile picture. This action is irreversible.",
+          "CONFIRM": "Yes, remove",
+          "CANCEL": "Cancel"
+        }
       }
     },
     "PASSWORD": {

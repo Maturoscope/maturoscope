@@ -5,6 +5,16 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { Toast } from '@/components/ui/toast'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { ProfileFormData } from './useSettingsState'
 import { validateField } from './validations'
 import { useUserContext } from '@/app/hooks/contexts/UserProvider'
@@ -60,6 +70,7 @@ export function ProfileSection({
   const [pendingFile, setPendingFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [markedForRemoval, setMarkedForRemoval] = useState(false)
+  const [showRemoveDialog, setShowRemoveDialog] = useState(false)
 
   const initials =
     `${ctxUser?.firstName?.trim()?.charAt(0) ?? ''}${ctxUser?.lastName?.trim()?.charAt(0) ?? ''}`.toUpperCase() ||
@@ -112,6 +123,7 @@ export function ProfileSection({
     setPreviewUrl(null)
     setPendingFile(null)
     setMarkedForRemoval(true)
+    setShowRemoveDialog(false)
   }
 
   // Flush the pending avatar change (if any), then persist the profile fields.
@@ -261,7 +273,7 @@ export function ProfileSection({
               type="button"
               variant="destructive"
               size="sm"
-              onClick={handleRemoveAvatar}
+              onClick={() => setShowRemoveDialog(true)}
               disabled={avatarBusy || (!ctxUser?.avatar && !pendingFile)}
             >
               {t('PROFILE.AVATAR.REMOVE')}
@@ -316,6 +328,28 @@ export function ProfileSection({
           {isUpdating || avatarBusy ? <Loader2 className="size-4 animate-spin" /> : t('PROFILE.UPDATE_PROFILE')}
         </Button>
       </form>
+
+      <AlertDialog open={showRemoveDialog} onOpenChange={setShowRemoveDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t('PROFILE.AVATAR.REMOVE_DIALOG.TITLE')}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {t('PROFILE.AVATAR.REMOVE_DIALOG.MESSAGE')}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-6">
+            <AlertDialogAction
+              onClick={handleRemoveAvatar}
+              className="mt-2 sm:mt-0 bg-white border border-gray-200 text-red-600 shadow-none hover:bg-red-50 hover:text-red-700"
+            >
+              {t('PROFILE.AVATAR.REMOVE_DIALOG.CONFIRM')}
+            </AlertDialogAction>
+            <AlertDialogCancel className="mt-0 border-0 bg-gray-900 text-white hover:bg-gray-800 hover:text-white">
+              {t('PROFILE.AVATAR.REMOVE_DIALOG.CANCEL')}
+            </AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <Toast
         title={avatarToast ?? ''}

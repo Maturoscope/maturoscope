@@ -343,7 +343,13 @@
         "TOO_LARGE": "La taille du fichier dépasse la limite de 4 Mo.",
         "UPDATED": "Photo de profil mise à jour",
         "REMOVED": "Photo de profil supprimée",
-        "ERROR": "Une erreur s'est produite. Veuillez réessayer."
+        "ERROR": "Une erreur s'est produite. Veuillez réessayer.",
+        "REMOVE_DIALOG": {
+          "TITLE": "Supprimer l'avatar",
+          "MESSAGE": "Vous êtes sur le point de supprimer votre photo de profil. Cette action est irréversible.",
+          "CONFIRM": "Oui, supprimer",
+          "CANCEL": "Annuler"
+        }
       }
     },
     "PASSWORD": {
