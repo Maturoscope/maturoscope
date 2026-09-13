@@ -178,46 +178,55 @@ export function ProfileSection({
           </div>
         </div>
         
-        <div className="space-y-2">
-          <Label>{t('PROFILE.AVATAR.LABEL')}</Label>
-          <div className="flex items-center gap-3">
-            {avatarUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={avatarUrl}
-                alt={initials}
-                className="h-10 w-10 rounded-full object-cover shrink-0"
-              />
-            ) : (
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-100 text-sm font-semibold text-gray-700">
-                {initials}
-              </span>
-            )}
+        <div className="space-y-4">
+          <label className="text-sm font-medium text-gray-700">
+            {t('PROFILE.AVATAR.LABEL')}
+          </label>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <div className="relative w-16 h-16 rounded-full border-2 border-gray-200 overflow-hidden">
+                {avatarUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={avatarUrl} alt={initials} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                    <span className="text-lg font-medium text-gray-600">{initials}</span>
+                  </div>
+                )}
+              </div>
+
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={avatarBusy}
+              >
+                {avatarBusy ? <Loader2 className="size-4 animate-spin" /> : t('PROFILE.AVATAR.UPLOAD')}
+              </Button>
+            </div>
+
             <Button
               type="button"
-              variant="outline"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={avatarBusy}
-            >
-              {avatarBusy ? <Loader2 className="size-4 animate-spin" /> : t('PROFILE.AVATAR.UPLOAD')}
-            </Button>
-            <Button
-              type="button"
+              variant="destructive"
+              size="sm"
               onClick={handleRemoveAvatar}
               disabled={avatarBusy || !ctxUser?.avatar}
-              className="ml-auto bg-red-600 hover:bg-red-700 text-white"
             >
               {t('PROFILE.AVATAR.REMOVE')}
             </Button>
+
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/png,image/jpeg,image/svg+xml"
+              accept=".svg,.png,.jpg,.jpeg"
               className="hidden"
               onChange={handleAvatarFile}
             />
           </div>
-          <p className="text-sm text-gray-500">{t('PROFILE.AVATAR.HELPER')}</p>
+
+          <p className="text-xs text-gray-900 font-medium">{t('PROFILE.AVATAR.HELPER')}</p>
         </div>
 
         <div className="space-y-2">
