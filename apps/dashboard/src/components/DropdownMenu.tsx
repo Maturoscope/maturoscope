@@ -206,18 +206,20 @@ import {
             </>
           )}
 
-          <DropdownMenuItem className="flex items-center gap-2" asChild>
-            <Link href="/dashboard/settingsUser?section=organizations">
-              <Mail className="h-4 w-4" />
-              <span>{t('ORG_SWITCHER.PENDING_INVITATIONS')}</span>
-              {pendingCount > 0 && (
-                <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[11px] font-medium text-white">
-                  {pendingCount}
-                </span>
-              )}
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
+          {pendingCount > 0 && (
+            <>
+              <DropdownMenuItem className="flex items-center gap-2" asChild>
+                <Link href="/dashboard/settingsUser?section=organizations">
+                  <Mail className="h-4 w-4" />
+                  <span>{t('ORG_SWITCHER.PENDING_INVITATIONS')}</span>
+                  <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[11px] font-medium text-white">
+                    {pendingCount}
+                  </span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
           <DropdownMenuItem className="flex items-center gap-2" asChild>
             <Link href="/dashboard/settingsUser">
               <Settings className="h-4 w-4" />
