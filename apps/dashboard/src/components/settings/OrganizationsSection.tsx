@@ -117,7 +117,7 @@ export function OrganizationsSection() {
       })
       if (!res.ok) throw new Error()
       await load()
-      showToast(t('ORGANIZATIONS.TOASTS.DEFAULT_UPDATED'))
+      showToast(t('ORGANIZATIONS.TOASTS.DEFAULT_UPDATED', { name: org.name }))
     } catch {
       showToast(t('ORGANIZATIONS.TOASTS.ERROR'))
     } finally {

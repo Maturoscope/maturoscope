@@ -407,7 +407,7 @@
         "CANCEL": "Annuler"
       },
       "TOASTS": {
-        "DEFAULT_UPDATED": "Organisation par défaut mise à jour",
+        "DEFAULT_UPDATED": "{{name}} est désormais votre organisation par défaut.",
         "LEFT": "Vous avez quitté l'organisation",
         "JOINED": "Vous avez rejoint l'organisation",
         "DECLINED": "Invitation refusée",
