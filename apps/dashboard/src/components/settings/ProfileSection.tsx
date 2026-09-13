@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -29,6 +29,9 @@ interface ProfileSectionProps {
   hasChanges: boolean
   onSubmit: (e: React.FormEvent) => void
   t: (key: string) => string
+  // Reports whether there's a pending (unsaved) avatar change, so the settings
+  // page can include it in the unsaved-changes guard.
+  onAvatarDirtyChange?: (dirty: boolean) => void
 }
 
 export function ProfileSection({
@@ -40,7 +43,8 @@ export function ProfileSection({
   isUpdating,
   hasChanges,
   onSubmit,
-  t
+  t,
+  onAvatarDirtyChange
 }: ProfileSectionProps) {
   
   const { user: ctxUser, refetch } = useUserContext()
@@ -75,6 +79,13 @@ export function ProfileSection({
     setPendingFile(null)
     setMarkedForRemoval(false)
   }
+
+  // Report the pending avatar change up so the unsaved-changes guard covers it,
+  // and clear it when the section unmounts (navigating away / switching tab).
+  useEffect(() => {
+    onAvatarDirtyChange?.(avatarDirty)
+  }, [avatarDirty, onAvatarDirtyChange])
+  useEffect(() => () => onAvatarDirtyChange?.(false), [onAvatarDirtyChange])
 
   const handleAvatarFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]

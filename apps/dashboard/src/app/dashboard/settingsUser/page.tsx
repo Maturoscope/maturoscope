@@ -188,6 +188,7 @@ export default function SettingsUserPage() {
                 isUpdating={settingsState.isUpdatingProfile}
                 hasChanges={settingsState.hasChanges}
                 onSubmit={settingsActions.handleProfileSubmit}
+                onAvatarDirtyChange={settingsState.setAvatarDirty}
                 t={t}
               />
             )}
