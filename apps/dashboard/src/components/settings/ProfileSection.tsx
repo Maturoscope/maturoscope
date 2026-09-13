@@ -104,9 +104,12 @@ export function ProfileSection({
   }
 
   // Flush the pending avatar change (if any), then persist the profile fields.
+  // The avatar is personal, so it can be saved even when the name fields are
+  // locked (first admin member); names are only persisted when they changed.
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    const removing = markedForRemoval && !pendingFile
     if (avatarDirty) {
       setAvatarBusy(true)
       try {
@@ -130,7 +133,12 @@ export function ProfileSection({
       setAvatarBusy(false)
     }
 
-    onSubmit(e)
+    if (hasChanges && !isFirstAdminMember) {
+      onSubmit(e)
+    } else if (avatarDirty) {
+      // Avatar-only save: surface its own confirmation toast.
+      setAvatarToast(removing ? t('PROFILE.AVATAR.REMOVED') : t('PROFILE.AVATAR.UPDATED'))
+    }
   }
 
   // Check if user is the first admin member (email matches organization email)
@@ -285,7 +293,14 @@ export function ProfileSection({
         <Button 
           type="submit" 
           className="w-full sm:w-auto sm:min-w-[150px]"
-          disabled={isUpdating || avatarBusy || (!hasChanges && !avatarDirty) || Object.keys(errors).length > 0 || isFirstAdminMember}
+          disabled={
+            isUpdating ||
+            avatarBusy ||
+            Object.keys(errors).length > 0 ||
+            // Enable on a personal avatar change (always), or on name changes
+            // when the user is allowed to edit them.
+            !(avatarDirty || (hasChanges && !isFirstAdminMember))
+          }
         >
           {isUpdating || avatarBusy ? <Loader2 className="size-4 animate-spin" /> : t('PROFILE.UPDATE_PROFILE')}
         </Button>
