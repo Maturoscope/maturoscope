@@ -136,6 +136,8 @@ export async function GET(req: NextRequest) {
       roles: decoded.userRoles || [],
       firstName: userApiData?.firstName,
       lastName: userApiData?.lastName,
+      // The user's own profile picture (empty -> the UI shows initials).
+      avatar: userApiData?.avatar || null,
       organization,
       registrationStatus: userApiData?.registrationStatus,
       isActive: userApiData?.isActive,

@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { User } from './entities/user.entity';
 import { UserOrganization, MembershipStatus } from './entities/user-organization.entity';
+import { OvhS3Service } from '../../common/storage/ovh-s3.service';
+import { UploadedFile } from '../../common/types/uploaded-file.type';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Organization } from '../organizations/entities/organization.entity';
@@ -21,7 +23,36 @@ export class UsersService {
     @InjectRepository(Organization)
     private readonly organizationRepository: Repository<Organization>,
     private readonly configService: ConfigService,
+    private readonly ovhS3: OvhS3Service,
   ) {}
+
+  /** Uploads a profile picture to object storage and stores its URL on the user. */
+  async updateAvatarByEmail(email: string, file: UploadedFile): Promise<UserResponseDto> {
+    if (!file || !file.buffer || !file.mimetype) {
+      throw new BadRequestException('Invalid file upload');
+    }
+    const user = await this.findByUserEmail(email);
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+    const extension = file.mimetype.split('/')[1] || 'bin';
+    const key = `users/${user.id}/avatar.${extension}`;
+    const { url } = await this.ovhS3.uploadObject(file, key);
+    user.avatar = url;
+    await this.userRepository.save(user);
+    return (await this.findByEmail(email))!;
+  }
+
+  /** Clears the user's profile picture. */
+  async removeAvatarByEmail(email: string): Promise<UserResponseDto> {
+    const user = await this.findByUserEmail(email);
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+    user.avatar = null as unknown as string;
+    await this.userRepository.save(user);
+    return (await this.findByEmail(email))!;
+  }
 
   /**
    * Active memberships for a user, ordered with the default first, then by join
@@ -268,6 +299,7 @@ export class UsersService {
       lastName: user.lastName,
       roles: user.roles,
       isSuperAdmin: user.isSuperAdmin,
+      avatar: user.avatar,
       email: user.email,
       isActive: user.isActive,
       createdAt: user.createdAt,

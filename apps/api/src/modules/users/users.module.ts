@@ -9,11 +9,12 @@ import { IntegrationAuth0Module } from '../integration-auth0/integration-auth0.m
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from 'src/common/auth-module/auth.module';
 import { AuthRoleGuard } from '../../common/auth-module/guards/auth-role.guard';
+import { OvhS3Service } from '../../common/storage/ovh-s3.service';
 
 @Module({
   imports: [ConfigModule, TypeOrmModule.forFeature([User, UserOrganization, Organization]), IntegrationAuth0Module, AuthModule],
   controllers: [UsersController],
-  providers: [UsersService, AuthRoleGuard],
+  providers: [UsersService, AuthRoleGuard, OvhS3Service],
   exports: [UsersService, AuthRoleGuard],
 })
 export class UsersModule {}

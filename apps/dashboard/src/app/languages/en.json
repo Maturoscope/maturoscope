@@ -333,7 +333,18 @@
       "ORGANIZATION": "Organization",
       "UPDATE_PROFILE": "Update profile",
       "SUCCESS_TITLE": "Profile Information Updated",
-      "SUCCESS_MESSAGE": "Your updates have been saved successfully."
+      "SUCCESS_MESSAGE": "Your updates have been saved successfully.",
+      "AVATAR": {
+        "LABEL": "Avatar",
+        "UPLOAD": "Upload avatar",
+        "REMOVE": "Remove avatar",
+        "HELPER": "Recommended dimensions 48x48px. Supported types: SVG, PNG or JPG. Max file size: 4MB",
+        "INVALID_TYPE": "Invalid file type. Only SVG, PNG or JPG are allowed.",
+        "TOO_LARGE": "File size exceeds 4MB limit.",
+        "UPDATED": "Profile picture updated",
+        "REMOVED": "Profile picture removed",
+        "ERROR": "Something went wrong. Please try again."
+      }
     },
     "PASSWORD": {
       "TITLE": "Password",

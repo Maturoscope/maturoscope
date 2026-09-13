@@ -26,16 +26,22 @@ import {
     isDefault: boolean
   }
 
-  const getAvatarSrc = (user: UserAvatarData | null, getVersionedUrl: (url: string | null | undefined) => string): string => {
-    if (user?.picture) return getVersionedUrl(user.picture);
-    if (user?.organization?.avatar) return getVersionedUrl(user.organization.avatar);
-    return IMAGE_VERSION_CONSTANTS.FALLBACK_IMAGES.LOGO;
+  // The user's own profile picture only (not the organization avatar); when
+  // absent we fall back to the initials rendered by AvatarFallback.
+  const getAvatarSrc = (
+    user: (UserAvatarData & { avatar?: string | null }) | null,
+    getVersionedUrl: (url: string | null | undefined) => string,
+  ): string | undefined => {
+    if (user?.avatar) return getVersionedUrl(user.avatar);
+    return undefined;
   };
 
+  // Initials from first + last name (e.g. "Jose Admin" -> "JA").
   const getAvatarFallback = (user: UserAvatarData | null): string => {
-    return user?.firstName?.charAt(0)?.toUpperCase() || 
-           user?.name?.charAt(0)?.toUpperCase() || 
-           IMAGE_VERSION_CONSTANTS.FALLBACK_IMAGES.USER_PLACEHOLDER;
+    const first = user?.firstName?.trim()?.charAt(0) ?? '';
+    const last = user?.lastName?.trim()?.charAt(0) ?? '';
+    const initials = `${first}${last}`.toUpperCase();
+    return initials || user?.name?.trim()?.charAt(0)?.toUpperCase() || 'U';
   };
 
   const getUserDisplayName = (user: UserAvatarData | null): string => {

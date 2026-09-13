@@ -333,7 +333,18 @@
       "ORGANIZATION": "Organisation",
       "UPDATE_PROFILE": "Mettre à jour le profil",
       "SUCCESS_TITLE": "Informations du profil mises à jour",
-      "SUCCESS_MESSAGE": "Vos modifications ont été enregistrées avec succès."
+      "SUCCESS_MESSAGE": "Vos modifications ont été enregistrées avec succès.",
+      "AVATAR": {
+        "LABEL": "Avatar",
+        "UPLOAD": "Téléverser un avatar",
+        "REMOVE": "Supprimer l'avatar",
+        "HELPER": "Dimensions recommandées 48x48px. Types acceptés : SVG, PNG ou JPG. Taille max : 4 Mo",
+        "INVALID_TYPE": "Type de fichier invalide. Seuls SVG, PNG ou JPG sont autorisés.",
+        "TOO_LARGE": "La taille du fichier dépasse la limite de 4 Mo.",
+        "UPDATED": "Photo de profil mise à jour",
+        "REMOVED": "Photo de profil supprimée",
+        "ERROR": "Une erreur s'est produite. Veuillez réessayer."
+      }
     },
     "PASSWORD": {
       "TITLE": "Mot de passe",

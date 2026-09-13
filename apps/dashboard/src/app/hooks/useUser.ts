@@ -9,6 +9,8 @@ export interface User {
   roles: string[];
   firstName?: string;
   lastName?: string;
+  // The user's own profile picture (empty -> show initials).
+  avatar?: string | null;
   organization?: {
     id?: string;
     key?: string;

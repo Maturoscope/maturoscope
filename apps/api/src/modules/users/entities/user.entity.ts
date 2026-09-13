@@ -30,6 +30,11 @@ export class User {
   @Column({ type: 'varchar', length: 255, unique: true })
   email: string;
 
+  // The user's own profile picture (OVH S3 URL). Independent of the organization
+  // avatar; when empty the UI shows the user's initials.
+  @Column({ type: 'text', nullable: true })
+  avatar: string;
+
   @Column({ type: 'boolean', default: true })
   isActive: boolean;
 

@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
+import { Toast } from '@/components/ui/toast'
 import { ProfileFormData } from './useSettingsState'
 import { validateField } from './validations'
+import { useUserContext } from '@/app/hooks/contexts/UserProvider'
+import { useImageVersion } from '@/hooks/useImageVersion'
+import { IMAGE_VERSION_CONSTANTS, FILE_VALIDATION } from '@/constants/imageVersion'
 
 interface User {
   email?: string
@@ -39,6 +43,65 @@ export function ProfileSection({
   t
 }: ProfileSectionProps) {
   
+  const { user: ctxUser, refetch } = useUserContext()
+  const { updateVersion, getVersionedUrl } = useImageVersion({
+    storageKey: IMAGE_VERSION_CONSTANTS.STORAGE_KEYS.AVATAR,
+    eventName: IMAGE_VERSION_CONSTANTS.EVENTS.AVATAR_UPDATED,
+  })
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [avatarBusy, setAvatarBusy] = useState(false)
+  const [avatarToast, setAvatarToast] = useState<string | null>(null)
+
+  const initials =
+    `${ctxUser?.firstName?.trim()?.charAt(0) ?? ''}${ctxUser?.lastName?.trim()?.charAt(0) ?? ''}`.toUpperCase() ||
+    'U'
+  const avatarUrl = ctxUser?.avatar ? getVersionedUrl(ctxUser.avatar) : null
+
+  const handleAvatarFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+
+    if (!FILE_VALIDATION.AVATAR.ACCEPTED_TYPES.includes(file.type as never)) {
+      setAvatarToast(t('PROFILE.AVATAR.INVALID_TYPE'))
+      return
+    }
+    if (file.size > FILE_VALIDATION.AVATAR.MAX_SIZE) {
+      setAvatarToast(t('PROFILE.AVATAR.TOO_LARGE'))
+      return
+    }
+
+    setAvatarBusy(true)
+    try {
+      const body = new FormData()
+      body.append('file', file)
+      const res = await fetch('/api/users/avatar', { method: 'PATCH', body, credentials: 'include' })
+      if (!res.ok) throw new Error()
+      await refetch()
+      updateVersion()
+      setAvatarToast(t('PROFILE.AVATAR.UPDATED'))
+    } catch {
+      setAvatarToast(t('PROFILE.AVATAR.ERROR'))
+    } finally {
+      setAvatarBusy(false)
+    }
+  }
+
+  const handleRemoveAvatar = async () => {
+    setAvatarBusy(true)
+    try {
+      const res = await fetch('/api/users/avatar', { method: 'DELETE', credentials: 'include' })
+      if (!res.ok) throw new Error()
+      await refetch()
+      updateVersion()
+      setAvatarToast(t('PROFILE.AVATAR.REMOVED'))
+    } catch {
+      setAvatarToast(t('PROFILE.AVATAR.ERROR'))
+    } finally {
+      setAvatarBusy(false)
+    }
+  }
+
   // Check if user is the first admin member (email matches organization email)
   const isFirstAdminMember = Boolean(
     user?.email && 
@@ -116,6 +179,48 @@ export function ProfileSection({
         </div>
         
         <div className="space-y-2">
+          <Label>{t('PROFILE.AVATAR.LABEL')}</Label>
+          <div className="flex items-center gap-3">
+            {avatarUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={avatarUrl}
+                alt={initials}
+                className="h-10 w-10 rounded-full object-cover shrink-0"
+              />
+            ) : (
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-100 text-sm font-semibold text-gray-700">
+                {initials}
+              </span>
+            )}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={avatarBusy}
+            >
+              {avatarBusy ? <Loader2 className="size-4 animate-spin" /> : t('PROFILE.AVATAR.UPLOAD')}
+            </Button>
+            <Button
+              type="button"
+              onClick={handleRemoveAvatar}
+              disabled={avatarBusy || !ctxUser?.avatar}
+              className="ml-auto bg-red-600 hover:bg-red-700 text-white"
+            >
+              {t('PROFILE.AVATAR.REMOVE')}
+            </Button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/svg+xml"
+              className="hidden"
+              onChange={handleAvatarFile}
+            />
+          </div>
+          <p className="text-sm text-gray-500">{t('PROFILE.AVATAR.HELPER')}</p>
+        </div>
+
+        <div className="space-y-2">
           <Label htmlFor="email">{t('PROFILE.EMAIL')}</Label>
           <Input
             id="email"
@@ -145,6 +250,12 @@ export function ProfileSection({
           {isUpdating ? <Loader2 className="size-4 animate-spin" /> : t('PROFILE.UPDATE_PROFILE')}
         </Button>
       </form>
+
+      <Toast
+        title={avatarToast ?? ''}
+        isVisible={!!avatarToast}
+        onClose={() => setAvatarToast(null)}
+      />
     </div>
   )
 }

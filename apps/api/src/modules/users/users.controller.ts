@@ -10,8 +10,12 @@ import {
   HttpStatus,
   ForbiddenException,
   Req,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
+import type { UploadedFile as UploadedFileType } from '../../common/types/uploaded-file.type';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -166,6 +170,38 @@ export class UsersController {
   @ApiResponse({ status: 404, description: 'User not found' })
   remove(@Param() params: UuidParamDto) {
     return this.usersService.remove(params.id);
+  }
+
+  // --- Current user's profile picture ---
+
+  @Patch('me/avatar')
+  @Auth()
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Upload the current user profile picture' })
+  @ApiResponse({ status: 200, description: 'Avatar updated' })
+  async updateMyAvatar(
+    @UploadedFile() file: UploadedFileType,
+    @Req() req: Request & { user?: AuthenticatedUser },
+  ) {
+    const email = req.user?.email;
+    if (!email) {
+      throw new ForbiddenException('Unable to determine requester identity');
+    }
+    return this.usersService.updateAvatarByEmail(email, file);
+  }
+
+  @Delete('me/avatar')
+  @Auth()
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: 'Remove the current user profile picture' })
+  @ApiResponse({ status: 200, description: 'Avatar removed' })
+  async removeMyAvatar(@Req() req: Request & { user?: AuthenticatedUser }) {
+    const email = req.user?.email;
+    if (!email) {
+      throw new ForbiddenException('Unable to determine requester identity');
+    }
+    return this.usersService.removeAvatarByEmail(email);
   }
 
   // --- Current user's organization memberships (multi-organization) ---
