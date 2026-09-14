@@ -16,9 +16,9 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { email, firstName, lastName, organizationId } = body;
+    const { email, organizationId } = body;
 
-    if (!email || !firstName || !lastName || !organizationId) {
+    if (!email || !organizationId) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -35,10 +35,7 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         email,
-        firstName,
-        lastName,
         organizationId,
-        roles: ['user'],
       }),
     });
 
