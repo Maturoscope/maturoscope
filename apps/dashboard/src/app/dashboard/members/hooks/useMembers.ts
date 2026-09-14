@@ -96,8 +96,6 @@ export function useMembers(organizationId?: string) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: member.email,
-          firstName: member.firstName,
-          lastName: member.lastName,
           organizationId,
         }),
       });
