@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 import { useRouter, useSearchParams } from "next/navigation";
+import { sanitizeRedirect } from "@/lib/redirect";
 import { motion } from "framer-motion";
 
 import { Checkbox } from "@/components/ui/checkbox";
@@ -180,10 +181,8 @@ export default function LoginForm({
       setShowLockWarning(false);
       setSuccess(t("PAGE.LOGIN_SUCCESS"));
       // Honour a post-login redirect (e.g. association invitations link to the
-      // organizations section). Only allow same-app relative paths.
-      const redirectParam = searchParams.get("redirect");
-      const redirectTarget =
-        redirectParam && redirectParam.startsWith("/") ? redirectParam : "/dashboard";
+      // organizations section). Only safe same-origin relative paths are allowed.
+      const redirectTarget = sanitizeRedirect(searchParams.get("redirect"), "/dashboard");
       setTimeout(() => {
         router.push(redirectTarget);
       }, 1000);

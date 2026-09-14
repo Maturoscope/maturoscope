@@ -33,7 +33,7 @@ export class User {
   // The user's own profile picture (OVH S3 URL). Independent of the organization
   // avatar; when empty the UI shows the user's initials.
   @Column({ type: 'text', nullable: true })
-  avatar: string;
+  avatar: string | null;
 
   @Column({ type: 'boolean', default: true })
   isActive: boolean;

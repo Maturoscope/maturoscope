@@ -71,7 +71,7 @@ export class UsersService {
     if (user.avatar) {
       await this.ovhS3.deleteObject(this.avatarKey(user.id));
     }
-    user.avatar = null as unknown as string;
+    user.avatar = null;
     await this.userRepository.save(user);
     return (await this.findByEmail(email))!;
   }
