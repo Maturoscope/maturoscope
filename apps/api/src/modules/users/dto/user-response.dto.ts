@@ -5,6 +5,8 @@ export interface UserResponseDto extends Omit<User, 'organization' | 'membership
   registrationStatus: RegistrationStatus;
   // Multi-organization context (populated when memberships are loaded).
   defaultOrganizationId?: string;
+  // Organization a session should start on (accessible default / first accessible).
+  sessionOrganizationId?: string;
   pendingInvitationsCount?: number;
   organization?: {
     id: string;

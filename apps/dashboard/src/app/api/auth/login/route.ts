@@ -69,24 +69,25 @@ export const POST = async (req: Request) => {
 
       if (userResponse.ok && userData && userData.id) {
 
-        // Default organization for the session (backfill keeps organizationId in
-        // sync with the default membership).
-        activeOrganizationId = userData.defaultOrganizationId || userData.organizationId || undefined;
+        // The session starts on the accessible (accepted + enabled) default
+        // organization; access is now driven by memberships, not a global flag.
+        activeOrganizationId = userData.sessionOrganizationId || undefined;
 
-        // Check if the user is inactive
-        if (userData.isActive === false) {
+        // No accessible organization: every membership is disabled or none is
+        // active — deny access.
+        if (!activeOrganizationId) {
           return NextResponse.json(
-            { 
-              error: 'Your account is inactive. Please contact your administrator.',
+            {
+              error: 'Your account has no active organization. Please contact your administrator.',
               code: 'INACTIVE_ACCOUNT'
-            }, 
+            },
             { status: 403 }
           );
         }
 
-        // Check if the organization is inactive
-        if (userData.organizationId) {
-          const orgResponse = await fetch(`${apiBaseUrl}/organizations/${userData.organizationId}`, {
+        // Check if the active organization is inactive
+        if (activeOrganizationId) {
+          const orgResponse = await fetch(`${apiBaseUrl}/organizations/${activeOrganizationId}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',

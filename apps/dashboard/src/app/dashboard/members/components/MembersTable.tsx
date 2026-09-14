@@ -26,7 +26,7 @@ interface MembersTableProps {
   error: string | null;
   resendingUserId: string | null;
   activeFilter: "all" | "active" | "inactive";
-  registrationFilter: "all" | "completed" | "pending" | "expired";
+  registrationFilter: "all" | "completed" | "pending" | "expired" | "rejected";
   onToggleActive: (member: Member, value: boolean) => void;
   onResendInvitation: (member: Member) => void;
   organizationEmail?: string;

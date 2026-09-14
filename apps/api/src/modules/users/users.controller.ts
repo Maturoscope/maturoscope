@@ -241,8 +241,9 @@ export class UsersController {
     });
 
     return {
+      // Only accessible organizations (accepted + enabled) are switchable.
       active: memberships
-        .filter((m) => m.status === 'active')
+        .filter((m) => m.status === 'active' && m.isActive)
         .map(toSummary),
       pending: memberships
         .filter((m) => m.status === 'invited')
@@ -312,5 +313,40 @@ export class UsersController {
     const userId = await this.getRequesterId(req);
     await this.usersService.setDefaultOrganization(userId, organizationId);
     return { message: 'Default organization updated' };
+  }
+
+  // --- Manage a member's active flag within an organization (admin action) ---
+
+  @Patch('organization/:organizationId/members/:userId/active')
+  @Auth()
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({ summary: "Enable/disable a member's access to an organization" })
+  @ApiParam({ name: 'organizationId', description: 'Organization UUID' })
+  @ApiParam({ name: 'userId', description: 'Member user UUID' })
+  @ApiResponse({ status: 200, description: 'Membership updated' })
+  @ApiResponse({ status: 403, description: 'Forbidden - no access to this organization' })
+  async setMemberActive(
+    @Param('organizationId') organizationId: string,
+    @Param('userId') userId: string,
+    @Body('isActive') isActive: boolean,
+    @Req() req: Request & { user?: AuthenticatedUser },
+  ) {
+    if (typeof isActive !== 'boolean') {
+      throw new ForbiddenException('isActive (boolean) is required');
+    }
+    // Caller must manage the target organization (super-admin or active member).
+    const requesterEmail = req.user?.email;
+    const requester = requesterEmail
+      ? await this.usersService.findByUserEmail(requesterEmail)
+      : null;
+    const canManage =
+      !!requester &&
+      (requester.isSuperAdmin ||
+        (await this.usersService.hasActiveMembership(requester.id, organizationId)));
+    if (!canManage) {
+      throw new ForbiddenException('You do not have access to this organization');
+    }
+    await this.usersService.setMembershipActive(userId, organizationId, isActive);
+    return { message: 'Membership updated' };
   }
 }

@@ -5,6 +5,7 @@ import { UsersService } from '../users/users.service';
 import { OrganizationsService } from '../organizations/organizations.service';
 import { CreateUserInvitationDto } from './dto/create-user-invitation.dto';
 import { CompleteUserInvitationDto } from './dto/complete-user-invitation.dto';
+import { ResendInvitationDto } from './dto/resend-invitation.dto';
 import { UserInvitationMailService } from './mail.service';
 import { getRolesMapped } from '../../common/auth-module/interfaces/valid-roles';
 import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
@@ -441,71 +442,77 @@ export class UserInvitationService {
     };
   }
 
-  async resendInvitation(createUserInvitationDto: CreateUserInvitationDto, invitedBy?: { email?: string; name?: string }) {
-    const { email, firstName, lastName, roles, organizationId } = createUserInvitationDto;
+  async resendInvitation(resendDto: ResendInvitationDto, invitedBy?: { email?: string; name?: string }) {
+    const { email, organizationId } = resendDto;
 
     // Only members (or super-admins) of the target organization may resend.
     await this.assertCallerCanManageOrganization(invitedBy?.email, organizationId);
 
     const existingUser = await this.usersService.findByUserEmail(email);
-
     if (!existingUser) {
       throw new NotFoundException('User not found');
     }
 
-    if (existingUser.authId) {
-      throw new BadRequestException('User has already completed registration. Cannot resend invitation.');
+    const membership = await this.usersService.getMembership(existingUser.id, organizationId);
+    if (!membership) {
+      throw new NotFoundException('This user is not a member of this organization');
     }
 
-    // Update user with new data and reset createdAt to current date
-    await this.usersService.updateUserWithNewCreatedAt(email, {
-      firstName,
-      lastName,
-      roles,
-      organizationId,
-      isActive: true,
-    });
+    // Reset the membership to a fresh pending invitation (works for expired and
+    // rejected memberships alike).
+    await this.usersService.resetMembershipToInvited(existingUser.id, organizationId);
 
     const { companyName, companyLogoUrl, organizationLanguage } = await this.getOrganizationDetails(
       organizationId,
       invitedBy,
     );
-
     const expirationDaysDisplay = this.getInvitationExpirationDays();
+    const hasAccount = !!existingUser.authId;
 
-    const token = this.jwtService.sign(
-      {
+    if (hasAccount) {
+      // Existing account: normal login link that lands on the organizations section.
+      const link = this.buildLoginRedirectLink(this.getOrganizationsSectionPath());
+      await this.userInvitationMailService.sendAssociationInvitationEmail({
+        inviteeEmail: email,
+        inviteeFirstName: existingUser.firstName,
+        link,
+        companyName,
+        companyLogoUrl,
+        inviterName: invitedBy?.name,
+        hasAccount: true,
+        expirationDays: expirationDaysDisplay,
+        language: organizationLanguage,
+      });
+    } else {
+      // No account yet: magic link that completes registration for this org.
+      const token = this.jwtService.sign(
+        {
+          email,
+          firstName: existingUser.firstName,
+          lastName: existingUser.lastName,
+          roles: existingUser.roles || [],
+          organizationId,
+          type: 'invitation',
+          isAssociation: false,
+        },
+        { expiresIn: this.getInvitationExpiration() },
+      );
+      const magicLink = this.buildMagicLink(token);
+      await this.sendInvitationEmail(
         email,
-        firstName,
-        lastName,
-        roles,
+        existingUser.firstName,
+        existingUser.roles || [],
         organizationId,
-        type: 'invitation',
-      },
-      {
-        expiresIn: this.getInvitationExpiration(),
-      },
-    );
+        magicLink,
+        companyName,
+        companyLogoUrl,
+        organizationLanguage,
+        expirationDaysDisplay,
+        false,
+      );
+    }
 
-    const magicLink = this.buildMagicLink(token);
-
-    // When resending, the user already exists, so they're not the first user
-    const isFirstUser = false;
-
-    await this.sendInvitationEmail(
-      email,
-      firstName,
-      roles,
-      organizationId,
-      magicLink,
-      companyName,
-      companyLogoUrl,
-      organizationLanguage,
-      expirationDaysDisplay,
-      isFirstUser,
-    );
-
-    this.logger.info('User invitation resent', { email, organizationId });
+    this.logger.info('User invitation resent', { email, organizationId, hasAccount });
     return {
       message: 'Invitation resent successfully',
       email,

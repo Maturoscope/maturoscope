@@ -11,7 +11,7 @@ interface RegistrationTabsProps {
   onFilterChange: (filter: RegistrationFilter) => void;
 }
 
-const filters: RegistrationFilter[] = ["all", "completed", "pending", "expired"];
+const filters: RegistrationFilter[] = ["all", "completed", "pending", "expired", "rejected"];
 
 export function RegistrationTabs({
   selectedFilter,
@@ -24,6 +24,7 @@ export function RegistrationTabs({
     if (filter === "completed") return t("FILTERS.COMPLETED");
     if (filter === "pending") return t("FILTERS.PENDING");
     if (filter === "expired") return t("FILTERS.EXPIRED");
+    if (filter === "rejected") return t("FILTERS.REJECTED");
     return filter;
   };
 

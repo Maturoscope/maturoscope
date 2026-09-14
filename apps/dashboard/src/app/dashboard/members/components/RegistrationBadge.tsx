@@ -29,7 +29,11 @@ export function RegistrationBadge({
     completed: t("REGISTRATION_STATUS.COMPLETED"),
     pending: t("REGISTRATION_STATUS.PENDING"),
     expired: t("REGISTRATION_STATUS.EXPIRED"),
+    rejected: t("REGISTRATION_STATUS.REJECTED"),
   };
+
+  // Expired and rejected invitations can be re-sent.
+  const canResend = status === "expired" || status === "rejected";
 
   return (
     <span
@@ -44,7 +48,7 @@ export function RegistrationBadge({
         )}
       />
       {statusLabels[status]}
-      {status === "expired" && onResend && (
+      {canResend && onResend && (
         <Tooltip>
           <TooltipTrigger asChild>
             <button

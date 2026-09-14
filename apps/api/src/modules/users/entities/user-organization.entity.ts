@@ -12,10 +12,12 @@ import { User } from './user.entity';
 import { Organization } from '../../organizations/entities/organization.entity';
 
 export enum MembershipStatus {
-  // The user belongs to the organization and can act within it.
+  // The user accepted and belongs to the organization.
   ACTIVE = 'active',
   // The user was invited but has not accepted joining yet.
   INVITED = 'invited',
+  // The user declined the invitation (kept so the org can see it / re-invite).
+  REJECTED = 'rejected',
 }
 
 /**
@@ -38,15 +40,18 @@ export class UserOrganization {
   @Index()
   organizationId: string;
 
-  @Column({
-    type: 'enum',
-    enum: MembershipStatus,
-    default: MembershipStatus.ACTIVE,
-  })
+  // Stored as varchar (see migration 1746) so adding statuses needs no enum
+  // change; the MembershipStatus enum validates values at the application level.
+  @Column({ type: 'varchar', length: 20, default: MembershipStatus.ACTIVE })
   status: MembershipStatus;
 
   @Column({ type: 'boolean', default: false })
   isDefault: boolean;
+
+  // Whether this membership is enabled. Disabling it (per organization) blocks
+  // the user's access to that organization without affecting their other ones.
+  @Column({ type: 'boolean', default: true })
+  isActive: boolean;
 
   @Column({ type: 'timestamp', nullable: true })
   invitedAt: Date;

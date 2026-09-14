@@ -4,6 +4,7 @@ import { UserInvitationService } from './user-invitation.service';
 import { CreateUserInvitationDto } from './dto/create-user-invitation.dto';
 import { Auth } from '../../common/decorators/auth.decorator';
 import { CompleteUserInvitationDto } from './dto/complete-user-invitation.dto';
+import { ResendInvitationDto } from './dto/resend-invitation.dto';
 import { Request } from 'express';
 import { AuthenticatedUser } from '../../common/auth-module/interfaces/authenticated-user.interface';
 
@@ -89,10 +90,10 @@ export class UserInvitationController {
   @ApiResponse({ status: 200, description: 'Invitation resent successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   resendInvitation(
-    @Body() createUserInvitationDto: CreateUserInvitationDto,
+    @Body() resendInvitationDto: ResendInvitationDto,
     @Req() req: Request & { user?: AuthenticatedUser },
   ) {
-    return this.userInvitationService.resendInvitation(createUserInvitationDto, req.user);
+    return this.userInvitationService.resendInvitation(resendInvitationDto, req.user);
   }
 }
 

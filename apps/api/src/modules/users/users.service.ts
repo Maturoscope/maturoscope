@@ -10,7 +10,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Organization } from '../organizations/entities/organization.entity';
 import { UserResponseDto } from './dto/user-response.dto';
-import { calculateRegistrationStatus } from './helpers/registration-status.helper';
+import { calculateRegistrationStatus, membershipRegistrationStatus } from './helpers/registration-status.helper';
 import { validate as uuidValidate } from 'uuid';
 
 @Injectable()
@@ -139,6 +139,7 @@ export class UsersService {
     if (!membership) return null;
 
     membership.status = MembershipStatus.ACTIVE;
+    membership.isActive = true;
     membership.joinedAt = membership.joinedAt ?? new Date();
 
     const hasDefault = await this.membershipRepository.count({
@@ -151,12 +152,47 @@ export class UsersService {
     return this.membershipRepository.save(membership);
   }
 
-  /** Whether the user has an active membership in the given organization. */
+  /**
+   * Whether the user can access the organization: an accepted membership that is
+   * also enabled (a disabled membership blocks access to that org only).
+   */
   async hasActiveMembership(userId: string, organizationId: string): Promise<boolean> {
     const count = await this.membershipRepository.count({
-      where: { userId, organizationId, status: MembershipStatus.ACTIVE },
+      where: { userId, organizationId, status: MembershipStatus.ACTIVE, isActive: true },
     });
     return count > 0;
+  }
+
+  /**
+   * Resets an existing membership to a fresh pending invitation (used when
+   * resending to an expired or rejected membership).
+   */
+  async resetMembershipToInvited(
+    userId: string,
+    organizationId: string,
+  ): Promise<UserOrganization> {
+    const membership = await this.getMembership(userId, organizationId);
+    if (!membership) {
+      throw new NotFoundException('Membership not found');
+    }
+    membership.status = MembershipStatus.INVITED;
+    membership.isActive = true;
+    membership.invitedAt = new Date();
+    return this.membershipRepository.save(membership);
+  }
+
+  /** Enable/disable a user's membership in an organization (per-org access). */
+  async setMembershipActive(
+    userId: string,
+    organizationId: string,
+    isActive: boolean,
+  ): Promise<UserOrganization> {
+    const membership = await this.getMembership(userId, organizationId);
+    if (!membership) {
+      throw new NotFoundException('Membership not found');
+    }
+    membership.isActive = isActive;
+    return this.membershipRepository.save(membership);
   }
 
   /** All memberships for a user (active + invited), with the organization. */
@@ -177,13 +213,17 @@ export class UsersService {
     return (await this.activateMembership(userId, organizationId))!;
   }
 
-  /** Decline a pending invitation: remove the invited membership. */
+  /**
+   * Decline a pending invitation: keep the membership as rejected so the
+   * organization still sees it (red + resend) and can re-invite later.
+   */
   async declineInvitation(userId: string, organizationId: string): Promise<void> {
     const membership = await this.getMembership(userId, organizationId);
     if (!membership || membership.status !== MembershipStatus.INVITED) {
       throw new NotFoundException('No pending invitation for this organization');
     }
-    await this.membershipRepository.remove(membership);
+    membership.status = MembershipStatus.REJECTED;
+    await this.membershipRepository.save(membership);
   }
 
   /** Leave an organization: remove the active membership (never the default). */
@@ -224,10 +264,22 @@ export class UsersService {
   }
 
   /**
+   * The organization a session should start on: the accessible (active + enabled)
+   * default, else the first accessible membership, else null (no access).
+   */
+  async getSessionOrganizationId(userId: string): Promise<string | null> {
+    const accessible = await this.membershipRepository.find({
+      where: { userId, status: MembershipStatus.ACTIVE, isActive: true },
+      order: { isDefault: 'DESC', createdAt: 'ASC' },
+    });
+    return accessible[0]?.organizationId ?? null;
+  }
+
+  /**
    * Resolves which organization a request should operate on. A requested id
    * (from the active-organization header/cookie) is honoured only if the user
-   * has an active membership for it; otherwise we fall back to their default
-   * membership, and finally to the legacy `organizationId` column.
+   * has an accessible membership for it; otherwise we fall back to their
+   * accessible default / first accessible organization.
    */
   async resolveActiveOrganizationId(
     email: string,
@@ -242,13 +294,13 @@ export class UsersService {
           userId: user.id,
           organizationId: requestedOrganizationId,
           status: MembershipStatus.ACTIVE,
+          isActive: true,
         },
       });
       if (membership) return membership.organizationId;
     }
 
-    const defaultOrganizationId = await this.getDefaultOrganizationId(user.id);
-    return defaultOrganizationId ?? user.organizationId ?? null;
+    return this.getSessionOrganizationId(user.id);
   }
 
   private getInvitationExpirationDays(): number {
@@ -305,11 +357,18 @@ export class UsersService {
 
     // Derive multi-organization context when memberships have been loaded.
     let defaultOrganizationId: string | undefined;
+    let sessionOrganizationId: string | undefined;
     let pendingInvitationsCount: number | undefined;
     if (user.memberships) {
       defaultOrganizationId = user.memberships.find(
         (m) => m.status === MembershipStatus.ACTIVE && m.isDefault,
       )?.organizationId;
+      // Accessible (accepted + enabled) organizations, default first — the one a
+      // session should land on.
+      const accessible = user.memberships
+        .filter((m) => m.status === MembershipStatus.ACTIVE && m.isActive)
+        .sort((a, b) => Number(b.isDefault) - Number(a.isDefault));
+      sessionOrganizationId = accessible[0]?.organizationId;
       pendingInvitationsCount = user.memberships.filter(
         (m) => m.status === MembershipStatus.INVITED,
       ).length;
@@ -329,6 +388,7 @@ export class UsersService {
       createdAt: user.createdAt,
       registrationStatus,
       defaultOrganizationId,
+      sessionOrganizationId,
       pendingInvitationsCount,
       organization: user.organization ? {
         id: user.organization.id,
@@ -446,11 +506,21 @@ export class UsersService {
       order: { createdAt: 'DESC' },
     });
 
-    const users = memberships
-      .map((membership) => membership.user)
-      .filter((user): user is User => !!user);
+    const expirationDays = this.getInvitationExpirationDays();
 
-    return this.enrichUsersWithStatus(users);
+    // Registration status and active flag come from the membership, not the
+    // global user, so each organization sees its own view of the member.
+    return memberships
+      .filter((membership) => !!membership.user)
+      .map((membership) => ({
+        ...this.enrichUserWithStatus(membership.user),
+        isActive: membership.isActive,
+        registrationStatus: membershipRegistrationStatus(
+          membership.status,
+          membership.invitedAt,
+          expirationDays,
+        ),
+      }));
   }
 
   async updateUser(email: string, updateData: Partial<User>): Promise<User> {

@@ -1,4 +1,4 @@
-export type RegistrationStatus = "completed" | "pending" | "expired";
+export type RegistrationStatus = "completed" | "pending" | "expired" | "rejected";
 
 export type Member = {
   id: string;
@@ -19,5 +19,6 @@ export const registrationDotClasses: Record<RegistrationStatus, string> = {
   completed: "bg-[#059669]",
   pending: "bg-[#D97706]",
   expired: "bg-[#737373]",
+  rejected: "bg-[#DC2626]",
 };
 
