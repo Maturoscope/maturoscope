@@ -201,7 +201,7 @@
       "COMPLETED": "Completed",
       "PENDING": "Pending",
       "EXPIRED": "Expired",
-      "REJECTED": "Rejected",
+      "REJECTED": "Declined",
       "ACTIVE": "Active",
       "INACTIVE": "Inactive"
     },
@@ -257,7 +257,7 @@
       "COMPLETED": "Completed",
       "PENDING": "Pending",
       "EXPIRED": "Expired",
-      "REJECTED": "Rejected"
+      "REJECTED": "Declined"
     },
     "NEW_MEMBER": {
       "TITLE": "New Member",
@@ -799,7 +799,7 @@
       "COMPLETED": "Completed",
       "PENDING": "Pending",
       "EXPIRED": "Expired",
-      "REJECTED": "Rejected",
+      "REJECTED": "Declined",
       "ACTIVE": "Active",
       "INACTIVE": "Inactive"
     },
@@ -852,7 +852,7 @@
       "COMPLETED": "Completed",
       "PENDING": "Pending",
       "EXPIRED": "Expired",
-      "REJECTED": "Rejected"
+      "REJECTED": "Declined"
     },
     "NEW_ORGANIZATION": {
       "TITLE": "New Organization",
