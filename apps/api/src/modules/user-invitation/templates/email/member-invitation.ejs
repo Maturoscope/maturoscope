@@ -44,11 +44,14 @@
                 </a>
               </td>
             </tr>
+            <% const expirationHtml = content.expirationMessage(expirationDays); %>
+            <% if (expirationHtml) { %>
             <tr>
               <td style="font-size:16px;line-height:26px;color:#01070D;padding-bottom:32px;">
-                <%- content.expirationMessage(expirationDays) %>
+                <%- expirationHtml %>
               </td>
             </tr>
+            <% } %>
           </table>
         </td>
       </tr>

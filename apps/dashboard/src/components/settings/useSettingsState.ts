@@ -59,6 +59,9 @@ export function useSettingsState() {
   
   const [errors, setErrors] = useState<{[key: string]: string}>({})
   const [hasChanges, setHasChanges] = useState(false)
+  // Pending (unsaved) avatar change reported by the Profile section, so the
+  // unsaved-changes guard also covers the avatar.
+  const [avatarDirty, setAvatarDirty] = useState(false)
   
   const [showSuccessToast, setShowSuccessToast] = useState(false)
   const [successToastType, setSuccessToastType] = useState<'profile' | 'password' | 'customization'>('profile')
@@ -92,9 +95,10 @@ export function useSettingsState() {
     let hasFormChanges = false
 
     if (activeSection === 'profile') {
-      hasFormChanges = 
+      hasFormChanges =
         profileForm.firstName !== originalProfileForm.firstName ||
-        profileForm.lastName !== originalProfileForm.lastName
+        profileForm.lastName !== originalProfileForm.lastName ||
+        avatarDirty
     } else if (activeSection === 'password') {
       hasFormChanges = 
         passwordForm.currentPassword !== originalPasswordForm.currentPassword ||
@@ -106,7 +110,7 @@ export function useSettingsState() {
     }
     
     setHasChanges(hasFormChanges)
-  }, [activeSection, profileForm, originalProfileForm, passwordForm, originalPasswordForm, customizationForm, originalCustomizationForm])
+  }, [activeSection, profileForm, originalProfileForm, passwordForm, originalPasswordForm, customizationForm, originalCustomizationForm, avatarDirty])
 
   return {
     activeSection,
@@ -131,6 +135,8 @@ export function useSettingsState() {
     errors,
     setErrors,
     hasChanges,
+    avatarDirty,
+    setAvatarDirty,
     showSuccessToast,
     setShowSuccessToast,
     successToastType,

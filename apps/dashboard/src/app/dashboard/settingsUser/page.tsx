@@ -1,6 +1,7 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { DynamicPageHeader } from "@/components/DynamicPageHeader"
 import { useTranslation } from "react-i18next"
 import { useUserContext } from "@/app/hooks/contexts/UserProvider"
@@ -21,15 +22,29 @@ import {
   ProfileSection,
   PasswordSection,
   CustomizationSection,
+  OrganizationsSection,
   useSettingsState,
   useSettingsActions,
 } from "@/components/settings"
+
+const VALID_SECTIONS = ['profile', 'password', 'organizations', 'customization']
 
 export default function SettingsUserPage() {
   const { t } = useTranslation("USER_SETTINGS")
   const { t: tl } = useTranslation("LANGUAJES")
   const { loading, user } = useUserContext()
   const settingsState = useSettingsState()
+  const searchParams = useSearchParams()
+
+  // Deep-link support: open a specific section from ?section= (e.g. invitation
+  // emails redirect to ?section=organizations).
+  useEffect(() => {
+    const section = searchParams.get('section')
+    if (section && VALID_SECTIONS.includes(section)) {
+      settingsState.setActiveSection(section)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams])
 
   const generateBreadcrumbs = () => {
     const userFullName = user?.firstName + " " + user?.lastName || "User";
@@ -41,6 +56,7 @@ export default function SettingsUserPage() {
       const sectionLabels: Record<string, string> = {
         'profile': t('PROFILE.TITLE'),
         'password': t('PASSWORD.TITLE'),
+        'organizations': t('ORGANIZATIONS.TITLE'),
         'customization': t('CUSTOMIZATION.TITLE')
       };
       
@@ -119,6 +135,7 @@ export default function SettingsUserPage() {
   const sidebarOptions = [
     { key: 'profile', label: t('PROFILE.TITLE'), active: true },
     { key: 'password', label: t('PASSWORD.TITLE'), active: true },
+    { key: 'organizations', label: t('ORGANIZATIONS.TITLE'), active: true },
     { key: 'customization', label: t('CUSTOMIZATION.TITLE'), active: true }
   ]
 
@@ -171,6 +188,7 @@ export default function SettingsUserPage() {
                 isUpdating={settingsState.isUpdatingProfile}
                 hasChanges={settingsState.hasChanges}
                 onSubmit={settingsActions.handleProfileSubmit}
+                onAvatarDirtyChange={settingsState.setAvatarDirty}
                 t={t}
               />
             )}
@@ -188,6 +206,10 @@ export default function SettingsUserPage() {
               />
             )}
             
+            {settingsState.activeSection === 'organizations' && (
+              <OrganizationsSection />
+            )}
+
             {settingsState.activeSection === 'customization' && (
               <CustomizationSection
                 form={settingsState.customizationForm}

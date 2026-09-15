@@ -64,13 +64,21 @@ export class StatisticsController {
       throw new ForbiddenException('Unable to determine requester identity');
     }
 
-    const user = await this.usersService.findByUserEmail(email);
-    if (!user || !user.organizationId) {
+    // Operate on the active organization (from the header, validated against the
+    // user's active memberships), falling back to their default organization.
+    const requestedOrganizationId = req.headers['x-active-organization'] as
+      | string
+      | undefined;
+    const organizationId = await this.usersService.resolveActiveOrganizationId(
+      email,
+      requestedOrganizationId,
+    );
+    if (!organizationId) {
       throw new ForbiddenException('User or organization not found');
     }
 
     const statistics = await this.statisticsService.getStatisticsByOrganizationId(
-      user.organizationId,
+      organizationId,
     );
 
     // Calculate rates (capped at 100% to prevent display issues from duplicate tracking)

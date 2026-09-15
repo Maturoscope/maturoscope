@@ -65,7 +65,7 @@ export function Toast({
           ${show ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'}
         `}
       >
-        <div className="flex items-start gap-3">
+        <div className={`flex gap-3 ${description ? 'items-start' : 'items-center'}`}>
           {showIcon && (
             <div className="shrink-0">
               <CircleCheck className="h-6 w-6 text-[#0A0A0A]" />

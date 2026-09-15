@@ -32,7 +32,7 @@ export function useFilters(members: Member[]) {
   }, [members, registrationFilter, activeFilter, searchQuery]);
 
   const counts = useMemo(() => {
-    const base = { completed: 0, pending: 0, expired: 0 };
+    const base = { completed: 0, pending: 0, expired: 0, rejected: 0 };
     members.forEach((member) => {
       base[member.registrationStatus] += 1;
     });

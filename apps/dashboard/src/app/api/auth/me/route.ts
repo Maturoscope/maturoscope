@@ -1,6 +1,7 @@
 import { verifyToken } from '@/app/utils/authDecode';
 import { NextRequest, NextResponse } from 'next/server';
 import { createStructuredLogger } from '@/lib/structured-logger';
+import { ACTIVE_ORG_COOKIE } from '@/lib/apiProxy';
 
 const logger = createStructuredLogger('auth/me');
 
@@ -35,7 +36,29 @@ export async function GET(req: NextRequest) {
         clearTimeout(timeoutId);
         
         if (userData.ok) {
-          userApiData = await userData.json();
+          // The user-by-email endpoint returns an empty body when the user
+          // isn't found; parse defensively.
+          userApiData = await userData.json().catch(() => null);
+
+          // Authenticated in Auth0 but not provisioned in our database: deny
+          // access and clear the session so the app never loads half-broken.
+          if (!userApiData || !userApiData.id) {
+            logger.warn('Authenticated user not found in database', { email: decoded.userEmail });
+            const denied = NextResponse.json(
+              { error: 'Unauthorized', message: 'Account not found', code: 'ACCOUNT_NOT_FOUND' },
+              { status: 401 },
+            );
+            ['token', 'next-auth.session-token', ACTIVE_ORG_COOKIE].forEach((name) => {
+              denied.cookies.set(name, '', {
+                path: '/',
+                expires: new Date(0),
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+              });
+            });
+            return denied;
+          }
         } else {
           const errorText = await userData.text();
           logger.error('User API returned non-OK status', new Error(errorText || String(userData.status)), {
@@ -82,17 +105,47 @@ export async function GET(req: NextRequest) {
       });
     }
 
+    // Reflect the active organization (cookie) so the whole app — header, avatar,
+    // signature — matches the organization the user has switched to.
+    const activeOrganizationId = cookies.get(ACTIVE_ORG_COOKIE)?.value;
+    let organization = userApiData?.organization;
+    if (
+      activeOrganizationId &&
+      userApiData &&
+      organization?.id !== activeOrganizationId &&
+      process.env.NEXT_PUBLIC_API_BASE_URL
+    ) {
+      try {
+        const orgRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/organizations/${activeOrganizationId}`,
+          { headers: { Authorization: `Bearer ${token.value}` } },
+        );
+        if (orgRes.ok) {
+          organization = await orgRes.json();
+        }
+      } catch (orgError) {
+        logger.warn('Failed to resolve active organization', { error: String(orgError) });
+      }
+    }
+
     return NextResponse.json({
       userId: decoded.sub,
       email: decoded.userEmail,
       name: userApiData ? `${userApiData.firstName} ${userApiData.lastName}` : decoded.userName,
-      picture: userApiData?.organization?.avatar || decoded.userPicture,
+      picture: organization?.avatar || decoded.userPicture,
       roles: decoded.userRoles || [],
       firstName: userApiData?.firstName,
       lastName: userApiData?.lastName,
-      organization: userApiData?.organization,
+      // The user's own profile picture (empty -> the UI shows initials).
+      avatar: userApiData?.avatar || null,
+      organization,
       registrationStatus: userApiData?.registrationStatus,
       isActive: userApiData?.isActive,
+      // Multi-organization context.
+      isSuperAdmin: userApiData?.isSuperAdmin ?? false,
+      defaultOrganizationId: userApiData?.defaultOrganizationId,
+      activeOrganizationId: activeOrganizationId || userApiData?.organization?.id,
+      pendingInvitationsCount: userApiData?.pendingInvitationsCount ?? 0,
       termsAccepted: userApiData?.termsAccepted || false,
     });
 

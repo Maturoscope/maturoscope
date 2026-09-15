@@ -17,7 +17,8 @@ export class Organization {
   @Column({ type: 'text' })
   name: string;
 
-  @Column({ type: 'varchar', length: 255, unique: true })
+  // Not unique: the same email can be the first user of several organizations.
+  @Column({ type: 'varchar', length: 255 })
   email: string;
 
   @Column({ type: 'text', nullable: true })

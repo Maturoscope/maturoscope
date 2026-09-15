@@ -1,10 +1,11 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';
 import { OrganizationsService } from '../organizations/organizations.service';
 import { CreateUserInvitationDto } from './dto/create-user-invitation.dto';
 import { CompleteUserInvitationDto } from './dto/complete-user-invitation.dto';
+import { ResendInvitationDto } from './dto/resend-invitation.dto';
 import { UserInvitationMailService } from './mail.service';
 import { getRolesMapped } from '../../common/auth-module/interfaces/valid-roles';
 import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
@@ -16,8 +17,20 @@ export interface InvitationPayload {
   roles: string[];
   organizationId: string;
   type: 'invitation';
+  // Association invites (joining an additional organization) require explicit
+  // acceptance from the profile; primary invites (first organization) activate
+  // the membership when the account is created. Absent = primary (legacy tokens).
+  isAssociation?: boolean;
   iat?: number;
   exp?: number;
+}
+
+export type InvitationCheckStatus = 'NEW' | 'IN_ORG' | 'IN_OTHER_ORG';
+
+export interface InvitationCheckResult {
+  status: InvitationCheckStatus;
+  // Whether the existing user has already finished creating their account.
+  hasAccount: boolean;
 }
 
 @Injectable()
@@ -68,10 +81,29 @@ export class UserInvitationService {
     return this.configService.get<string>('INVITATION_PATH') || '/complete-registration';
   }
 
-  private buildMagicLink(token: string): string {
+  private getOrganizationsSectionPath(): string {
+    return (
+      this.configService.get<string>('ORGANIZATIONS_SECTION_PATH') ||
+      '/dashboard/settingsUser?section=organizations'
+    );
+  }
+
+  private buildMagicLink(token: string, redirectPath?: string): string {
     const baseUrl = this.getDashboardUrl();
     const path = this.getInvitationPath();
-    return `${baseUrl}${path}?token=${token}`;
+    const redirect = redirectPath
+      ? `&redirect=${encodeURIComponent(redirectPath)}`
+      : '';
+    return `${baseUrl}${path}?token=${token}${redirect}`;
+  }
+
+  /**
+   * Link for association invites to a user that already has an account: goes to
+   * login with a redirect to the organizations section, where they accept/decline.
+   */
+  private buildLoginRedirectLink(redirectPath: string): string {
+    const baseUrl = this.getDashboardUrl();
+    return `${baseUrl}/login?redirect=${encodeURIComponent(redirectPath)}`;
   }
 
   private isAdminUser(roles: string[]): boolean {
@@ -174,48 +206,134 @@ export class UserInvitationService {
     }
   }
 
+  /**
+   * Ensures the caller may manage members of the given organization: platform
+   * super-admins, or users with an active membership in that organization.
+   * Prevents cross-organization invites and email enumeration via /check.
+   */
+  private async assertCallerCanManageOrganization(
+    callerEmail: string | undefined,
+    organizationId: string,
+  ): Promise<void> {
+    if (!callerEmail) {
+      throw new ForbiddenException('Unable to determine requester identity');
+    }
+    const caller = await this.usersService.findByUserEmail(callerEmail);
+    if (!caller) {
+      throw new ForbiddenException('Requester not found');
+    }
+    if (caller.isSuperAdmin) return;
+    const isMember = await this.usersService.hasActiveMembership(caller.id, organizationId);
+    if (!isMember) {
+      throw new ForbiddenException('You do not have access to this organization');
+    }
+  }
+
+  /**
+   * Pre-check used by the invite form to decide which screen to show: the email
+   * is new, already in this organization, or already a user of another one.
+   */
+  async checkInvitation(
+    email: string,
+    organizationId: string,
+    callerEmail?: string,
+  ): Promise<InvitationCheckResult> {
+    await this.assertCallerCanManageOrganization(callerEmail, organizationId);
+
+    const existingUser = await this.usersService.findByUserEmail(email);
+
+    if (!existingUser) {
+      return { status: 'NEW', hasAccount: false };
+    }
+
+    const membership = await this.usersService.getMembership(existingUser.id, organizationId);
+    const hasAccount = !!existingUser.authId;
+
+    return {
+      status: membership ? 'IN_ORG' : 'IN_OTHER_ORG',
+      hasAccount,
+    };
+  }
+
   async inviteUser(createUserInvitationDto: CreateUserInvitationDto, invitedBy?: { email?: string; name?: string }) {
     const { email, firstName, lastName, roles, organizationId } = createUserInvitationDto;
 
-    // Check if email exists in organizations
-    const existingOrganization = await this.organizationsService.findByEmail(email);
-    if (existingOrganization) {
-      // Allow the email if it's the organization's own email and it's for the same organization
-      if (existingOrganization.id !== organizationId) {
-        throw new BadRequestException('This email address is already registered in our database. Please use a different one.');
-      }
-      // If it's the same organization, we allow it (it's the first user being created for this org)
-    }
+    // Only members (or super-admins) of the target organization may invite.
+    await this.assertCallerCanManageOrganization(invitedBy?.email, organizationId);
 
-    // Check if this will be the first user BEFORE creating them
-    // This is important for determining which email template to use
-    const existingUsersInOrg = await this.usersService.findByOrganization(organizationId);
-    const isFirstUser = existingUsersInOrg.length === 0;
+    const existingUser = await this.usersService.findByUserEmail(email);
 
-    const existingUser = await this.usersService.findByEmail(email);
-
+    // --- Case 3: the email already belongs to a user (associate to a new org) ---
     if (existingUser) {
-      if (existingUser.authId) {
-        throw new BadRequestException('This email address is already registered in our database. Please use a different one.');
+      const membership = await this.usersService.getMembership(existingUser.id, organizationId);
+      if (membership) {
+        // Case 2: already a member (active or invited) of this organization.
+        throw new ConflictException({
+          message: 'This user already belongs to this organization.',
+          code: 'USER_ALREADY_IN_ORG',
+        });
       }
 
-      await this.usersService.updateByEmail(email, {
-        firstName,
-        lastName,
-        roles,
+      // Create a pending membership. Roles are global, so we do NOT touch the
+      // existing user's roles when associating them to another organization.
+      await this.usersService.createInvitedMembership(existingUser.id, organizationId);
+
+      const hasAccount = !!existingUser.authId;
+      const sectionPath = this.getOrganizationsSectionPath();
+
+      const token = this.jwtService.sign(
+        {
+          email,
+          firstName: existingUser.firstName,
+          lastName: existingUser.lastName,
+          roles: existingUser.roles || [],
+          organizationId,
+          type: 'invitation',
+          isAssociation: true,
+        },
+        { expiresIn: this.getInvitationExpiration() },
+      );
+
+      // Users with an account get a normal login link (they accept from the
+      // profile); users that never finished registration get a magic link that
+      // completes the account first, then lands on the same section.
+      const link = hasAccount
+        ? this.buildLoginRedirectLink(sectionPath)
+        : this.buildMagicLink(token, sectionPath);
+
+      const { companyName, companyLogoUrl, organizationLanguage } = await this.getOrganizationDetails(
         organizationId,
-        isActive: true,
+        invitedBy,
+      );
+
+      await this.userInvitationMailService.sendAssociationInvitationEmail({
+        inviteeEmail: email,
+        inviteeFirstName: existingUser.firstName,
+        link,
+        companyName,
+        companyLogoUrl,
+        inviterName: invitedBy?.name,
+        hasAccount,
+        expirationDays: this.getInvitationExpirationDays(),
+        language: organizationLanguage,
       });
-    } else {
-      await this.usersService.create({
-        organizationId,
-        firstName,
-        lastName,
-        email,
-        roles,
-        isActive: true,
-      });
+
+      this.logger.info('Association invitation sent', { email, organizationId, hasAccount });
+      return { message: 'Invitation sent successfully', email };
     }
+
+    // --- Case 1: brand-new user (first organization) ---
+    // No email-vs-organization check: the same email may be the first user of
+    // several organizations (existing users are associated above).
+    const createdUser = await this.usersService.create({
+      organizationId,
+      firstName,
+      lastName,
+      email,
+      roles,
+      isActive: true,
+    });
+    await this.usersService.createInvitedMembership(createdUser.id, organizationId);
 
     const { companyName, companyLogoUrl, organizationLanguage } = await this.getOrganizationDetails(
       organizationId,
@@ -232,6 +350,7 @@ export class UserInvitationService {
         roles,
         organizationId,
         type: 'invitation',
+        isAssociation: false,
       },
       {
         expiresIn: this.getInvitationExpiration(),
@@ -240,18 +359,19 @@ export class UserInvitationService {
 
     const magicLink = this.buildMagicLink(token);
 
-    await this.sendInvitationEmail(
-      email,
-      firstName,
-      roles,
-      organizationId,
-      magicLink,
+    // Same email as the "existing user without account" case: invite to join +
+    // magic link to complete registration.
+    await this.userInvitationMailService.sendAssociationInvitationEmail({
+      inviteeEmail: email,
+      inviteeFirstName: firstName,
+      link: magicLink,
       companyName,
       companyLogoUrl,
-      organizationLanguage,
-      expirationDaysDisplay,
-      isFirstUser,
-    );
+      inviterName: invitedBy?.name,
+      hasAccount: false,
+      expirationDays: expirationDaysDisplay,
+      language: organizationLanguage,
+    });
 
     this.logger.info('User invitation sent', { email, organizationId });
     return {
@@ -289,75 +409,102 @@ export class UserInvitationService {
       isActive: true,
     });
 
-    this.logger.info('User invitation completed', { email: payload.email, organizationId: payload.organizationId });
+    if (payload.isAssociation) {
+      // The account was created through an association link: activate the user's
+      // primary (default/first) organization so they have somewhere to land, and
+      // leave the association membership pending for explicit acceptance.
+      const primaryOrganizationId = user.organizationId;
+      if (primaryOrganizationId) {
+        await this.usersService.activateMembership(user.id, primaryOrganizationId);
+      }
+    } else {
+      // Primary invite: activate the membership for the invited organization.
+      await this.usersService.activateMembership(user.id, payload.organizationId);
+    }
+
+    this.logger.info('User invitation completed', {
+      email: payload.email,
+      organizationId: payload.organizationId,
+      isAssociation: !!payload.isAssociation,
+    });
     return {
       message: 'Invitation completed successfully',
       user: updatedUser,
+      isAssociation: !!payload.isAssociation,
+      redirectPath: payload.isAssociation ? this.getOrganizationsSectionPath() : undefined,
     };
   }
 
-  async resendInvitation(createUserInvitationDto: CreateUserInvitationDto, invitedBy?: { email?: string; name?: string }) {
-    const { email, firstName, lastName, roles, organizationId } = createUserInvitationDto;
+  async resendInvitation(resendDto: ResendInvitationDto, invitedBy?: { email?: string; name?: string }) {
+    const { email, organizationId } = resendDto;
+
+    // Only members (or super-admins) of the target organization may resend.
+    await this.assertCallerCanManageOrganization(invitedBy?.email, organizationId);
 
     const existingUser = await this.usersService.findByUserEmail(email);
-
     if (!existingUser) {
       throw new NotFoundException('User not found');
     }
 
-    if (existingUser.authId) {
-      throw new BadRequestException('User has already completed registration. Cannot resend invitation.');
+    const membership = await this.usersService.getMembership(existingUser.id, organizationId);
+    if (!membership) {
+      throw new NotFoundException('This user is not a member of this organization');
     }
 
-    // Update user with new data and reset createdAt to current date
-    await this.usersService.updateUserWithNewCreatedAt(email, {
-      firstName,
-      lastName,
-      roles,
-      organizationId,
-      isActive: true,
-    });
+    // Reset the membership to a fresh pending invitation (works for expired and
+    // rejected memberships alike).
+    await this.usersService.resetMembershipToInvited(existingUser.id, organizationId);
 
     const { companyName, companyLogoUrl, organizationLanguage } = await this.getOrganizationDetails(
       organizationId,
       invitedBy,
     );
-
     const expirationDaysDisplay = this.getInvitationExpirationDays();
+    const hasAccount = !!existingUser.authId;
 
-    const token = this.jwtService.sign(
-      {
-        email,
-        firstName,
-        lastName,
-        roles,
-        organizationId,
-        type: 'invitation',
-      },
-      {
-        expiresIn: this.getInvitationExpiration(),
-      },
-    );
+    if (hasAccount) {
+      // Existing account: normal login link that lands on the organizations section.
+      const link = this.buildLoginRedirectLink(this.getOrganizationsSectionPath());
+      await this.userInvitationMailService.sendAssociationInvitationEmail({
+        inviteeEmail: email,
+        inviteeFirstName: existingUser.firstName,
+        link,
+        companyName,
+        companyLogoUrl,
+        inviterName: invitedBy?.name,
+        hasAccount: true,
+        expirationDays: expirationDaysDisplay,
+        language: organizationLanguage,
+      });
+    } else {
+      // No account yet: magic link that completes registration for this org.
+      const token = this.jwtService.sign(
+        {
+          email,
+          firstName: existingUser.firstName,
+          lastName: existingUser.lastName,
+          roles: existingUser.roles || [],
+          organizationId,
+          type: 'invitation',
+          isAssociation: false,
+        },
+        { expiresIn: this.getInvitationExpiration() },
+      );
+      const magicLink = this.buildMagicLink(token);
+      await this.userInvitationMailService.sendAssociationInvitationEmail({
+        inviteeEmail: email,
+        inviteeFirstName: existingUser.firstName,
+        link: magicLink,
+        companyName,
+        companyLogoUrl,
+        inviterName: invitedBy?.name,
+        hasAccount: false,
+        expirationDays: expirationDaysDisplay,
+        language: organizationLanguage,
+      });
+    }
 
-    const magicLink = this.buildMagicLink(token);
-
-    // When resending, the user already exists, so they're not the first user
-    const isFirstUser = false;
-
-    await this.sendInvitationEmail(
-      email,
-      firstName,
-      roles,
-      organizationId,
-      magicLink,
-      companyName,
-      companyLogoUrl,
-      organizationLanguage,
-      expirationDaysDisplay,
-      isFirstUser,
-    );
-
-    this.logger.info('User invitation resent', { email, organizationId });
+    this.logger.info('User invitation resent', { email, organizationId, hasAccount });
     return {
       message: 'Invitation resent successfully',
       email,

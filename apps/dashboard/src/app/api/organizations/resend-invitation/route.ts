@@ -63,10 +63,7 @@ export async function POST(req: NextRequest) {
       },
       body: JSON.stringify({
         email: firstUser.email,
-        firstName: firstUser.firstName,
-        lastName: firstUser.lastName,
         organizationId,
-        roles: ['user'],
       }),
     });
 

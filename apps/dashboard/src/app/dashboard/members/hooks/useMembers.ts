@@ -49,19 +49,23 @@ export function useMembers(organizationId?: string) {
     nextValue: boolean,
     onSuccess?: (memberName: string, wasActivated: boolean) => void
   ) => {
+    if (!organizationId) return;
     try {
-      const response = await fetch(
-        `/api/user/${encodeURIComponent(member.email)}`,
-        {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ isActive: nextValue }),
-        }
-      );
+      // Enable/disable the user's membership in THIS organization (per-org),
+      // not the global user flag.
+      const response = await fetch("/api/organizations/members/active", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: member.id,
+          organizationId,
+          isActive: nextValue,
+        }),
+      });
 
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
-        throw new Error(data.error || t("NOTIFICATIONS.UPDATE_FAILED"));
+        throw new Error(data.error || data.message || t("NOTIFICATIONS.UPDATE_FAILED"));
       }
 
       setMembers((prev) =>
@@ -92,8 +96,6 @@ export function useMembers(organizationId?: string) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: member.email,
-          firstName: member.firstName,
-          lastName: member.lastName,
           organizationId,
         }),
       });

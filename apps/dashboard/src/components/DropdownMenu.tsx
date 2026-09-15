@@ -1,14 +1,16 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
   import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-  import { Settings, LogOut, ChevronDown } from "lucide-react"
+  import { Settings, LogOut, ChevronDown, Check, Mail } from "lucide-react"
   import { useUserContext } from "@/app/hooks/contexts/UserProvider"
   import { useRouter } from "next/navigation"
   import { useTranslation } from "react-i18next"
@@ -17,16 +19,29 @@ import {
   import { IMAGE_VERSION_CONSTANTS, UI_CONSTANTS } from "@/constants/imageVersion"
   import { UserAvatarData } from "@/types/image"
 
-  const getAvatarSrc = (user: UserAvatarData | null, getVersionedUrl: (url: string | null | undefined) => string): string => {
-    if (user?.picture) return getVersionedUrl(user.picture);
-    if (user?.organization?.avatar) return getVersionedUrl(user.organization.avatar);
-    return IMAGE_VERSION_CONSTANTS.FALLBACK_IMAGES.LOGO;
+  interface OrgOption {
+    id: string
+    name: string
+    avatar?: string | null
+    isDefault: boolean
+  }
+
+  // The user's own profile picture only (not the organization avatar); when
+  // absent we fall back to the initials rendered by AvatarFallback.
+  const getAvatarSrc = (
+    user: (UserAvatarData & { avatar?: string | null }) | null,
+    getVersionedUrl: (url: string | null | undefined) => string,
+  ): string | undefined => {
+    if (user?.avatar) return getVersionedUrl(user.avatar);
+    return undefined;
   };
 
+  // Initials from first + last name (e.g. "Jose Admin" -> "JA").
   const getAvatarFallback = (user: UserAvatarData | null): string => {
-    return user?.firstName?.charAt(0)?.toUpperCase() || 
-           user?.name?.charAt(0)?.toUpperCase() || 
-           IMAGE_VERSION_CONSTANTS.FALLBACK_IMAGES.USER_PLACEHOLDER;
+    const first = user?.firstName?.trim()?.charAt(0) ?? '';
+    const last = user?.lastName?.trim()?.charAt(0) ?? '';
+    const initials = `${first}${last}`.toUpperCase();
+    return initials || user?.name?.trim()?.charAt(0)?.toUpperCase() || 'U';
   };
 
   const getUserDisplayName = (user: UserAvatarData | null): string => {
@@ -36,18 +51,72 @@ import {
   const getOrganizationName = (user: UserAvatarData | null): string => {
     return user?.organization?.name || "Organización";
   };
+
+  /** Small circular organization avatar for the switcher rows. */
+  function OrgAvatar({ org }: { org: OrgOption }) {
+    if (org.avatar) {
+      // eslint-disable-next-line @next/next/no-img-element
+      return (
+        <img
+          src={org.avatar}
+          alt={org.name}
+          className="h-6 w-6 rounded-full object-cover shrink-0"
+        />
+      )
+    }
+    return (
+      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-semibold text-gray-700">
+        {org.name?.slice(0, 1).toUpperCase()}
+      </span>
+    )
+  }
   
   export function UserDropdown() {
     const [isOpen, setIsOpen] = useState(false)
+    const [orgs, setOrgs] = useState<OrgOption[]>([])
+    const [switching, setSwitching] = useState(false)
     const { user, loading } = useUserContext()
     const { t } = useTranslation("DASHBOARD")
     const router = useRouter()
-    
+
+    const pendingCount = user?.pendingInvitationsCount ?? 0
+    const activeOrgId = user?.activeOrganizationId || user?.organization?.id
+
     const { getVersionedUrl } = useImageVersion({
       storageKey: IMAGE_VERSION_CONSTANTS.STORAGE_KEYS.AVATAR,
       eventName: IMAGE_VERSION_CONSTANTS.EVENTS.AVATAR_UPDATED
     })
-    
+
+    // Load the user's active organizations for the switcher when opened.
+    useEffect(() => {
+      if (!isOpen || orgs.length > 0) return
+      fetch('/api/organizations/memberships', { credentials: 'include' })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => data?.active && setOrgs(data.active))
+        .catch(() => {})
+    }, [isOpen, orgs.length])
+
+    const handleSwitchOrg = async (orgId: string) => {
+      if (orgId === activeOrgId || switching) return
+      setSwitching(true)
+      try {
+        const res = await fetch('/api/organizations/active', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ organizationId: orgId }),
+        })
+        if (res.ok) {
+          // Full reload so every org-scoped view reflects the new active org.
+          window.location.assign('/dashboard/overview')
+        } else {
+          setSwitching(false)
+        }
+      } catch {
+        setSwitching(false)
+      }
+    }
+
     const handleLogout = async () => {
       try {
         const response = await fetch('/api/auth/logout', {
@@ -80,11 +149,19 @@ import {
     
     return (
       <DropdownMenu onOpenChange={setIsOpen}>
-        <DropdownMenuTrigger className="flex items-center gap-2 rounded-md border px-3 py-2 max-h-12 min-w-[200px]">
-          <Avatar className={UI_CONSTANTS.AVATAR_SIZE}>
-            <AvatarImage src={getAvatarSrc(user, getVersionedUrl)} />
-            <AvatarFallback>{getAvatarFallback(user)}</AvatarFallback>
-          </Avatar>
+        <DropdownMenuTrigger className="relative flex items-center gap-2 rounded-md border px-3 py-2 max-h-12 min-w-[200px]">
+          <div className="relative">
+            <Avatar className={UI_CONSTANTS.AVATAR_SIZE}>
+              <AvatarImage src={getAvatarSrc(user, getVersionedUrl)} />
+              <AvatarFallback>{getAvatarFallback(user)}</AvatarFallback>
+            </Avatar>
+            {pendingCount > 0 && (
+              <span
+                className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white"
+                aria-label={`${pendingCount} ${t('ORG_SWITCHER.INVITATIONS')}`}
+              />
+            )}
+          </div>
           <div className="flex flex-col items-start text-left">
             <span className="font-medium text-sm">
               {getUserDisplayName(user)}
@@ -93,22 +170,64 @@ import {
               {getOrganizationName(user)}
             </span>
           </div>
-          <ChevronDown 
+          <ChevronDown
             className={`ml-auto h-4 w-4 transition-transform duration-${UI_CONSTANTS.ANIMATION_DURATION} ${
               isOpen ? 'rotate-180' : ''
-            }`} 
+            }`}
           />
         </DropdownMenuTrigger>
-  
-        <DropdownMenuContent className={UI_CONSTANTS.DROPDOWN_WIDTH}>
+
+        <DropdownMenuContent className="w-64" align="end">
+          {orgs.length > 0 && (
+            <>
+              <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
+                {t('ORG_SWITCHER.TITLE')}
+              </DropdownMenuLabel>
+              {orgs.map((org) => (
+                <DropdownMenuItem
+                  key={org.id}
+                  className="flex items-center gap-2 cursor-pointer"
+                  disabled={switching}
+                  onClick={() => handleSwitchOrg(org.id)}
+                >
+                  <OrgAvatar org={org} />
+                  <span className="truncate">{org.name}</span>
+                  {org.isDefault && (
+                    <span className="ml-auto rounded-md border border-gray-200 px-2 py-0.5 text-xs font-medium text-gray-700">
+                      {t('ORG_SWITCHER.DEFAULT')}
+                    </span>
+                  )}
+                  {org.id === activeOrgId && (
+                    <Check className={`${org.isDefault ? '' : 'ml-auto'} h-4 w-4 text-gray-900`} />
+                  )}
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuSeparator />
+            </>
+          )}
+
+          {pendingCount > 0 && (
+            <>
+              <DropdownMenuItem className="flex items-center gap-2" asChild>
+                <Link href="/dashboard/settingsUser?section=organizations">
+                  <Mail className="h-4 w-4" />
+                  <span>{t('ORG_SWITCHER.PENDING_INVITATIONS')}</span>
+                  <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[11px] font-medium text-white">
+                    {pendingCount}
+                  </span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
           <DropdownMenuItem className="flex items-center gap-2" asChild>
             <Link href="/dashboard/settingsUser">
               <Settings className="h-4 w-4" />
               {t('SETTINGS')}
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem 
-            className="flex items-center gap-2 cursor-pointer" 
+          <DropdownMenuItem
+            className="flex items-center gap-2 cursor-pointer"
             onClick={handleLogout}
           >
             <LogOut className="h-4 w-4" />

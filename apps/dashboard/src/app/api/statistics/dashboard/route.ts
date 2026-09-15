@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createStructuredLogger } from '@/lib/structured-logger';
+import { buildApiHeaders } from '@/lib/apiProxy';
 
 const logger = createStructuredLogger('statistics/dashboard');
 
@@ -36,10 +37,7 @@ export async function GET(request: NextRequest) {
       `${apiBaseUrl}/statistics/dashboard`,
       {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token.value}`,
-        },
+        headers: buildApiHeaders(request, token.value),
         signal: controller.signal,
       }
     );

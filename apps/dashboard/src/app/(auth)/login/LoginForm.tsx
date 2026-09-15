@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { sanitizeRedirect } from "@/lib/redirect";
 import { motion } from "framer-motion";
 
 import { Checkbox } from "@/components/ui/checkbox";
@@ -63,6 +64,7 @@ export default function LoginForm({
   const [inactiveAccountError, setInactiveAccountError] = useState("");
   const [showLockWarning, setShowLockWarning] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t } = useTranslation("LOGIN");
 
   useEffect(() => {
@@ -178,8 +180,11 @@ export default function LoginForm({
       localStorage.removeItem(FAILED_ATTEMPTS_KEY);
       setShowLockWarning(false);
       setSuccess(t("PAGE.LOGIN_SUCCESS"));
+      // Honour a post-login redirect (e.g. association invitations link to the
+      // organizations section). Only safe same-origin relative paths are allowed.
+      const redirectTarget = sanitizeRedirect(searchParams.get("redirect"), "/dashboard");
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push(redirectTarget);
       }, 1000);
     } catch (err) {
       if (err instanceof Error) {

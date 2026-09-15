@@ -1,5 +1,13 @@
-import { useState, useMemo, FormEvent } from "react";
+import { useState, useMemo, useRef, FormEvent } from "react";
 import { useTranslation } from "react-i18next";
+
+interface InvitePayload {
+  firstName: string;
+  lastName: string;
+  email: string;
+  organizationId: string;
+  roles: string[];
+}
 
 interface FormState {
   firstName: string;
@@ -48,6 +56,12 @@ export function useNewMemberForm() {
 
   const [formFeedback, setFormFeedback] = useState<string | null>(null);
   const [formSubmitting, setFormSubmitting] = useState(false);
+  // The invitee already belongs to another organization: confirm before
+  // sending an association invitation.
+  const [associationModalOpen, setAssociationModalOpen] = useState(false);
+  const pendingInvite = useRef<{ payload: InvitePayload; onSuccess: (name: string) => void } | null>(
+    null,
+  );
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -143,6 +157,37 @@ export function useNewMemberForm() {
     setFormFeedback(null);
   };
 
+  const sendInvite = async (
+    payload: InvitePayload,
+    onSuccess: (memberName: string) => void,
+  ) => {
+    setFormSubmitting(true);
+    try {
+      const response = await fetch("/api/users/invite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || t("NEW_MEMBER.ERRORS.CREATE_FAILED"));
+      }
+
+      const memberName = `${payload.firstName} ${payload.lastName}`;
+      resetForm();
+      onSuccess(memberName);
+    } catch (err) {
+      console.error("Error creating member:", err);
+      setFormFeedback(
+        err instanceof Error ? err.message : t("NEW_MEMBER.ERRORS.UNEXPECTED_ERROR")
+      );
+    } finally {
+      setFormSubmitting(false);
+    }
+  };
+
   const handleSubmit = async (
     event: FormEvent<HTMLFormElement>,
     organizationId: string,
@@ -156,41 +201,60 @@ export function useNewMemberForm() {
     }
 
     setFormFeedback(null);
+
+    const payload: InvitePayload = {
+      firstName: formState.firstName.trim(),
+      lastName: formState.lastName.trim(),
+      email: formState.email.trim().toLowerCase(),
+      organizationId,
+      roles: ["user"],
+    };
+
+    // Pre-check the email to decide which flow to run.
     setFormSubmitting(true);
-
+    let status: string | undefined;
     try {
-      const firstName = formState.firstName.trim();
-      const lastName = formState.lastName.trim();
-      
-      const response = await fetch("/api/users/invite", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email: formState.email.trim().toLowerCase(),
-          organizationId,
-          roles: ["user"],
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || t("NEW_MEMBER.ERRORS.CREATE_FAILED"));
-      }
-
-      const memberName = `${firstName} ${lastName}`;
-      resetForm();
-      onSuccess(memberName);
-    } catch (err) {
-      console.error("Error creating member:", err);
-      setFormFeedback(
-        err instanceof Error ? err.message : t("NEW_MEMBER.ERRORS.UNEXPECTED_ERROR")
+      const res = await fetch(
+        `/api/users/invite-check?email=${encodeURIComponent(
+          payload.email,
+        )}&organizationId=${encodeURIComponent(organizationId)}`,
       );
+      if (res.ok) {
+        status = (await res.json())?.status;
+      }
+    } catch {
+      // If the pre-check fails, fall through and let the invite endpoint decide.
     } finally {
       setFormSubmitting(false);
     }
+
+    if (status === "IN_ORG") {
+      setFormFeedback(t("NEW_MEMBER.ERRORS.ALREADY_IN_ORG"));
+      return;
+    }
+
+    if (status === "IN_OTHER_ORG") {
+      // Ask for confirmation before associating an existing user.
+      pendingInvite.current = { payload, onSuccess };
+      setAssociationModalOpen(true);
+      return;
+    }
+
+    await sendInvite(payload, onSuccess);
+  };
+
+  const confirmAssociation = async () => {
+    const pending = pendingInvite.current;
+    setAssociationModalOpen(false);
+    if (pending) {
+      await sendInvite(pending.payload, pending.onSuccess);
+      pendingInvite.current = null;
+    }
+  };
+
+  const cancelAssociation = () => {
+    setAssociationModalOpen(false);
+    pendingInvite.current = null;
   };
 
   return {
@@ -207,6 +271,13 @@ export function useNewMemberForm() {
     validateField,
     resetForm,
     handleSubmit,
+    associationModalOpen,
+    confirmAssociation,
+    cancelAssociation,
+    pendingInviteName: () =>
+      pendingInvite.current
+        ? `${pendingInvite.current.payload.firstName} ${pendingInvite.current.payload.lastName}`
+        : "",
   };
 }
 

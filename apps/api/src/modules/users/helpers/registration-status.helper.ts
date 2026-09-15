@@ -1,4 +1,6 @@
-export type RegistrationStatus = 'completed' | 'pending' | 'expired';
+import { MembershipStatus } from '../entities/user-organization.entity';
+
+export type RegistrationStatus = 'completed' | 'pending' | 'expired' | 'rejected';
 
 export function calculateRegistrationStatus(
   authId: string | null | undefined,
@@ -24,3 +26,20 @@ export function calculateRegistrationStatus(
   return 'pending';
 }
 
+/**
+ * Registration status derived from the user's membership in a specific
+ * organization (not the global user): active -> completed, rejected -> rejected,
+ * invited -> expired past the window (from invitedAt) else pending.
+ */
+export function membershipRegistrationStatus(
+  status: MembershipStatus,
+  invitedAt: Date | null | undefined,
+  invitationExpirationDays: number = 30,
+): RegistrationStatus {
+  if (status === MembershipStatus.ACTIVE) return 'completed';
+  if (status === MembershipStatus.REJECTED) return 'rejected';
+
+  const base = invitedAt ? new Date(invitedAt).getTime() : Date.now();
+  const expirationTime = base + invitationExpirationDays * 24 * 60 * 60 * 1000;
+  return Date.now() > expirationTime ? 'expired' : 'pending';
+}

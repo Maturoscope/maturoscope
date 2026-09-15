@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createStructuredLogger } from '@/lib/structured-logger';
+import { buildApiHeaders } from '@/lib/apiProxy';
 
 const logger = createStructuredLogger('services/route');
 
@@ -22,10 +23,7 @@ export async function GET(request: NextRequest) {
     const timeout = setTimeout(() => controller.abort(), 10000);
 
     const response = await fetch(`${apiBaseUrl}/services`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token.value}`,
-      },
+      headers: buildApiHeaders(request, token.value),
       signal: controller.signal,
     });
 
@@ -74,10 +72,7 @@ export async function POST(request: NextRequest) {
 
     const response = await fetch(`${apiBaseUrl}/services`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token.value}`,
-      },
+      headers: buildApiHeaders(request, token.value),
       body: JSON.stringify(body),
       signal: controller.signal,
     });
