@@ -316,6 +316,12 @@
       "CANCEL": "Cancel",
       "CONFIRM": "Yes, Deactivate"
     },
+    "REINVITE_USER": {
+      "TITLE": "Resend invitation?",
+      "MESSAGE": "This user left the organization. An invitation will be sent again to {{name}} so they can rejoin.",
+      "CANCEL": "Cancel",
+      "CONFIRM": "Send invitation"
+    },
     "NOTIFICATIONS": {
       "MEMBER_CREATED": "Member created successfully",
       "INVITATION_RESENT": "Invitation resent successfully!",

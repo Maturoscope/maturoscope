@@ -59,6 +59,11 @@ export class UserOrganization {
   @Column({ type: 'timestamp', nullable: true })
   joinedAt: Date;
 
+  // Set when the user leaves the organization on their own. The membership is
+  // kept (deactivated); reactivating it requires re-sending the invitation.
+  @Column({ type: 'timestamp', nullable: true })
+  leftAt: Date | null;
+
   @CreateDateColumn()
   createdAt: Date;
 

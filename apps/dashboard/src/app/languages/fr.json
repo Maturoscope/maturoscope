@@ -316,6 +316,12 @@
       "CANCEL": "Annuler",
       "CONFIRM": "Oui, désactiver"
     },
+    "REINVITE_USER": {
+      "TITLE": "Renvoyer l'invitation ?",
+      "MESSAGE": "Cet utilisateur a quitté l'organisation. Une invitation sera renvoyée à {{name}} pour qu'il puisse la rejoindre.",
+      "CANCEL": "Annuler",
+      "CONFIRM": "Envoyer l'invitation"
+    },
     "NOTIFICATIONS": {
       "MEMBER_CREATED": "Membre créé avec succès",
       "INVITATION_RESENT": "Invitation renvoyée avec succès !",

@@ -10,6 +10,8 @@ export type Member = {
   createdAt: string;
   organizationId?: string | null;
   registrationStatus: RegistrationStatus;
+  // The user left this organization: reactivating requires re-inviting them.
+  hasLeft?: boolean;
 };
 
 export type ActiveFilter = "all" | "active" | "inactive";

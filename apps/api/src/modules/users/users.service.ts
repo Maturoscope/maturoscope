@@ -178,6 +178,7 @@ export class UsersService {
     membership.status = MembershipStatus.INVITED;
     membership.isActive = true;
     membership.invitedAt = new Date();
+    membership.leftAt = null;
     return this.membershipRepository.save(membership);
   }
 
@@ -208,6 +209,12 @@ export class UsersService {
     if (!isActive && (await this.isFirstUserOfOrganization(userId, organizationId))) {
       throw new BadRequestException(
         "The organization's first user cannot be deactivated.",
+      );
+    }
+    // A membership the user left can only be reactivated by re-inviting them.
+    if (isActive && membership.leftAt) {
+      throw new BadRequestException(
+        'This user left the organization. Resend the invitation to add them back.',
       );
     }
     membership.isActive = isActive;
@@ -261,7 +268,11 @@ export class UsersService {
         'You are the first user of this organization and cannot leave it.',
       );
     }
-    await this.membershipRepository.remove(membership);
+    // Keep the membership (deactivated) instead of deleting: the org still sees
+    // the member as inactive and reactivating requires re-inviting them.
+    membership.isActive = false;
+    membership.leftAt = new Date();
+    await this.membershipRepository.save(membership);
   }
 
   /** Change the default organization (must be an active membership). */
@@ -529,6 +540,8 @@ export class UsersService {
       .map((membership) => ({
         ...this.enrichUserWithStatus(membership.user),
         isActive: membership.isActive,
+        // Left the org on their own: reactivating requires re-inviting.
+        hasLeft: !!membership.leftAt,
         registrationStatus: membershipRegistrationStatus(
           membership.status,
           membership.invitedAt,

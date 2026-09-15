@@ -29,6 +29,8 @@ interface MembersTableProps {
   registrationFilter: "all" | "completed" | "pending" | "expired" | "rejected";
   onToggleActive: (member: Member, value: boolean) => void;
   onResendInvitation: (member: Member) => void;
+  // Re-invite a member who left when the admin turns their toggle back on.
+  onReinvite: (member: Member) => void;
   organizationEmail?: string;
   currentUserEmail?: string;
 }
@@ -42,12 +44,14 @@ export function MembersTable({
   registrationFilter,
   onToggleActive,
   onResendInvitation,
+  onReinvite,
   organizationEmail,
   currentUserEmail,
 }: MembersTableProps) {
   const { t } = useTranslation("MEMBERS");
   const [showDeactivateDialog, setShowDeactivateDialog] = useState(false);
   const [memberToDeactivate, setMemberToDeactivate] = useState<Member | null>(null);
+  const [memberToReinvite, setMemberToReinvite] = useState<Member | null>(null);
 
   const emptyStateMessages = useMemo(() => {
     if (activeFilter === "inactive") {
@@ -104,6 +108,9 @@ export function MembersTable({
     if (!value) {
       setMemberToDeactivate(member);
       setShowDeactivateDialog(true);
+    } else if (member.hasLeft) {
+      // Reactivating someone who left requires re-inviting them.
+      setMemberToReinvite(member);
     } else {
       onToggleActive(member, value);
     }
@@ -120,6 +127,13 @@ export function MembersTable({
   const handleCancelDeactivate = () => {
     setShowDeactivateDialog(false);
     setMemberToDeactivate(null);
+  };
+
+  const handleConfirmReinvite = () => {
+    if (memberToReinvite) {
+      onReinvite(memberToReinvite);
+      setMemberToReinvite(null);
+    }
   };
 
   if (loading) {
@@ -261,6 +275,35 @@ export function MembersTable({
             className="bg-gray-900 hover:bg-gray-800 text-white"
           >
             {t("DEACTIVATE_USER.CANCEL")}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+
+    <AlertDialog
+      open={!!memberToReinvite}
+      onOpenChange={(open) => !open && setMemberToReinvite(null)}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{t("REINVITE_USER.TITLE")}</AlertDialogTitle>
+          <AlertDialogDescription>
+            {t("REINVITE_USER.MESSAGE", {
+              name: memberToReinvite
+                ? `${memberToReinvite.firstName} ${memberToReinvite.lastName}`
+                : "",
+            })}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="mt-4">
+          <AlertDialogCancel onClick={() => setMemberToReinvite(null)}>
+            {t("REINVITE_USER.CANCEL")}
+          </AlertDialogCancel>
+          <AlertDialogAction
+            onClick={handleConfirmReinvite}
+            className="bg-gray-900 hover:bg-gray-800 text-white"
+          >
+            {t("REINVITE_USER.CONFIRM")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
