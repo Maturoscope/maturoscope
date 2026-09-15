@@ -181,6 +181,20 @@ export class UsersService {
     return this.membershipRepository.save(membership);
   }
 
+  /**
+   * The "first user" of an organization is the account whose email matches the
+   * organization's own email (set when the organization is created). They can't
+   * be deactivated from, nor leave, that organization.
+   */
+  async isFirstUserOfOrganization(userId: string, organizationId: string): Promise<boolean> {
+    const [user, organization] = await Promise.all([
+      this.userRepository.findOne({ where: { id: userId } }),
+      this.organizationRepository.findOne({ where: { id: organizationId } }),
+    ]);
+    if (!user?.email || !organization?.email) return false;
+    return user.email.toLowerCase() === organization.email.toLowerCase();
+  }
+
   /** Enable/disable a user's membership in an organization (per-org access). */
   async setMembershipActive(
     userId: string,
@@ -190,6 +204,11 @@ export class UsersService {
     const membership = await this.getMembership(userId, organizationId);
     if (!membership) {
       throw new NotFoundException('Membership not found');
+    }
+    if (!isActive && (await this.isFirstUserOfOrganization(userId, organizationId))) {
+      throw new BadRequestException(
+        "The organization's first user cannot be deactivated.",
+      );
     }
     membership.isActive = isActive;
     return this.membershipRepository.save(membership);
@@ -235,6 +254,11 @@ export class UsersService {
     if (membership.isDefault) {
       throw new BadRequestException(
         'You cannot leave your default organization. Set another one as default first.',
+      );
+    }
+    if (await this.isFirstUserOfOrganization(userId, organizationId)) {
+      throw new BadRequestException(
+        'You are the first user of this organization and cannot leave it.',
       );
     }
     await this.membershipRepository.remove(membership);

@@ -229,6 +229,7 @@ export class UsersController {
   async getMyOrganizations(@Req() req: Request & { user?: AuthenticatedUser }) {
     const userId = await this.getRequesterId(req);
     const memberships = await this.usersService.getMembershipsOverview(userId);
+    const callerEmail = req.user?.email?.toLowerCase();
 
     const toSummary = (m: (typeof memberships)[number]) => ({
       id: m.organization.id,
@@ -236,6 +237,8 @@ export class UsersController {
       name: m.organization.name,
       avatar: m.organization.avatar,
       isDefault: m.isDefault,
+      // First user of the organization (email matches the org's) — can't leave it.
+      isOwner: !!callerEmail && m.organization.email?.toLowerCase() === callerEmail,
       invitedAt: m.invitedAt,
       joinedAt: m.joinedAt,
     });
