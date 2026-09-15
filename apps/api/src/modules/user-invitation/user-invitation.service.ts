@@ -330,9 +330,6 @@ export class UserInvitationService {
       throw new BadRequestException('This email address is already registered in our database. Please use a different one.');
     }
 
-    const existingUsersInOrg = await this.usersService.findByOrganization(organizationId);
-    const isFirstUser = existingUsersInOrg.length === 0;
-
     const createdUser = await this.usersService.create({
       organizationId,
       firstName,
@@ -367,18 +364,19 @@ export class UserInvitationService {
 
     const magicLink = this.buildMagicLink(token);
 
-    await this.sendInvitationEmail(
-      email,
-      firstName,
-      roles,
-      organizationId,
-      magicLink,
+    // Same email as the "existing user without account" case: invite to join +
+    // magic link to complete registration.
+    await this.userInvitationMailService.sendAssociationInvitationEmail({
+      inviteeEmail: email,
+      inviteeFirstName: firstName,
+      link: magicLink,
       companyName,
       companyLogoUrl,
-      organizationLanguage,
-      expirationDaysDisplay,
-      isFirstUser,
-    );
+      inviterName: invitedBy?.name,
+      hasAccount: false,
+      expirationDays: expirationDaysDisplay,
+      language: organizationLanguage,
+    });
 
     this.logger.info('User invitation sent', { email, organizationId });
     return {
@@ -498,18 +496,17 @@ export class UserInvitationService {
         { expiresIn: this.getInvitationExpiration() },
       );
       const magicLink = this.buildMagicLink(token);
-      await this.sendInvitationEmail(
-        email,
-        existingUser.firstName,
-        existingUser.roles || [],
-        organizationId,
-        magicLink,
+      await this.userInvitationMailService.sendAssociationInvitationEmail({
+        inviteeEmail: email,
+        inviteeFirstName: existingUser.firstName,
+        link: magicLink,
         companyName,
         companyLogoUrl,
-        organizationLanguage,
-        expirationDaysDisplay,
-        false,
-      );
+        inviterName: invitedBy?.name,
+        hasAccount: false,
+        expirationDays: expirationDaysDisplay,
+        language: organizationLanguage,
+      });
     }
 
     this.logger.info('User invitation resent', { email, organizationId, hasAccount });

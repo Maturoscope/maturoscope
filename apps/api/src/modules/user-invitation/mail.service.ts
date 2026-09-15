@@ -189,7 +189,7 @@ export class UserInvitationMailService extends BaseMailService implements OnModu
         instructionMessage: hasAccount
           ? `You already have an account, so there's nothing to set up. You can switch accounts whenever you like.`
           : `You're one click away from creating your account. Once it's ready, you'll be able to join ${companyName}.`,
-        buttonText: hasAccount ? 'Review Invitation' : 'Create my account',
+        buttonText: hasAccount ? 'Review Invitation' : 'Complete my registration',
         // Existing accounts get a normal login link that doesn't expire.
         expirationMessage: (days: number) =>
           hasAccount
@@ -206,7 +206,7 @@ export class UserInvitationMailService extends BaseMailService implements OnModu
         instructionMessage: hasAccount
           ? `Vous avez déjà un compte, il n'y a donc rien à configurer. Vous pouvez changer de compte à tout moment.`
           : `Vous n'êtes qu'à un clic de créer votre compte. Une fois prêt, vous pourrez rejoindre ${companyName}.`,
-        buttonText: hasAccount ? "Consulter l'invitation" : 'Créer mon compte',
+        buttonText: hasAccount ? "Consulter l'invitation" : 'Compléter mon inscription',
         expirationMessage: (days: number) =>
           hasAccount
             ? ''
