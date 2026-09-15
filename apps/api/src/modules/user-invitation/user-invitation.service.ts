@@ -323,13 +323,8 @@ export class UserInvitationService {
     }
 
     // --- Case 1: brand-new user (first organization) ---
-    // Block an email that is another organization's own account email (only
-    // relevant when creating a new user; existing users are associated above).
-    const existingOrganization = await this.organizationsService.findByEmail(email);
-    if (existingOrganization && existingOrganization.id !== organizationId) {
-      throw new BadRequestException('This email address is already registered in our database. Please use a different one.');
-    }
-
+    // No email-vs-organization check: the same email may be the first user of
+    // several organizations (existing users are associated above).
     const createdUser = await this.usersService.create({
       organizationId,
       firstName,

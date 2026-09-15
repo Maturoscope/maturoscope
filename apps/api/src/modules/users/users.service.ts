@@ -452,18 +452,8 @@ export class UsersService {
       throw new ConflictException('This email address is already registered in our database. Please use a different one.');
     }
 
-    // Check if email exists in organizations
-    const existingOrganization = await this.organizationRepository.findOne({
-      where: { email: createUserDto.email },
-    });
-
-    if (existingOrganization) {
-      // Allow the email if it's the organization's own email and the user is being created for that same organization
-      if (existingOrganization.id !== createUserDto.organizationId) {
-        throw new ConflictException('This email address is already registered in our database. Please use a different one.');
-      }
-      // If it's the same organization's email, we allow it (it's the first user being created for this org)
-    }
+    // Note: no email-vs-organization uniqueness check — the same email can be the
+    // first user of several organizations.
 
     // Create user in local database
     const user = this.userRepository.create({
