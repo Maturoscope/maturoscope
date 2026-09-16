@@ -412,6 +412,7 @@
       "JOIN": "Rejoindre",
       "DECLINE": "Refuser",
       "EMPTY_PENDING": "Vous n'avez aucune invitation en attente.",
+      "LEFT_LABEL": "Vous avez quitté cette organisation.",
       "LOAD_ERROR": "Impossible de charger vos organisations. Veuillez réessayer.",
       "LEAVE_DIALOG": {
         "TITLE": "Quitter {{name}} ?",

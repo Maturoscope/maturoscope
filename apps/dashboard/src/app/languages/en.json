@@ -412,6 +412,7 @@
       "JOIN": "Join",
       "DECLINE": "Decline",
       "EMPTY_PENDING": "You have no pending invitations.",
+      "LEFT_LABEL": "You left this organisation.",
       "LOAD_ERROR": "We couldn't load your organisations. Please try again.",
       "LEAVE_DIALOG": {
         "TITLE": "Leave {{name}}?",

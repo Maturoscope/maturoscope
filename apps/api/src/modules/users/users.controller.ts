@@ -246,11 +246,13 @@ export class UsersController {
     return {
       // Only accessible organizations (accepted + enabled) are switchable.
       active: memberships
-        .filter((m) => m.status === 'active' && m.isActive)
+        .filter((m) => m.status === 'active' && m.isActive && !m.leftAt)
         .map(toSummary),
       pending: memberships
         .filter((m) => m.status === 'invited')
         .map(toSummary),
+      // Organizations the user left on their own (kept, deactivated).
+      left: memberships.filter((m) => !!m.leftAt).map(toSummary),
     };
   }
 

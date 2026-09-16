@@ -29,6 +29,7 @@ interface OrganizationSummary {
 interface MembershipsResponse {
   active: OrganizationSummary[]
   pending: OrganizationSummary[]
+  left: OrganizationSummary[]
 }
 
 type PendingDialog =
@@ -171,6 +172,7 @@ export function OrganizationsSection() {
 
   const active = data?.active ?? []
   const pending = data?.pending ?? []
+  const left = data?.left ?? []
 
   const dialogCopy = dialog
     ? {
@@ -243,6 +245,20 @@ export function OrganizationsSection() {
                       {t('ORGANIZATIONS.LEAVE')}
                     </Button>
                   )}
+                </div>
+              </div>
+            ))}
+
+            {/* Organizations the user left (kept, no actions). */}
+            {left.map((org) => (
+              <div
+                key={org.id}
+                className="flex items-center gap-3 rounded-lg border border-gray-200 p-4"
+              >
+                <OrgAvatar org={org} />
+                <div className="min-w-0">
+                  <p className="font-semibold text-gray-900 truncate">{org.name}</p>
+                  <p className="text-sm text-gray-500">{t('ORGANIZATIONS.LEFT_LABEL')}</p>
                 </div>
               </div>
             ))}
