@@ -317,10 +317,10 @@
       "CONFIRM": "Yes, Deactivate"
     },
     "REINVITE_USER": {
-      "TITLE": "Resend invitation?",
-      "MESSAGE": "This user left the organization. An invitation will be sent again to {{name}} so they can rejoin.",
+      "TITLE": "{{name}} left this organisation",
+      "MESSAGE": "This user left {{org}}. Send a new invitation to restore access.",
       "CANCEL": "Cancel",
-      "CONFIRM": "Send invitation"
+      "CONFIRM": "Send Invitation"
     },
     "NOTIFICATIONS": {
       "MEMBER_CREATED": "Member created successfully",

@@ -317,8 +317,8 @@
       "CONFIRM": "Oui, désactiver"
     },
     "REINVITE_USER": {
-      "TITLE": "Renvoyer l'invitation ?",
-      "MESSAGE": "Cet utilisateur a quitté l'organisation. Une invitation sera renvoyée à {{name}} pour qu'il puisse la rejoindre.",
+      "TITLE": "{{name}} a quitté cette organisation",
+      "MESSAGE": "Cet utilisateur a quitté {{org}}. Envoyez une nouvelle invitation pour rétablir l'accès.",
       "CANCEL": "Annuler",
       "CONFIRM": "Envoyer l'invitation"
     },

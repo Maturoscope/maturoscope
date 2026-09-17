@@ -92,6 +92,7 @@ export default function MembersPage() {
           onResendInvitation={handleResendInvitation}
           onReinvite={handleResendInvitation}
           organizationEmail={user?.organization?.email}
+          organizationName={user?.organization?.name}
           currentUserEmail={user?.email}
         />
       </div>

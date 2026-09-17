@@ -32,6 +32,7 @@ interface MembersTableProps {
   // Re-invite a member who left when the admin turns their toggle back on.
   onReinvite: (member: Member) => void;
   organizationEmail?: string;
+  organizationName?: string;
   currentUserEmail?: string;
 }
 
@@ -46,6 +47,7 @@ export function MembersTable({
   onResendInvitation,
   onReinvite,
   organizationEmail,
+  organizationName,
   currentUserEmail,
 }: MembersTableProps) {
   const { t } = useTranslation("MEMBERS");
@@ -286,13 +288,15 @@ export function MembersTable({
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{t("REINVITE_USER.TITLE")}</AlertDialogTitle>
-          <AlertDialogDescription>
-            {t("REINVITE_USER.MESSAGE", {
+          <AlertDialogTitle>
+            {t("REINVITE_USER.TITLE", {
               name: memberToReinvite
                 ? `${memberToReinvite.firstName} ${memberToReinvite.lastName}`
                 : "",
             })}
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            {t("REINVITE_USER.MESSAGE", { org: organizationName || "" })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="mt-4">
