@@ -249,11 +249,11 @@ export function OrganizationsSection() {
               </div>
             ))}
 
-            {/* Organizations the user left (kept, no actions). */}
+            {/* Organizations the user left (kept, no actions) — muted card. */}
             {left.map((org) => (
               <div
                 key={org.id}
-                className="flex items-center gap-3 rounded-lg border border-gray-200 p-4"
+                className="flex items-center gap-3 rounded-lg border border-gray-200 bg-[#F5F5F5] p-4"
               >
                 <OrgAvatar org={org} />
                 <div className="min-w-0">
