@@ -214,11 +214,11 @@
         "FIRST_NAME": "Prénom",
         "LAST_NAME": "Nom",
         "EMAIL": "E-mail",
-        "REGISTRATION": "Inscription",
+        "REGISTRATION": "Invitation",
         "ACTIVE": "Actif"
       },
       "TOOLTIPS": {
-        "REGISTRATION": "Indique si le membre a complété l'invitation par e-mail, est toujours en attente de confirmation ou a expiré.",
+        "REGISTRATION": "Indique si le membre a complété l'invitation par e-mail, est en attente de confirmation, l'a refusée ou a expiré.",
         "ACTIVE": "Indique si le compte du membre est actuellement actif ou désactivé sans être supprimé de la base de données."
       },
       "LOADING": "Chargement des membres…",
