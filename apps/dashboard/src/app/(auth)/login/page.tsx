@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import LoginForm from "./LoginForm"
 import BlockedAccount from "./BlockedAccount"
 import { useState } from "react";
@@ -16,5 +16,9 @@ export default function LoginPage() {
     return <BlockedAccount onGoBack={handleGoBack} />
   }
 
-  return <LoginForm setBlockedAccount={setBlockedAccount} />
+  return (
+    <Suspense fallback={null}>
+      <LoginForm setBlockedAccount={setBlockedAccount} />
+    </Suspense>
+  )
 }

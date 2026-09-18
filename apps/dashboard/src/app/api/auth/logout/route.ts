@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
+import { ACTIVE_ORG_COOKIE } from '@/lib/apiProxy';
 
 const clearTokens = () => {
   const response = NextResponse.json({ message: 'Successful logout' });
 
-  const cookiesToClear = ['token', 'next-auth.session-token'];
+  const cookiesToClear = ['token', 'next-auth.session-token', ACTIVE_ORG_COOKIE];
   cookiesToClear.forEach((cookieName) => {
     response.cookies.set(cookieName, '', {
       path: '/',

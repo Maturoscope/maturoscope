@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { encryptPassword } from '@/app/utils/crypto';
+import { sanitizeRedirect } from '@/lib/redirect';
 
 interface InvitationData {
   email: string;
@@ -39,6 +40,11 @@ function CompleteRegistrationForm() {
   const [passwordsMatchError, setPasswordsMatchError] = useState(false);
 
   const token = useMemo(() => searchParams.get('token') || '', [searchParams]);
+  // Association magic links carry a redirect to the organizations section.
+  const redirect = useMemo(
+    () => sanitizeRedirect(searchParams.get('redirect'), '/dashboard/overview'),
+    [searchParams],
+  );
 
   // Password validation
   const passwordValidation = useMemo<PasswordValidation>(() => {
@@ -133,7 +139,7 @@ function CompleteRegistrationForm() {
       setSuccessMessage(t('SUCCESS.MESSAGE'));
 
       setTimeout(() => {
-        router.replace('/dashboard/overview');
+        router.replace(redirect);
       }, 2000);
     } catch (err) {
       console.error('Error completing registration:', err);

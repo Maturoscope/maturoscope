@@ -116,6 +116,12 @@
     "REPORTS": "Rapports",
     "ORGANIZATIONS": "Organisations",
     "LOG_OUT": "Se déconnecter",
+    "ORG_SWITCHER": {
+      "TITLE": "Organisation(s)",
+      "DEFAULT": "Par défaut",
+      "PENDING_INVITATIONS": "Invitations en attente",
+      "INVITATIONS": "invitation(s)"
+    },
     "NEED_HELP_CONTACT_US": "Besoin d'aide ? Contactez-nous",
     "KPIS": {
       "ANALYSIS_COMPLETION_RATE": "Taux de complétion de l'analyse",
@@ -195,6 +201,7 @@
       "COMPLETED": "Terminé",
       "PENDING": "En attente",
       "EXPIRED": "Expiré",
+      "REJECTED": "Décliné",
       "ACTIVE": "Actif",
       "INACTIVE": "Inactif"
     },
@@ -207,11 +214,11 @@
         "FIRST_NAME": "Prénom",
         "LAST_NAME": "Nom",
         "EMAIL": "E-mail",
-        "REGISTRATION": "Inscription",
+        "REGISTRATION": "Invitation",
         "ACTIVE": "Actif"
       },
       "TOOLTIPS": {
-        "REGISTRATION": "Indique si le membre a complété l'invitation par e-mail, est toujours en attente de confirmation ou a expiré.",
+        "REGISTRATION": "Indique si le membre a complété l'invitation par e-mail, est en attente de confirmation, l'a refusée ou a expiré.",
         "ACTIVE": "Indique si le compte du membre est actuellement actif ou désactivé sans être supprimé de la base de données."
       },
       "LOADING": "Chargement des membres…",
@@ -249,7 +256,8 @@
     "REGISTRATION_STATUS": {
       "COMPLETED": "Terminé",
       "PENDING": "En attente",
-      "EXPIRED": "Expiré"
+      "EXPIRED": "Expiré",
+      "REJECTED": "Décliné"
     },
     "NEW_MEMBER": {
       "TITLE": "Nouveau membre",
@@ -286,7 +294,14 @@
         "EMAILS_DONT_MATCH": "Les e-mails ne correspondent pas.",
         "ORGANIZATION_MISSING": "Le contexte de l'organisation est manquant.",
         "CREATE_FAILED": "Échec de la création du membre.",
-        "UNEXPECTED_ERROR": "Erreur inattendue lors de la création du membre."
+        "UNEXPECTED_ERROR": "Erreur inattendue lors de la création du membre.",
+        "ALREADY_IN_ORG": "Cet utilisateur appartient déjà à cette organisation."
+      },
+      "ASSOCIATION_MODAL": {
+        "TITLE": "L'utilisateur existe déjà",
+        "MESSAGE": "{{name}} possède déjà un compte dans une autre organisation. Voulez-vous l'inviter également à cette organisation ?",
+        "CONFIRM": "Envoyer l'invitation",
+        "CANCEL": "Annuler"
       }
     },
     "UNSAVED_CHANGES": {
@@ -300,6 +315,12 @@
       "MESSAGE": "Une fois désactivé, l'utilisateur n'aura plus accès à la plateforme.",
       "CANCEL": "Annuler",
       "CONFIRM": "Oui, désactiver"
+    },
+    "REINVITE_USER": {
+      "TITLE": "{{name}} a quitté cette organisation",
+      "MESSAGE": "Cet utilisateur a quitté {{org}}. Envoyez une nouvelle invitation pour rétablir l'accès.",
+      "CANCEL": "Annuler",
+      "CONFIRM": "Envoyer l'invitation"
     },
     "NOTIFICATIONS": {
       "MEMBER_CREATED": "Membre créé avec succès",
@@ -320,7 +341,24 @@
       "ORGANIZATION": "Organisation",
       "UPDATE_PROFILE": "Mettre à jour le profil",
       "SUCCESS_TITLE": "Informations du profil mises à jour",
-      "SUCCESS_MESSAGE": "Vos modifications ont été enregistrées avec succès."
+      "SUCCESS_MESSAGE": "Vos modifications ont été enregistrées avec succès.",
+      "AVATAR": {
+        "LABEL": "Avatar",
+        "UPLOAD": "Téléverser un avatar",
+        "REMOVE": "Supprimer l'avatar",
+        "HELPER": "Dimensions recommandées 48x48px. Types acceptés : SVG, PNG ou JPG. Taille max : 4 Mo",
+        "INVALID_TYPE": "Type de fichier invalide. Seuls SVG, PNG ou JPG sont autorisés.",
+        "TOO_LARGE": "La taille du fichier dépasse la limite de 4 Mo.",
+        "UPDATED": "Photo de profil mise à jour",
+        "REMOVED": "Photo de profil supprimée",
+        "ERROR": "Une erreur s'est produite. Veuillez réessayer.",
+        "REMOVE_DIALOG": {
+          "TITLE": "Supprimer l'avatar",
+          "MESSAGE": "Vous êtes sur le point de supprimer votre photo de profil. Cette action est irréversible.",
+          "CONFIRM": "Oui, supprimer",
+          "CANCEL": "Annuler"
+        }
+      }
     },
     "PASSWORD": {
       "TITLE": "Mot de passe",
@@ -361,6 +399,46 @@
       "MESSAGE": "Vous avez des modifications non sauvegardées. Si vous partez maintenant, vos dernières mises à jour seront perdues.",
       "CANCEL": "Annuler",
       "LEAVE_ANYWAY": "Partir quand même"
+    },
+    "ORGANIZATIONS": {
+      "TITLE": "Organisations",
+      "YOUR_ORGANIZATIONS": "Vos organisations",
+      "DESCRIPTION": "Choisissez l'organisation qui s'ouvre à la connexion. Vous pouvez en changer à tout moment depuis la barre supérieure.",
+      "DEFAULT_BADGE": "Par défaut",
+      "SET_AS_DEFAULT": "Définir par défaut",
+      "LEAVE": "Quitter",
+      "PENDING_TITLE": "Invitations en attente",
+      "INVITED_AGO": "Invité {{time}}",
+      "JOIN": "Rejoindre",
+      "DECLINE": "Refuser",
+      "EMPTY_PENDING": "Vous n'avez aucune invitation en attente.",
+      "LEFT_LABEL": "Vous avez quitté cette organisation.",
+      "LOAD_ERROR": "Impossible de charger vos organisations. Veuillez réessayer.",
+      "LEAVE_DIALOG": {
+        "TITLE": "Quitter {{name}} ?",
+        "MESSAGE": "Vous perdrez l'accès à son tableau de bord, ses services et ses membres. Vos autres organisations ne sont pas affectées, et un administrateur pourra vous réinviter plus tard.",
+        "CONFIRM": "Oui, quitter",
+        "CANCEL": "Annuler"
+      },
+      "SET_DEFAULT_DIALOG": {
+        "TITLE": "Définir {{name}} par défaut ?",
+        "MESSAGE": "Vous démarrerez sur cette organisation lors de votre prochaine connexion.",
+        "CONFIRM": "Définir par défaut",
+        "CANCEL": "Annuler"
+      },
+      "DECLINE_DIALOG": {
+        "TITLE": "Refuser l'invitation ?",
+        "MESSAGE": "Vous pourrez être réinvité plus tard si nécessaire.",
+        "CONFIRM": "Refuser",
+        "CANCEL": "Annuler"
+      },
+      "TOASTS": {
+        "DEFAULT_UPDATED": "{{name}} est désormais votre organisation par défaut.",
+        "LEFT": "Vous avez quitté l'organisation",
+        "JOINED": "Vous avez rejoint l'organisation",
+        "DECLINED": "Invitation refusée",
+        "ERROR": "Une erreur s'est produite. Veuillez réessayer."
+      }
     }
   },
   "TOOL_SETTINGS": {
@@ -728,6 +806,7 @@
       "COMPLETED": "Terminé",
       "PENDING": "En attente",
       "EXPIRED": "Expiré",
+      "REJECTED": "Décliné",
       "ACTIVE": "Actif",
       "INACTIVE": "Inactif"
     },
@@ -779,7 +858,8 @@
     "REGISTRATION_STATUS": {
       "COMPLETED": "Terminé",
       "PENDING": "En attente",
-      "EXPIRED": "Expiré"
+      "EXPIRED": "Expiré",
+      "REJECTED": "Décliné"
     },
     "NEW_ORGANIZATION": {
       "TITLE": "Nouvelle organisation",

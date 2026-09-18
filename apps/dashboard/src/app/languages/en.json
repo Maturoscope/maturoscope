@@ -116,6 +116,12 @@
     "REPORTS": "Reports",
     "ORGANIZATIONS": "Organizations",
     "LOG_OUT": "Log Out",
+    "ORG_SWITCHER": {
+      "TITLE": "Organisation(s)",
+      "DEFAULT": "Default",
+      "PENDING_INVITATIONS": "Pending Invitations",
+      "INVITATIONS": "invitation(s)"
+    },
     "NEED_HELP_CONTACT_US": "Need help? Contact us",
     "KPIS": {
       "ANALYSIS_COMPLETION_RATE": "Analysis completion rate",
@@ -195,6 +201,7 @@
       "COMPLETED": "Completed",
       "PENDING": "Pending",
       "EXPIRED": "Expired",
+      "REJECTED": "Declined",
       "ACTIVE": "Active",
       "INACTIVE": "Inactive"
     },
@@ -207,11 +214,11 @@
         "FIRST_NAME": "First Name",
         "LAST_NAME": "Last Name",
         "EMAIL": "Email",
-        "REGISTRATION": "Registration",
+        "REGISTRATION": "Invitation",
         "ACTIVE": "Active"
       },
       "TOOLTIPS": {
-        "REGISTRATION": "Shows if the member has completed the email invitation, is still pending confirmation or has expired.",
+        "REGISTRATION": "Shows if the member has completed the email invitation, is still pending confirmation, has declined it or has expired.",
         "ACTIVE": "Indicates whether the member's account is currently active or deactivated without being removed from the database."
       },
       "LOADING": "Loading members…",
@@ -249,7 +256,8 @@
     "REGISTRATION_STATUS": {
       "COMPLETED": "Completed",
       "PENDING": "Pending",
-      "EXPIRED": "Expired"
+      "EXPIRED": "Expired",
+      "REJECTED": "Declined"
     },
     "NEW_MEMBER": {
       "TITLE": "New Member",
@@ -286,7 +294,14 @@
         "EMAILS_DONT_MATCH": "The emails do not match.",
         "ORGANIZATION_MISSING": "Organization context is missing.",
         "CREATE_FAILED": "Failed to create member.",
-        "UNEXPECTED_ERROR": "Unexpected error creating member."
+        "UNEXPECTED_ERROR": "Unexpected error creating member.",
+        "ALREADY_IN_ORG": "This user already belongs to this organization."
+      },
+      "ASSOCIATION_MODAL": {
+        "TITLE": "User already exists",
+        "MESSAGE": "{{name}} already has an account in another organization. Do you want to invite them to this organization too?",
+        "CONFIRM": "Send invitation",
+        "CANCEL": "Cancel"
       }
     },
     "UNSAVED_CHANGES": {
@@ -300,6 +315,12 @@
       "MESSAGE": "Once deactivated, the user will no longer have access to the platform.",
       "CANCEL": "Cancel",
       "CONFIRM": "Yes, Deactivate"
+    },
+    "REINVITE_USER": {
+      "TITLE": "{{name}} left this organisation",
+      "MESSAGE": "This user left {{org}}. Send a new invitation to restore access.",
+      "CANCEL": "Cancel",
+      "CONFIRM": "Send Invitation"
     },
     "NOTIFICATIONS": {
       "MEMBER_CREATED": "Member created successfully",
@@ -320,7 +341,24 @@
       "ORGANIZATION": "Organization",
       "UPDATE_PROFILE": "Update profile",
       "SUCCESS_TITLE": "Profile Information Updated",
-      "SUCCESS_MESSAGE": "Your updates have been saved successfully."
+      "SUCCESS_MESSAGE": "Your updates have been saved successfully.",
+      "AVATAR": {
+        "LABEL": "Avatar",
+        "UPLOAD": "Upload avatar",
+        "REMOVE": "Remove avatar",
+        "HELPER": "Recommended dimensions 48x48px. Supported types: SVG, PNG or JPG. Max file size: 4MB",
+        "INVALID_TYPE": "Invalid file type. Only SVG, PNG or JPG are allowed.",
+        "TOO_LARGE": "File size exceeds 4MB limit.",
+        "UPDATED": "Profile picture updated",
+        "REMOVED": "Profile picture removed",
+        "ERROR": "Something went wrong. Please try again.",
+        "REMOVE_DIALOG": {
+          "TITLE": "Remove avatar",
+          "MESSAGE": "You're about to delete your profile picture. This action is irreversible.",
+          "CONFIRM": "Yes, remove",
+          "CANCEL": "Cancel"
+        }
+      }
     },
     "PASSWORD": {
       "TITLE": "Password",
@@ -361,6 +399,46 @@
       "MESSAGE": "You have unsaved changes. If you leave now, your latest updates will be lost.",
       "CANCEL": "Cancel",
       "LEAVE_ANYWAY": "Leave Anyway"
+    },
+    "ORGANIZATIONS": {
+      "TITLE": "Organisations",
+      "YOUR_ORGANIZATIONS": "Your organisations",
+      "DESCRIPTION": "Choose which organisation opens when you log in. You can switch at any time from the top bar.",
+      "DEFAULT_BADGE": "Default",
+      "SET_AS_DEFAULT": "Set as Default",
+      "LEAVE": "Leave",
+      "PENDING_TITLE": "Pending Invitations",
+      "INVITED_AGO": "Invited {{time}}",
+      "JOIN": "Join",
+      "DECLINE": "Decline",
+      "EMPTY_PENDING": "You have no pending invitations.",
+      "LEFT_LABEL": "You left this organisation.",
+      "LOAD_ERROR": "We couldn't load your organisations. Please try again.",
+      "LEAVE_DIALOG": {
+        "TITLE": "Leave {{name}}?",
+        "MESSAGE": "You'll lose access to its dashboard, services and members. Your other organisations aren't affected, and an admin can invite you again later.",
+        "CONFIRM": "Yes, Leave",
+        "CANCEL": "Cancel"
+      },
+      "SET_DEFAULT_DIALOG": {
+        "TITLE": "Set {{name}} as default?",
+        "MESSAGE": "You'll start on this organisation the next time you log in.",
+        "CONFIRM": "Set as default",
+        "CANCEL": "Cancel"
+      },
+      "DECLINE_DIALOG": {
+        "TITLE": "Decline invitation?",
+        "MESSAGE": "You can be invited again later if needed.",
+        "CONFIRM": "Decline",
+        "CANCEL": "Cancel"
+      },
+      "TOASTS": {
+        "DEFAULT_UPDATED": "{{name}} is now your default organisation.",
+        "LEFT": "You left the organisation",
+        "JOINED": "You joined the organisation",
+        "DECLINED": "Invitation declined",
+        "ERROR": "Something went wrong. Please try again."
+      }
     }
   },
   "TOOL_SETTINGS": {
@@ -728,6 +806,7 @@
       "COMPLETED": "Completed",
       "PENDING": "Pending",
       "EXPIRED": "Expired",
+      "REJECTED": "Declined",
       "ACTIVE": "Active",
       "INACTIVE": "Inactive"
     },
@@ -779,7 +858,8 @@
     "REGISTRATION_STATUS": {
       "COMPLETED": "Completed",
       "PENDING": "Pending",
-      "EXPIRED": "Expired"
+      "EXPIRED": "Expired",
+      "REJECTED": "Declined"
     },
     "NEW_ORGANIZATION": {
       "TITLE": "New Organization",

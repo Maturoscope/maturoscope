@@ -17,7 +17,10 @@ export interface FileValidationResult {
 export interface UserAvatarData {
   picture?: string;
   firstName?: string;
+  lastName?: string;
   name?: string;
+  // The user's own profile picture (empty -> show initials).
+  avatar?: string | null;
   organization?: {
     name?: string;
     avatar?: string;

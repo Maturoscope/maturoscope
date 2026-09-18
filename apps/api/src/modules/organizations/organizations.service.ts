@@ -36,21 +36,10 @@ export class OrganizationsService {
       throw new ConflictException('Organization key is already registered');
     }
 
-    // Check if email already exists in organizations
-    const existingByEmail = await this.organizationRepository.findOne({
-      where: { email: createOrganizationDto.email },
-    });
-
-    if (existingByEmail) {
-      throw new ConflictException('This email address is already registered in our database. Please use a different one.');
-    }
-
-    // Check if email exists in users
-    const existingUser = await this.usersService.findByEmail(createOrganizationDto.email);
-    if (existingUser) {
-      throw new ConflictException('This email address is already registered in our database. Please use a different one.');
-    }
-
+    // Multi-organization: the same email can be the first user of several
+    // organizations, so we no longer block on the email already existing (as an
+    // organization email or a user). The invitation flow associates an existing
+    // user to the new organization instead of creating a duplicate.
     const organization = this.organizationRepository.create(createOrganizationDto);
     return await this.organizationRepository.save(organization);
   }

@@ -1,13 +1,16 @@
 import { Injectable, ConflictException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Not, FindOperator } from 'typeorm';
+import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { User } from './entities/user.entity';
+import { UserOrganization, MembershipStatus } from './entities/user-organization.entity';
+import { OvhS3Service } from '../../common/storage/ovh-s3.service';
+import { UploadedFile } from '../../common/types/uploaded-file.type';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Organization } from '../organizations/entities/organization.entity';
 import { UserResponseDto } from './dto/user-response.dto';
-import { calculateRegistrationStatus } from './helpers/registration-status.helper';
+import { calculateRegistrationStatus, membershipRegistrationStatus } from './helpers/registration-status.helper';
 import { validate as uuidValidate } from 'uuid';
 
 @Injectable()
@@ -15,10 +18,325 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(UserOrganization)
+    private readonly membershipRepository: Repository<UserOrganization>,
     @InjectRepository(Organization)
     private readonly organizationRepository: Repository<Organization>,
     private readonly configService: ConfigService,
+    private readonly ovhS3: OvhS3Service,
   ) {}
+
+  // Allowed avatar types (validated server-side, not only in the Next proxy).
+  private static readonly AVATAR_ALLOWED_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'image/svg+xml',
+  ];
+  private static readonly AVATAR_MAX_SIZE = 4 * 1024 * 1024; // 4MB
+
+  /** Stable per-user avatar key (no extension) so replacing overwrites in place. */
+  private avatarKey(userId: string): string {
+    return `users/${userId}/avatar`;
+  }
+
+  /** Uploads a profile picture to object storage and stores its URL on the user. */
+  async updateAvatarByEmail(email: string, file: UploadedFile): Promise<UserResponseDto> {
+    if (!file || !file.buffer || !file.mimetype) {
+      throw new BadRequestException('Invalid file upload');
+    }
+    // Validate on the backend too: a direct API call must not bypass the proxy.
+    if (!UsersService.AVATAR_ALLOWED_TYPES.includes(file.mimetype)) {
+      throw new BadRequestException('Invalid file type. Only JPG, PNG or SVG are allowed.');
+    }
+    if (file.buffer.length > UsersService.AVATAR_MAX_SIZE) {
+      throw new BadRequestException('File size exceeds 4MB limit.');
+    }
+    const user = await this.findByUserEmail(email);
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+    // Fixed key (no extension) — avoids orphaned objects when the type changes.
+    const { url } = await this.ovhS3.uploadObject(file, this.avatarKey(user.id));
+    user.avatar = url;
+    await this.userRepository.save(user);
+    return (await this.findByEmail(email))!;
+  }
+
+  /** Clears the user's profile picture (also removes the object from storage). */
+  async removeAvatarByEmail(email: string): Promise<UserResponseDto> {
+    const user = await this.findByUserEmail(email);
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
+    }
+    if (user.avatar) {
+      await this.ovhS3.deleteObject(this.avatarKey(user.id));
+    }
+    user.avatar = null;
+    await this.userRepository.save(user);
+    return (await this.findByEmail(email))!;
+  }
+
+  /**
+   * Active memberships for a user, ordered with the default first, then by join
+   * date. Includes the organization relation.
+   */
+  async getActiveMemberships(userId: string): Promise<UserOrganization[]> {
+    return this.membershipRepository.find({
+      where: { userId, status: MembershipStatus.ACTIVE },
+      relations: { organization: true },
+      order: { isDefault: 'DESC', createdAt: 'ASC' },
+    });
+  }
+
+  /** A single membership for (user, organization), if any. */
+  async getMembership(
+    userId: string,
+    organizationId: string,
+  ): Promise<UserOrganization | null> {
+    return this.membershipRepository.findOne({
+      where: { userId, organizationId },
+    });
+  }
+
+  /**
+   * Ensures an invited membership exists for (user, organization). If one already
+   * exists it is returned untouched (its invitedAt is refreshed). The first
+   * membership a user ever gets becomes their default.
+   */
+  async createInvitedMembership(
+    userId: string,
+    organizationId: string,
+  ): Promise<UserOrganization> {
+    const existing = await this.getMembership(userId, organizationId);
+    if (existing) {
+      existing.invitedAt = new Date();
+      return this.membershipRepository.save(existing);
+    }
+
+    const membershipsCount = await this.membershipRepository.count({
+      where: { userId },
+    });
+
+    const membership = this.membershipRepository.create({
+      userId,
+      organizationId,
+      status: MembershipStatus.INVITED,
+      isDefault: membershipsCount === 0,
+      invitedAt: new Date(),
+    });
+    return this.membershipRepository.save(membership);
+  }
+
+  /**
+   * Activates a membership (invited -> active). If the user has no default active
+   * organization yet, this one becomes the default.
+   */
+  async activateMembership(
+    userId: string,
+    organizationId: string,
+  ): Promise<UserOrganization | null> {
+    const membership = await this.getMembership(userId, organizationId);
+    if (!membership) return null;
+
+    membership.status = MembershipStatus.ACTIVE;
+    membership.isActive = true;
+    membership.joinedAt = membership.joinedAt ?? new Date();
+
+    const hasDefault = await this.membershipRepository.count({
+      where: { userId, status: MembershipStatus.ACTIVE, isDefault: true },
+    });
+    if (hasDefault === 0) {
+      membership.isDefault = true;
+    }
+
+    return this.membershipRepository.save(membership);
+  }
+
+  /**
+   * Whether the user can access the organization: an accepted membership that is
+   * also enabled (a disabled membership blocks access to that org only).
+   */
+  async hasActiveMembership(userId: string, organizationId: string): Promise<boolean> {
+    const count = await this.membershipRepository.count({
+      where: { userId, organizationId, status: MembershipStatus.ACTIVE, isActive: true },
+    });
+    return count > 0;
+  }
+
+  /**
+   * Resets an existing membership to a fresh pending invitation (used when
+   * resending to an expired or rejected membership).
+   */
+  async resetMembershipToInvited(
+    userId: string,
+    organizationId: string,
+  ): Promise<UserOrganization> {
+    const membership = await this.getMembership(userId, organizationId);
+    if (!membership) {
+      throw new NotFoundException('Membership not found');
+    }
+    membership.status = MembershipStatus.INVITED;
+    membership.isActive = true;
+    membership.invitedAt = new Date();
+    membership.leftAt = null;
+    return this.membershipRepository.save(membership);
+  }
+
+  /**
+   * The "first user" of an organization is the account whose email matches the
+   * organization's own email (set when the organization is created). They can't
+   * be deactivated from, nor leave, that organization.
+   */
+  async isFirstUserOfOrganization(userId: string, organizationId: string): Promise<boolean> {
+    const [user, organization] = await Promise.all([
+      this.userRepository.findOne({ where: { id: userId } }),
+      this.organizationRepository.findOne({ where: { id: organizationId } }),
+    ]);
+    if (!user?.email || !organization?.email) return false;
+    return user.email.toLowerCase() === organization.email.toLowerCase();
+  }
+
+  /** Enable/disable a user's membership in an organization (per-org access). */
+  async setMembershipActive(
+    userId: string,
+    organizationId: string,
+    isActive: boolean,
+  ): Promise<UserOrganization> {
+    const membership = await this.getMembership(userId, organizationId);
+    if (!membership) {
+      throw new NotFoundException('Membership not found');
+    }
+    if (!isActive && (await this.isFirstUserOfOrganization(userId, organizationId))) {
+      throw new BadRequestException(
+        "The organization's first user cannot be deactivated.",
+      );
+    }
+    // A membership the user left can only be reactivated by re-inviting them.
+    if (isActive && membership.leftAt) {
+      throw new BadRequestException(
+        'This user left the organization. Resend the invitation to add them back.',
+      );
+    }
+    membership.isActive = isActive;
+    return this.membershipRepository.save(membership);
+  }
+
+  /** All memberships for a user (active + invited), with the organization. */
+  async getMembershipsOverview(userId: string): Promise<UserOrganization[]> {
+    return this.membershipRepository.find({
+      where: { userId },
+      relations: { organization: true },
+      order: { isDefault: 'DESC', createdAt: 'ASC' },
+    });
+  }
+
+  /** Accept a pending invitation: invited -> active. */
+  async acceptInvitation(userId: string, organizationId: string): Promise<UserOrganization> {
+    const membership = await this.getMembership(userId, organizationId);
+    if (!membership || membership.status !== MembershipStatus.INVITED) {
+      throw new NotFoundException('No pending invitation for this organization');
+    }
+    return (await this.activateMembership(userId, organizationId))!;
+  }
+
+  /**
+   * Decline a pending invitation: keep the membership as rejected so the
+   * organization still sees it (red + resend) and can re-invite later.
+   */
+  async declineInvitation(userId: string, organizationId: string): Promise<void> {
+    const membership = await this.getMembership(userId, organizationId);
+    if (!membership || membership.status !== MembershipStatus.INVITED) {
+      throw new NotFoundException('No pending invitation for this organization');
+    }
+    membership.status = MembershipStatus.REJECTED;
+    await this.membershipRepository.save(membership);
+  }
+
+  /** Leave an organization: remove the active membership (never the default). */
+  async leaveOrganization(userId: string, organizationId: string): Promise<void> {
+    const membership = await this.getMembership(userId, organizationId);
+    if (!membership || membership.status !== MembershipStatus.ACTIVE) {
+      throw new NotFoundException('You are not a member of this organization');
+    }
+    if (membership.isDefault) {
+      throw new BadRequestException(
+        'You cannot leave your default organization. Set another one as default first.',
+      );
+    }
+    if (await this.isFirstUserOfOrganization(userId, organizationId)) {
+      throw new BadRequestException(
+        'You are the first user of this organization and cannot leave it.',
+      );
+    }
+    // Keep the membership (deactivated) instead of deleting: the org still sees
+    // the member as inactive and reactivating requires re-inviting them.
+    membership.isActive = false;
+    membership.leftAt = new Date();
+    await this.membershipRepository.save(membership);
+  }
+
+  /** Change the default organization (must be an active membership). */
+  async setDefaultOrganization(userId: string, organizationId: string): Promise<void> {
+    const membership = await this.getMembership(userId, organizationId);
+    if (!membership || membership.status !== MembershipStatus.ACTIVE) {
+      throw new BadRequestException('You can only set an active organization as default');
+    }
+    // Atomic: unset the previous default, set the new one, and keep the legacy
+    // organizationId column in sync — so a failure can't leave the user default-less.
+    await this.membershipRepository.manager.transaction(async (tx) => {
+      await tx.update(UserOrganization, { userId, isDefault: true }, { isDefault: false });
+      await tx.update(UserOrganization, { id: membership.id }, { isDefault: true });
+      await tx.update(User, { id: userId }, { organizationId });
+    });
+  }
+
+  /** The user's default active organization id, if any. */
+  async getDefaultOrganizationId(userId: string): Promise<string | null> {
+    const membership = await this.membershipRepository.findOne({
+      where: { userId, status: MembershipStatus.ACTIVE, isDefault: true },
+    });
+    return membership?.organizationId ?? null;
+  }
+
+  /**
+   * The organization a session should start on: the accessible (active + enabled)
+   * default, else the first accessible membership, else null (no access).
+   */
+  async getSessionOrganizationId(userId: string): Promise<string | null> {
+    const accessible = await this.membershipRepository.find({
+      where: { userId, status: MembershipStatus.ACTIVE, isActive: true },
+      order: { isDefault: 'DESC', createdAt: 'ASC' },
+    });
+    return accessible[0]?.organizationId ?? null;
+  }
+
+  /**
+   * Resolves which organization a request should operate on. A requested id
+   * (from the active-organization header/cookie) is honoured only if the user
+   * has an accessible membership for it; otherwise we fall back to their
+   * accessible default / first accessible organization.
+   */
+  async resolveActiveOrganizationId(
+    email: string,
+    requestedOrganizationId?: string,
+  ): Promise<string | null> {
+    const user = await this.findByUserEmail(email);
+    if (!user) return null;
+
+    if (requestedOrganizationId) {
+      const membership = await this.membershipRepository.findOne({
+        where: {
+          userId: user.id,
+          organizationId: requestedOrganizationId,
+          status: MembershipStatus.ACTIVE,
+          isActive: true,
+        },
+      });
+      if (membership) return membership.organizationId;
+    }
+
+    return this.getSessionOrganizationId(user.id);
+  }
 
   private getInvitationExpirationDays(): number {
     // First try to use INVITATION_TOKEN_EXPIRATION (same as JWT token expiration)
@@ -72,6 +390,25 @@ export class UsersService {
       invitationExpirationDays,
     );
 
+    // Derive multi-organization context when memberships have been loaded.
+    let defaultOrganizationId: string | undefined;
+    let sessionOrganizationId: string | undefined;
+    let pendingInvitationsCount: number | undefined;
+    if (user.memberships) {
+      defaultOrganizationId = user.memberships.find(
+        (m) => m.status === MembershipStatus.ACTIVE && m.isDefault,
+      )?.organizationId;
+      // Accessible (accepted + enabled) organizations, default first — the one a
+      // session should land on.
+      const accessible = user.memberships
+        .filter((m) => m.status === MembershipStatus.ACTIVE && m.isActive)
+        .sort((a, b) => Number(b.isDefault) - Number(a.isDefault));
+      sessionOrganizationId = accessible[0]?.organizationId;
+      pendingInvitationsCount = user.memberships.filter(
+        (m) => m.status === MembershipStatus.INVITED,
+      ).length;
+    }
+
     return {
       id: user.id,
       organizationId: user.organizationId,
@@ -79,10 +416,15 @@ export class UsersService {
       firstName: user.firstName,
       lastName: user.lastName,
       roles: user.roles,
+      isSuperAdmin: user.isSuperAdmin,
+      avatar: user.avatar,
       email: user.email,
       isActive: user.isActive,
       createdAt: user.createdAt,
       registrationStatus,
+      defaultOrganizationId,
+      sessionOrganizationId,
+      pendingInvitationsCount,
       organization: user.organization ? {
         id: user.organization.id,
         key: user.organization.key,
@@ -121,18 +463,8 @@ export class UsersService {
       throw new ConflictException('This email address is already registered in our database. Please use a different one.');
     }
 
-    // Check if email exists in organizations
-    const existingOrganization = await this.organizationRepository.findOne({
-      where: { email: createUserDto.email },
-    });
-
-    if (existingOrganization) {
-      // Allow the email if it's the organization's own email and the user is being created for that same organization
-      if (existingOrganization.id !== createUserDto.organizationId) {
-        throw new ConflictException('This email address is already registered in our database. Please use a different one.');
-      }
-      // If it's the same organization's email, we allow it (it's the first user being created for this org)
-    }
+    // Note: no email-vs-organization uniqueness check — the same email can be the
+    // first user of several organizations.
 
     // Create user in local database
     const user = this.userRepository.create({
@@ -170,7 +502,7 @@ export class UsersService {
   async findByEmail(email: string): Promise<UserResponseDto | null> {
     const user = await this.userRepository.findOne({
       where: { email },
-      relations: { organization: true },
+      relations: { organization: true, memberships: { organization: true } },
     });
     return user ? this.enrichUserWithStatus(user) : null;
   }
@@ -189,21 +521,33 @@ export class UsersService {
     });
   }
 
-  async findByOrganization(organizationId: string, excludeEmail?: string): Promise<UserResponseDto[]> {
-    const whereCondition: { organizationId: string; email?: FindOperator<string> } = { 
-      organizationId 
-    };
-    
-    // Note: excludeEmail parameter is kept for backward compatibility but not used
-    // We want to show all users including the admin (user with same email as organization)
-    // The admin's switch will be disabled in the frontend instead
-
-    const users = await this.userRepository.find({
-      where: whereCondition,
-      relations: { organization: true },
+  async findByOrganization(organizationId: string, _excludeEmail?: string): Promise<UserResponseDto[]> {
+    // Membership-based: a user belongs to an organization through user_organizations
+    // (active or invited), not through the legacy organizationId column — otherwise
+    // users associated to additional organizations would be missing here.
+    const memberships = await this.membershipRepository.find({
+      where: { organizationId },
+      relations: { user: { organization: true } },
       order: { createdAt: 'DESC' },
     });
-    return this.enrichUsersWithStatus(users);
+
+    const expirationDays = this.getInvitationExpirationDays();
+
+    // Registration status and active flag come from the membership, not the
+    // global user, so each organization sees its own view of the member.
+    return memberships
+      .filter((membership) => !!membership.user)
+      .map((membership) => ({
+        ...this.enrichUserWithStatus(membership.user),
+        isActive: membership.isActive,
+        // Left the org on their own: reactivating requires re-inviting.
+        hasLeft: !!membership.leftAt,
+        registrationStatus: membershipRegistrationStatus(
+          membership.status,
+          membership.invitedAt,
+          expirationDays,
+        ),
+      }));
   }
 
   async updateUser(email: string, updateData: Partial<User>): Promise<User> {

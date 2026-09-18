@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { decryptPassword } from '@/app/utils/crypto';
 import { createStructuredLogger } from '@/lib/structured-logger';
+import { ACTIVE_ORG_COOKIE } from '@/lib/apiProxy';
 
 const logger = createStructuredLogger('auth/login');
 
@@ -43,6 +44,16 @@ export const POST = async (req: Request) => {
       return NextResponse.json({ error: data.error_description || 'Error en autenticación' }, { status: 400 });
     }
 
+    // The organization the session starts on. Login always lands on the user's
+    // default organization; switching happens later from the profile.
+    let activeOrganizationId: string | undefined;
+
+    // Whether the authenticated identity is provisioned in our database. A user
+    // can exist in Auth0 but not here; in that case we must not grant access.
+    // We only treat a definitive "not found" as a block — transient API errors
+    // stay tolerant so an outage doesn't lock everyone out.
+    let userFound = true;
+
     // Check if the user is active in our database and if the organization is active
     try {
       const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
@@ -54,23 +65,29 @@ export const POST = async (req: Request) => {
         },
       });
 
-      if (userResponse.ok) {
-        const userData = await userResponse.json();
-        
-        // Check if the user is inactive
-        if (userData.isActive === false) {
+      const userData = userResponse.ok ? await userResponse.json().catch(() => null) : null;
+
+      if (userResponse.ok && userData && userData.id) {
+
+        // The session starts on the accessible (accepted + enabled) default
+        // organization; access is now driven by memberships, not a global flag.
+        activeOrganizationId = userData.sessionOrganizationId || undefined;
+
+        // No accessible organization: every membership is disabled or none is
+        // active — deny access.
+        if (!activeOrganizationId) {
           return NextResponse.json(
-            { 
-              error: 'Your account is inactive. Please contact your administrator.',
+            {
+              error: 'Your account has no active organization. Please contact your administrator.',
               code: 'INACTIVE_ACCOUNT'
-            }, 
+            },
             { status: 403 }
           );
         }
 
-        // Check if the organization is inactive
-        if (userData.organizationId) {
-          const orgResponse = await fetch(`${apiBaseUrl}/organizations/${userData.organizationId}`, {
+        // Check if the active organization is inactive
+        if (activeOrganizationId) {
+          const orgResponse = await fetch(`${apiBaseUrl}/organizations/${activeOrganizationId}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -94,15 +111,36 @@ export const POST = async (req: Request) => {
             }
           }
         }
+      } else if (userResponse.ok || userResponse.status === 404) {
+        // Reachable API with a definitive "not found": the identity exists in
+        // Auth0 but not in our database, so access must be denied.
+        userFound = false;
       }
     } catch (error) {
       logger.error('Error checking user active status', error);
+    }
+
+    if (!userFound) {
+      return NextResponse.json(
+        {
+          error: 'Your account is not set up in Maturoscope. Please contact your administrator.',
+          code: 'ACCOUNT_NOT_FOUND',
+        },
+        { status: 403 },
+      );
     }
 
     logger.info('Login success');
 
     const responseHeaders = new Headers();
     responseHeaders.append('Set-Cookie', `token=${data.access_token}; Path=/; HttpOnly; Secure; SameSite=Strict`);
+    // Start the session on the default organization.
+    if (activeOrganizationId) {
+      responseHeaders.append(
+        'Set-Cookie',
+        `${ACTIVE_ORG_COOKIE}=${activeOrganizationId}; Path=/; HttpOnly; Secure; SameSite=Strict`,
+      );
+    }
 
     return new NextResponse(JSON.stringify({ message: 'Login successfully' }), {
       status: 200,

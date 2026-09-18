@@ -4,6 +4,7 @@ import { UserInvitationService } from './user-invitation.service';
 import { CreateUserInvitationDto } from './dto/create-user-invitation.dto';
 import { Auth } from '../../common/decorators/auth.decorator';
 import { CompleteUserInvitationDto } from './dto/complete-user-invitation.dto';
+import { ResendInvitationDto } from './dto/resend-invitation.dto';
 import { Request } from 'express';
 import { AuthenticatedUser } from '../../common/auth-module/interfaces/authenticated-user.interface';
 
@@ -26,6 +27,29 @@ export class UserInvitationController {
     @Req() req: Request & { user?: AuthenticatedUser },
   ) {
     return this.userInvitationService.inviteUser(createUserInvitationDto, req.user);
+  }
+
+  @Get('check')
+  @Auth()
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary: 'Check an email before inviting',
+    description:
+      'Returns whether the email is new, already in the organization, or an existing user of another organization, so the UI can show the right screen.',
+  })
+  @ApiQuery({ name: 'email', required: true, description: 'Email to check' })
+  @ApiQuery({ name: 'organizationId', required: true, description: 'Target organization UUID' })
+  @ApiResponse({ status: 200, description: 'Check result' })
+  @ApiResponse({ status: 400, description: 'email and organizationId are required' })
+  checkInvitation(
+    @Query('email') email: string,
+    @Query('organizationId') organizationId: string,
+    @Req() req: Request & { user?: AuthenticatedUser },
+  ) {
+    if (!email || !organizationId) {
+      throw new BadRequestException('email and organizationId are required');
+    }
+    return this.userInvitationService.checkInvitation(email, organizationId, req.user?.email);
   }
 
   @Get('verify')
@@ -66,10 +90,10 @@ export class UserInvitationController {
   @ApiResponse({ status: 200, description: 'Invitation resent successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   resendInvitation(
-    @Body() createUserInvitationDto: CreateUserInvitationDto,
+    @Body() resendInvitationDto: ResendInvitationDto,
     @Req() req: Request & { user?: AuthenticatedUser },
   ) {
-    return this.userInvitationService.resendInvitation(createUserInvitationDto, req.user);
+    return this.userInvitationService.resendInvitation(resendInvitationDto, req.user);
   }
 }
 

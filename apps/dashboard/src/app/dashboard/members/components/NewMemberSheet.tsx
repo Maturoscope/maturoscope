@@ -12,6 +12,16 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 import { useNewMemberForm } from "../hooks/useNewMemberForm";
 import { UnsavedChangesDialog } from "./UnsavedChangesDialog";
@@ -43,6 +53,10 @@ export function NewMemberSheet({
     validateField,
     resetForm,
     handleSubmit,
+    associationModalOpen,
+    confirmAssociation,
+    cancelAssociation,
+    pendingInviteName,
   } = useNewMemberForm();
 
   const handleSheetOpenChange = (open: boolean) => {
@@ -279,6 +293,33 @@ export function NewMemberSheet({
         onConfirm={handleConfirmClose}
         onCancel={handleCancelClose}
       />
+
+      <AlertDialog
+        open={associationModalOpen}
+        onOpenChange={(open) => !open && cancelAssociation()}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {t("NEW_MEMBER.ASSOCIATION_MODAL.TITLE")}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {t("NEW_MEMBER.ASSOCIATION_MODAL.MESSAGE", { name: pendingInviteName() })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="mt-6">
+            <AlertDialogCancel onClick={cancelAssociation}>
+              {t("NEW_MEMBER.ASSOCIATION_MODAL.CANCEL")}
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmAssociation}
+              className="bg-gray-900 hover:bg-gray-800 text-white"
+            >
+              {t("NEW_MEMBER.ASSOCIATION_MODAL.CONFIRM")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

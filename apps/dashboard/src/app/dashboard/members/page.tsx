@@ -90,7 +90,9 @@ export default function MembersPage() {
           registrationFilter={registrationFilter}
           onToggleActive={handleToggleActiveWithToast}
           onResendInvitation={handleResendInvitation}
+          onReinvite={handleResendInvitation}
           organizationEmail={user?.organization?.email}
+          organizationName={user?.organization?.name}
           currentUserEmail={user?.email}
         />
       </div>
