@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from "react"
+import React, { Suspense, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { DynamicPageHeader } from "@/components/DynamicPageHeader"
 import { useTranslation } from "react-i18next"
@@ -29,7 +29,7 @@ import {
 
 const VALID_SECTIONS = ['profile', 'password', 'organizations', 'customization']
 
-export default function SettingsUserPage() {
+function SettingsUserContent() {
   const { t } = useTranslation("USER_SETTINGS")
   const { t: tl } = useTranslation("LANGUAJES")
   const { loading, user } = useUserContext()
@@ -265,5 +265,15 @@ export default function SettingsUserPage() {
         undoText="Undo"
       />
     </>
+  )
+}
+
+// useSearchParams() (deep-link ?section=) must sit inside a Suspense boundary,
+// otherwise the page fails to prerender at build time.
+export default function SettingsUserPage() {
+  return (
+    <Suspense fallback={null}>
+      <SettingsUserContent />
+    </Suspense>
   )
 }
