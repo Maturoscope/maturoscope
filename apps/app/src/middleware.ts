@@ -9,7 +9,7 @@ const logger = createStructuredLogger("middleware")
 const headers = { "accept-language": "en,es;q=0.5" }
 const languages = new Negotiator({ headers }).languages()
 
-const LOCALES: Locale[] = ["en", "fr"]
+const LOCALES: Locale[] = ["en", "fr", "es", "it", "sl", "el"]
 const DEFAULT_LOCALE = "en"
 
 match(languages, LOCALES, DEFAULT_LOCALE)

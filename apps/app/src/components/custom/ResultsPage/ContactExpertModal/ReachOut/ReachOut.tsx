@@ -186,14 +186,14 @@ const createContactFormSchema = (lang: Locale) => z.object({
   country: z.string().optional(),
   firstName: z.string().min(1),
   lastName: z.string().min(1),
-  email: z.string().min(1).max(50, lang === "en" ? EN_EMAIL_MAX_ERROR : FR_EMAIL_MAX_ERROR),
+  email: z.string().min(1).max(50, lang === "fr" ? FR_EMAIL_MAX_ERROR : EN_EMAIL_MAX_ERROR),
   // Optional, but if provided it must be a valid number for the selected region
   // (validated per-region via libphonenumber-js through react-phone-number-input).
   phoneNumber: z
     .string()
     .optional()
     .refine((val) => !val || isValidPhoneNumber(val), {
-      message: lang === "en" ? EN_PHONE_INVALID_ERROR : FR_PHONE_INVALID_ERROR,
+      message: lang === "fr" ? FR_PHONE_INVALID_ERROR : EN_PHONE_INVALID_ERROR,
     }),
   additionalInformation: z.string().optional(),
   consent: z.boolean().refine((val) => val === true),
@@ -229,8 +229,8 @@ const ReachOut = ({
     },
   })
   const [contactInfo, setContactInfo] = useState(EN_CONTACT_INFO_FIELDS)
-  const loadingButtonLabel = lang === "en" ? EN_LOADING_BUTTON_LABEL : FR_LOADING_BUTTON_LABEL
-  const clarification = lang === "en" ? EN_CLARIFICATION : FR_CLARIFICATION
+  const loadingButtonLabel = lang === "fr" ? FR_LOADING_BUTTON_LABEL : EN_LOADING_BUTTON_LABEL
+  const clarification = lang === "fr" ? FR_CLARIFICATION : EN_CLARIFICATION
 
   const onSubmit = async (data: ContactFormSchema) => {
     setContactInformation(data)
@@ -297,7 +297,7 @@ const ReachOut = ({
   const progressPercentage = (currentStep / totalSteps) * 100
 
   useEffect(() => {
-    setContactInfo(lang === "en" ? EN_CONTACT_INFO_FIELDS : FR_CONTACT_INFO_FIELDS)
+    setContactInfo(lang === "fr" ? FR_CONTACT_INFO_FIELDS : EN_CONTACT_INFO_FIELDS)
   }, [lang])
 
   return (

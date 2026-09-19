@@ -39,8 +39,8 @@ const LanguageSelector: React.FC<DialogsProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
-          className="absolute top-[5vh] pb-3 right-[0px] flex flex-col w-[224px] bottom-[calc(33%-65px)]  bg-white  text-lg z-10 rounded-md backdrop-blur-[100px] 
-          lg:right-[-121px] lg:top-[5vh] lg:bottom-0 border-[1px] h-[130px] border-[#E6E6E6] gap-1"
+          className="absolute top-[5vh] pb-3 right-[0px] flex flex-col w-[224px] bg-white text-lg z-10 rounded-md backdrop-blur-[100px]
+          lg:right-[-121px] lg:top-[5vh] border-[1px] border-[#E6E6E6] gap-1"
         >
           {LANGUAGES.map(({ key, src }) => {
             return (

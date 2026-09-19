@@ -7,6 +7,10 @@ import { getOrganizationKeyFromCookies } from "./organization"
 interface LocalizedText {
   en: string
   fr: string
+  es?: string
+  it?: string
+  sl?: string
+  el?: string
 }
 
 interface QuestionLevel {
@@ -94,12 +98,12 @@ const transformQuestionsToStages = (
 
     const transformedQuestions = scaleData.questions.map((q: ApiQuestion) => ({
       id: q.id,
-      title: q.question[lang],
+      title: q.question[lang] ?? q.question.en,
       options: Object.entries(q.levels)
         .sort(([a], [b]) => parseInt(a) - parseInt(b))
         .map(([levelId, levelData]: [string, LocalizedText]) => ({
           id: levelId,
-          title: levelData[lang],
+          title: levelData[lang] ?? levelData.en,
         })),
     }))
 

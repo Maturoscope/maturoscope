@@ -3,9 +3,13 @@
     "TITLE": "Titre"
   },
   "LANGUAJES": {
-    "TITLE": "Changer de langue", 
+    "TITLE": "Changer de langue",
     "EN": "Anglais",
-    "FR": "Français"
+    "FR": "Français",
+    "ES": "Espagnol",
+    "IT": "Italien",
+    "SL": "Slovène",
+    "EL": "Grec"
   },
   "COMPLETE_REGISTRATION": {
     "PAGE": {

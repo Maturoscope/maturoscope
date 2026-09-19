@@ -5,7 +5,11 @@
   "LANGUAJES": {
     "TITLE": "Switch Language",
     "EN": "English",
-    "FR": "French"
+    "FR": "French",
+    "ES": "Spanish",
+    "IT": "Italian",
+    "SL": "Slovenian",
+    "EL": "Greek"
   },
   "COMPLETE_REGISTRATION": {
     "PAGE": {
@@ -82,7 +86,7 @@
       "TITLE": "Reset your password",
       "SUBTITLE": "Type your email address to send instructions to reset your password to you inbox.",
       "EMAIL_LABEL": "Email",
-      "PLACEHOLDER": "Placeholder", 
+      "PLACEHOLDER": "Placeholder",
       "RESET_BUTTON": "Reset Password",
       "GO_BACK_TO": "Go back to"
     },
@@ -503,7 +507,7 @@
         "DESCRIPTION": "Your customization settings have been saved successfully."
       },
       "PDF_SIGNATURE_SUCCESS": {
-        "TITLE": "Logo Updated", 
+        "TITLE": "Logo Updated",
         "DESCRIPTION": "Your organization's new logo has been uploaded successfully."
       },
       "LANGUAGE_SUCCESS": {

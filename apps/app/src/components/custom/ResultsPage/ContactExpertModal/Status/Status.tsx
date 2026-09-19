@@ -38,7 +38,7 @@ const Status = ({
 }: StatusProps & ExtraProps) => {
   const { lang } = useParams<{ lang: Locale }>()
   const { downloadReport, isLoading } = useDownloadReport(lang)
-  const loadingButtonLabel = lang === "en" ? EN_LOADING_BUTTON_LABEL : FR_LOADING_BUTTON_LABEL
+  const loadingButtonLabel = lang === "fr" ? FR_LOADING_BUTTON_LABEL : EN_LOADING_BUTTON_LABEL
   const isSuccess = currentStep === "successStatus"
 
   const handleDownloadClick = async () => {

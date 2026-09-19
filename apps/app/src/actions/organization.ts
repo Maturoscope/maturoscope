@@ -61,6 +61,10 @@ export type ScaleType = "TRL" | "MkRL" | "MfRL"
 export interface LocalizedText {
   en: string
   fr: string
+  es?: string
+  it?: string
+  sl?: string
+  el?: string
 }
 
 export interface DevelopmentPhase {

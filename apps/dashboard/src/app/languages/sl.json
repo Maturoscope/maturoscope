@@ -1,0 +1,934 @@
+{
+  "EXAMPLE": {
+    "TITLE": "Title"
+  },
+  "LANGUAJES": {
+    "TITLE": "Zamenjaj jezik",
+    "EN": "Angleščina",
+    "FR": "Francoščina",
+    "ES": "Španščina",
+    "IT": "Italijanščina",
+    "SL": "Slovenščina",
+    "EL": "Grščina"
+  },
+  "COMPLETE_REGISTRATION": {
+    "PAGE": {
+      "TITLE": "Nastavite geslo",
+      "SUBTITLE": "Ustvarite geslo za dokončanje registracije.",
+      "PASSWORD_LABEL": "Geslo",
+      "CONFIRM_PASSWORD_LABEL": "Potrdite geslo",
+      "PASSWORD_PLACEHOLDER": "Vnesite varno geslo",
+      "CONFIRM_PASSWORD_PLACEHOLDER": "Potrdite geslo",
+      "SUBMIT_BUTTON": "Nastavi geslo",
+      "SUBMITTING": "Nastavljanje gesla …"
+    },
+    "PASSWORD_REQUIREMENTS": {
+      "TITLE": "Vaše geslo mora vsebovati vsaj",
+      "MIN_LENGTH": "10 znakov",
+      "ONE_UPPERCASE": "1 veliko črko",
+      "ONE_LOWERCASE": "1 malo črko",
+      "ONE_NUMBER_OR_SPECIAL": "1 številko ali poseben znak (primer: # ? ! &)"
+    },
+    "ERRORS": {
+      "PASSWORDS_DONT_MATCH": "Gesli se ne ujemata.",
+      "INVALID_TOKEN": "Manjka žeton povabila.",
+      "EXPIRED_INVITATION": "Povabilo ni veljavno ali je poteklo.",
+      "VERIFY_ERROR": "Povabila ni bilo mogoče preveriti. Poskusite znova pozneje.",
+      "INVALID_INVITATION": "Povabilo ni več veljavno.",
+      "REGISTRATION_FAILED": "Registracije ni bilo mogoče dokončati.",
+      "UNEXPECTED_ERROR": "Nepričakovana napaka pri dokončanju registracije."
+    },
+    "SUCCESS": {
+      "TITLE": "Registracija zaključena",
+      "MESSAGE": "Registracija zaključena. Preusmerjanje na nadzorno ploščo ..."
+    },
+    "LOADING": {
+      "TITLE": "Dokončevanje registracije ...",
+      "MESSAGE": "Preverjamo vaš žeton povabila."
+    },
+    "INVALID": {
+      "TITLE": "Neveljavno povabilo",
+      "MESSAGE": "Ta žeton povabila ni veljaven ali je potekel. Za novo povabilo se obrnite na svojega skrbnika.",
+      "BUTTON": "Pojdi na prijavo"
+    }
+  },
+  "LOGIN": {
+    "PAGE": {
+      "TITLE": "Prijavite se v svoj račun",
+      "SUBTITLE": "Vnesite svoj e-poštni naslov in geslo za dostop do računa.",
+      "EMAIL_LABEL": "E-pošta",
+      "PASSWORD_LABEL": "Geslo",
+      "FORGOT_PASSWORD": "Ste pozabili geslo?",
+      "REMEMBER_ME": "Zapomni si me",
+      "LOGIN_BUTTON": "Prijava",
+      "LOGIN_SUCCESS": "Prijava uspešna!",
+      "INVALID_CREDENTIALS": "Neveljaven e-poštni naslov ali geslo.",
+      "LOCK_WARNING": "Vaš račun bo blokiran po preveč neuspelih poskusih."
+    },
+    "BLOCKED_ACCOUNT": {
+      "TITLE": "Vaša prijava je bila blokirana",
+      "MESSAGE": "Iz varnostnih razlogov je bil vaš račun zaklenjen po več neuspešnih poskusih prijave.",
+      "EMAIL_SENT": "Poslali smo vam e-pošto z navodili za odklep računa in ponastavitev gesla.",
+      "GO_BACK_TO": "Pojdi na",
+      "SIGN_IN": "Prijava"
+    },
+    "INACTIVE_ACCOUNT": {
+      "TITLE": "Račun neaktiven",
+      "MESSAGE": "Vaš račun je trenutno neaktiven, zato se trenutno ne morete prijaviti.",
+      "CONTACT_ADMIN": "Za ponovno aktivacijo računa se obrnite na svojega skrbnika.",
+      "GO_BACK_TO": "Nazaj na",
+      "SIGN_IN": "Prijava"
+    },
+    "INACTIVE_ORGANIZATION": {
+      "MESSAGE": "Vaša organizacija je trenutno neaktivna. Za ponovno aktivacijo se obrnite na svojega skrbnika."
+    },
+    "RESET_PASSWORD": {
+      "TITLE": "Ponastavite geslo",
+      "SUBTITLE": "Vnesite svoj e-poštni naslov, da vam pošljemo navodila za ponastavitev gesla.",
+      "EMAIL_LABEL": "E-pošta",
+      "PLACEHOLDER": "Nadomestno besedilo",
+      "RESET_BUTTON": "Ponastavi geslo",
+      "GO_BACK_TO": "Nazaj na"
+    },
+    "ERRORS": {
+      "INVALID_EMAIL": "Vnesite veljaven e-poštni naslov.",
+      "EMAIL_NOT_FOUND": "Ta e-poštni naslov ne obstaja v naši bazi podatkov."
+    },
+    "CHECK_INBOX": {
+      "TITLE": "Preverite svoj poštni predal",
+      "MESSAGE": "Poslali smo vam e-pošto na [email]. Sledite navodilom za dostop do svojega računa.",
+      "BACK_TO_LOGIN": "Nazaj na prijavo",
+      "EDIT_EMAIL": "Uredi e-pošto"
+    }
+  },
+  "BREADCRUMB": {
+    "DASHBOARD": "Nadzorna plošča",
+    "SERVICES": "Storitve",
+    "MEMBERS": "Člani",
+    "SETTINGS": "Nastavitve",
+    "REPORTS": "Poročila",
+    "ORGANIZATIONS": "Organizacije",
+    "ORGANIZATION": "Organizacija"
+  },
+  "DASHBOARD": {
+    "BRAND": "Nobatek",
+    "DASHBOARD": "Nadzorna plošča",
+    "SERVICES": "Storitve",
+    "MEMBERS": "Člani",
+    "SETTINGS": "Nastavitve",
+    "SUPER_ADMIN": "Super skrbnik",
+    "REPORTS": "Poročila",
+    "ORGANIZATIONS": "Organizacije",
+    "LOG_OUT": "Odjava",
+    "ORG_SWITCHER": {
+      "TITLE": "Organizacija(e)",
+      "DEFAULT": "Privzeta",
+      "PENDING_INVITATIONS": "Čakajoča povabila",
+      "INVITATIONS": "povabilo(a)"
+    },
+    "NEED_HELP_CONTACT_US": "Potrebujete pomoč? Kontaktirajte nas",
+    "KPIS": {
+      "ANALYSIS_COMPLETION_RATE": "Stopnja dokončanja analize",
+      "CONTACT_RATE": "Stopnja stikov",
+      "TOTAL_ASSESSMENTS_STARTED": "Skupno število začetih ocenjevanj",
+      "ANALYSIS_COMPLETION_RATE_TOOLTIP": "Ta stopnja se izračuna na podlagi zaključenih analiz.",
+      "CONTACT_RATE_TOOLTIP": "Ta stopnja se izračuna na podlagi uporabnikov, ki so po zaključku analize kontaktirali strokovnjaka."
+    },
+    "CHART": {
+      "TITLE": "Število uporabnikov po lestvici in stopnji",
+      "DESCRIPTION": "Prikaz trenutne porazdelitve uporabnikov po stopnjah.",
+      "X_AXIS_LABEL": "Stopnje",
+      "Y_AXIS_LABEL": "Število uporabnikov",
+      "TOOLTIP_LEVEL": "Raven",
+      "USERS": "uporabniki"
+    },
+    "SCALE_FUNNEL": {
+      "TITLE": "Ocene po lestvici",
+      "DESCRIPTION": "Začete vs. zaključene vs. opuščene za vsako lestvico, da vidite, katera je najpogosteje izbrana.",
+      "STARTED": "Začete",
+      "COMPLETED": "Zaključene",
+      "ABANDONED": "Opuščene",
+      "COMPLETION": "zaključek",
+      "ASSESSMENTS": "ocene"
+    },
+    "SERVICE_CONSULTATIONS": {
+      "TITLE": "Najbolj obiskane storitve",
+      "DESCRIPTION": "Kolikokrat je bila posamezna storitev obiskana prek kontaktnega obrazca.",
+      "CONSULTATIONS": "poizvedbe",
+      "NO_DATA": "Nobena storitev še ni bila obiskana."
+    },
+    "LOADING": "Nalaganje ...",
+    "REPORTS_FILTER": {
+      "SELECT_ORGANIZATION": "Izberite organizacijo",
+      "ALL_ORGANIZATIONS": "Vse organizacije"
+    },
+    "ONBOARDING": {
+      "WELCOME": {
+        "TITLE": "Dobrodošli v Maturoscope! 👋",
+        "DESCRIPTION": "Naredimo hiter ogled vašega zalednega sistema. Traja le nekaj sekund."
+      },
+      "NAV_DASHBOARD": {
+        "TITLE": "Nadzorna plošča",
+        "DESCRIPTION": "Vaše izhodišče — spremljajte ključne kazalnike in napredek uporabnikov skozi oceno."
+      },
+      "NAV_SERVICES": {
+        "TITLE": "Storitve",
+        "DESCRIPTION": "Ustvarite in upravljajte storitve, ki jih ponuja vaša organizacija. Uporabnikom se priporočajo glede na njihove rezultate."
+      },
+      "NAV_MEMBERS": {
+        "TITLE": "Člani",
+        "DESCRIPTION": "Povabite sodelavce in upravljajte, kdo ima dostop do vaše organizacije."
+      },
+      "NAV_SETTINGS": {
+        "TITLE": "Nastavitve",
+        "DESCRIPTION": "Prilagodite blagovno znamko organizacije ter upravljajte račun in geslo."
+      },
+      "KPIS": {
+        "TITLE": "Ključni kazalniki",
+        "DESCRIPTION": "Spremljajte začete ocene, stopnjo zaključenosti in koliko uporabnikov stopi v stik z vašimi strokovnjaki."
+      },
+      "DONE": {
+        "TITLE": "Vse je pripravljeno! 🎉",
+        "DESCRIPTION": "To je bil ogled. Vedno nas lahko dosežete prek »Potrebujete pomoč? Kontaktirajte nas« v stranski vrstici. Uživajte v Maturoscope!"
+      },
+      "BUTTONS": {
+        "NEXT": "Naprej",
+        "PREV": "Nazaj",
+        "DONE": "Razumem"
+      }
+    }
+  },
+  "MEMBERS": {
+    "PAGE_TITLE": "Člani",
+    "FILTERS": {
+      "ALL": "Vse",
+      "COMPLETED": "Zaključeno",
+      "PENDING": "V teku",
+      "EXPIRED": "Poteklo",
+      "REJECTED": "Zavrnjeno",
+      "ACTIVE": "Aktivno",
+      "INACTIVE": "Neaktivno"
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Iskanje po imenu, priimku ali e-pošti"
+    },
+    "ADD_MEMBER_BUTTON": "Dodaj člana",
+    "TABLE": {
+      "HEADERS": {
+        "FIRST_NAME": "Ime",
+        "LAST_NAME": "Priimek",
+        "EMAIL": "E-pošta",
+        "REGISTRATION": "Registracija",
+        "ACTIVE": "Aktivno"
+      },
+      "TOOLTIPS": {
+        "REGISTRATION": "Prikazuje, ali je član dokončal e-poštno povabilo, ali čaka na potrditev ali je poteklo.",
+        "ACTIVE": "Označuje, ali je članov račun trenutno aktiven ali deaktiviran, ne da bi bil odstranjen iz baze podatkov."
+      },
+      "LOADING": "Nalaganje članov …",
+      "NO_RESULTS": "Ni dodanih članov",
+      "EMPTY_DESCRIPTION": "Začnimo z vašim prvim članom.",
+      "NO_INACTIVE_MEMBERS": "Ni neaktivnih članov",
+      "NO_INACTIVE_MEMBERS_DESCRIPTION": "Nimate neaktivnih članov.",
+      "NO_ACTIVE_MEMBERS": "Ni aktivnih članov",
+      "NO_ACTIVE_MEMBERS_DESCRIPTION": "Nimate aktivnih članov.",
+      "NO_COMPLETED_MEMBERS": "Ni zaključenih članov",
+      "NO_COMPLETED_MEMBERS_DESCRIPTION": "Nimate zaključenih članov.",
+      "NO_PENDING_MEMBERS": "Ni čakajočih članov",
+      "NO_PENDING_MEMBERS_DESCRIPTION": "Nimate čakajočih članov.",
+      "NO_EXPIRED_MEMBERS": "Ni poteklih članov",
+      "NO_EXPIRED_MEMBERS_DESCRIPTION": "Nimate poteklih članov.",
+      "NO_MEMBERS_AVAILABLE": "Ni razpoložljivih članov",
+      "NO_MEMBERS_AVAILABLE_DESCRIPTION": "Noben član ne ustreza izbranim filtrom.",
+      "RESEND_INVITATION": "Ponovno pošlji povabilo"
+    },
+    "TOASTS": {
+      "MEMBER_CREATED": {
+        "TITLE": "Član uspešno ustvarjen!",
+        "DESCRIPTION": "{{name}} je prejel povezavo za dostop do platforme."
+      },
+      "MEMBER_DEACTIVATED": {
+        "TITLE": "Član uspešno deaktiviran!",
+        "DESCRIPTION": "Račun uporabnika {{name}} je bil deaktiviran. Uporabnik nima več dostopa do platforme."
+      },
+      "MEMBER_REACTIVATED": {
+        "TITLE": "Član uspešno ponovno aktiviran!",
+        "DESCRIPTION": "{{name}} je bil ponovno aktiviran. Uporabnik ima zdaj dostop do platforme."
+      },
+      "UNDO": "Razveljavi"
+    },
+    "REGISTRATION_STATUS": {
+      "COMPLETED": "Zaključeno",
+      "PENDING": "V teku",
+      "EXPIRED": "Poteklo",
+      "REJECTED": "Zavrnjeno"
+    },
+    "NEW_MEMBER": {
+      "TITLE": "Nov član",
+      "FIELDS": {
+        "FIRST_NAME": {
+          "LABEL": "Ime",
+          "PLACEHOLDER": "Ime",
+          "REQUIRED": "*"
+        },
+        "LAST_NAME": {
+          "LABEL": "Priimek",
+          "PLACEHOLDER": "Priimek",
+          "REQUIRED": "*"
+        },
+        "EMAIL": {
+          "LABEL": "E-pošta",
+          "PLACEHOLDER": "E-pošta",
+          "REQUIRED": "*",
+          "HELPER_TEXT": "Tega e-poštnega naslova po ustvarjanju računa ni mogoče spremeniti."
+        },
+        "CONFIRM_EMAIL": {
+          "LABEL": "Potrdi e-pošto",
+          "PLACEHOLDER": "Potrdi e-pošto",
+          "REQUIRED": "*"
+        }
+      },
+      "BUTTONS": {
+        "CREATE": "Ustvari člana",
+        "CREATING": "Ustvarjanje …"
+      },
+      "ERRORS": {
+        "FIELD_REQUIRED": "Tega polja ni mogoče pustiti praznega.",
+        "INVALID_EMAIL": "Vnesite veljaven e-poštni naslov.",
+        "EMAILS_DONT_MATCH": "E-poštna naslova se ne ujemata.",
+        "ORGANIZATION_MISSING": "Manjka kontekst organizacije.",
+        "CREATE_FAILED": "Člana ni bilo mogoče ustvariti.",
+        "UNEXPECTED_ERROR": "Nepričakovana napaka pri ustvarjanju člana.",
+        "ALREADY_IN_ORG": "Ta uporabnik že pripada tej organizaciji."
+      },
+      "ASSOCIATION_MODAL": {
+        "TITLE": "Uporabnik že obstaja",
+        "MESSAGE": "{{name}} že ima račun v drugi organizaciji. Ga želite povabiti tudi v to organizacijo?",
+        "CONFIRM": "Pošlji povabilo",
+        "CANCEL": "Prekliči"
+      }
+    },
+    "UNSAVED_CHANGES": {
+      "TITLE": "Neshranjene spremembe",
+      "MESSAGE": "Imate neshranjene spremembe. Če zdaj zapustite, bodo vaše zadnje posodobitve izgubljene.",
+      "CANCEL": "Prekliči",
+      "LEAVE_ANYWAY": "Vseeno zapusti"
+    },
+    "DEACTIVATE_USER": {
+      "TITLE": "Deaktivirati nameravate {{name}}",
+      "MESSAGE": "Po deaktivaciji uporabnik ne bo več imel dostopa do platforme.",
+      "CANCEL": "Prekliči",
+      "CONFIRM": "Da, deaktiviraj"
+    },
+    "REINVITE_USER": {
+      "TITLE": "{{name}} je zapustil(a) to organizacijo",
+      "MESSAGE": "Ta uporabnik je zapustil {{org}}. Pošljite novo povabilo za obnovitev dostopa.",
+      "CANCEL": "Prekliči",
+      "CONFIRM": "Pošlji povabilo"
+    },
+    "NOTIFICATIONS": {
+      "MEMBER_CREATED": "Član uspešno ustvarjen",
+      "INVITATION_RESENT": "Povabilo uspešno ponovno poslano!",
+      "UPDATE_FAILED": "Stanja člana ni bilo mogoče posodobiti.",
+      "RESEND_FAILED": "Povabila ni bilo mogoče ponovno poslati.",
+      "LOAD_FAILED": "Članov ni bilo mogoče naložiti.",
+      "LOAD_ERROR": "Nepričakovana napaka pri pridobivanju članov."
+    }
+  },
+  "USER_SETTINGS": {
+    "TITLE": "Nastavitve",
+    "PROFILE": {
+      "TITLE": "Profil",
+      "FIRST_NAME": "Ime",
+      "LAST_NAME": "Priimek",
+      "EMAIL": "E-pošta",
+      "ORGANIZATION": "Organizacija",
+      "UPDATE_PROFILE": "Posodobi profil",
+      "SUCCESS_TITLE": "Podatki profila posodobljeni",
+      "SUCCESS_MESSAGE": "Vaše posodobitve so bile uspešno shranjene.",
+      "AVATAR": {
+        "LABEL": "Avatar",
+        "UPLOAD": "Naloži avatar",
+        "REMOVE": "Odstrani avatar",
+        "HELPER": "Priporočene mere 48x48px. Podprti formati: SVG, PNG ali JPG. Največja velikost: 4MB",
+        "INVALID_TYPE": "Neveljavna vrsta datoteke. Dovoljeni so samo SVG, PNG ali JPG.",
+        "TOO_LARGE": "Velikost datoteke presega omejitev 4MB.",
+        "UPDATED": "Profilna slika posodobljena",
+        "REMOVED": "Profilna slika odstranjena",
+        "ERROR": "Nekaj je šlo narobe. Poskusite znova.",
+        "REMOVE_DIALOG": {
+          "TITLE": "Odstrani avatar",
+          "MESSAGE": "Izbrisali boste svojo profilno sliko. Tega dejanja ni mogoče razveljaviti.",
+          "CONFIRM": "Da, odstrani",
+          "CANCEL": "Prekliči"
+        }
+      }
+    },
+    "PASSWORD": {
+      "TITLE": "Geslo",
+      "CURRENT_PASSWORD": "Trenutno geslo",
+      "NEW_PASSWORD": "Novo geslo",
+      "CONFIRM_PASSWORD": "Potrdite novo geslo",
+      "UPDATE_PASSWORD": "Posodobi geslo",
+      "SUCCESS_TITLE": "Geslo posodobljeno",
+      "SUCCESS_MESSAGE": "Vaše geslo je bilo uspešno spremenjeno.",
+      "REQUIREMENTS": "Vaše novo geslo mora vsebovati vsaj",
+      "MIN_CHARACTERS": "10 znakov",
+      "ONE_UPPERCASE": "1 veliko črko",
+      "ONE_LOWERCASE": "1 malo črko",
+      "ONE_NUMBER_SPECIAL": "1 številko ali poseben znak (primer: # ? ! &)"
+    },
+    "CUSTOMIZATION": {
+      "TITLE": "Prilagoditev",
+      "THEME": "Tema",
+      "LANGUAGE": "Jezik",
+      "LANGUAGE_DESCRIPTION": "To je jezik, ki bo uporabljen v nadzorni plošči.",
+      "SAVE_PREFERENCES": "Shrani nastavitve",
+      "UPDATE_CUSTOMIZATION": "Posodobi prilagoditev",
+      "SUCCESS_TITLE": "Prilagoditev posodobljena",
+      "SUCCESS_MESSAGE": "Vaše nastavitve so bile uspešno shranjene."
+    },
+    "ERRORS": {
+      "FIELD_REQUIRED": "Tega polja ni mogoče pustiti praznega.",
+      "PASSWORD_TOO_SHORT": "Geslo mora vsebovati vsaj 10 znakov.",
+      "PASSWORD_NO_LETTER": "Geslo mora vsebovati vsaj 1 črko.",
+      "PASSWORD_NO_UPPERCASE": "Geslo mora vsebovati vsaj 1 veliko črko.",
+      "PASSWORD_NO_LOWERCASE": "Geslo mora vsebovati vsaj 1 malo črko.",
+      "PASSWORD_NO_NUMBER_SPECIAL": "Geslo mora vsebovati vsaj 1 številko ali poseben znak.",
+      "PASSWORDS_DONT_MATCH": "Gesli se ne ujemata.",
+      "CURRENT_PASSWORD_INCORRECT": "Trenutno geslo je napačno."
+    },
+    "UNSAVED_CHANGES": {
+      "TITLE": "Neshranjene spremembe",
+      "MESSAGE": "Imate neshranjene spremembe. Če zdaj zapustite, bodo vaše zadnje posodobitve izgubljene.",
+      "CANCEL": "Prekliči",
+      "LEAVE_ANYWAY": "Vseeno zapusti"
+    },
+    "ORGANIZATIONS": {
+      "TITLE": "Organizacije",
+      "YOUR_ORGANIZATIONS": "Vaše organizacije",
+      "DESCRIPTION": "Izberite, katera organizacija se odpre ob prijavi. Kadar koli jo lahko zamenjate v zgornji vrstici.",
+      "DEFAULT_BADGE": "Privzeta",
+      "SET_AS_DEFAULT": "Nastavi kot privzeto",
+      "LEAVE": "Zapusti",
+      "PENDING_TITLE": "Čakajoča povabila",
+      "INVITED_AGO": "Povabljen {{time}}",
+      "JOIN": "Pridruži se",
+      "DECLINE": "Zavrni",
+      "EMPTY_PENDING": "Nimate čakajočih povabil.",
+      "LEFT_LABEL": "Zapustili ste to organizacijo.",
+      "LOAD_ERROR": "Vaših organizacij ni bilo mogoče naložiti. Poskusite znova.",
+      "LEAVE_DIALOG": {
+        "TITLE": "Zapustiti {{name}}?",
+        "MESSAGE": "Izgubili boste dostop do njene nadzorne plošče, storitev in članov. Vaše druge organizacije to ne prizadene, skrbnik pa vas lahko pozneje znova povabi.",
+        "CONFIRM": "Da, zapusti",
+        "CANCEL": "Prekliči"
+      },
+      "SET_DEFAULT_DIALOG": {
+        "TITLE": "Nastaviti {{name}} kot privzeto?",
+        "MESSAGE": "Ob naslednji prijavi boste začeli v tej organizaciji.",
+        "CONFIRM": "Nastavi kot privzeto",
+        "CANCEL": "Prekliči"
+      },
+      "DECLINE_DIALOG": {
+        "TITLE": "Zavrniti povabilo?",
+        "MESSAGE": "Po potrebi ste lahko pozneje znova povabljeni.",
+        "CONFIRM": "Zavrni",
+        "CANCEL": "Prekliči"
+      },
+      "TOASTS": {
+        "DEFAULT_UPDATED": "{{name}} je zdaj vaša privzeta organizacija.",
+        "LEFT": "Zapustili ste organizacijo",
+        "JOINED": "Pridružili ste se organizaciji",
+        "DECLINED": "Povabilo zavrnjeno",
+        "ERROR": "Nekaj je šlo narobe. Poskusite znova."
+      }
+    }
+  },
+  "TOOL_SETTINGS": {
+    "TITLE": "Nastavitve",
+    "ORGANIZATION_SETTINGS": "Nastavitve organizacije",
+    "SECTIONS": {
+      "CUSTOMIZATION": "Prilagoditev",
+      "PDF_SIGNATURE": "Logotip",
+      "LANGUAGE": "Jezik"
+    },
+    "CUSTOMIZATION": {
+      "PREVIEW_TOOL": "Predogled orodja",
+      "FONT": {
+        "LABEL": "Pisava",
+        "PLACEHOLDER": "Izberite pisavo",
+        "DESCRIPTION": "Nastavite pisavo, ki jo želite uporabljati v orodju."
+      },
+      "THEME": {
+        "LABEL": "Tema",
+        "PLACEHOLDER": "Izberite temo",
+        "DESCRIPTION": "Izberite temo za orodje."
+      },
+      "UPDATE_BUTTON": "Posodobi prilagoditev",
+      "SAVING": "Shranjevanje ..."
+    },
+    "PDF_SIGNATURE": {
+      "LABEL": "Logotip",
+      "UPLOAD_INSTRUCTIONS": "Kliknite za nalaganje logotipa ali ga povlecite in spustite",
+      "UPLOAD_BUTTON": "Naloži logotip",
+      "REMOVE_BUTTON": "Odstrani logotip",
+      "REQUIREMENTS": "Priporočene mere 240 x 80 px. Podprte vrste: SVG, PNG ali JPG. Največja velikost datoteke: 4 MB",
+      "DESCRIPTION": "To je logotip, ki bo prikazan v vašem vprašalniku in dokumentih PDF.",
+      "ERRORS": {
+        "FILE_TOO_LARGE": "Datoteka je prevelika. Največja velikost je 4 MB."
+      },
+      "REMOVE_DIALOG": {
+        "TITLE": "Odstrani logotip",
+        "DESCRIPTION": "Izbrisati nameravate logotip organizacije. Tega dejanja ni mogoče razveljaviti.",
+        "CANCEL": "Prekliči",
+        "CONFIRM": "Da, odstrani"
+      }
+    },
+    "CUSTOMIZATION_ACTIONS": {
+      "UPDATE_BUTTON": "Posodobi prilagoditev",
+      "SAVING": "Shranjevanje ...",
+      "ERRORS": {
+        "INVALID_TYPE": "Vrsta datoteke ni podprta. Uporabite SVG, PNG ali JPG.",
+        "FILE_TOO_LARGE": "Velikost datoteke presega omejitev 4 MB."
+      }
+    },
+    "LANGUAGE": {
+      "LABEL": "Jezik",
+      "PLACEHOLDER": "Izberite jezik",
+      "DESCRIPTION": "To je privzeti jezik, ki bo uporabljen v nadzorni plošči in orodju.",
+      "CURRENT_LANGUAGE": "Trenutni jezik",
+      "UPDATE_BUTTON": "Posodobi prilagoditev",
+      "SAVING": "Shranjevanje ..."
+    },
+    "TOASTS": {
+      "CUSTOMIZATION_SUCCESS": {
+        "TITLE": "Podatki računa posodobljeni",
+        "DESCRIPTION": "Vaše nastavitve prilagoditve so bile uspešno shranjene."
+      },
+      "PDF_SIGNATURE_SUCCESS": {
+        "TITLE": "Logotip posodobljen",
+        "DESCRIPTION": "Nov logotip vaše organizacije je bil uspešno naložen."
+      },
+      "LANGUAGE_SUCCESS": {
+        "TITLE": "Jezik posodobljen",
+        "DESCRIPTION": "Vaša jezikovna nastavitev je bila uspešno shranjena."
+      }
+    },
+    "DIALOGS": {
+      "UNSAVED_CHANGES": {
+        "TITLE": "Neshranjene spremembe",
+        "DESCRIPTION": "Imate neshranjene spremembe. Če zdaj zapustite, bodo vaše zadnje posodobitve izgubljene.",
+        "CANCEL": "Prekliči",
+        "LEAVE_ANYWAY": "Vseeno zapusti",
+        "SAVE_AND_CONTINUE": "Shrani in nadaljuj"
+      }
+    }
+  },
+  "PROFILE_SETTINGS": {
+    "TITLE": "Profil",
+    "NAME": {
+      "LABEL": "Ime",
+      "VALUE": "Nobatek"
+    },
+    "AVATAR": {
+      "LABEL": "Avatar",
+      "UPLOAD_BUTTON": "Naloži avatar",
+      "REMOVE_BUTTON": "Odstrani avatar",
+      "REQUIREMENTS": "Priporočene dimenzije 48 x 48 px. Podprte vrste: SVG, PNG ali JPG. Največja velikost datoteke: 4 MB",
+      "REMOVE_DIALOG": {
+        "TITLE": "Odstrani avatar",
+        "DESCRIPTION": "Izbrisati nameravate avatar organizacije. Tega dejanja ni mogoče razveljaviti.",
+        "CANCEL": "Prekliči",
+        "CONFIRM": "Da, odstrani"
+      }
+    },
+    "USERNAME": {
+      "LABEL": "Uporabniško ime",
+      "VALUE": "nobatek"
+    },
+    "EMAIL": {
+      "LABEL": "E-pošta",
+      "VALUE": "nobatek@gmail.com"
+    },
+    "MATUROSCOPE_LINK": {
+      "LABEL": "Povezava Maturoscope",
+      "COPY_BUTTON": "Kopiraj",
+      "COPIED_TO_CLIPBOARD": "Povezava kopirana!"
+    },
+    "URL": {
+      "LABEL": "URL",
+      "PLACEHOLDER": "URL organizacije",
+      "DESCRIPTION": "Obiskovalci, ki kliknejo vaš logotip v vprašalniku, bodo preusmerjeni sem."
+    },
+    "UPDATE_BUTTON": "Posodobi profil",
+    "TOASTS": {
+      "SUCCESS_TITLE": "Podatki profila posodobljeni",
+      "SUCCESS_DESCRIPTION": "Vaše posodobitve so bile uspešno shranjene.",
+      "ERROR_TITLE": "Napaka pri posodabljanju profila"
+    }
+  },
+  "SERVICES": {
+    "PAGE_TITLE": "Storitve",
+    "PAGE_SUBTITLE": "Upravljajte storitve, ki so na voljo za vašo organizacijo",
+    "ADD_SERVICE_BUTTON": "Dodaj storitev",
+    "FILTERS": {
+      "ALL": "Vse",
+      "TRL": "TRL",
+      "MkRL": "MkRL",
+      "MfRL": "MfRL",
+      "SCALE": "Lestvica",
+      "LEVELS": "Raven",
+      "LEVEL_RANGES": {
+        "ALL": "Vse ravni",
+        "1_3": "Ravni 1–3",
+        "4_6": "Ravni 4–6",
+        "7_8": "Ravni 7–8"
+      },
+      "STATUS": {
+        "ACTIVE": "Aktivno",
+        "INACTIVE": "Neaktivno"
+      }
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Iskanje storitev ..."
+    },
+    "TABLE": {
+      "HEADERS": {
+        "SERVICE": "Storitev",
+        "CATEGORY_SCALE": "Kategorija in lestvica",
+        "MAIN_CONTACT": "Glavni kontakt",
+        "SECONDARY_CONTACT": "Sekundarni kontakt",
+        "ACTIVE": "Aktivno",
+        "ACTIONS": "Dejanja"
+      },
+      "ACTIVE_TOOLTIP": "Neaktivne storitve se uporabnikom ob koncu ocene ne priporočajo.",
+      "LOADING": "Nalaganje storitev ...",
+      "NO_RESULTS": "Ni najdenih storitev",
+      "EMPTY_DESCRIPTION": "Začnite z ustvarjanjem svoje prve storitve, ki bo pomagala zapolniti vrzeli v vaši organizaciji.",
+      "NO_INACTIVE_SERVICES": "Ni neaktivnih storitev",
+      "NO_INACTIVE_SERVICES_DESCRIPTION": "Nimate neaktivnih storitev.",
+      "ACTIONS_MENU": {
+        "EDIT": "Uredi",
+        "DELETE": "Izbriši"
+      },
+      "FOOTER": {
+        "SHOWING": "Prikazanih {{count}} vrstic",
+        "ROWS_PER_PAGE": "Število vrstic na stran"
+      }
+    },
+    "MODAL": {
+      "CREATE_TITLE": "Nova storitev",
+      "EDIT_TITLE": "Urejanje storitev",
+      "VIEW_TITLE": "Ogled storitve",
+      "STEPS": {
+        "SERVICE_INFO": "Informacije o storitvi",
+        "CATEGORY_SCALE": "Kategorije in vrzeli",
+        "CONTACTS": "Kontaktni podatki"
+      },
+      "STEP_1": {
+        "NAME": {
+          "REQUIRED": "*"
+        },
+        "NAME_EN": {
+          "LABEL": "Ime storitve (EN)",
+          "PLACEHOLDER": "npr. Storitev pametnega spremljanja konstrukcij"
+        },
+        "NAME_FR": {
+          "LABEL": "Ime storitve (FR)",
+          "PLACEHOLDER": "Service de Surveillance Structurelle Intelligente"
+        },
+        "DESCRIPTION_EN": {
+          "LABEL": "Kratek opis (EN)",
+          "PLACEHOLDER": "npr. 24-urno spremljanje konstrukcij s senzorji IoT in napovedno analitiko za odkrivanje nepravilnosti in preprečevanje okvar v stavbah v realnem času."
+        },
+        "DESCRIPTION_FR": {
+          "LABEL": "Kratek opis (FR)",
+          "PLACEHOLDER": "Surveillance structurelle 24/7 avec capteurs IoT et analyse prédictive pour détecter anomalies et prévenir défaillances en temps réel."
+        },
+        "URL": {
+          "LABEL": "URL",
+          "PLACEHOLDER": "URL"
+        }
+      },
+      "STEP_2": {
+        "TITLE": "Izberite kategorije in stopnje zadovoljstva",
+        "HEADING": "Katere vrzeli storitev obravnava?",
+        "SUBTITLE": "Določite eno ali več kategorij (TRL, MkRL, MfRL), ki veljajo za storitev, nato izberite vse vrzeli, ki jih storitev znotraj njih pokriva.",
+        "DESCRIPTION": "Aktivirajte kategorije, ki jih ta storitev obravnava, in izberite stopnje zadovoljstva za vsako vprašanje.",
+        "NO_CATEGORIES": "Za nadaljevanje aktivirajte vsaj eno kategorijo.",
+        "SELECT_ALL_THAT_APPLY": "(izberite vse, kar velja)",
+        "LOADING": "Nalaganje ...",
+        "NO_QUESTIONS": "Za to kategorijo ni na voljo nobenih vprašanj.",
+        "GAP": "Vrzel",
+        "SCALE_LABELS": {
+          "TRL": "Stopnja tehnološke pripravljenosti",
+          "MkRL": "Stopnja tržne pripravljenosti",
+          "MfRL": "Stopnja proizvodne pripravljenosti"
+        }
+      },
+      "STEP_3": {
+        "MAIN_CONTACT": {
+          "TITLE": "Glavni kontakt",
+          "FIRST_NAME": {
+            "LABEL": "Ime",
+            "PLACEHOLDER": "Vnesite ime"
+          },
+          "LAST_NAME": {
+            "LABEL": "Priimek",
+            "PLACEHOLDER": "Vnesite priimek"
+          },
+          "EMAIL": {
+            "LABEL": "E-pošta",
+            "PLACEHOLDER": "contact@example.com"
+          }
+        },
+        "SECONDARY_CONTACT": {
+          "TITLE": "Sekundarni kontakt (neobvezno)",
+          "FIRST_NAME": {
+            "LABEL": "Ime",
+            "PLACEHOLDER": "Vnesite ime"
+          },
+          "LAST_NAME": {
+            "LABEL": "Priimek",
+            "PLACEHOLDER": "Vnesite priimek"
+          },
+          "EMAIL": {
+            "LABEL": "E-pošta",
+            "PLACEHOLDER": "contact@example.com"
+          }
+        }
+      },
+      "BUTTONS": {
+        "CANCEL": "Prekliči",
+        "NEXT": "Nadaljuj",
+        "BACK": "Nazaj",
+        "CREATE": "Shrani",
+        "UPDATE": "Posodobi storitev",
+        "CREATING": "Ustvarjanje ...",
+        "UPDATING": "Posodabljanje ..."
+      },
+      "ERRORS": {
+        "NAME_REQUIRED": "Tega polja ni mogoče pustiti praznega.",
+        "DESCRIPTION_REQUIRED": "Tega polja ni mogoče pustiti praznega.",
+        "URL_REQUIRED": "Tega polja ni mogoče pustiti praznega.",
+        "URL_INVALID": "Vnesite veljaven URL.",
+        "DUPLICATE_NAME": "Storitev s tem imenom že obstaja.",
+        "NO_CATEGORIES": "Vsaj ena kategorija mora biti aktivna.",
+        "INVALID_EMAIL": "Vnesite veljaven e-poštni naslov.",
+        "EMAIL_REQUIRED": "Tega polja ni mogoče pustiti praznega.",
+        "FIRST_NAME_REQUIRED": "Tega polja ni mogoče pustiti praznega.",
+        "LAST_NAME_REQUIRED": "Tega polja ni mogoče pustiti praznega.",
+        "CREATE_FAILED": "Storitve ni bilo mogoče ustvariti.",
+        "UPDATE_FAILED": "Storitve ni bilo mogoče posodobiti.",
+        "DELETE_FAILED": "Storitve ni bilo mogoče izbrisati."
+      },
+      "UNSAVED_CHANGES": {
+        "TITLE": "Neshranjene spremembe",
+        "MESSAGE": "Imate neshranjene spremembe. Če zdaj zapustite, bodo vaše zadnje posodobitve izgubljene.",
+        "CANCEL": "Prekliči",
+        "LEAVE_ANYWAY": "Vseeno zapusti"
+      }
+    },
+    "DELETE_DIALOG": {
+      "TITLE": "Izbrisati nameravate {{serviceName}}",
+      "DESCRIPTION": "Tega dejanja ni mogoče razveljaviti. Po izbrisu bodo njihovi podatki trajno odstranjeni.",
+      "CANCEL": "Prekliči",
+      "CONFIRM": "Da, izbriši"
+    },
+    "TOASTS": {
+      "SERVICE_CREATED": {
+        "TITLE": "Storitev uspešno ustvarjena!",
+        "DESCRIPTION": "{{name}} je bila ustvarjena."
+      },
+      "SERVICE_UPDATED": {
+        "TITLE": "Storitev uspešno posodobljena!",
+        "DESCRIPTION": "{{name}} je bila posodobljena."
+      },
+      "SERVICE_DELETED": {
+        "TITLE": "Storitev uspešno izbrisana!",
+        "DESCRIPTION": "{{name}} je bila odstranjena iz vaše organizacije."
+      },
+      "SERVICE_DEACTIVATED": {
+        "TITLE": "Storitev uspešno deaktivirana!",
+        "DESCRIPTION": "{{name}} je bila deaktivirana. Uporabnikom se ne bo več priporočala."
+      },
+      "SERVICE_REACTIVATED": {
+        "TITLE": "Storitev uspešno ponovno aktivirana!",
+        "DESCRIPTION": "{{name}} je bila ponovno aktivirana. Zdaj se lahko priporoča uporabnikom."
+      },
+      "UNDO": "Razveljavi"
+    },
+    "DEACTIVATE_SERVICE": {
+      "TITLE": "Deaktivirali boste {{name}}",
+      "MESSAGE": "Ko je deaktivirana, se ta storitev uporabnikom ob koncu ocene ne bo več priporočala.",
+      "CONFIRM": "Da, deaktiviraj",
+      "CANCEL": "Prekliči"
+    },
+    "CONTACT": {
+      "TITLE": "Kontaktiraj storitve",
+      "COMPANY": {
+        "LABEL": "Podjetje",
+        "PLACEHOLDER": "Vnesite ime podjetja"
+      },
+      "FIRST_NAME": {
+        "LABEL": "Ime",
+        "PLACEHOLDER": "Vnesite ime"
+      },
+      "LAST_NAME": {
+        "LABEL": "Priimek",
+        "PLACEHOLDER": "Vnesite priimek"
+      },
+      "EMAIL": {
+        "LABEL": "E-pošta",
+        "PLACEHOLDER": "Vnesite e-poštni naslov"
+      },
+      "PHONE": {
+        "LABEL": "Telefonska številka",
+        "PLACEHOLDER": "Vnesite telefonsko številko"
+      },
+      "ADDITIONAL_INFO": {
+        "LABEL": "Dodatne informacije",
+        "PLACEHOLDER": "Vnesite morebitne dodatne informacije"
+      },
+      "CANCEL": "Prekliči",
+      "SEND": "Pošlji",
+      "SENDING": "Pošiljanje ...",
+      "FIRST_NAME_REQUIRED": "Ime je obvezno.",
+      "LAST_NAME_REQUIRED": "Priimek je obvezen.",
+      "EMAIL_REQUIRED": "E-pošta je obvezna.",
+      "INVALID_EMAIL": "Vnesite veljaven e-poštni naslov.",
+      "PHONE_REQUIRED": "Telefonska številka je obvezna.",
+      "ORGANIZATION_KEY_MISSING": "Manjka ključ organizacije.",
+      "SEND_FAILED": "Zahteve za stik ni bilo mogoče poslati."
+    }
+  },
+  "ORGANIZATIONS": {
+    "PAGE_TITLE": "Organizacije",
+    "FILTERS": {
+      "ALL": "Vse",
+      "COMPLETED": "Zaključeno",
+      "PENDING": "V teku",
+      "EXPIRED": "Poteklo",
+      "REJECTED": "Zavrnjeno",
+      "ACTIVE": "Aktivno",
+      "INACTIVE": "Neaktivno"
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Iskanje po imenu organizacije ali e-pošti"
+    },
+    "ADD_ORGANIZATION_BUTTON": "Dodaj organizacijo",
+    "TABLE": {
+      "HEADERS": {
+        "ORGANIZATION_NAME": "Ime organizacije",
+        "EMAIL": "E-pošta",
+        "REGISTRATION": "Registracija",
+        "ACTIVE": "Aktivno"
+      },
+      "TOOLTIPS": {
+        "REGISTRATION": "Prikazuje, ali je prvi uporabnik organizacije dokončal e-poštno povabilo, ali čaka na potrditev ali je poteklo.",
+        "ACTIVE": "Označuje, ali je organizacija trenutno aktivna ali deaktivirana, ne da bi bila odstranjena iz baze podatkov."
+      },
+      "LOADING": "Nalaganje organizacij …",
+      "NO_RESULTS": "Nobena organizacija ne ustreza trenutnim filtrom.",
+      "EMPTY_DESCRIPTION": "Nimate organizacij, ki bi ustrezale izbranim filtrom.",
+      "NO_INACTIVE_ORGANIZATIONS": "Ni neaktivnih organizacij",
+      "NO_INACTIVE_ORGANIZATIONS_DESCRIPTION": "Nimate neaktivnih organizacij.",
+      "NO_ACTIVE_ORGANIZATIONS": "Ni aktivnih organizacij",
+      "NO_ACTIVE_ORGANIZATIONS_DESCRIPTION": "Nimate aktivnih organizacij.",
+      "NO_COMPLETED_ORGANIZATIONS": "Ni zaključenih organizacij",
+      "NO_COMPLETED_ORGANIZATIONS_DESCRIPTION": "Nimate zaključenih organizacij.",
+      "NO_PENDING_ORGANIZATIONS": "Ni čakajočih organizacij",
+      "NO_PENDING_ORGANIZATIONS_DESCRIPTION": "Nimate čakajočih organizacij.",
+      "NO_EXPIRED_ORGANIZATIONS": "Ni poteklih organizacij",
+      "NO_EXPIRED_ORGANIZATIONS_DESCRIPTION": "Nimate poteklih organizacij.",
+      "RESEND_INVITATION": "Ponovno pošlji povabilo"
+    },
+    "TOASTS": {
+      "ORGANIZATION_CREATED": {
+        "TITLE": "Organizacija uspešno ustvarjena!",
+        "DESCRIPTION": "{{name}} je bila ustvarjena, prvi uporabnik pa je prejel povezavo za dostop do platforme."
+      },
+      "ORGANIZATION_DEACTIVATED": {
+        "TITLE": "Organizacija uspešno deaktivirana!",
+        "DESCRIPTION": "{{name}} je bila deaktivirana. Uporabniki te organizacije nimajo več dostopa do platforme."
+      },
+      "ORGANIZATION_REACTIVATED": {
+        "TITLE": "Organizacija uspešno ponovno aktivirana!",
+        "DESCRIPTION": "{{name}} je bila ponovno aktivirana. Uporabniki te organizacije imajo zdaj dostop do platforme."
+      },
+      "UNDO": "Razveljavi"
+    },
+    "REGISTRATION_STATUS": {
+      "COMPLETED": "Zaključeno",
+      "PENDING": "V teku",
+      "EXPIRED": "Poteklo",
+      "REJECTED": "Zavrnjeno"
+    },
+    "NEW_ORGANIZATION": {
+      "TITLE": "Nova organizacija",
+      "FIELDS": {
+        "NAME": {
+          "LABEL": "Ime organizacije",
+          "PLACEHOLDER": "Ime organizacije",
+          "REQUIRED": "*",
+          "HELPER_TEXT": "Imena po ustvarjanju organizacije ni mogoče spremeniti."
+        },
+        "CONFIRM_NAME": {
+          "LABEL": "Potrdite ime organizacije",
+          "PLACEHOLDER": "Potrdite ime organizacije",
+          "REQUIRED": "*"
+        },
+        "EMAIL": {
+          "LABEL": "E-pošta organizacije",
+          "PLACEHOLDER": "E-pošta organizacije",
+          "REQUIRED": "*",
+          "HELPER_TEXT": "Tega e-poštnega naslova po ustvarjanju organizacije ni mogoče spremeniti. Za neprekinjen dostop priporočamo uporabo skupnega organizacijskega e-poštnega naslova (npr. admin@maturoscope.com) namesto osebnega."
+        },
+        "CONFIRM_EMAIL": {
+          "LABEL": "Potrdite e-pošto organizacije",
+          "PLACEHOLDER": "Potrdite e-pošto organizacije",
+          "REQUIRED": "*"
+        }
+      },
+      "ERRORS": {
+        "FIELD_REQUIRED": "Tega polja ni mogoče pustiti praznega.",
+        "INVALID_EMAIL": "Vnesite veljaven e-poštni naslov.",
+        "EMAILS_DONT_MATCH": "E-poštna naslova se ne ujemata.",
+        "NAMES_DONT_MATCH": "Imeni organizacije se ne ujemata.",
+        "CREATE_FAILED": "Organizacije ni bilo mogoče ustvariti.",
+        "UNEXPECTED_ERROR": "Nepričakovana napaka pri ustvarjanju organizacije."
+      },
+      "BUTTONS": {
+        "CREATE": "Ustvari organizacijo",
+        "CREATING": "Ustvarjanje …"
+      }
+    },
+    "UNSAVED_CHANGES": {
+      "TITLE": "Neshranjene spremembe",
+      "MESSAGE": "Imate neshranjene spremembe. Če zdaj zapustite, bodo vaše zadnje posodobitve izgubljene.",
+      "CANCEL": "Prekliči",
+      "LEAVE_ANYWAY": "Vseeno zapusti"
+    },
+    "DEACTIVATE_ORGANIZATION": {
+      "TITLE": "Deaktivirati nameravate {{name}}",
+      "MESSAGE": "Po deaktivaciji uporabniki te organizacije ne bodo več imeli dostopa do platforme.",
+      "CANCEL": "Prekliči",
+      "CONFIRM": "Da, deaktiviraj"
+    },
+    "NOTIFICATIONS": {
+      "ORGANIZATION_CREATED": "Organizacija uspešno ustvarjena",
+      "INVITATION_RESENT": "Povabilo uspešno ponovno poslano!",
+      "UPDATE_FAILED": "Stanja organizacije ni bilo mogoče posodobiti.",
+      "RESEND_FAILED": "Povabila ni bilo mogoče ponovno poslati.",
+      "LOAD_FAILED": "Organizacij ni bilo mogoče naložiti.",
+      "LOAD_ERROR": "Nepričakovana napaka pri pridobivanju organizacij."
+    }
+  },
+  "WELCOME_MODAL": {
+    "TITLE": "Dobrodošli! Nastavimo vašo organizacijo.",
+    "DESCRIPTION": "Pomagajte uporabnikom prepoznati vašo organizacijo z dodajanjem logotipa in avatarja. Prikazana bosta na vseh vprašalnikih, e-poštnih sporočilih in dokumentih PDF.",
+    "REMIND_LATER": "Opomni me pozneje",
+    "GO_TO_SETTINGS": "Pojdi na nastavitve"
+  }
+}

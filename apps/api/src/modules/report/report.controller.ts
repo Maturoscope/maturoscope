@@ -26,7 +26,7 @@ export class ReportController {
     summary: 'Generate PDF report (PUBLIC)',
     description: 'Generates a comprehensive maturity assessment PDF report with all three scales (TRL, MkRL, MfRL), gaps, and risk analysis. This is a PUBLIC endpoint called from the end-user application.'
   })
-  @ApiParam({ name: 'locale', enum: ['en', 'fr'], description: 'Report language', example: 'en' })
+  @ApiParam({ name: 'locale', enum: ['en', 'fr', 'es', 'it', 'sl', 'el'], description: 'Report language', example: 'en' })
   @ApiBody({ type: ReportDataDto })
   @ApiResponse({ 
     status: 200, 
@@ -45,7 +45,7 @@ export class ReportController {
     @Param('locale') locale: string,
     @Body() reportData: ReportDataDto,
   ): Promise<StreamableFile> {
-    const validLocale = ['en', 'fr'].includes(locale) ? locale : 'en';
+    const validLocale = ['en', 'fr', 'es', 'it', 'sl', 'el'].includes(locale) ? locale : 'en';
     const buffer = await this.reportService.getPDF(reportData, validLocale);
 
     return new StreamableFile(buffer, {

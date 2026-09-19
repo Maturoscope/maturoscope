@@ -1,0 +1,56 @@
+{
+  "lang": "it",
+  "header": {
+    "by": "di"
+  },
+  "report": {
+    "title": "Profilo di maturità",
+    "completedOn": "Completato il"
+  },
+  "overview": {
+    "title": "Panoramica",
+    "phaseLabel": "Fase",
+    "notScoredLabel": "Non valutato",
+    "notScoredDescription": "Tutte le domande contrassegnate come Non applicabile",
+    "stages": {
+      "trl": {
+        "label": "TRL",
+        "description": "Livello di maturità tecnologica"
+      },
+      "mkrl": {
+        "label": "MkRL",
+        "description": "Livello di maturità di mercato"
+      },
+      "mfrl": {
+        "label": "MfRL",
+        "description": "Livello di maturità produttiva"
+      }
+    }
+  },
+  "detailedReport": {
+    "title": "Report dettagliato",
+    "description": "Cerca le etichette «Servizio disponibile» qui sotto per vedere dove i nostri esperti possono accelerare i tuoi progressi.",
+    "currentFocus": "Focus attuale",
+    "primaryRiskToMitigate": "Rischio principale da mitigare",
+    "toReachLevel": "Per raggiungere il livello",
+    "copyLevelLabel": "Livello",
+    "copyHighestLevel": "Livello più alto raggiunto",
+    "completeTheGapsBelow": "Colma i divari qui sotto",
+    "serviceAvailable": "Servizio disponibile",
+    "servicesAvailable": "Servizi disponibili",
+    "comingSoon": "Prossimamente",
+    "gapLabel": "Divario",
+    "servicesColumnLabel": "Servizi",
+    "descriptionColumnLabel": "Descrizione",
+    "noScoreTitle": "Nessun punteggio {scale}",
+    "noScoreDescription": "Hai contrassegnato tutte le domande {scale} come Non applicabile: non ci sono divari né servizi disponibili."
+  },
+  "answers": {
+    "title": "Le tue risposte",
+    "notApplicable": "Non applicabile"
+  },
+  "footer": {
+    "disclaimer": "Sebbene lo strumento sia stato progettato da professionisti del settore edile, i risultati di questo test non costituiscono un certificato formale e sono forniti solo a scopo informativo.",
+    "policy": "Il progetto METABUILDING LABS ha ricevuto finanziamenti dal Programma di Ricerca e Innovazione Horizon 2020 dell'Unione Europea nell'ambito dell'Accordo di Sovvenzione n. 953193. La responsabilità esclusiva del contenuto di questo documento è interamente dell'autore. La Commissione Europea non è responsabile dell'uso che potrebbe essere fatto delle informazioni in esso contenute."
+  }
+}

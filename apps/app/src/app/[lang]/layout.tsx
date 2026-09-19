@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { Geist, Inter, Open_Sans, Poppins } from "next/font/google"
 import { MotionConfig } from "motion/react"
 // Dictionaries
-import { DEFAULT_LANGUAGE, Locale, getDictionary } from "@/dictionaries/dictionaries"
+import { DEFAULT_LANGUAGE, Locale, getDictionary, resolveLocale } from "@/dictionaries/dictionaries"
 // Actions
 import {
   getOrganizationKeyFromCookies,
@@ -58,7 +58,7 @@ export default async function RootLayout({
 }: RootLayoutProps) {
   const { lang: langParam = DEFAULT_LANGUAGE } = await params
   // Validate and ensure lang is a valid Locale
-  const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : DEFAULT_LANGUAGE
+  const lang: Locale = resolveLocale(langParam)
 
   const organizationKey = await getOrganizationKeyFromCookies()
   const { accentColor, font } = (await getOrganizationTheme(organizationKey)) ?? { accentColor: DEFAULT_ACCENT_THEME, font: DEFAULT_FONT_THEME }

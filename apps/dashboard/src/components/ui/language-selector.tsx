@@ -12,6 +12,10 @@ const LANGUAGES = [
   { key: 'TITLE', src: null },
   { key: 'EN', src: '/icons/EN.svg' },
   { key: 'FR', src: '/icons/FR.svg' },
+  { key: 'ES', src: '/icons/ES.svg' },
+  { key: 'IT', src: '/icons/IT.svg' },
+  { key: 'SL', src: '/icons/SL.svg' },
+  { key: 'EL', src: '/icons/EL.svg' },
 ]
 
 interface LanguageSelectorProps {
@@ -83,8 +87,8 @@ export function LanguageSelector({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="absolute top-[5vh] pb-3 right-[0px] flex flex-col w-[224px] bottom-[calc(33%-65px)] bg-white text-lg z-10 rounded-md backdrop-blur-[100px] 
-               lg:top-[5vh] lg:bottom-0 border-[1px] h-[130px] border-[#E6E6E6] gap-1"
+              className="absolute top-full mt-1 pb-3 right-[0px] flex flex-col w-[224px] bg-white text-lg z-10 rounded-md backdrop-blur-[100px]
+               border-[1px] border-[#E6E6E6] gap-1"
             >
               {LANGUAGES.map(({ key, src }) => {
                 return (
