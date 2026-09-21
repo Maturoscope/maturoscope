@@ -6,6 +6,7 @@ interface FormState {
   confirmName: string;
   email: string;
   confirmEmail: string;
+  defaultLanguage: string;
 }
 
 interface FormErrors {
@@ -30,6 +31,7 @@ export function useNewOrganizationForm() {
     confirmName: "",
     email: "",
     confirmEmail: "",
+    defaultLanguage: "en",
   });
 
   const [formErrors, setFormErrors] = useState<FormErrors>({
@@ -134,6 +136,7 @@ export function useNewOrganizationForm() {
       confirmName: "",
       email: "",
       confirmEmail: "",
+      defaultLanguage: "en",
     });
     setFormErrors({
       name: "",
@@ -166,6 +169,7 @@ export function useNewOrganizationForm() {
         body: JSON.stringify({
           name: formState.name.trim(),
           email: formState.email.trim().toLowerCase(),
+          defaultLanguage: formState.defaultLanguage,
         }),
       });
 

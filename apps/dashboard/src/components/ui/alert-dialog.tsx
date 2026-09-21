@@ -53,7 +53,7 @@ const AlertDialogContent = React.forwardRef<
         {...props}
       >
         <div className={cn(
-          "transition-all duration-300 ease-out delay-100",
+          "grid gap-4 transition-all duration-300 ease-out delay-100",
           isMounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
         )}>
           {children}

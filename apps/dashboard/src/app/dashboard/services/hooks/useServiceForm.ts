@@ -1,12 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CreateServicePayload, GapCoverage, ScaleType } from '../types/service';
+import { LanguagesService, LanguageCode } from '@/services/languages.service';
+
+export interface TranslationField {
+  name: string;
+  description: string;
+}
 
 export interface ServiceFormData {
-  nameEn: string;
-  nameFr: string;
-  descriptionEn: string;
-  descriptionFr: string;
+  // Per-language title/description, keyed by language code. The organization's
+  // default language is the required one (step 1); the rest are optional (step 2).
+  translations: Record<string, TranslationField>;
   url: string;
   gapCoverages: GapCoverage[];
   activeCategories: Set<ScaleType>;
@@ -18,11 +23,10 @@ export interface ServiceFormData {
   secondaryContactEmail: string;
 }
 
+const emptyField = (): TranslationField => ({ name: '', description: '' });
+
 const getInitialFormData = (): ServiceFormData => ({
-  nameEn: '',
-  nameFr: '',
-  descriptionEn: '',
-  descriptionFr: '',
+  translations: {},
   url: '',
   gapCoverages: [],
   activeCategories: new Set(),
@@ -34,30 +38,54 @@ const getInitialFormData = (): ServiceFormData => ({
   secondaryContactEmail: '',
 });
 
-interface ServiceFormDataSnapshot {
-  nameEn: string;
-  nameFr: string;
-  descriptionEn: string;
-  descriptionFr: string;
-  url: string;
-  gapCoverages: GapCoverage[];
-  activeCategories: string[];
-  mainContactFirstName: string;
-  mainContactLastName: string;
-  mainContactEmail: string;
-  secondaryContactFirstName: string;
-  secondaryContactLastName: string;
-  secondaryContactEmail: string;
-}
+let initialFormDataSnapshot: string | null = null;
 
-let initialFormDataSnapshot: ServiceFormDataSnapshot | null = null;
+const snapshot = (data: ServiceFormData): string =>
+  JSON.stringify({
+    ...data,
+    activeCategories: Array.from(data.activeCategories).sort(),
+    gapCoverages: [...data.gapCoverages].sort((a, b) => {
+      if (a.scaleType !== b.scaleType) return a.scaleType.localeCompare(b.scaleType);
+      if (a.questionId !== b.questionId) return a.questionId.localeCompare(b.questionId);
+      return a.level - b.level;
+    }),
+  });
+
+const TOTAL_STEPS = 4;
 
 export function useServiceForm(serviceId?: string) {
-  const { t } = useTranslation("SERVICES");
+  const { t } = useTranslation('SERVICES');
   const [formData, setFormData] = useState<ServiceFormData>(getInitialFormData);
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Organization languages drive which fields the wizard shows.
+  const [defaultLanguage, setDefaultLanguage] = useState<LanguageCode>('en');
+  const [secondaryLanguages, setSecondaryLanguages] = useState<LanguageCode[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    LanguagesService.getLanguages()
+      .then((langs) => {
+        if (cancelled) return;
+        const def = langs.find((l) => l.isDefault)?.code ?? 'en';
+        setDefaultLanguage(def);
+        setSecondaryLanguages(
+          langs.filter((l) => l.enabled && !l.isDefault).map((l) => l.code),
+        );
+      })
+      .catch(() => {
+        // Fallback to en/fr if the languages endpoint is unavailable.
+        if (!cancelled) {
+          setDefaultLanguage('en');
+          setSecondaryLanguages(['fr']);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!serviceId) {
@@ -65,254 +93,119 @@ export function useServiceForm(serviceId?: string) {
       setFormData(initialData);
       setCurrentStep(1);
       setErrors({});
-      const snapshotData = {
-        ...initialData,
-        activeCategories: Array.from(initialData.activeCategories),
-      };
-      initialFormDataSnapshot = JSON.parse(JSON.stringify(snapshotData));
+      initialFormDataSnapshot = snapshot(initialData);
     }
   }, [serviceId]);
 
-  const loadServiceData = useCallback(async (id: string) => {
-    try {
-      const response = await fetch(`/api/services/${id}`);
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ message: 'Failed to load service' }));
-        throw new Error(errorData.message || 'Failed to load service');
-      }
-      
-      const service = await response.json();
-      
-      const activeCategories = new Set<ScaleType>();
-      if (service.gapCoverages && Array.isArray(service.gapCoverages)) {
-        service.gapCoverages.forEach((coverage: { scaleType: ScaleType }) => {
-          activeCategories.add(coverage.scaleType);
-        });
-      }
-
-      const loadedData: ServiceFormData = {
-        nameEn: service.nameEn || '',
-        nameFr: service.nameFr || '',
-        descriptionEn: service.descriptionEn || '',
-        descriptionFr: service.descriptionFr || '',
-        url: service.url || '',
-        gapCoverages: service.gapCoverages || [],
-        activeCategories,
-        mainContactFirstName: service.mainContactFirstName || '',
-        mainContactLastName: service.mainContactLastName || '',
-        mainContactEmail: service.mainContactEmail || '',
-        secondaryContactFirstName: service.secondaryContactFirstName || '',
-        secondaryContactLastName: service.secondaryContactLastName || '',
-        secondaryContactEmail: service.secondaryContactEmail || '',
-      };
-
-      setFormData(loadedData);
-      setCurrentStep(1);
-      setErrors({});
-      
-      const snapshotData = {
-        ...loadedData,
-        activeCategories: Array.from(loadedData.activeCategories),
-      };
-      initialFormDataSnapshot = JSON.parse(JSON.stringify(snapshotData));
-    } catch (error) {
-      console.error('Error loading service:', error);
-    }
-  }, []);
-
-  const updateField = (field: keyof ServiceFormData, value: unknown) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    
-    if (errors[field]) {
-      const stringValue = String(value).trim();
-      
-      if (field === 'url') {
-        if (stringValue && isValidUrl(stringValue)) {
-          setErrors((prev) => {
-            const newErrors = { ...prev };
-            delete newErrors[field];
-            return newErrors;
-          });
-        }
-      } else if (field === 'mainContactEmail' || field === 'secondaryContactEmail') {
-        if (stringValue && isValidEmail(stringValue)) {
-          setErrors((prev) => {
-            const newErrors = { ...prev };
-            delete newErrors[field];
-            return newErrors;
-          });
-        }
-      } else {
-        if (stringValue) {
-          setErrors((prev) => {
-            const newErrors = { ...prev };
-            delete newErrors[field];
-            return newErrors;
-          });
-        }
-      }
-    }
-  };
+  const getField = useCallback(
+    (lang: string): TranslationField => formData.translations[lang] ?? emptyField(),
+    [formData.translations],
+  );
 
   const isValidUrl = (url: string): boolean => {
     if (!url.trim()) return false;
-    
     try {
       let urlToValidate = url.trim();
-      
       if (!urlToValidate.startsWith('http://') && !urlToValidate.startsWith('https://')) {
         urlToValidate = `https://${urlToValidate}`;
       }
-      
       const urlObj = new URL(urlToValidate);
-      
-      if (urlObj.protocol !== 'http:' && urlObj.protocol !== 'https:') {
-        return false;
-      }
-      
-      if (!urlObj.hostname || urlObj.hostname.length < 1) {
-        return false;
-      }
-      
+      if (urlObj.protocol !== 'http:' && urlObj.protocol !== 'https:') return false;
+      if (!urlObj.hostname || urlObj.hostname.length < 1) return false;
       const isLocalhost = urlObj.hostname === 'localhost';
       const isIpAddress = /^(\d{1,3}\.){3}\d{1,3}$/.test(urlObj.hostname);
-      
-      if (!isLocalhost && !isIpAddress && !urlObj.hostname.includes('.')) {
-        return false;
-      }
-      
-      if (urlObj.hostname.replace(/\./g, '').length === 0) {
-        return false;
-      }
-      
+      if (!isLocalhost && !isIpAddress && !urlObj.hostname.includes('.')) return false;
+      if (urlObj.hostname.replace(/\./g, '').length === 0) return false;
       return true;
     } catch {
       return false;
     }
   };
 
-  const clearFieldError = (field: keyof ServiceFormData): void => {
-    if (errors[field]) {
+  const isValidEmail = (email: string): boolean =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const updateField = (field: keyof ServiceFormData, value: unknown) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field as string]) {
       setErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[field];
-        return newErrors;
+        const next = { ...prev };
+        delete next[field as string];
+        return next;
+      });
+    }
+  };
+
+  const updateTranslation = (
+    lang: string,
+    field: 'name' | 'description',
+    value: string,
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      translations: {
+        ...prev.translations,
+        [lang]: { ...(prev.translations[lang] ?? emptyField()), [field]: value },
+      },
+    }));
+    const errorKey = `${lang}.${field}`;
+    if (errors[errorKey] && value.trim()) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[errorKey];
+        return next;
+      });
+    }
+  };
+
+  const clearFieldError = (field: keyof ServiceFormData | string): void => {
+    if (errors[field as string]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[field as string];
+        return next;
       });
     }
   };
 
   const validateField = (field: keyof ServiceFormData): void => {
     const newErrors: Record<string, string> = { ...errors };
-
-    if (field === 'nameEn') {
-      if (!formData.nameEn.trim()) {
-        newErrors.nameEn = t('MODAL.ERRORS.NAME_REQUIRED');
-      } else {
-        delete newErrors.nameEn;
-      }
-    }
-
-    if (field === 'nameFr') {
-      if (!formData.nameFr.trim()) {
-        newErrors.nameFr = t('MODAL.ERRORS.NAME_REQUIRED');
-      } else {
-        delete newErrors.nameFr;
-      }
-    }
-
-    if (field === 'descriptionEn') {
-      if (!formData.descriptionEn.trim()) {
-        newErrors.descriptionEn = t('MODAL.ERRORS.DESCRIPTION_REQUIRED');
-      } else {
-        delete newErrors.descriptionEn;
-      }
-    }
-
-    if (field === 'descriptionFr') {
-      if (!formData.descriptionFr.trim()) {
-        newErrors.descriptionFr = t('MODAL.ERRORS.DESCRIPTION_REQUIRED');
-      } else {
-        delete newErrors.descriptionFr;
-      }
-    }
+    const check = (key: string, ok: boolean, msg: string) => {
+      if (!ok) newErrors[key] = msg;
+      else delete newErrors[key];
+    };
 
     if (field === 'url') {
-      if (formData.url.trim() && !isValidUrl(formData.url)) {
-        newErrors.url = t('MODAL.ERRORS.URL_INVALID');
-      } else {
-        delete newErrors.url;
-      }
+      check('url', !formData.url.trim() || isValidUrl(formData.url), t('MODAL.ERRORS.URL_INVALID'));
     }
-
-    // Main Contact fields
     if (field === 'mainContactFirstName') {
-      if (!formData.mainContactFirstName.trim()) {
-        newErrors.mainContactFirstName = t('MODAL.ERRORS.FIRST_NAME_REQUIRED');
-      } else {
-        delete newErrors.mainContactFirstName;
-      }
+      check('mainContactFirstName', !!formData.mainContactFirstName.trim(), t('MODAL.ERRORS.FIRST_NAME_REQUIRED'));
     }
-
     if (field === 'mainContactLastName') {
-      if (!formData.mainContactLastName.trim()) {
-        newErrors.mainContactLastName = t('MODAL.ERRORS.LAST_NAME_REQUIRED');
-      } else {
-        delete newErrors.mainContactLastName;
-      }
+      check('mainContactLastName', !!formData.mainContactLastName.trim(), t('MODAL.ERRORS.LAST_NAME_REQUIRED'));
     }
-
     if (field === 'mainContactEmail') {
-      if (!formData.mainContactEmail.trim()) {
-        newErrors.mainContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
-      } else if (!isValidEmail(formData.mainContactEmail)) {
-        newErrors.mainContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
-      } else {
-        delete newErrors.mainContactEmail;
-      }
+      if (!formData.mainContactEmail.trim()) newErrors.mainContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
+      else if (!isValidEmail(formData.mainContactEmail)) newErrors.mainContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
+      else delete newErrors.mainContactEmail;
     }
 
-    // Secondary Contact fields (optional BUT if any field is filled, all must be filled)
+    const hasAnySecondary =
+      formData.secondaryContactFirstName.trim() ||
+      formData.secondaryContactLastName.trim() ||
+      formData.secondaryContactEmail.trim();
+
     if (field === 'secondaryContactFirstName') {
-      const hasAnySecondaryContact = 
-        formData.secondaryContactFirstName.trim() || 
-        formData.secondaryContactLastName.trim() || 
-        formData.secondaryContactEmail.trim();
-
-      if (hasAnySecondaryContact && !formData.secondaryContactFirstName.trim()) {
-        newErrors.secondaryContactFirstName = t('MODAL.ERRORS.FIRST_NAME_REQUIRED');
-      } else {
-        delete newErrors.secondaryContactFirstName;
-      }
+      check('secondaryContactFirstName', !hasAnySecondary || !!formData.secondaryContactFirstName.trim(), t('MODAL.ERRORS.FIRST_NAME_REQUIRED'));
     }
-
     if (field === 'secondaryContactLastName') {
-      const hasAnySecondaryContact = 
-        formData.secondaryContactFirstName.trim() || 
-        formData.secondaryContactLastName.trim() || 
-        formData.secondaryContactEmail.trim();
-
-      if (hasAnySecondaryContact && !formData.secondaryContactLastName.trim()) {
-        newErrors.secondaryContactLastName = t('MODAL.ERRORS.LAST_NAME_REQUIRED');
-      } else {
-        delete newErrors.secondaryContactLastName;
-      }
+      check('secondaryContactLastName', !hasAnySecondary || !!formData.secondaryContactLastName.trim(), t('MODAL.ERRORS.LAST_NAME_REQUIRED'));
     }
-
     if (field === 'secondaryContactEmail') {
-      const hasAnySecondaryContact = 
-        formData.secondaryContactFirstName.trim() || 
-        formData.secondaryContactLastName.trim() || 
-        formData.secondaryContactEmail.trim();
-
-      if (hasAnySecondaryContact) {
-        if (!formData.secondaryContactEmail.trim()) {
-          newErrors.secondaryContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
-        } else if (!isValidEmail(formData.secondaryContactEmail)) {
-          newErrors.secondaryContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
-        } else {
-          delete newErrors.secondaryContactEmail;
-        }
+      if (hasAnySecondary) {
+        if (!formData.secondaryContactEmail.trim()) newErrors.secondaryContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
+        else if (!isValidEmail(formData.secondaryContactEmail)) newErrors.secondaryContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
+        else delete newErrors.secondaryContactEmail;
       } else {
         delete newErrors.secondaryContactEmail;
       }
@@ -321,129 +214,85 @@ export function useServiceForm(serviceId?: string) {
     setErrors(newErrors);
   };
 
+  // Step 1: default-language name + description required; url optional but valid.
   const validateStep1 = (): boolean => {
     const newErrors: Record<string, string> = {};
-
-    if (!formData.nameEn.trim()) {
-      newErrors.nameEn = t('MODAL.ERRORS.NAME_REQUIRED');
-    }
-
-    if (!formData.nameFr.trim()) {
-      newErrors.nameFr = t('MODAL.ERRORS.NAME_REQUIRED');
-    }
-
-    if (!formData.descriptionEn.trim()) {
-      newErrors.descriptionEn = t('MODAL.ERRORS.DESCRIPTION_REQUIRED');
-    }
-
-    if (!formData.descriptionFr.trim()) {
-      newErrors.descriptionFr = t('MODAL.ERRORS.DESCRIPTION_REQUIRED');
-    }
-
-    if (formData.url.trim() && !isValidUrl(formData.url)) {
-      newErrors.url = t('MODAL.ERRORS.URL_INVALID');
-    }
-
+    const def = getField(defaultLanguage);
+    if (!def.name.trim()) newErrors[`${defaultLanguage}.name`] = t('MODAL.ERRORS.NAME_REQUIRED');
+    if (!def.description.trim()) newErrors[`${defaultLanguage}.description`] = t('MODAL.ERRORS.DESCRIPTION_REQUIRED');
+    if (formData.url.trim() && !isValidUrl(formData.url)) newErrors.url = t('MODAL.ERRORS.URL_INVALID');
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const validateStep2 = (): boolean => {
-    const newErrors: Record<string, string> = {};
-    const hasActiveCategories = formData.gapCoverages.length > 0;
+  // Step 2 (translations) is optional — always valid.
+  const validateStep2 = (): boolean => true;
 
-    if (!hasActiveCategories) {
-      newErrors.categories = t('MODAL.ERRORS.NO_CATEGORIES');
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
+  // Step 3: at least one category.
   const validateStep3 = (): boolean => {
     const newErrors: Record<string, string> = {};
-
-    // Main Contact is required
-    if (!formData.mainContactFirstName.trim()) {
-      newErrors.mainContactFirstName = t('MODAL.ERRORS.FIRST_NAME_REQUIRED');
-    }
-    if (!formData.mainContactLastName.trim()) {
-      newErrors.mainContactLastName = t('MODAL.ERRORS.LAST_NAME_REQUIRED');
-    }
-    if (!formData.mainContactEmail.trim()) {
-      newErrors.mainContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
-    } else if (!isValidEmail(formData.mainContactEmail)) {
-      newErrors.mainContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
-    }
-
-    // Secondary Contact is optional BUT if any field is filled, all must be filled
-    const hasAnySecondaryContact = 
-      formData.secondaryContactFirstName.trim() || 
-      formData.secondaryContactLastName.trim() || 
-      formData.secondaryContactEmail.trim();
-
-    if (hasAnySecondaryContact) {
-      // If user started filling secondary contact, all fields are required
-      if (!formData.secondaryContactFirstName.trim()) {
-        newErrors.secondaryContactFirstName = t('MODAL.ERRORS.FIRST_NAME_REQUIRED');
-      }
-      if (!formData.secondaryContactLastName.trim()) {
-        newErrors.secondaryContactLastName = t('MODAL.ERRORS.LAST_NAME_REQUIRED');
-      }
-      if (!formData.secondaryContactEmail.trim()) {
-        newErrors.secondaryContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
-      } else if (!isValidEmail(formData.secondaryContactEmail)) {
-        newErrors.secondaryContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
-      }
-    }
-
+    if (formData.gapCoverages.length === 0) newErrors.categories = t('MODAL.ERRORS.NO_CATEGORIES');
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const isValidEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  // Step 4: contacts.
+  const validateStep4 = (): boolean => {
+    const newErrors: Record<string, string> = {};
+    if (!formData.mainContactFirstName.trim()) newErrors.mainContactFirstName = t('MODAL.ERRORS.FIRST_NAME_REQUIRED');
+    if (!formData.mainContactLastName.trim()) newErrors.mainContactLastName = t('MODAL.ERRORS.LAST_NAME_REQUIRED');
+    if (!formData.mainContactEmail.trim()) newErrors.mainContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
+    else if (!isValidEmail(formData.mainContactEmail)) newErrors.mainContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
+
+    const hasAnySecondary =
+      formData.secondaryContactFirstName.trim() ||
+      formData.secondaryContactLastName.trim() ||
+      formData.secondaryContactEmail.trim();
+    if (hasAnySecondary) {
+      if (!formData.secondaryContactFirstName.trim()) newErrors.secondaryContactFirstName = t('MODAL.ERRORS.FIRST_NAME_REQUIRED');
+      if (!formData.secondaryContactLastName.trim()) newErrors.secondaryContactLastName = t('MODAL.ERRORS.LAST_NAME_REQUIRED');
+      if (!formData.secondaryContactEmail.trim()) newErrors.secondaryContactEmail = t('MODAL.ERRORS.EMAIL_REQUIRED');
+      else if (!isValidEmail(formData.secondaryContactEmail)) newErrors.secondaryContactEmail = t('MODAL.ERRORS.INVALID_EMAIL');
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const canProceedToNextStep = (): boolean => {
     switch (currentStep) {
-      case 1:
+      case 1: {
+        const def = getField(defaultLanguage);
         return !!(
-          formData.nameEn.trim() &&
-          formData.nameFr.trim() &&
-          formData.descriptionEn.trim() &&
-          formData.descriptionFr.trim() &&
+          def.name.trim() &&
+          def.description.trim() &&
           (!formData.url.trim() || isValidUrl(formData.url))
         );
+      }
       case 2:
+        return true;
+      case 3:
         return formData.gapCoverages.length > 0;
-      case 3: {
-        // Main Contact is required
-        const mainContactValid = !!(
+      case 4: {
+        const mainValid = !!(
           formData.mainContactFirstName.trim() &&
           formData.mainContactLastName.trim() &&
           formData.mainContactEmail.trim() &&
           isValidEmail(formData.mainContactEmail)
         );
-
-        // Secondary Contact: if any field is filled, all must be filled
-        const hasAnySecondaryContact = 
-          formData.secondaryContactFirstName.trim() || 
-          formData.secondaryContactLastName.trim() || 
+        const hasAnySecondary =
+          formData.secondaryContactFirstName.trim() ||
+          formData.secondaryContactLastName.trim() ||
           formData.secondaryContactEmail.trim();
-
-        let secondaryContactValid = true;
-        if (hasAnySecondaryContact) {
-          secondaryContactValid = !!(
+        let secondaryValid = true;
+        if (hasAnySecondary) {
+          secondaryValid = !!(
             formData.secondaryContactFirstName.trim() &&
             formData.secondaryContactLastName.trim() &&
             formData.secondaryContactEmail.trim() &&
             isValidEmail(formData.secondaryContactEmail)
           );
         }
-
-        return mainContactValid && secondaryContactValid;
+        return mainValid && secondaryValid;
       }
       default:
         return false;
@@ -452,44 +301,38 @@ export function useServiceForm(serviceId?: string) {
 
   const handleNext = () => {
     let isValid = false;
-
     switch (currentStep) {
-      case 1:
-        isValid = validateStep1();
-        break;
-      case 2:
-        isValid = validateStep2();
-        break;
-      case 3:
-        isValid = validateStep3();
-        break;
-      default:
-        isValid = true;
+      case 1: isValid = validateStep1(); break;
+      case 2: isValid = validateStep2(); break;
+      case 3: isValid = validateStep3(); break;
+      default: isValid = true;
     }
-
-    if (isValid) {
-      setCurrentStep((prev) => Math.min(prev + 1, 3));
-    }
+    if (isValid) setCurrentStep((prev) => Math.min(prev + 1, TOTAL_STEPS));
   };
 
-  const handleBack = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 1));
-  };
+  const handleBack = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
 
   const handleSubmit = async (): Promise<string | boolean> => {
-    if (!validateStep3()) {
-      return false;
-    }
+    if (!validateStep4()) return false;
 
     setIsSubmitting(true);
     try {
+      const def = getField(defaultLanguage);
+      const en = formData.translations['en'];
+      const translations = Object.entries(formData.translations)
+        .filter(([, v]) => v.name?.trim() || v.description?.trim())
+        .map(([languageCode, v]) => ({
+          languageCode,
+          name: v.name,
+          description: v.description,
+        }));
+
       const payload: CreateServicePayload = {
-        name: formData.nameEn, // Use English as default for backend compatibility
-        nameEn: formData.nameEn,
-        nameFr: formData.nameFr,
-        description: formData.descriptionEn, // Use English as default for backend compatibility
-        descriptionEn: formData.descriptionEn,
-        descriptionFr: formData.descriptionFr,
+        name: def.name,
+        // Legacy English columns: prefer an explicit en translation, else the default.
+        nameEn: en?.name ?? def.name,
+        description: def.description,
+        descriptionEn: en?.description ?? def.description,
         url: formData.url,
         mainContactFirstName: formData.mainContactFirstName,
         mainContactLastName: formData.mainContactLastName,
@@ -498,34 +341,25 @@ export function useServiceForm(serviceId?: string) {
         secondaryContactLastName: formData.secondaryContactLastName,
         secondaryContactEmail: formData.secondaryContactEmail,
         gapCoverages: formData.gapCoverages,
+        translations,
       };
 
       const url = serviceId ? `/api/services/${serviceId}` : '/api/services';
       const method = serviceId ? 'PATCH' : 'POST';
-
       const response = await fetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to save service');
-      }
-
-      // Return the service ID if it was created (not updated), or true if updated
+      if (!response.ok) throw new Error(data.message || 'Failed to save service');
       return serviceId ? true : (data.id || null);
     } catch (error) {
       console.error('Error saving service:', error);
-      const errorMessage = serviceId
+      const fallback = serviceId
         ? t('MODAL.ERRORS.UPDATE_FAILED')
         : t('MODAL.ERRORS.CREATE_FAILED');
-      const errorMsg = error instanceof Error ? error.message : errorMessage;
-      setErrors({ submit: errorMsg });
+      setErrors({ submit: error instanceof Error ? error.message : fallback });
       return false;
     } finally {
       setIsSubmitting(false);
@@ -535,75 +369,34 @@ export function useServiceForm(serviceId?: string) {
   const reset = useCallback(() => {
     const initialData = getInitialFormData();
     setFormData(initialData);
-    const snapshotData = {
-      ...initialData,
-      activeCategories: Array.from(initialData.activeCategories),
-    };
-    initialFormDataSnapshot = JSON.parse(JSON.stringify(snapshotData));
+    initialFormDataSnapshot = snapshot(initialData);
     setCurrentStep(1);
     setErrors({});
     setIsSubmitting(false);
   }, []);
 
+  const markLoaded = useCallback((data: ServiceFormData) => {
+    initialFormDataSnapshot = snapshot(data);
+  }, []);
+
   const hasUnsavedChanges = useCallback((): boolean => {
     if (!initialFormDataSnapshot) {
-      return !!(
-        formData.nameEn.trim() ||
-        formData.nameFr.trim() ||
-        formData.descriptionEn.trim() ||
-        formData.descriptionFr.trim() ||
-        formData.url.trim() ||
-        formData.gapCoverages.length > 0 ||
-        formData.mainContactFirstName.trim() ||
-        formData.mainContactLastName.trim() ||
-        formData.mainContactEmail.trim() ||
-        formData.secondaryContactFirstName.trim() ||
-        formData.secondaryContactLastName.trim() ||
-        formData.secondaryContactEmail.trim()
-      );
+      return snapshot(formData) !== snapshot(getInitialFormData());
     }
-
-    const currentData = {
-      ...formData,
-      activeCategories: Array.from(formData.activeCategories).sort(),
-      gapCoverages: formData.gapCoverages.sort((a, b) => {
-        if (a.scaleType !== b.scaleType) return a.scaleType.localeCompare(b.scaleType);
-        if (a.questionId !== b.questionId) return a.questionId.localeCompare(b.questionId);
-        return a.level - b.level;
-      }),
-    };
-    const initialData = {
-      ...initialFormDataSnapshot,
-      activeCategories: initialFormDataSnapshot.activeCategories.sort(),
-      gapCoverages: initialFormDataSnapshot.gapCoverages.sort((a, b) => {
-        if (a.scaleType !== b.scaleType) return a.scaleType.localeCompare(b.scaleType);
-        if (a.questionId !== b.questionId) return a.questionId.localeCompare(b.questionId);
-        return a.level - b.level;
-      }),
-    };
-    
-    const current = JSON.stringify(currentData);
-    const initial = JSON.stringify(initialData);
-    return current !== initial;
+    return snapshot(formData) !== initialFormDataSnapshot;
   }, [formData]);
-
-  useEffect(() => {
-    if (!serviceId) {
-      const initialData = getInitialFormData();
-      const snapshotData = {
-        ...initialData,
-        activeCategories: Array.from(initialData.activeCategories),
-      };
-      initialFormDataSnapshot = JSON.parse(JSON.stringify(snapshotData));
-    }
-  }, [serviceId]);
 
   return {
     formData,
     currentStep,
     isSubmitting,
     errors,
+    defaultLanguage,
+    secondaryLanguages,
+    totalSteps: TOTAL_STEPS,
+    getField,
     updateField,
+    updateTranslation,
     validateField,
     clearFieldError,
     handleNext,
@@ -611,9 +404,8 @@ export function useServiceForm(serviceId?: string) {
     handleSubmit,
     canProceedToNextStep,
     reset,
+    markLoaded,
     hasUnsavedChanges,
-    loadServiceData,
     setFormData,
   };
 }
-

@@ -11,6 +11,51 @@
     "SL": "Slovenščina",
     "EL": "Grščina"
   },
+  "LANGUAGES": {
+    "MENU_LABEL": "Jeziki",
+    "SECTION_TITLE": "Razpoložljivi jeziki",
+    "SECTION_DESCRIPTION": "Aktivirajte jezike, v katerih delate. Jezik postane na voljo uporabnikom šele, ko so prevedene vse storitve.",
+    "STATUS_LIVE": "V živo",
+    "STATUS_DRAFT": "Osnutek",
+    "REVIEW": "Preglej",
+    "TRANSLATE": "Prevedi",
+    "TURN_OFF_DIALOG": {
+      "TITLE": "Izklopiti {{language}}?",
+      "DESCRIPTION": "Uporabniki ne bodo več mogli izbrati jezika {{language}}. Vaši prevodi so ohranjeni – znova ga vklopite in takoj bo spet na voljo.",
+      "CONFIRM": "Da, izklopi",
+      "CANCEL": "Prekliči"
+    },
+    "TOASTS": {
+      "ACTIVATED": {
+        "TITLE": "{{language}} aktiviran",
+        "DESCRIPTION": "Jezik je zdaj na voljo tam, kjer so prevodi popolni."
+      },
+      "DEACTIVATED": {
+        "TITLE": "{{language}} izklopljen",
+        "DESCRIPTION": "Uporabniki tega jezika ne morejo več izbrati. Vaši prevodi so ohranjeni."
+      },
+      "ERROR": {
+        "TITLE": "Nekaj je šlo narobe"
+      }
+    },
+    "MODAL": {
+      "TITLE": "Upravljanje prevodov",
+      "LANGUAGES_COLUMN": "Jeziki",
+      "STATUS_COLUMN": "Stanje",
+      "MISSING": "Manjka",
+      "DONE": "Končano",
+      "SERVICE_NAME_PLACEHOLDER": "Ime storitve",
+      "DESCRIPTION_PLACEHOLDER": "Kratek opis",
+      "PROGRESS": "{{done}} od {{total}}",
+      "SAVE": "Shrani",
+      "CANCEL": "Prekliči",
+      "CLOSE": "Zapri"
+    },
+    "DEFAULT_LANGUAGE": {
+      "LABEL": "Privzeti jezik",
+      "DESCRIPTION": "To je privzeti jezik, ki se uporablja v nadzorni plošči in orodju."
+    }
+  },
   "COMPLETE_REGISTRATION": {
     "PAGE": {
       "TITLE": "Nastavite geslo",
@@ -600,7 +645,8 @@
         "MAIN_CONTACT": "Glavni kontakt",
         "SECONDARY_CONTACT": "Sekundarni kontakt",
         "ACTIVE": "Aktivno",
-        "ACTIONS": "Dejanja"
+        "ACTIONS": "Dejanja",
+        "TRANSLATION": "Prevod"
       },
       "ACTIVE_TOOLTIP": "Neaktivne storitve se uporabnikom ob koncu ocene ne priporočajo.",
       "LOADING": "Nalaganje storitev ...",
@@ -615,6 +661,11 @@
       "FOOTER": {
         "SHOWING": "Prikazanih {{count}} vrstic",
         "ROWS_PER_PAGE": "Število vrstic na stran"
+      },
+      "TRANSLATION_TOOLTIP": "Ali je ta storitev prevedena v vse omogočene jezike.",
+      "TRANSLATION_STATUS": {
+        "DONE": "Končano",
+        "MISSING": "Manjka"
       }
     },
     "MODAL": {
@@ -624,7 +675,8 @@
       "STEPS": {
         "SERVICE_INFO": "Informacije o storitvi",
         "CATEGORY_SCALE": "Kategorije in vrzeli",
-        "CONTACTS": "Kontaktni podatki"
+        "CONTACTS": "Kontaktni podatki",
+        "TRANSLATE": "Prevedi"
       },
       "STEP_1": {
         "NAME": {
@@ -649,7 +701,11 @@
         "URL": {
           "LABEL": "URL",
           "PLACEHOLDER": "URL"
-        }
+        },
+        "NAME_LABEL": "Ime storitve",
+        "DESCRIPTION_LABEL": "Kratek opis",
+        "NAME_PLACEHOLDER": "npr. Storitev pametnega spremljanja konstrukcij",
+        "DESCRIPTION_PLACEHOLDER": "npr. 24-urno spremljanje konstrukcij s senzorji IoT in napovedno analitiko za odkrivanje nepravilnosti in preprečevanje okvar v stavbah v realnem času."
       },
       "STEP_2": {
         "TITLE": "Izberite kategorije in stopnje zadovoljstva",
@@ -665,7 +721,10 @@
           "TRL": "Stopnja tehnološke pripravljenosti",
           "MkRL": "Stopnja tržne pripravljenosti",
           "MfRL": "Stopnja proizvodne pripravljenosti"
-        }
+        },
+        "NONE": "Noben drug jezik ni omogočen. Omogočite jezike v nastavitvah za dodajanje prevodov.",
+        "COPY": "Kopiraj",
+        "COPIED": "Kopirano"
       },
       "STEP_3": {
         "MAIN_CONTACT": {
@@ -801,7 +860,8 @@
       "PHONE_REQUIRED": "Telefonska številka je obvezna.",
       "ORGANIZATION_KEY_MISSING": "Manjka ključ organizacije.",
       "SEND_FAILED": "Zahteve za stik ni bilo mogoče poslati."
-    }
+    },
+    "MANAGE_TRANSLATIONS_BUTTON": "Upravljanje prevodov"
   },
   "ORGANIZATIONS": {
     "PAGE_TITLE": "Organizacije",
@@ -889,6 +949,10 @@
           "LABEL": "Potrdite e-pošto organizacije",
           "PLACEHOLDER": "Potrdite e-pošto organizacije",
           "REQUIRED": "*"
+        },
+        "DEFAULT_LANGUAGE": {
+          "LABEL": "Privzeti jezik",
+          "DESCRIPTION": "To je privzeti jezik za nadzorno ploščo in orodje. Kot privzete lahko nastavite le jezike, kjer so prevedene vse storitve."
         }
       },
       "ERRORS": {

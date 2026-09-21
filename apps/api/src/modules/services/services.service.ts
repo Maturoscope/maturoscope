@@ -8,7 +8,12 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Service, ServiceGapCoverage } from './entities';
+import { Service, ServiceGapCoverage, ServiceTranslation } from './entities';
+import {
+  normalizeLanguage,
+  isSupportedLanguage,
+  LanguageCode,
+} from '../../common/i18n/languages';
 import {
   CreateServiceDto,
   UpdateServiceDto,
@@ -34,6 +39,8 @@ export class ServicesService {
     private readonly serviceRepository: Repository<Service>,
     @InjectRepository(ServiceGapCoverage)
     private readonly coverageRepository: Repository<ServiceGapCoverage>,
+    @InjectRepository(ServiceTranslation)
+    private readonly translationRepository: Repository<ServiceTranslation>,
     @Inject(forwardRef(() => ReadinessAssessmentService))
     readinessAssessmentService: ReadinessAssessmentService,
     private readonly serviceContactMailService: ServiceContactMailService,
@@ -95,6 +102,9 @@ export class ServicesService {
 
     const savedService = await this.serviceRepository.save(service);
 
+    // Persist per-language translations (en/fr mirror the legacy columns).
+    await this.syncServiceTranslations(savedService, createServiceDto.translations);
+
     // Create gap coverages
     const coverages = createServiceDto.gapCoverages.map((coverage) =>
       this.coverageRepository.create({
@@ -132,7 +142,7 @@ export class ServicesService {
   ): Promise<ServiceResponseDto> {
     const service = await this.serviceRepository.findOne({
       where: { id, organizationId },
-      relations: { gapCoverages: true },
+      relations: { gapCoverages: true, translations: true },
     });
 
     if (!service) {
@@ -213,6 +223,9 @@ export class ServicesService {
 
     const updatedService = await this.serviceRepository.save(service);
 
+    // Keep per-language translations in sync (en/fr mirror the legacy columns).
+    await this.syncServiceTranslations(updatedService, updateServiceDto.translations);
+
     // Update gap coverages if provided
     if (updateServiceDto.gapCoverages) {
       if (updateServiceDto.gapCoverages.length === 0) {
@@ -278,7 +291,7 @@ export class ServicesService {
           questionId: gap.questionId,
           level: gap.level,
         },
-        relations: { service: true },
+        relations: { service: { translations: true } },
       });
 
       // Filter by organization + only active services (inactive services must
@@ -318,6 +331,11 @@ export class ServicesService {
       description: service.description,
       descriptionEn: service.descriptionEn,
       descriptionFr: service.descriptionFr,
+      translations: (service.translations ?? []).map((t) => ({
+        languageCode: t.languageCode,
+        name: t.name,
+        description: t.description,
+      })),
       url: service.url,
       mainContactFirstName: service.mainContactFirstName,
       mainContactLastName: service.mainContactLastName,
@@ -380,19 +398,89 @@ export class ServicesService {
   }
 
   /**
-   * Map entity to recommended service DTO (for readiness-assessment with I18nText structure)
+   * Keep service_translations in sync after a create/update. The en/fr rows
+   * always mirror the legacy columns; secondary languages come from the optional
+   * translations[] payload (the wizard's Translate step). Never deletes rows, so
+   * turning a language off elsewhere keeps its text.
+   */
+  private async syncServiceTranslations(
+    service: Service,
+    translationsInput?: Array<{
+      languageCode: string;
+      name?: string;
+      description?: string;
+    }>,
+  ): Promise<void> {
+    const entries = new Map<
+      LanguageCode,
+      { name?: string; description?: string }
+    >();
+
+    if (service.nameEn != null || service.descriptionEn != null) {
+      entries.set('en', {
+        name: service.nameEn,
+        description: service.descriptionEn,
+      });
+    }
+    if (service.nameFr != null || service.descriptionFr != null) {
+      entries.set('fr', {
+        name: service.nameFr,
+        description: service.descriptionFr,
+      });
+    }
+    for (const t of translationsInput ?? []) {
+      if (!isSupportedLanguage(t.languageCode)) continue;
+      entries.set(normalizeLanguage(t.languageCode), {
+        name: t.name,
+        description: t.description,
+      });
+    }
+
+    for (const [code, value] of entries) {
+      const existing = await this.translationRepository.findOne({
+        where: { serviceId: service.id, languageCode: code },
+      });
+      if (existing) {
+        if (value.name !== undefined) existing.name = value.name;
+        if (value.description !== undefined) {
+          existing.description = value.description;
+        }
+        await this.translationRepository.save(existing);
+      } else {
+        await this.translationRepository.save(
+          this.translationRepository.create({
+            serviceId: service.id,
+            languageCode: code,
+            name: value.name,
+            description: value.description,
+          }),
+        );
+      }
+    }
+  }
+
+  /**
+   * Map entity to recommended service DTO (for readiness-assessment with I18nText structure).
+   * Reads every available language from service_translations, falling back to the
+   * legacy en/fr columns so behaviour is preserved even before a full backfill.
    */
   private mapToReadinessRecommendedServiceDto(service: Service): ReadinessRecommendedServiceDto {
+    const name: Record<string, string> = {};
+    const description: Record<string, string> = {};
+    for (const t of service.translations ?? []) {
+      if (t.name) name[t.languageCode] = t.name;
+      if (t.description) description[t.languageCode] = t.description;
+    }
+    // Legacy fallback ensures en/fr are always present.
+    if (!name.en && service.nameEn) name.en = service.nameEn;
+    if (!name.fr && service.nameFr) name.fr = service.nameFr;
+    if (!description.en && service.descriptionEn) description.en = service.descriptionEn;
+    if (!description.fr && service.descriptionFr) description.fr = service.descriptionFr;
+
     return {
       id: service.id,
-      name: {
-        en: service.nameEn,
-        fr: service.nameFr,
-      } as I18nText,
-      description: {
-        en: service.descriptionEn,
-        fr: service.descriptionFr,
-      } as I18nText,
+      name: name as unknown as I18nText,
+      description: description as unknown as I18nText,
       url: service.url,
       mainContact: {
         firstName: service.mainContactFirstName,

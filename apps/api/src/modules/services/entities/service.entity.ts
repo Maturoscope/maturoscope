@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Organization } from '../../organizations/entities/organization.entity';
 import { ServiceGapCoverage } from './service-gap-coverage.entity';
+import { ServiceTranslation } from './service-translation.entity';
 
 @Entity('services')
 export class Service {
@@ -72,6 +73,14 @@ export class Service {
     cascade: true,
   })
   gapCoverages: ServiceGapCoverage[];
+
+  // Per-language title/description (en, fr, es, it, sl, el). Additive: the
+  // legacy nameEn/nameFr/... columns above remain the source of truth until a
+  // later phase migrates reads here.
+  @OneToMany(() => ServiceTranslation, (translation) => translation.service, {
+    cascade: true,
+  })
+  translations: ServiceTranslation[];
 
   @CreateDateColumn()
   createdAt: Date;

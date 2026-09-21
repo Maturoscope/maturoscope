@@ -9,149 +9,87 @@ import { ServiceFormData } from "../hooks/useServiceForm";
 
 interface Step1ServiceInfoProps {
   formData: ServiceFormData;
+  defaultLanguage: string;
   errors: Record<string, string>;
+  onUpdateTranslation: (lang: string, field: "name" | "description", value: string) => void;
   onUpdateField: (field: keyof ServiceFormData, value: string) => void;
   onValidateField: (field: keyof ServiceFormData) => void;
-  onClearFieldError: (field: keyof ServiceFormData) => void;
+  onClearFieldError: (field: string) => void;
   viewOnly?: boolean;
 }
 
+const DESCRIPTION_LIMIT = 500;
+
 export function Step1ServiceInfo({
   formData,
+  defaultLanguage,
   errors,
+  onUpdateTranslation,
   onUpdateField,
   onValidateField,
   onClearFieldError,
   viewOnly = false,
 }: Step1ServiceInfoProps) {
   const { t } = useTranslation("SERVICES");
+  const code = defaultLanguage.toUpperCase();
+  const field = formData.translations[defaultLanguage] ?? { name: "", description: "" };
+  const nameError = errors[`${defaultLanguage}.name`];
+  const descriptionError = errors[`${defaultLanguage}.description`];
 
   return (
     <div className="space-y-4">
+      {/* Service Name (default language) */}
       <div className="space-y-2">
-        <Label htmlFor="service-name-en">
-          {t("MODAL.STEP_1.NAME_EN.LABEL")}
-          <span className="text-black ml-1">
-            {t("MODAL.STEP_1.NAME.REQUIRED")}
-          </span>
+        <Label htmlFor="service-name">
+          {t("MODAL.STEP_1.NAME_LABEL")} ({code})
+          <span className="text-black ml-1">{t("MODAL.STEP_1.NAME.REQUIRED")}</span>
         </Label>
         <Input
-          id="service-name-en"
-          value={formData.nameEn}
-          onChange={(e) => onUpdateField("nameEn", e.target.value)}
-          onFocus={() => onClearFieldError("nameEn")}
-          onBlur={() => onValidateField("nameEn")}
-          placeholder={t("MODAL.STEP_1.NAME_EN.PLACEHOLDER")}
-          className={errors.nameEn ? "border-red-500" : ""}
+          id="service-name"
+          value={field.name}
+          onChange={(e) => onUpdateTranslation(defaultLanguage, "name", e.target.value)}
+          onFocus={() => onClearFieldError(`${defaultLanguage}.name`)}
+          placeholder={t("MODAL.STEP_1.NAME_PLACEHOLDER")}
+          className={nameError ? "border-red-500" : ""}
           disabled={viewOnly}
           readOnly={viewOnly}
         />
-        {errors.nameEn && (
-          <p className="text-sm text-red-500">{errors.nameEn}</p>
-        )}
+        {nameError && <p className="text-sm text-red-500">{nameError}</p>}
       </div>
 
-      {/* Service Name (FR) */}
+      {/* Brief Description (default language) */}
       <div className="space-y-2">
-        <Label htmlFor="service-name-fr">
-          {t("MODAL.STEP_1.NAME_FR.LABEL")}
-          <span className="text-black ml-1">
-            {t("MODAL.STEP_1.NAME.REQUIRED")}
-          </span>
-        </Label>
-        <Input
-          id="service-name-fr"
-          value={formData.nameFr}
-          onChange={(e) => onUpdateField("nameFr", e.target.value)}
-          onFocus={() => onClearFieldError("nameFr")}
-          onBlur={() => onValidateField("nameFr")}
-          placeholder={t("MODAL.STEP_1.NAME_FR.PLACEHOLDER")}
-          className={errors.nameFr ? "border-red-500" : ""}
-          disabled={viewOnly}
-          readOnly={viewOnly}
-        />
-        {errors.nameFr && (
-          <p className="text-sm text-red-500">{errors.nameFr}</p>
-        )}
-      </div>
-
-      {/* Brief Description (EN) */}
-      <div className="space-y-2">
-        <Label htmlFor="service-description-en">
-          {t("MODAL.STEP_1.DESCRIPTION_EN.LABEL")}
-          <span className="text-black ml-1">
-            {t("MODAL.STEP_1.NAME.REQUIRED")}
-          </span>
+        <Label htmlFor="service-description">
+          {t("MODAL.STEP_1.DESCRIPTION_LABEL")} ({code})
+          <span className="text-black ml-1">{t("MODAL.STEP_1.NAME.REQUIRED")}</span>
         </Label>
         <Textarea
-          id="service-description-en"
-          value={formData.descriptionEn}
+          id="service-description"
+          value={field.description}
           onChange={(e) => {
-            const value = e.target.value;
-            if (value.length <= 500) {
-              onUpdateField("descriptionEn", value);
+            if (e.target.value.length <= DESCRIPTION_LIMIT) {
+              onUpdateTranslation(defaultLanguage, "description", e.target.value);
             }
           }}
-          onFocus={() => onClearFieldError("descriptionEn")}
-          onBlur={() => onValidateField("descriptionEn")}
-          placeholder={t("MODAL.STEP_1.DESCRIPTION_EN.PLACEHOLDER")}
+          onFocus={() => onClearFieldError(`${defaultLanguage}.description`)}
+          placeholder={t("MODAL.STEP_1.DESCRIPTION_PLACEHOLDER")}
           rows={6}
           disabled={viewOnly}
           readOnly={viewOnly}
-          maxLength={500}
-          className={`resize-none overflow-y-auto ${errors.descriptionEn ? "border-red-500" : ""}`}
+          maxLength={DESCRIPTION_LIMIT}
+          className={`resize-none overflow-y-auto ${descriptionError ? "border-red-500" : ""}`}
         />
         <div className="flex justify-between items-center">
-          {errors.descriptionEn && (
-            <p className="text-sm text-red-500">{errors.descriptionEn}</p>
-          )}
+          {descriptionError && <p className="text-sm text-red-500">{descriptionError}</p>}
           <p className="text-sm text-gray-500 ml-auto">
-            {formData.descriptionEn.length}/500
-          </p>
-        </div>
-      </div>
-
-      {/* Brief Description (FR) */}
-      <div className="space-y-2">
-        <Label htmlFor="service-description-fr">
-          {t("MODAL.STEP_1.DESCRIPTION_FR.LABEL")}
-          <span className="text-black ml-1">
-            {t("MODAL.STEP_1.NAME.REQUIRED")}
-          </span>
-        </Label>
-        <Textarea
-          id="service-description-fr"
-          value={formData.descriptionFr}
-          onChange={(e) => {
-            const value = e.target.value;
-            if (value.length <= 500) {
-              onUpdateField("descriptionFr", value);
-            }
-          }}
-          onFocus={() => onClearFieldError("descriptionFr")}
-          onBlur={() => onValidateField("descriptionFr")}
-          placeholder={t("MODAL.STEP_1.DESCRIPTION_FR.PLACEHOLDER")}
-          rows={6}
-          disabled={viewOnly}
-          readOnly={viewOnly}
-          maxLength={500}
-          className={`resize-none overflow-y-auto ${errors.descriptionFr ? "border-red-500" : ""}`}
-        />
-        <div className="flex justify-between items-center">
-          {errors.descriptionFr && (
-            <p className="text-sm text-red-500">{errors.descriptionFr}</p>
-          )}
-          <p className="text-sm text-gray-500 ml-auto">
-            {formData.descriptionFr.length}/500
+            {field.description.length}/{DESCRIPTION_LIMIT}
           </p>
         </div>
       </div>
 
       {/* URL */}
       <div className="space-y-2">
-        <Label htmlFor="service-url">
-          {t("MODAL.STEP_1.URL.LABEL")}
-        </Label>
+        <Label htmlFor="service-url">{t("MODAL.STEP_1.URL.LABEL")}</Label>
         <Input
           id="service-url"
           type="text"
@@ -164,11 +102,8 @@ export function Step1ServiceInfo({
           disabled={viewOnly}
           readOnly={viewOnly}
         />
-        {errors.url && (
-          <p className="text-sm text-red-500">{errors.url}</p>
-        )}
+        {errors.url && <p className="text-sm text-red-500">{errors.url}</p>}
       </div>
     </div>
   );
 }
-

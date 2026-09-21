@@ -23,6 +23,7 @@ import {
   useToolSettingsActions,
 } from "@/components/toolSettings";
 import { Button } from "@/components/ui/button";
+import { LanguagesSection } from "@/components/languages/LanguagesSection";
 import { OrganizationService } from "@/services/organization.service";
 import { Input } from "@/components/ui/input";
 import { useImageVersion } from "@/hooks/useImageVersion";
@@ -37,6 +38,7 @@ import { UI_CONSTANTS } from "@/constants/imageVersion";
 export default function SettingsPage() {
   const { t } = useTranslation("TOOL_SETTINGS");
   const { t: tp } = useTranslation("PROFILE_SETTINGS");
+  const { t: tLang } = useTranslation("LANGUAGES");
   const { loading, user, refetch: refetchUser } = useUserContext();
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   
@@ -104,10 +106,12 @@ export default function SettingsPage() {
     if (settingsState.activeSection) {
       breadcrumbs.push({ label: t("TITLE") });
       
-      const sectionLabel = settingsState.activeSection === 'profile' 
+      const sectionLabel = settingsState.activeSection === 'profile'
         ? tp("TITLE")
-        : t("SECTIONS.CUSTOMIZATION");
-      
+        : settingsState.activeSection === 'languages'
+          ? tLang("MENU_LABEL")
+          : t("SECTIONS.CUSTOMIZATION");
+
       breadcrumbs.push({ label: sectionLabel });
     } else {
       breadcrumbs.push({ label: t("TITLE") });
@@ -385,6 +389,7 @@ export default function SettingsPage() {
 
   const sidebarOptions = [
     { key: "profile", label: tp("TITLE"), active: true },
+    { key: "languages", label: tLang("MENU_LABEL"), active: true },
     { key: "customization", label: t("SECTIONS.CUSTOMIZATION"), active: true },
   ];
 
@@ -611,6 +616,8 @@ export default function SettingsPage() {
             onSaveAll={settingsActions.handleSaveAll}
           />
         );
+      case "languages":
+        return <LanguagesSection />;
       default:
         return null;
     }

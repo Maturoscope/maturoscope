@@ -11,6 +11,51 @@
     "SL": "Esloveno",
     "EL": "Griego"
   },
+  "LANGUAGES": {
+    "MENU_LABEL": "Idiomas",
+    "SECTION_TITLE": "Idiomas disponibles",
+    "SECTION_DESCRIPTION": "Activa los idiomas con los que trabajas. Un idioma queda disponible para los usuarios solo cuando todos los servicios están traducidos.",
+    "STATUS_LIVE": "En vivo",
+    "STATUS_DRAFT": "Borrador",
+    "REVIEW": "Revisar",
+    "TRANSLATE": "Traducir",
+    "TURN_OFF_DIALOG": {
+      "TITLE": "¿Desactivar {{language}}?",
+      "DESCRIPTION": "Los usuarios ya no podrán elegir {{language}}. Tus traducciones se conservan: vuelve a activarlo y estará disponible de inmediato.",
+      "CONFIRM": "Sí, desactivar",
+      "CANCEL": "Cancelar"
+    },
+    "TOASTS": {
+      "ACTIVATED": {
+        "TITLE": "{{language}} activado",
+        "DESCRIPTION": "El idioma ya está disponible donde sus traducciones están completas."
+      },
+      "DEACTIVATED": {
+        "TITLE": "{{language}} desactivado",
+        "DESCRIPTION": "Los usuarios ya no pueden elegir este idioma. Tus traducciones se conservan."
+      },
+      "ERROR": {
+        "TITLE": "Algo salió mal"
+      }
+    },
+    "MODAL": {
+      "TITLE": "Gestionar traducciones",
+      "LANGUAGES_COLUMN": "Idiomas",
+      "STATUS_COLUMN": "Estado",
+      "MISSING": "Falta",
+      "DONE": "Completo",
+      "SERVICE_NAME_PLACEHOLDER": "Nombre del servicio",
+      "DESCRIPTION_PLACEHOLDER": "Breve descripción",
+      "PROGRESS": "{{done}} de {{total}}",
+      "SAVE": "Guardar",
+      "CANCEL": "Cancelar",
+      "CLOSE": "Cerrar"
+    },
+    "DEFAULT_LANGUAGE": {
+      "LABEL": "Idioma predeterminado",
+      "DESCRIPTION": "Es el idioma predeterminado que se usará en el panel y la herramienta."
+    }
+  },
   "COMPLETE_REGISTRATION": {
     "PAGE": {
       "TITLE": "Establece tu contraseña",
@@ -600,7 +645,8 @@
         "MAIN_CONTACT": "Contacto principal",
         "SECONDARY_CONTACT": "Contacto secundario",
         "ACTIVE": "Activo",
-        "ACTIONS": "Acciones"
+        "ACTIONS": "Acciones",
+        "TRANSLATION": "Traducción"
       },
       "ACTIVE_TOOLTIP": "Los servicios inactivos no se recomiendan a los usuarios al final de la evaluación.",
       "LOADING": "Cargando servicios...",
@@ -615,6 +661,11 @@
       "FOOTER": {
         "SHOWING": "Mostrando {{count}} filas",
         "ROWS_PER_PAGE": "Filas por página"
+      },
+      "TRANSLATION_TOOLTIP": "Indica si este servicio está traducido a todos los idiomas habilitados.",
+      "TRANSLATION_STATUS": {
+        "DONE": "Completo",
+        "MISSING": "Falta"
       }
     },
     "MODAL": {
@@ -624,7 +675,8 @@
       "STEPS": {
         "SERVICE_INFO": "Información del servicio",
         "CATEGORY_SCALE": "Categorías y gaps",
-        "CONTACTS": "Información de contacto"
+        "CONTACTS": "Información de contacto",
+        "TRANSLATE": "Traducir"
       },
       "STEP_1": {
         "NAME": {
@@ -649,7 +701,11 @@
         "URL": {
           "LABEL": "URL",
           "PLACEHOLDER": "URL"
-        }
+        },
+        "NAME_LABEL": "Nombre del servicio",
+        "DESCRIPTION_LABEL": "Breve descripción",
+        "NAME_PLACEHOLDER": "ej. Intelligent Structural Monitoring Service",
+        "DESCRIPTION_PLACEHOLDER": "ej. 24/7 structural monitoring with IoT sensors and predictive analytics to detect anomalies and prevent failures in buildings in real-time."
       },
       "STEP_2": {
         "TITLE": "Selecciona categorías y gaps",
@@ -665,7 +721,10 @@
           "TRL": "Nivel de madurez tecnológica",
           "MkRL": "Nivel de madurez de mercado",
           "MfRL": "Nivel de madurez de fabricación"
-        }
+        },
+        "NONE": "No hay otros idiomas habilitados. Activa idiomas en Configuración para añadir traducciones.",
+        "COPY": "Copiar",
+        "COPIED": "Copiado"
       },
       "STEP_3": {
         "MAIN_CONTACT": {
@@ -801,7 +860,8 @@
       "PHONE_REQUIRED": "El número de teléfono es obligatorio.",
       "ORGANIZATION_KEY_MISSING": "Falta la clave de la organización.",
       "SEND_FAILED": "No se pudo enviar la solicitud de contacto."
-    }
+    },
+    "MANAGE_TRANSLATIONS_BUTTON": "Gestionar traducciones"
   },
   "ORGANIZATIONS": {
     "PAGE_TITLE": "Organizaciones",
@@ -889,6 +949,10 @@
           "LABEL": "Confirmar correo electrónico de la organización",
           "PLACEHOLDER": "Confirmar correo electrónico de la organización",
           "REQUIRED": "*"
+        },
+        "DEFAULT_LANGUAGE": {
+          "LABEL": "Idioma predeterminado",
+          "DESCRIPTION": "Es el idioma predeterminado usado en el panel y la herramienta. Solo los idiomas con todos los servicios traducidos pueden ser predeterminados."
         }
       },
       "ERRORS": {

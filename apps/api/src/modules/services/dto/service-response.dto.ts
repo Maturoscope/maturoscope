@@ -6,6 +6,12 @@ export class GapCoverageResponseDto {
   scaleType: ScaleType;
 }
 
+export class ServiceTranslationDto {
+  languageCode: string;
+  name: string;
+  description: string;
+}
+
 export class ServiceResponseDto {
   id: string;
   organizationId: string;
@@ -15,6 +21,8 @@ export class ServiceResponseDto {
   description?: string;
   descriptionEn: string;
   descriptionFr: string;
+  // Per-language translations (en, fr, es, it, sl, el), for the edit flow.
+  translations: ServiceTranslationDto[];
   url: string;
   mainContactFirstName: string;
   mainContactLastName: string;

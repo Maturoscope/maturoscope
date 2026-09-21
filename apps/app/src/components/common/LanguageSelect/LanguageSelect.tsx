@@ -1,11 +1,12 @@
 "use client"
 
 // Packages
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname, useParams } from "next/navigation"
+import { usePathname, useParams, useSearchParams } from "next/navigation"
 // Locale
-import { Locale, AVAILABLE_LANGUAGES } from "@/lib/locale"
+import { Locale, AVAILABLE_LANGUAGES, resolveLocale } from "@/lib/locale"
 // Components
 import {
   Select,
@@ -14,11 +15,45 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
+const getKeyFromCookie = (): string | null => {
+  if (typeof document === "undefined") return null
+  const match = document.cookie.match(/(?:^|;\s*)organization-key=([^;]+)/)
+  return match ? decodeURIComponent(match[1]) : null
+}
+
 const LanguageSelect = () => {
   const { lang } = useParams<{ lang: Locale }>()
   const placeholder = lang.toUpperCase()
   const currPathname = usePathname()
+  const searchParams = useSearchParams()
   const pathWithoutLocale = currPathname.split("/").slice(2)
+
+  // Only the organization's Live languages are offered to the visitor. Start
+  // with the current locale so the selector is never empty while loading.
+  const [availableLocales, setAvailableLocales] = useState<Locale[]>([lang])
+
+  useEffect(() => {
+    const key = searchParams.get("key") || getKeyFromCookie()
+    if (!key) return
+    let cancelled = false
+
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/languages/public/${key}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: { languages?: string[] } | null) => {
+        if (cancelled || !data?.languages) return
+        const live = data.languages.map(resolveLocale)
+        // Guarantee the current locale is present and keep the canonical order.
+        const set = new Set<Locale>([...live, lang])
+        setAvailableLocales(AVAILABLE_LANGUAGES.filter((l) => set.has(l)))
+      })
+      .catch(() => {
+        // Best-effort: keep just the current locale on failure.
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [searchParams, lang])
 
   const getLocaleUrl = (locale: Locale) =>
     `/${locale}/${pathWithoutLocale.join("/")}`
@@ -38,7 +73,7 @@ const LanguageSelect = () => {
           </div>
         </SelectTrigger>
         <SelectContent className="w-full min-w-[100px] max-w-[100px] flex flex-col gap-2">
-          {AVAILABLE_LANGUAGES.map((locale) => (
+          {availableLocales.map((locale) => (
             <Link
               key={locale}
               href={getLocaleUrl(locale)}

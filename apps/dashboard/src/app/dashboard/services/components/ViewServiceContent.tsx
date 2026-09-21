@@ -82,21 +82,16 @@ export function ViewServiceContent({
     useSatisfactionOptions();
 
   const currentLanguage = i18n.language?.toLowerCase().startsWith("fr") ? "fr" : "en";
-  const currentLanguageCode = i18n.language?.toUpperCase().startsWith("FR") ? "FR" : "EN";
 
-  // Get translated name and description
+  // Show the current UI language's translation, falling back to English.
   const getTranslatedName = () => {
-    if (currentLanguageCode === "FR" && formData.nameFr) {
-      return formData.nameFr;
-    }
-    return formData.nameEn || '';
+    const tr = formData.translations;
+    return tr[currentLanguage]?.name || tr.en?.name || '';
   };
 
   const getTranslatedDescription = () => {
-    if (currentLanguageCode === "FR" && formData.descriptionFr) {
-      return formData.descriptionFr;
-    }
-    return formData.descriptionEn || '';
+    const tr = formData.translations;
+    return tr[currentLanguage]?.description || tr.en?.description || '';
   };
 
   // Group gap coverages by scale type and question
