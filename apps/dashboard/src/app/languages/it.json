@@ -14,7 +14,7 @@
   "LANGUAGES": {
     "MENU_LABEL": "Lingue",
     "SECTION_TITLE": "Lingue disponibili",
-    "SECTION_DESCRIPTION": "Attiva le lingue con cui lavori. Una lingua diventa disponibile per gli utenti solo quando ogni servizio è tradotto.",
+    "SECTION_DESCRIPTION": "Attiva le lingue con cui lavori. Una lingua diventa disponibile per gli utenti solo quando ogni servizio è tradotto. Puoi rivedere o tradurre la lingua scelta facendo clic su «Rivedi» o «Traduci».",
     "STATUS_LIVE": "Attiva",
     "STATUS_DRAFT": "Bozza",
     "REVIEW": "Rivedi",
@@ -724,7 +724,8 @@
         },
         "NONE": "Nessun'altra lingua è attiva. Attiva le lingue nelle Impostazioni per aggiungere traduzioni.",
         "COPY": "Copia",
-        "COPIED": "Copiato"
+        "COPIED": "Copiato",
+        "OPTIONAL": "(facoltativo)"
       },
       "STEP_3": {
         "MAIN_CONTACT": {

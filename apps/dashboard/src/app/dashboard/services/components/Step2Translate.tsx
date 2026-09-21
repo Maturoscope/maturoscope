@@ -58,9 +58,10 @@ export function Step2Translate({
     </button>
   );
 
-  const sectionHeader = (code: string) => (
+  const sectionHeader = (code: string, optional = false) => (
     <p className="border-b border-border pb-2 text-sm font-medium text-gray-500">
       {langName(code)}
+      {optional ? ` ${t("MODAL.STEP_2.OPTIONAL")}` : ""}
     </p>
   );
 
@@ -93,7 +94,7 @@ export function Step2Translate({
         const upper = code.toUpperCase();
         return (
           <div key={code} className="space-y-4">
-            {sectionHeader(code)}
+            {sectionHeader(code, true)}
 
             <div className="space-y-2">
               <Label htmlFor={`name-${code}`}>

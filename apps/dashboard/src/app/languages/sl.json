@@ -14,7 +14,7 @@
   "LANGUAGES": {
     "MENU_LABEL": "Jeziki",
     "SECTION_TITLE": "Razpoložljivi jeziki",
-    "SECTION_DESCRIPTION": "Aktivirajte jezike, v katerih delate. Jezik postane na voljo uporabnikom šele, ko so prevedene vse storitve.",
+    "SECTION_DESCRIPTION": "Aktivirajte jezike, v katerih delate. Jezik postane na voljo uporabnikom šele, ko so prevedene vse storitve. Izbrani jezik lahko pregledate ali prevedete s klikom na »Preglej« ali »Prevedi«.",
     "STATUS_LIVE": "V živo",
     "STATUS_DRAFT": "Osnutek",
     "REVIEW": "Preglej",
@@ -724,7 +724,8 @@
         },
         "NONE": "Noben drug jezik ni omogočen. Omogočite jezike v nastavitvah za dodajanje prevodov.",
         "COPY": "Kopiraj",
-        "COPIED": "Kopirano"
+        "COPIED": "Kopirano",
+        "OPTIONAL": "(neobvezno)"
       },
       "STEP_3": {
         "MAIN_CONTACT": {

@@ -14,7 +14,7 @@
   "LANGUAGES": {
     "MENU_LABEL": "Languages",
     "SECTION_TITLE": "Available Languages",
-    "SECTION_DESCRIPTION": "Activate the languages you work in. A language becomes available to users only once every service is translated.",
+    "SECTION_DESCRIPTION": "Activate the languages you work in. A language becomes available to users only once every service is translated. You can review or translate your chosen language by clicking on \"Review\" or \"Translate\".",
     "STATUS_LIVE": "Live",
     "STATUS_DRAFT": "Draft",
     "REVIEW": "Review",
@@ -724,7 +724,8 @@
         },
         "NONE": "No other languages are enabled. Enable languages in Settings to add translations.",
         "COPY": "Copy",
-        "COPIED": "Copied"
+        "COPIED": "Copied",
+        "OPTIONAL": "(optional)"
       },
       "STEP_3": {
         "MAIN_CONTACT": {

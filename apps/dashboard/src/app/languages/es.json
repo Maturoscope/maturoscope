@@ -14,7 +14,7 @@
   "LANGUAGES": {
     "MENU_LABEL": "Idiomas",
     "SECTION_TITLE": "Idiomas disponibles",
-    "SECTION_DESCRIPTION": "Activa los idiomas con los que trabajas. Un idioma queda disponible para los usuarios solo cuando todos los servicios están traducidos.",
+    "SECTION_DESCRIPTION": "Activa los idiomas con los que trabajas. Un idioma queda disponible para los usuarios solo cuando todos los servicios están traducidos. Puedes revisar o traducir el idioma elegido haciendo clic en «Revisar» o «Traducir».",
     "STATUS_LIVE": "En vivo",
     "STATUS_DRAFT": "Borrador",
     "REVIEW": "Revisar",
@@ -724,7 +724,8 @@
         },
         "NONE": "No hay otros idiomas habilitados. Activa idiomas en Configuración para añadir traducciones.",
         "COPY": "Copiar",
-        "COPIED": "Copiado"
+        "COPIED": "Copiado",
+        "OPTIONAL": "(opcional)"
       },
       "STEP_3": {
         "MAIN_CONTACT": {
