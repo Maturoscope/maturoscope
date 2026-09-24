@@ -1,6 +1,6 @@
 import { Injectable, ConflictException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { User } from './entities/user.entity';
 import { UserOrganization, MembershipStatus } from './entities/user-organization.entity';
@@ -217,6 +217,45 @@ export class UsersService {
         'This user left the organization. Resend the invitation to add them back.',
       );
     }
+
+    // Deactivating the user's default organization: hand the default to their
+    // next accessible one (if any) so they don't land on a blocked org, and keep
+    // the legacy organizationId column in sync. Done in a transaction so a
+    // failure can't leave the default flag on a disabled membership.
+    if (!isActive && membership.isDefault) {
+      const nextDefault = await this.membershipRepository.findOne({
+        where: {
+          userId,
+          organizationId: Not(organizationId),
+          status: MembershipStatus.ACTIVE,
+          isActive: true,
+        },
+        order: { createdAt: 'ASC' },
+      });
+
+      await this.membershipRepository.manager.transaction(async (tx) => {
+        await tx.update(
+          UserOrganization,
+          { id: membership.id },
+          { isActive: false, isDefault: false },
+        );
+        if (nextDefault) {
+          await tx.update(
+            UserOrganization,
+            { id: nextDefault.id },
+            { isDefault: true },
+          );
+          await tx.update(
+            User,
+            { id: userId },
+            { organizationId: nextDefault.organizationId },
+          );
+        }
+      });
+
+      return (await this.getMembership(userId, organizationId))!;
+    }
+
     membership.isActive = isActive;
     return this.membershipRepository.save(membership);
   }

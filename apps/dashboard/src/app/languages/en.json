@@ -487,7 +487,8 @@
         "JOINED": "You joined the organisation",
         "DECLINED": "Invitation declined",
         "ERROR": "Something went wrong. Please try again."
-      }
+      },
+      "REMOVED_LABEL": "An Admin removed your access."
     }
   },
   "TOOL_SETTINGS": {

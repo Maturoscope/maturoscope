@@ -253,6 +253,11 @@ export class UsersController {
         .map(toSummary),
       // Organizations the user left on their own (kept, deactivated).
       left: memberships.filter((m) => !!m.leftAt).map(toSummary),
+      // Organizations where an admin removed the user's access (disabled by
+      // someone else, not left voluntarily). Shown as a blocked card.
+      removed: memberships
+        .filter((m) => m.status === 'active' && !m.isActive && !m.leftAt)
+        .map(toSummary),
     };
   }
 

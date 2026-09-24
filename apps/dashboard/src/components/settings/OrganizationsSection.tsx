@@ -30,6 +30,7 @@ interface MembershipsResponse {
   active: OrganizationSummary[]
   pending: OrganizationSummary[]
   left: OrganizationSummary[]
+  removed: OrganizationSummary[]
 }
 
 type PendingDialog =
@@ -173,6 +174,7 @@ export function OrganizationsSection() {
   const active = data?.active ?? []
   const pending = data?.pending ?? []
   const left = data?.left ?? []
+  const removed = data?.removed ?? []
 
   const dialogCopy = dialog
     ? {
@@ -259,6 +261,20 @@ export function OrganizationsSection() {
                 <div className="min-w-0">
                   <p className="font-semibold text-gray-900 truncate">{org.name}</p>
                   <p className="text-sm text-gray-500">{t('ORGANIZATIONS.LEFT_LABEL')}</p>
+                </div>
+              </div>
+            ))}
+
+            {/* Organizations where an admin removed the user's access — muted card. */}
+            {removed.map((org) => (
+              <div
+                key={org.id}
+                className="flex items-center gap-3 rounded-lg border border-gray-200 bg-[#F5F5F5] p-4"
+              >
+                <OrgAvatar org={org} />
+                <div className="min-w-0">
+                  <p className="font-semibold text-gray-900 truncate">{org.name}</p>
+                  <p className="text-sm text-gray-500">{t('ORGANIZATIONS.REMOVED_LABEL')}</p>
                 </div>
               </div>
             ))}

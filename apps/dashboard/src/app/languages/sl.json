@@ -487,7 +487,8 @@
         "JOINED": "Pridružili ste se organizaciji",
         "DECLINED": "Povabilo zavrnjeno",
         "ERROR": "Nekaj je šlo narobe. Poskusite znova."
-      }
+      },
+      "REMOVED_LABEL": "Skrbnik je odstranil vaš dostop."
     }
   },
   "TOOL_SETTINGS": {
