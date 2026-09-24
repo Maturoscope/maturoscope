@@ -1,0 +1,56 @@
+{
+  "lang": "es",
+  "header": {
+    "by": "por"
+  },
+  "report": {
+    "title": "Perfil de madurez",
+    "completedOn": "Completado el"
+  },
+  "overview": {
+    "title": "Resumen",
+    "phaseLabel": "Fase",
+    "notScoredLabel": "Sin puntuación",
+    "notScoredDescription": "Todas las preguntas marcadas como No aplicable",
+    "stages": {
+      "trl": {
+        "label": "TRL",
+        "description": "Nivel de madurez tecnológica"
+      },
+      "mkrl": {
+        "label": "MkRL",
+        "description": "Nivel de madurez de mercado"
+      },
+      "mfrl": {
+        "label": "MfRL",
+        "description": "Nivel de madurez de fabricación"
+      }
+    }
+  },
+  "detailedReport": {
+    "title": "Informe detallado",
+    "description": "Busca las etiquetas «Servicio disponible» a continuación para ver dónde nuestros expertos pueden acelerar tu progreso.",
+    "currentFocus": "Enfoque actual",
+    "primaryRiskToMitigate": "Riesgo principal a mitigar",
+    "toReachLevel": "Para alcanzar el nivel",
+    "copyLevelLabel": "Nivel",
+    "copyHighestLevel": "Nivel más alto alcanzado",
+    "completeTheGapsBelow": "Completa las brechas a continuación",
+    "serviceAvailable": "Servicio disponible",
+    "servicesAvailable": "Servicios disponibles",
+    "comingSoon": "Próximamente",
+    "gapLabel": "Brecha",
+    "servicesColumnLabel": "Servicios",
+    "descriptionColumnLabel": "Descripción",
+    "noScoreTitle": "Sin puntuación {scale}",
+    "noScoreDescription": "Marcaste todas las preguntas de {scale} como No aplicable; no hay brechas ni servicios disponibles."
+  },
+  "answers": {
+    "title": "Tus respuestas",
+    "notApplicable": "No aplicable"
+  },
+  "footer": {
+    "disclaimer": "Aunque la herramienta fue diseñada por profesionales del sector de la construcción, los resultados de esta prueba no constituyen un certificado formal y se proporcionan únicamente con fines informativos.",
+    "policy": "El proyecto METABUILDING LABS ha recibido financiación del Programa de Investigación e Innovación Horizonte 2020 de la Unión Europea en virtud del Acuerdo de Subvención n.º 953193. La responsabilidad exclusiva del contenido de este documento recae enteramente en la opinión del autor. La Comisión Europea no es responsable del uso que pueda hacerse de la información que contiene."
+  }
+}

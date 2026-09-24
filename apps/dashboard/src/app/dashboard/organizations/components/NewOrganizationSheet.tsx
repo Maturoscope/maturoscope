@@ -24,6 +24,8 @@ export function NewOrganizationSheet({
   onSuccess,
 }: NewOrganizationSheetProps) {
   const { t } = useTranslation("ORGANIZATIONS");
+  const { t: tName } = useTranslation("LANGUAJES");
+  const DEFAULT_LANGUAGE_CODES = ["en", "fr", "es", "it", "sl", "el"] as const;
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [showUnsavedAlert, setShowUnsavedAlert] = useState(false);
 
@@ -256,6 +258,32 @@ export function NewOrganizationSheet({
                   </p>
                 )}
               </div>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="defaultLanguage">
+                {t("NEW_ORGANIZATION.FIELDS.DEFAULT_LANGUAGE.LABEL")}
+              </Label>
+              <select
+                id="defaultLanguage"
+                value={formState.defaultLanguage}
+                onChange={(event) =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    defaultLanguage: event.target.value,
+                  }))
+                }
+                className="h-9 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              >
+                {DEFAULT_LANGUAGE_CODES.map((code) => (
+                  <option key={code} value={code}>
+                    {tName(code.toUpperCase())} ({code.toUpperCase()})
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-muted-foreground">
+                {t("NEW_ORGANIZATION.FIELDS.DEFAULT_LANGUAGE.DESCRIPTION")}
+              </p>
             </div>
 
             {formFeedback && (

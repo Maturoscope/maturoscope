@@ -5,7 +5,56 @@
   "LANGUAJES": {
     "TITLE": "Switch Language",
     "EN": "English",
-    "FR": "French"
+    "FR": "French",
+    "ES": "Spanish",
+    "IT": "Italian",
+    "SL": "Slovenian",
+    "EL": "Greek"
+  },
+  "LANGUAGES": {
+    "MENU_LABEL": "Languages",
+    "SECTION_TITLE": "Available Languages",
+    "SECTION_DESCRIPTION": "Activate the languages you work in. A language becomes available to users only once every service is translated. You can review or translate your chosen language by clicking on \"Review\" or \"Translate\".",
+    "STATUS_LIVE": "Live",
+    "STATUS_DRAFT": "Draft",
+    "REVIEW": "Review",
+    "TRANSLATE": "Translate",
+    "TURN_OFF_DIALOG": {
+      "TITLE": "Turn off {{language}}?",
+      "DESCRIPTION": "Users won't be able to choose {{language}} any more. Your translations are kept — turn it back on and it goes live again straight away.",
+      "CONFIRM": "Yes, Turn Off",
+      "CANCEL": "Cancel"
+    },
+    "TOASTS": {
+      "ACTIVATED": {
+        "TITLE": "{{language}} activated",
+        "DESCRIPTION": "The language is now available where its translations are complete."
+      },
+      "DEACTIVATED": {
+        "TITLE": "{{language}} turned off",
+        "DESCRIPTION": "Users can no longer choose this language. Your translations are kept."
+      },
+      "ERROR": {
+        "TITLE": "Something went wrong"
+      }
+    },
+    "MODAL": {
+      "TITLE": "Manage Translations",
+      "LANGUAGES_COLUMN": "Languages",
+      "STATUS_COLUMN": "Status",
+      "MISSING": "Missing",
+      "DONE": "Done",
+      "SERVICE_NAME_PLACEHOLDER": "Service Name",
+      "DESCRIPTION_PLACEHOLDER": "Brief Description",
+      "PROGRESS": "{{done}} of {{total}}",
+      "SAVE": "Save",
+      "CANCEL": "Cancel",
+      "CLOSE": "Close"
+    },
+    "DEFAULT_LANGUAGE": {
+      "LABEL": "Default Language",
+      "DESCRIPTION": "This is the default language that will be used in the dashboard and tool. Only languages with every service translated can be set as default."
+    }
   },
   "COMPLETE_REGISTRATION": {
     "PAGE": {
@@ -82,7 +131,7 @@
       "TITLE": "Reset your password",
       "SUBTITLE": "Type your email address to send instructions to reset your password to you inbox.",
       "EMAIL_LABEL": "Email",
-      "PLACEHOLDER": "Placeholder", 
+      "PLACEHOLDER": "Placeholder",
       "RESET_BUTTON": "Reset Password",
       "GO_BACK_TO": "Go back to"
     },
@@ -503,7 +552,7 @@
         "DESCRIPTION": "Your customization settings have been saved successfully."
       },
       "PDF_SIGNATURE_SUCCESS": {
-        "TITLE": "Logo Updated", 
+        "TITLE": "Logo Updated",
         "DESCRIPTION": "Your organization's new logo has been uploaded successfully."
       },
       "LANGUAGE_SUCCESS": {
@@ -596,7 +645,8 @@
         "MAIN_CONTACT": "Main Contact",
         "SECONDARY_CONTACT": "Secondary Contact",
         "ACTIVE": "Active",
-        "ACTIONS": "Actions"
+        "ACTIONS": "Actions",
+        "TRANSLATION": "Translation"
       },
       "ACTIVE_TOOLTIP": "Inactive services are not recommended to users at the end of the assessment.",
       "LOADING": "Loading services...",
@@ -611,6 +661,11 @@
       "FOOTER": {
         "SHOWING": "Showing {{count}} rows",
         "ROWS_PER_PAGE": "Rows per page"
+      },
+      "TRANSLATION_TOOLTIP": "Whether this service is translated into every enabled language.",
+      "TRANSLATION_STATUS": {
+        "DONE": "Done",
+        "MISSING": "Missing"
       }
     },
     "MODAL": {
@@ -620,7 +675,8 @@
       "STEPS": {
         "SERVICE_INFO": "Service Information",
         "CATEGORY_SCALE": "Categories & Gaps",
-        "CONTACTS": "Contact Information"
+        "CONTACTS": "Contact Information",
+        "TRANSLATE": "Translate"
       },
       "STEP_1": {
         "NAME": {
@@ -645,7 +701,11 @@
         "URL": {
           "LABEL": "URL",
           "PLACEHOLDER": "URL"
-        }
+        },
+        "NAME_LABEL": "Service Name",
+        "DESCRIPTION_LABEL": "Brief Description",
+        "NAME_PLACEHOLDER": "eg. Intelligent Structural Monitoring Service",
+        "DESCRIPTION_PLACEHOLDER": "eg. 24/7 structural monitoring with IoT sensors and predictive analytics to detect anomalies and prevent failures in buildings in real-time."
       },
       "STEP_2": {
         "TITLE": "Select Categories and Satisfaction Levels",
@@ -661,7 +721,11 @@
           "TRL": "Technology Readiness Level",
           "MkRL": "Market Readiness Level",
           "MfRL": "Manufacturing Readiness Level"
-        }
+        },
+        "NONE": "No other languages are enabled. Enable languages in Settings to add translations.",
+        "COPY": "Copy",
+        "COPIED": "Copied",
+        "OPTIONAL": "(optional)"
       },
       "STEP_3": {
         "MAIN_CONTACT": {
@@ -797,7 +861,8 @@
       "PHONE_REQUIRED": "Phone number is required.",
       "ORGANIZATION_KEY_MISSING": "Organization key is missing.",
       "SEND_FAILED": "Failed to send contact request."
-    }
+    },
+    "MANAGE_TRANSLATIONS_BUTTON": "Manage Translations"
   },
   "ORGANIZATIONS": {
     "PAGE_TITLE": "Organizations",
@@ -885,6 +950,10 @@
           "LABEL": "Confirm Organization Email",
           "PLACEHOLDER": "Confirm Organization Email",
           "REQUIRED": "*"
+        },
+        "DEFAULT_LANGUAGE": {
+          "LABEL": "Default Language",
+          "DESCRIPTION": "This is the default language used in the dashboard and tool. Only languages with every service translated can be set as default."
         }
       },
       "ERRORS": {

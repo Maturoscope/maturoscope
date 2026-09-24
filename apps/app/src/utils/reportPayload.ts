@@ -5,6 +5,7 @@ import { ReportPayload } from "@/actions/report"
 import type { RiskData } from "@/actions/questions"
 import { getSelectedScales } from "@/lib/selectedScales"
 import { isNotApplicable } from "@/lib/notApplicable"
+import { DATE_LOCALES } from "@/lib/dateLocales"
 
 // ─── Storage types ────────────────────────────────────────────────────────────
 
@@ -130,7 +131,7 @@ export const buildReportPayload = async (
   const storedCompletedOn = localStorage.getItem("completedOn")
   const completedOnDate = storedCompletedOn ? new Date(storedCompletedOn) : new Date()
   const completedOn = completedOnDate.toLocaleDateString(
-    lang === "fr" ? "fr-FR" : "en-US",
+    DATE_LOCALES[lang] ?? "en-US",
     { year: "numeric", month: "long", day: "numeric" }
   )
 

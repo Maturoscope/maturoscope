@@ -1,5 +1,5 @@
 // Types
-import { Locale } from "@/dictionaries/dictionaries"
+import { Locale, resolveLocale } from "@/dictionaries/dictionaries"
 import { StageId } from "@/components/custom/FormPage/Form/Form"
 // Dictionaries
 import { getDictionary } from "@/dictionaries/dictionaries"
@@ -17,7 +17,7 @@ interface ReviewPageProps {
 
 const ReviewPage = async ({ params }: ReviewPageProps) => {
   const { lang: langParam, stage } = await params
-  const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
+  const lang: Locale = resolveLocale(langParam)
   const dictionary = await getDictionary(lang)
   const {
     common: { loadingLabel, notApplicableLabel },

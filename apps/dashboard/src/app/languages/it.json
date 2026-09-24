@@ -1,0 +1,999 @@
+{
+  "EXAMPLE": {
+    "TITLE": "Title"
+  },
+  "LANGUAJES": {
+    "TITLE": "Cambia lingua",
+    "EN": "Inglese",
+    "FR": "Francese",
+    "ES": "Spagnolo",
+    "IT": "Italiano",
+    "SL": "Sloveno",
+    "EL": "Greco"
+  },
+  "LANGUAGES": {
+    "MENU_LABEL": "Lingue",
+    "SECTION_TITLE": "Lingue disponibili",
+    "SECTION_DESCRIPTION": "Attiva le lingue con cui lavori. Una lingua diventa disponibile per gli utenti solo quando ogni servizio è tradotto. Puoi rivedere o tradurre la lingua scelta facendo clic su «Rivedi» o «Traduci».",
+    "STATUS_LIVE": "Attiva",
+    "STATUS_DRAFT": "Bozza",
+    "REVIEW": "Rivedi",
+    "TRANSLATE": "Traduci",
+    "TURN_OFF_DIALOG": {
+      "TITLE": "Disattivare {{language}}?",
+      "DESCRIPTION": "Gli utenti non potranno più scegliere {{language}}. Le tue traduzioni vengono conservate: riattivala e tornerà subito disponibile.",
+      "CONFIRM": "Sì, disattiva",
+      "CANCEL": "Annulla"
+    },
+    "TOASTS": {
+      "ACTIVATED": {
+        "TITLE": "{{language}} attivata",
+        "DESCRIPTION": "La lingua è ora disponibile dove le sue traduzioni sono complete."
+      },
+      "DEACTIVATED": {
+        "TITLE": "{{language}} disattivata",
+        "DESCRIPTION": "Gli utenti non possono più scegliere questa lingua. Le tue traduzioni vengono conservate."
+      },
+      "ERROR": {
+        "TITLE": "Qualcosa è andato storto"
+      }
+    },
+    "MODAL": {
+      "TITLE": "Gestisci traduzioni",
+      "LANGUAGES_COLUMN": "Lingue",
+      "STATUS_COLUMN": "Stato",
+      "MISSING": "Mancante",
+      "DONE": "Completato",
+      "SERVICE_NAME_PLACEHOLDER": "Nome del servizio",
+      "DESCRIPTION_PLACEHOLDER": "Breve descrizione",
+      "PROGRESS": "{{done}} di {{total}}",
+      "SAVE": "Salva",
+      "CANCEL": "Annulla",
+      "CLOSE": "Chiudi"
+    },
+    "DEFAULT_LANGUAGE": {
+      "LABEL": "Lingua predefinita",
+      "DESCRIPTION": "È la lingua predefinita usata nella dashboard e nello strumento. Solo le lingue con tutti i servizi tradotti possono essere impostate come predefinite."
+    }
+  },
+  "COMPLETE_REGISTRATION": {
+    "PAGE": {
+      "TITLE": "Imposta la tua password",
+      "SUBTITLE": "Crea una password per completare la registrazione.",
+      "PASSWORD_LABEL": "Password",
+      "CONFIRM_PASSWORD_LABEL": "Conferma password",
+      "PASSWORD_PLACEHOLDER": "Inserisci una password sicura",
+      "CONFIRM_PASSWORD_PLACEHOLDER": "Conferma password",
+      "SUBMIT_BUTTON": "Imposta password",
+      "SUBMITTING": "Impostazione password…"
+    },
+    "PASSWORD_REQUIREMENTS": {
+      "TITLE": "La tua password deve contenere almeno",
+      "MIN_LENGTH": "10 caratteri",
+      "ONE_UPPERCASE": "1 lettera maiuscola",
+      "ONE_LOWERCASE": "1 lettera minuscola",
+      "ONE_NUMBER_OR_SPECIAL": "1 numero o carattere speciale (esempio: # ? ! &)"
+    },
+    "ERRORS": {
+      "PASSWORDS_DONT_MATCH": "Le password non corrispondono.",
+      "INVALID_TOKEN": "Il token di invito è mancante.",
+      "EXPIRED_INVITATION": "L'invito non è valido o è scaduto.",
+      "VERIFY_ERROR": "Impossibile verificare l'invito. Riprova più tardi.",
+      "INVALID_INVITATION": "L'invito non è più valido.",
+      "REGISTRATION_FAILED": "Impossibile completare la registrazione.",
+      "UNEXPECTED_ERROR": "Errore imprevisto durante il completamento della registrazione."
+    },
+    "SUCCESS": {
+      "TITLE": "Registrazione completata",
+      "MESSAGE": "Registrazione completata. Reindirizzamento alla dashboard..."
+    },
+    "LOADING": {
+      "TITLE": "Completamento registrazione...",
+      "MESSAGE": "Stiamo verificando il tuo token di invito."
+    },
+    "INVALID": {
+      "TITLE": "Invito non valido",
+      "MESSAGE": "Questo token di invito non è valido o è scaduto. Contatta il tuo amministratore per ricevere un nuovo invito.",
+      "BUTTON": "Vai al login"
+    }
+  },
+  "LOGIN": {
+    "PAGE": {
+      "TITLE": "Accedi al tuo account",
+      "SUBTITLE": "Inserisci la tua email e password per accedere al tuo account.",
+      "EMAIL_LABEL": "Email",
+      "PASSWORD_LABEL": "Password",
+      "FORGOT_PASSWORD": "Hai dimenticato la password?",
+      "REMEMBER_ME": "Ricordami",
+      "LOGIN_BUTTON": "Accedi",
+      "LOGIN_SUCCESS": "Accesso riuscito!",
+      "INVALID_CREDENTIALS": "Email o password non validi.",
+      "LOCK_WARNING": "Il tuo account verrà bloccato dopo troppi tentativi falliti."
+    },
+    "BLOCKED_ACCOUNT": {
+      "TITLE": "Il tuo accesso è stato bloccato",
+      "MESSAGE": "Per motivi di sicurezza, il tuo account è stato bloccato dopo diversi tentativi di accesso non riusciti.",
+      "EMAIL_SENT": "Ti abbiamo inviato un'email con le istruzioni per sbloccare il tuo account e reimpostare la password.",
+      "GO_BACK_TO": "Vai a",
+      "SIGN_IN": "Accedi"
+    },
+    "INACTIVE_ACCOUNT": {
+      "TITLE": "Account inattivo",
+      "MESSAGE": "Il tuo account è attualmente inattivo e non puoi accedere in questo momento.",
+      "CONTACT_ADMIN": "Contatta il tuo amministratore per riattivare il tuo account.",
+      "GO_BACK_TO": "Torna a",
+      "SIGN_IN": "Accedi"
+    },
+    "INACTIVE_ORGANIZATION": {
+      "MESSAGE": "La tua organizzazione è attualmente inattiva. Contatta il tuo amministratore per riattivarla."
+    },
+    "RESET_PASSWORD": {
+      "TITLE": "Reimposta la tua password",
+      "SUBTITLE": "Digita il tuo indirizzo email per ricevere le istruzioni per reimpostare la password.",
+      "EMAIL_LABEL": "Email",
+      "PLACEHOLDER": "Segnaposto",
+      "RESET_BUTTON": "Reimposta password",
+      "GO_BACK_TO": "Torna a"
+    },
+    "ERRORS": {
+      "INVALID_EMAIL": "Inserisci un indirizzo email valido.",
+      "EMAIL_NOT_FOUND": "Questa email non esiste nel nostro database."
+    },
+    "CHECK_INBOX": {
+      "TITLE": "Controlla la tua casella di posta",
+      "MESSAGE": "Ti abbiamo inviato un'email a [email]. Segui le istruzioni per accedere al tuo account.",
+      "BACK_TO_LOGIN": "Torna al login",
+      "EDIT_EMAIL": "Modifica email"
+    }
+  },
+  "BREADCRUMB": {
+    "DASHBOARD": "Dashboard",
+    "SERVICES": "Servizi",
+    "MEMBERS": "Membri",
+    "SETTINGS": "Impostazioni",
+    "REPORTS": "Report",
+    "ORGANIZATIONS": "Organizzazioni",
+    "ORGANIZATION": "Organizzazione"
+  },
+  "DASHBOARD": {
+    "BRAND": "Nobatek",
+    "DASHBOARD": "Dashboard",
+    "SERVICES": "Servizi",
+    "MEMBERS": "Membri",
+    "SETTINGS": "Impostazioni",
+    "SUPER_ADMIN": "Super amministratore",
+    "REPORTS": "Report",
+    "ORGANIZATIONS": "Organizzazioni",
+    "LOG_OUT": "Esci",
+    "ORG_SWITCHER": {
+      "TITLE": "Organizzazione/i",
+      "DEFAULT": "Predefinita",
+      "PENDING_INVITATIONS": "Inviti in sospeso",
+      "INVITATIONS": "invito/i"
+    },
+    "NEED_HELP_CONTACT_US": "Hai bisogno di aiuto? Contattaci",
+    "KPIS": {
+      "ANALYSIS_COMPLETION_RATE": "Tasso di completamento dell'analisi",
+      "CONTACT_RATE": "Tasso di contatto",
+      "TOTAL_ASSESSMENTS_STARTED": "Totale valutazioni avviate",
+      "ANALYSIS_COMPLETION_RATE_TOOLTIP": "Questo tasso è calcolato in base alle analisi completate.",
+      "CONTACT_RATE_TOOLTIP": "Questo tasso è calcolato in base agli utenti che hanno contattato un esperto dopo aver completato la loro analisi."
+    },
+    "CHART": {
+      "TITLE": "Numero di utenti per scala e livello",
+      "DESCRIPTION": "Mostra l'attuale distribuzione degli utenti tra i livelli.",
+      "X_AXIS_LABEL": "Livelli",
+      "Y_AXIS_LABEL": "Numero di utenti",
+      "TOOLTIP_LEVEL": "Livello",
+      "USERS": "utenti"
+    },
+    "SCALE_FUNNEL": {
+      "TITLE": "Valutazioni per scala",
+      "DESCRIPTION": "Avviate vs. completate vs. abbandonate per ogni scala, per vedere quale viene selezionata di più.",
+      "STARTED": "Avviate",
+      "COMPLETED": "Completate",
+      "ABANDONED": "Abbandonate",
+      "COMPLETION": "completamento",
+      "ASSESSMENTS": "valutazioni"
+    },
+    "SERVICE_CONSULTATIONS": {
+      "TITLE": "Servizi più consultati",
+      "DESCRIPTION": "Quante volte ogni servizio è stato consultato tramite il modulo di contatto.",
+      "CONSULTATIONS": "consultazioni",
+      "NO_DATA": "Nessun servizio è stato ancora consultato."
+    },
+    "LOADING": "Caricamento...",
+    "REPORTS_FILTER": {
+      "SELECT_ORGANIZATION": "Seleziona organizzazione",
+      "ALL_ORGANIZATIONS": "Tutte le organizzazioni"
+    },
+    "ONBOARDING": {
+      "WELCOME": {
+        "TITLE": "Benvenuto su Maturoscope! 👋",
+        "DESCRIPTION": "Facciamo un rapido tour per mostrarti il tuo back office. Bastano pochi secondi."
+      },
+      "NAV_DASHBOARD": {
+        "TITLE": "Dashboard",
+        "DESCRIPTION": "Il tuo punto di partenza: monitora le metriche chiave e i progressi degli utenti nella valutazione."
+      },
+      "NAV_SERVICES": {
+        "TITLE": "Servizi",
+        "DESCRIPTION": "Crea e gestisci i servizi offerti dalla tua organizzazione. Vengono consigliati agli utenti in base ai loro risultati."
+      },
+      "NAV_MEMBERS": {
+        "TITLE": "Membri",
+        "DESCRIPTION": "Invita i colleghi e gestisci chi ha accesso alla tua organizzazione."
+      },
+      "NAV_SETTINGS": {
+        "TITLE": "Impostazioni",
+        "DESCRIPTION": "Personalizza il branding della tua organizzazione e gestisci account e password."
+      },
+      "KPIS": {
+        "TITLE": "Metriche chiave",
+        "DESCRIPTION": "Tieni d'occhio le valutazioni avviate, il tasso di completamento e quanti utenti contattano i tuoi esperti."
+      },
+      "DONE": {
+        "TITLE": "È tutto pronto! 🎉",
+        "DESCRIPTION": "Questo è il tour. Puoi sempre contattarci da «Hai bisogno di aiuto? Contattaci» nella barra laterale. Buon lavoro con Maturoscope!"
+      },
+      "BUTTONS": {
+        "NEXT": "Avanti",
+        "PREV": "Indietro",
+        "DONE": "Ho capito"
+      }
+    }
+  },
+  "MEMBERS": {
+    "PAGE_TITLE": "Membri",
+    "FILTERS": {
+      "ALL": "Tutti",
+      "COMPLETED": "Completato",
+      "PENDING": "In sospeso",
+      "EXPIRED": "Scaduto",
+      "REJECTED": "Rifiutata",
+      "ACTIVE": "Attivo",
+      "INACTIVE": "Inattivo"
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Cerca per nome, cognome o email"
+    },
+    "ADD_MEMBER_BUTTON": "Aggiungi membro",
+    "TABLE": {
+      "HEADERS": {
+        "FIRST_NAME": "Nome",
+        "LAST_NAME": "Cognome",
+        "EMAIL": "Email",
+        "REGISTRATION": "Registrazione",
+        "ACTIVE": "Attivo"
+      },
+      "TOOLTIPS": {
+        "REGISTRATION": "Mostra se il membro ha completato l'invito via email, se è ancora in attesa di conferma o se è scaduto.",
+        "ACTIVE": "Indica se l'account del membro è attualmente attivo o disattivato senza essere stato rimosso dal database."
+      },
+      "LOADING": "Caricamento membri…",
+      "NO_RESULTS": "Nessun membro aggiunto",
+      "EMPTY_DESCRIPTION": "Iniziamo con il tuo primo membro.",
+      "NO_INACTIVE_MEMBERS": "Nessun membro inattivo",
+      "NO_INACTIVE_MEMBERS_DESCRIPTION": "Non hai membri inattivi.",
+      "NO_ACTIVE_MEMBERS": "Nessun membro attivo",
+      "NO_ACTIVE_MEMBERS_DESCRIPTION": "Non hai membri attivi.",
+      "NO_COMPLETED_MEMBERS": "Nessun membro completato",
+      "NO_COMPLETED_MEMBERS_DESCRIPTION": "Non hai membri completati.",
+      "NO_PENDING_MEMBERS": "Nessun membro in sospeso",
+      "NO_PENDING_MEMBERS_DESCRIPTION": "Non hai membri in sospeso.",
+      "NO_EXPIRED_MEMBERS": "Nessun membro scaduto",
+      "NO_EXPIRED_MEMBERS_DESCRIPTION": "Non hai membri scaduti.",
+      "NO_MEMBERS_AVAILABLE": "Nessun membro disponibile",
+      "NO_MEMBERS_AVAILABLE_DESCRIPTION": "Nessun membro corrisponde ai filtri selezionati.",
+      "RESEND_INVITATION": "Invia di nuovo l'invito"
+    },
+    "TOASTS": {
+      "MEMBER_CREATED": {
+        "TITLE": "Membro creato con successo!",
+        "DESCRIPTION": "{{name}} ha ricevuto un link per accedere alla piattaforma."
+      },
+      "MEMBER_DEACTIVATED": {
+        "TITLE": "Membro disattivato con successo!",
+        "DESCRIPTION": "L'account di {{name}} è stato disattivato. L'utente non ha più accesso alla piattaforma."
+      },
+      "MEMBER_REACTIVATED": {
+        "TITLE": "Membro riattivato con successo!",
+        "DESCRIPTION": "{{name}} è stato riattivato. L'utente ora ha accesso alla piattaforma."
+      },
+      "UNDO": "Annulla"
+    },
+    "REGISTRATION_STATUS": {
+      "COMPLETED": "Completato",
+      "PENDING": "In sospeso",
+      "EXPIRED": "Scaduto",
+      "REJECTED": "Rifiutata"
+    },
+    "NEW_MEMBER": {
+      "TITLE": "Nuovo membro",
+      "FIELDS": {
+        "FIRST_NAME": {
+          "LABEL": "Nome",
+          "PLACEHOLDER": "Nome",
+          "REQUIRED": "*"
+        },
+        "LAST_NAME": {
+          "LABEL": "Cognome",
+          "PLACEHOLDER": "Cognome",
+          "REQUIRED": "*"
+        },
+        "EMAIL": {
+          "LABEL": "Email",
+          "PLACEHOLDER": "Email",
+          "REQUIRED": "*",
+          "HELPER_TEXT": "Questo indirizzo email non può essere modificato una volta creato l'account."
+        },
+        "CONFIRM_EMAIL": {
+          "LABEL": "Conferma email",
+          "PLACEHOLDER": "Conferma email",
+          "REQUIRED": "*"
+        }
+      },
+      "BUTTONS": {
+        "CREATE": "Crea membro",
+        "CREATING": "Creazione in corso…"
+      },
+      "ERRORS": {
+        "FIELD_REQUIRED": "Questo campo non può essere lasciato vuoto.",
+        "INVALID_EMAIL": "Inserisci un indirizzo email valido.",
+        "EMAILS_DONT_MATCH": "Le email non corrispondono.",
+        "ORGANIZATION_MISSING": "Manca il contesto dell'organizzazione.",
+        "CREATE_FAILED": "Impossibile creare il membro.",
+        "UNEXPECTED_ERROR": "Errore imprevisto durante la creazione del membro.",
+        "ALREADY_IN_ORG": "Questo utente appartiene già a questa organizzazione."
+      },
+      "ASSOCIATION_MODAL": {
+        "TITLE": "L'utente esiste già",
+        "MESSAGE": "{{name}} ha già un account in un'altra organizzazione. Vuoi invitarlo anche in questa organizzazione?",
+        "CONFIRM": "Invia invito",
+        "CANCEL": "Annulla"
+      }
+    },
+    "UNSAVED_CHANGES": {
+      "TITLE": "Modifiche non salvate",
+      "MESSAGE": "Hai modifiche non salvate. Se esci ora, i tuoi ultimi aggiornamenti andranno persi.",
+      "CANCEL": "Annulla",
+      "LEAVE_ANYWAY": "Esci comunque"
+    },
+    "DEACTIVATE_USER": {
+      "TITLE": "Stai per disattivare {{name}}",
+      "MESSAGE": "Una volta disattivato, l'utente non avrà più accesso alla piattaforma.",
+      "CANCEL": "Annulla",
+      "CONFIRM": "Sì, disattiva"
+    },
+    "REINVITE_USER": {
+      "TITLE": "{{name}} ha lasciato questa organizzazione",
+      "MESSAGE": "Questo utente ha lasciato {{org}}. Invia un nuovo invito per ripristinare l'accesso.",
+      "CANCEL": "Annulla",
+      "CONFIRM": "Invia invito"
+    },
+    "NOTIFICATIONS": {
+      "MEMBER_CREATED": "Membro creato con successo",
+      "INVITATION_RESENT": "Invito inviato di nuovo con successo!",
+      "UPDATE_FAILED": "Impossibile aggiornare lo stato del membro.",
+      "RESEND_FAILED": "Impossibile inviare nuovamente l'invito.",
+      "LOAD_FAILED": "Impossibile caricare i membri.",
+      "LOAD_ERROR": "Errore imprevisto durante il recupero dei membri."
+    }
+  },
+  "USER_SETTINGS": {
+    "TITLE": "Impostazioni",
+    "PROFILE": {
+      "TITLE": "Profilo",
+      "FIRST_NAME": "Nome",
+      "LAST_NAME": "Cognome",
+      "EMAIL": "Email",
+      "ORGANIZATION": "Organizzazione",
+      "UPDATE_PROFILE": "Aggiorna profilo",
+      "SUCCESS_TITLE": "Informazioni del profilo aggiornate",
+      "SUCCESS_MESSAGE": "I tuoi aggiornamenti sono stati salvati con successo.",
+      "AVATAR": {
+        "LABEL": "Avatar",
+        "UPLOAD": "Carica avatar",
+        "REMOVE": "Rimuovi avatar",
+        "HELPER": "Dimensioni consigliate 48x48px. Tipi supportati: SVG, PNG o JPG. Dimensione max: 4MB",
+        "INVALID_TYPE": "Tipo di file non valido. Sono consentiti solo SVG, PNG o JPG.",
+        "TOO_LARGE": "La dimensione del file supera il limite di 4MB.",
+        "UPDATED": "Immagine del profilo aggiornata",
+        "REMOVED": "Immagine del profilo rimossa",
+        "ERROR": "Qualcosa è andato storto. Riprova.",
+        "REMOVE_DIALOG": {
+          "TITLE": "Rimuovi avatar",
+          "MESSAGE": "Stai per eliminare la tua immagine del profilo. Questa azione è irreversibile.",
+          "CONFIRM": "Sì, rimuovi",
+          "CANCEL": "Annulla"
+        }
+      }
+    },
+    "PASSWORD": {
+      "TITLE": "Password",
+      "CURRENT_PASSWORD": "Password attuale",
+      "NEW_PASSWORD": "Nuova password",
+      "CONFIRM_PASSWORD": "Conferma nuova password",
+      "UPDATE_PASSWORD": "Aggiorna password",
+      "SUCCESS_TITLE": "Password aggiornata",
+      "SUCCESS_MESSAGE": "La tua password è stata modificata con successo.",
+      "REQUIREMENTS": "La tua nuova password deve contenere almeno",
+      "MIN_CHARACTERS": "10 caratteri",
+      "ONE_UPPERCASE": "1 lettera maiuscola",
+      "ONE_LOWERCASE": "1 lettera minuscola",
+      "ONE_NUMBER_SPECIAL": "1 numero o carattere speciale (esempio: # ? ! &)"
+    },
+    "CUSTOMIZATION": {
+      "TITLE": "Personalizzazione",
+      "THEME": "Tema",
+      "LANGUAGE": "Lingua",
+      "LANGUAGE_DESCRIPTION": "Questa è la lingua che verrà utilizzata nella dashboard.",
+      "SAVE_PREFERENCES": "Salva preferenze",
+      "UPDATE_CUSTOMIZATION": "Aggiorna personalizzazione",
+      "SUCCESS_TITLE": "Personalizzazione aggiornata",
+      "SUCCESS_MESSAGE": "Le tue preferenze sono state salvate con successo."
+    },
+    "ERRORS": {
+      "FIELD_REQUIRED": "Questo campo non può essere lasciato vuoto.",
+      "PASSWORD_TOO_SHORT": "La password deve contenere almeno 10 caratteri.",
+      "PASSWORD_NO_LETTER": "La password deve contenere almeno 1 lettera.",
+      "PASSWORD_NO_UPPERCASE": "La password deve contenere almeno 1 lettera maiuscola.",
+      "PASSWORD_NO_LOWERCASE": "La password deve contenere almeno 1 lettera minuscola.",
+      "PASSWORD_NO_NUMBER_SPECIAL": "La password deve contenere almeno 1 numero o carattere speciale.",
+      "PASSWORDS_DONT_MATCH": "Le password non corrispondono.",
+      "CURRENT_PASSWORD_INCORRECT": "La password attuale non è corretta."
+    },
+    "UNSAVED_CHANGES": {
+      "TITLE": "Modifiche non salvate",
+      "MESSAGE": "Hai modifiche non salvate. Se esci ora, i tuoi ultimi aggiornamenti andranno persi.",
+      "CANCEL": "Annulla",
+      "LEAVE_ANYWAY": "Esci comunque"
+    },
+    "ORGANIZATIONS": {
+      "TITLE": "Organizzazioni",
+      "YOUR_ORGANIZATIONS": "Le tue organizzazioni",
+      "DESCRIPTION": "Scegli quale organizzazione si apre all'accesso. Puoi cambiarla in qualsiasi momento dalla barra superiore.",
+      "DEFAULT_BADGE": "Predefinita",
+      "SET_AS_DEFAULT": "Imposta come predefinita",
+      "LEAVE": "Abbandona",
+      "PENDING_TITLE": "Inviti in sospeso",
+      "INVITED_AGO": "Invitato {{time}}",
+      "JOIN": "Unisciti",
+      "DECLINE": "Rifiuta",
+      "EMPTY_PENDING": "Non hai inviti in sospeso.",
+      "LEFT_LABEL": "Hai lasciato questa organizzazione.",
+      "LOAD_ERROR": "Non è stato possibile caricare le tue organizzazioni. Riprova.",
+      "LEAVE_DIALOG": {
+        "TITLE": "Abbandonare {{name}}?",
+        "MESSAGE": "Perderai l'accesso alla sua dashboard, ai servizi e ai membri. Le tue altre organizzazioni non sono interessate e un amministratore potrà invitarti di nuovo in seguito.",
+        "CONFIRM": "Sì, abbandona",
+        "CANCEL": "Annulla"
+      },
+      "SET_DEFAULT_DIALOG": {
+        "TITLE": "Impostare {{name}} come predefinita?",
+        "MESSAGE": "Al prossimo accesso partirai da questa organizzazione.",
+        "CONFIRM": "Imposta come predefinita",
+        "CANCEL": "Annulla"
+      },
+      "DECLINE_DIALOG": {
+        "TITLE": "Rifiutare l'invito?",
+        "MESSAGE": "Potrai essere invitato di nuovo in seguito se necessario.",
+        "CONFIRM": "Rifiuta",
+        "CANCEL": "Annulla"
+      },
+      "TOASTS": {
+        "DEFAULT_UPDATED": "{{name}} è ora la tua organizzazione predefinita.",
+        "LEFT": "Hai lasciato l'organizzazione",
+        "JOINED": "Ti sei unito all'organizzazione",
+        "DECLINED": "Invito rifiutato",
+        "ERROR": "Qualcosa è andato storto. Riprova."
+      }
+    }
+  },
+  "TOOL_SETTINGS": {
+    "TITLE": "Impostazioni",
+    "ORGANIZATION_SETTINGS": "Impostazioni organizzazione",
+    "SECTIONS": {
+      "CUSTOMIZATION": "Personalizzazione",
+      "PDF_SIGNATURE": "Logo",
+      "LANGUAGE": "Lingua"
+    },
+    "CUSTOMIZATION": {
+      "PREVIEW_TOOL": "Anteprima strumento",
+      "FONT": {
+        "LABEL": "Carattere",
+        "PLACEHOLDER": "Seleziona carattere",
+        "DESCRIPTION": "Imposta il carattere che desideri utilizzare nello strumento."
+      },
+      "THEME": {
+        "LABEL": "Tema",
+        "PLACEHOLDER": "Seleziona tema",
+        "DESCRIPTION": "Seleziona il tema dello strumento."
+      },
+      "UPDATE_BUTTON": "Aggiorna personalizzazione",
+      "SAVING": "Salvataggio in corso..."
+    },
+    "PDF_SIGNATURE": {
+      "LABEL": "Logo",
+      "UPLOAD_INSTRUCTIONS": "Fai clic per caricare il tuo logo oppure trascina e rilascia",
+      "UPLOAD_BUTTON": "Carica logo",
+      "REMOVE_BUTTON": "Rimuovi logo",
+      "REQUIREMENTS": "Dimensioni consigliate 240x80px. Tipi supportati: SVG, PNG o JPG. Dimensione massima del file: 4MB",
+      "DESCRIPTION": "Questo è il logo che verrà visualizzato nel tuo questionario e nei PDF.",
+      "ERRORS": {
+        "FILE_TOO_LARGE": "Il file è troppo grande. La dimensione massima è 4MB."
+      },
+      "REMOVE_DIALOG": {
+        "TITLE": "Rimuovi logo",
+        "DESCRIPTION": "Stai per eliminare il logo dell'organizzazione. Questa azione è irreversibile.",
+        "CANCEL": "Annulla",
+        "CONFIRM": "Sì, rimuovi"
+      }
+    },
+    "CUSTOMIZATION_ACTIONS": {
+      "UPDATE_BUTTON": "Aggiorna personalizzazione",
+      "SAVING": "Salvataggio in corso...",
+      "ERRORS": {
+        "INVALID_TYPE": "Tipo di file non supportato. Usa SVG, PNG o JPG.",
+        "FILE_TOO_LARGE": "La dimensione del file supera il limite di 4MB."
+      }
+    },
+    "LANGUAGE": {
+      "LABEL": "Lingua",
+      "PLACEHOLDER": "Seleziona lingua",
+      "DESCRIPTION": "Questa è la lingua predefinita che verrà utilizzata nella dashboard e nello strumento.",
+      "CURRENT_LANGUAGE": "Lingua attuale",
+      "UPDATE_BUTTON": "Aggiorna personalizzazione",
+      "SAVING": "Salvataggio in corso..."
+    },
+    "TOASTS": {
+      "CUSTOMIZATION_SUCCESS": {
+        "TITLE": "Informazioni account aggiornate",
+        "DESCRIPTION": "Le tue impostazioni di personalizzazione sono state salvate con successo."
+      },
+      "PDF_SIGNATURE_SUCCESS": {
+        "TITLE": "Logo aggiornato",
+        "DESCRIPTION": "Il nuovo logo della tua organizzazione è stato caricato con successo."
+      },
+      "LANGUAGE_SUCCESS": {
+        "TITLE": "Lingua aggiornata",
+        "DESCRIPTION": "La tua preferenza linguistica è stata salvata con successo."
+      }
+    },
+    "DIALOGS": {
+      "UNSAVED_CHANGES": {
+        "TITLE": "Modifiche non salvate",
+        "DESCRIPTION": "Hai modifiche non salvate. Se esci ora, i tuoi ultimi aggiornamenti andranno persi.",
+        "CANCEL": "Annulla",
+        "LEAVE_ANYWAY": "Esci comunque",
+        "SAVE_AND_CONTINUE": "Salva e continua"
+      }
+    }
+  },
+  "PROFILE_SETTINGS": {
+    "TITLE": "Profilo",
+    "NAME": {
+      "LABEL": "Nome",
+      "VALUE": "Nobatek"
+    },
+    "AVATAR": {
+      "LABEL": "Avatar",
+      "UPLOAD_BUTTON": "Carica avatar",
+      "REMOVE_BUTTON": "Rimuovi avatar",
+      "REQUIREMENTS": "Dimensioni consigliate 48x48px. Formati supportati: SVG, PNG o JPG. Dimensione massima del file: 4MB",
+      "REMOVE_DIALOG": {
+        "TITLE": "Rimuovi avatar",
+        "DESCRIPTION": "Stai per eliminare l'avatar dell'organizzazione. Questa azione è irreversibile.",
+        "CANCEL": "Annulla",
+        "CONFIRM": "Sì, rimuovi"
+      }
+    },
+    "USERNAME": {
+      "LABEL": "Nome utente",
+      "VALUE": "nobatek"
+    },
+    "EMAIL": {
+      "LABEL": "Email",
+      "VALUE": "nobatek@gmail.com"
+    },
+    "MATUROSCOPE_LINK": {
+      "LABEL": "Link di Maturoscope",
+      "COPY_BUTTON": "Copia",
+      "COPIED_TO_CLIPBOARD": "Link copiato!"
+    },
+    "URL": {
+      "LABEL": "URL",
+      "PLACEHOLDER": "URL dell'organizzazione",
+      "DESCRIPTION": "I visitatori che fanno clic sul tuo logo nel questionario arriveranno qui."
+    },
+    "UPDATE_BUTTON": "Aggiorna il profilo",
+    "TOASTS": {
+      "SUCCESS_TITLE": "Informazioni del profilo aggiornate",
+      "SUCCESS_DESCRIPTION": "I tuoi aggiornamenti sono stati salvati con successo.",
+      "ERROR_TITLE": "Errore durante l'aggiornamento del profilo"
+    }
+  },
+  "SERVICES": {
+    "PAGE_TITLE": "Servizi",
+    "PAGE_SUBTITLE": "Gestisci i servizi disponibili per la tua organizzazione",
+    "ADD_SERVICE_BUTTON": "Aggiungi servizio",
+    "FILTERS": {
+      "ALL": "Tutti",
+      "TRL": "TRL",
+      "MkRL": "MkRL",
+      "MfRL": "MfRL",
+      "SCALE": "Scala",
+      "LEVELS": "Livelli",
+      "LEVEL_RANGES": {
+        "ALL": "Tutti i livelli",
+        "1_3": "Livelli 1-3",
+        "4_6": "Livelli 4-6",
+        "7_8": "Livelli 7-8"
+      },
+      "STATUS": {
+        "ACTIVE": "Attivo",
+        "INACTIVE": "Inattivo"
+      }
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Cerca servizi..."
+    },
+    "TABLE": {
+      "HEADERS": {
+        "SERVICE": "Servizio",
+        "CATEGORY_SCALE": "Categoria e scala",
+        "MAIN_CONTACT": "Contatto principale",
+        "SECONDARY_CONTACT": "Contatto secondario",
+        "ACTIVE": "Attivo",
+        "ACTIONS": "Azioni",
+        "TRANSLATION": "Traduzione"
+      },
+      "ACTIVE_TOOLTIP": "I servizi inattivi non vengono consigliati agli utenti al termine della valutazione.",
+      "LOADING": "Caricamento servizi...",
+      "NO_RESULTS": "Nessun servizio trovato",
+      "EMPTY_DESCRIPTION": "Inizia creando il tuo primo servizio per aiutare a colmare le lacune nella tua organizzazione.",
+      "NO_INACTIVE_SERVICES": "Nessun servizio inattivo",
+      "NO_INACTIVE_SERVICES_DESCRIPTION": "Non hai servizi inattivi.",
+      "ACTIONS_MENU": {
+        "EDIT": "Modifica",
+        "DELETE": "Elimina"
+      },
+      "FOOTER": {
+        "SHOWING": "Visualizzazione di {{count}} righe",
+        "ROWS_PER_PAGE": "Righe per pagina"
+      },
+      "TRANSLATION_TOOLTIP": "Indica se questo servizio è tradotto in tutte le lingue attive.",
+      "TRANSLATION_STATUS": {
+        "DONE": "Completato",
+        "MISSING": "Mancante"
+      }
+    },
+    "MODAL": {
+      "CREATE_TITLE": "Nuovo servizio",
+      "EDIT_TITLE": "Modifica il servizio",
+      "VIEW_TITLE": "Visualizza il servizio",
+      "STEPS": {
+        "SERVICE_INFO": "Informazioni sul servizio",
+        "CATEGORY_SCALE": "Categorie e lacune",
+        "CONTACTS": "Informazioni di contatto",
+        "TRANSLATE": "Traduci"
+      },
+      "STEP_1": {
+        "NAME": {
+          "REQUIRED": "*"
+        },
+        "NAME_EN": {
+          "LABEL": "Nome del servizio (EN)",
+          "PLACEHOLDER": "es. Servizio di Monitoraggio Strutturale Intelligente"
+        },
+        "NAME_FR": {
+          "LABEL": "Nome del servizio (FR)",
+          "PLACEHOLDER": "Service de Surveillance Structurelle Intelligente"
+        },
+        "DESCRIPTION_EN": {
+          "LABEL": "Breve descrizione (EN)",
+          "PLACEHOLDER": "es. Monitoraggio strutturale 24/7 con sensori IoT e analisi predittiva per rilevare anomalie e prevenire guasti negli edifici in tempo reale."
+        },
+        "DESCRIPTION_FR": {
+          "LABEL": "Breve descrizione (FR)",
+          "PLACEHOLDER": "Surveillance structurelle 24/7 avec capteurs IoT et analyse prédictive pour détecter anomalies et prévenir défaillances en temps réel."
+        },
+        "URL": {
+          "LABEL": "URL",
+          "PLACEHOLDER": "URL"
+        },
+        "NAME_LABEL": "Nome del servizio",
+        "DESCRIPTION_LABEL": "Breve descrizione",
+        "NAME_PLACEHOLDER": "es. Servizio di Monitoraggio Strutturale Intelligente",
+        "DESCRIPTION_PLACEHOLDER": "es. Monitoraggio strutturale 24/7 con sensori IoT e analisi predittiva per rilevare anomalie e prevenire guasti negli edifici in tempo reale."
+      },
+      "STEP_2": {
+        "TITLE": "Seleziona categorie e livelli di soddisfazione",
+        "HEADING": "Quali lacune affronta il servizio?",
+        "SUBTITLE": "Identifica una o più categorie (TRL, MkRL, MfRL) applicabili al servizio, quindi seleziona tutte le lacune che copre al loro interno.",
+        "DESCRIPTION": "Attiva le categorie che questo servizio affronta e seleziona i livelli di soddisfazione per ciascuna domanda.",
+        "NO_CATEGORIES": "Per favore, attiva almeno una categoria per continuare.",
+        "SELECT_ALL_THAT_APPLY": "(seleziona tutte quelle applicabili)",
+        "LOADING": "In caricamento...",
+        "NO_QUESTIONS": "Nessuna domanda disponibile per questa categoria.",
+        "GAP": "Lacuna",
+        "SCALE_LABELS": {
+          "TRL": "Livello di maturità tecnologica",
+          "MkRL": "Livello di maturità di mercato",
+          "MfRL": "Livello di maturità di produzione"
+        },
+        "NONE": "Nessun'altra lingua è attiva. Attiva le lingue nelle Impostazioni per aggiungere traduzioni.",
+        "COPY": "Copia",
+        "COPIED": "Copiato",
+        "OPTIONAL": "(facoltativo)"
+      },
+      "STEP_3": {
+        "MAIN_CONTACT": {
+          "TITLE": "Contatto principale",
+          "FIRST_NAME": {
+            "LABEL": "Nome",
+            "PLACEHOLDER": "Inserisci il nome"
+          },
+          "LAST_NAME": {
+            "LABEL": "Cognome",
+            "PLACEHOLDER": "Inserisci il cognome"
+          },
+          "EMAIL": {
+            "LABEL": "Email",
+            "PLACEHOLDER": "contact@example.com"
+          }
+        },
+        "SECONDARY_CONTACT": {
+          "TITLE": "Contatto secondario (facoltativo)",
+          "FIRST_NAME": {
+            "LABEL": "Nome",
+            "PLACEHOLDER": "Inserisci il nome"
+          },
+          "LAST_NAME": {
+            "LABEL": "Cognome",
+            "PLACEHOLDER": "Inserisci il cognome"
+          },
+          "EMAIL": {
+            "LABEL": "Email",
+            "PLACEHOLDER": "contact@example.com"
+          }
+        }
+      },
+      "BUTTONS": {
+        "CANCEL": "Annulla",
+        "NEXT": "Continua",
+        "BACK": "Indietro",
+        "CREATE": "Salva",
+        "UPDATE": "Aggiorna il servizio",
+        "CREATING": "Creazione in corso...",
+        "UPDATING": "Aggiornamento in corso..."
+      },
+      "ERRORS": {
+        "NAME_REQUIRED": "Questo campo non può essere lasciato vuoto.",
+        "DESCRIPTION_REQUIRED": "Questo campo non può essere lasciato vuoto.",
+        "URL_REQUIRED": "Questo campo non può essere lasciato vuoto.",
+        "URL_INVALID": "Inserisci un URL valido.",
+        "DUPLICATE_NAME": "Esiste già un servizio con questo nome.",
+        "NO_CATEGORIES": "Almeno una categoria deve essere attiva.",
+        "INVALID_EMAIL": "Inserisci un indirizzo email valido.",
+        "EMAIL_REQUIRED": "Questo campo non può essere lasciato vuoto.",
+        "FIRST_NAME_REQUIRED": "Questo campo non può essere lasciato vuoto.",
+        "LAST_NAME_REQUIRED": "Questo campo non può essere lasciato vuoto.",
+        "CREATE_FAILED": "Impossibile creare il servizio.",
+        "UPDATE_FAILED": "Impossibile aggiornare il servizio.",
+        "DELETE_FAILED": "Impossibile eliminare il servizio."
+      },
+      "UNSAVED_CHANGES": {
+        "TITLE": "Modifiche non salvate",
+        "MESSAGE": "Hai modifiche non salvate. Se esci ora, i tuoi ultimi aggiornamenti andranno persi.",
+        "CANCEL": "Annulla",
+        "LEAVE_ANYWAY": "Esci comunque"
+      }
+    },
+    "DELETE_DIALOG": {
+      "TITLE": "Stai per eliminare {{serviceName}}",
+      "DESCRIPTION": "Questa azione è irreversibile. Una volta eliminate, le informazioni verranno rimosse in modo permanente.",
+      "CANCEL": "Annulla",
+      "CONFIRM": "Sì, elimina"
+    },
+    "TOASTS": {
+      "SERVICE_CREATED": {
+        "TITLE": "Servizio creato con successo!",
+        "DESCRIPTION": "{{name}} è stato creato."
+      },
+      "SERVICE_UPDATED": {
+        "TITLE": "Servizio aggiornato con successo!",
+        "DESCRIPTION": "{{name}} è stato aggiornato."
+      },
+      "SERVICE_DELETED": {
+        "TITLE": "Servizio eliminato con successo!",
+        "DESCRIPTION": "{{name}} è stato rimosso dalla tua organizzazione."
+      },
+      "SERVICE_DEACTIVATED": {
+        "TITLE": "Servizio disattivato con successo!",
+        "DESCRIPTION": "{{name}} è stato disattivato. Non verrà più consigliato agli utenti."
+      },
+      "SERVICE_REACTIVATED": {
+        "TITLE": "Servizio riattivato con successo!",
+        "DESCRIPTION": "{{name}} è stato riattivato. Ora può essere consigliato agli utenti."
+      },
+      "UNDO": "Annulla"
+    },
+    "DEACTIVATE_SERVICE": {
+      "TITLE": "Stai per disattivare {{name}}",
+      "MESSAGE": "Una volta disattivato, questo servizio non verrà più consigliato agli utenti al termine della valutazione.",
+      "CONFIRM": "Sì, disattiva",
+      "CANCEL": "Annulla"
+    },
+    "CONTACT": {
+      "TITLE": "Contatta i servizi",
+      "COMPANY": {
+        "LABEL": "Azienda",
+        "PLACEHOLDER": "Inserisci il nome dell'azienda"
+      },
+      "FIRST_NAME": {
+        "LABEL": "Nome",
+        "PLACEHOLDER": "Inserisci il nome"
+      },
+      "LAST_NAME": {
+        "LABEL": "Cognome",
+        "PLACEHOLDER": "Inserisci il cognome"
+      },
+      "EMAIL": {
+        "LABEL": "Email",
+        "PLACEHOLDER": "Inserisci l'indirizzo email"
+      },
+      "PHONE": {
+        "LABEL": "Numero di telefono",
+        "PLACEHOLDER": "Inserisci il numero di telefono"
+      },
+      "ADDITIONAL_INFO": {
+        "LABEL": "Informazioni aggiuntive",
+        "PLACEHOLDER": "Inserisci eventuali informazioni aggiuntive"
+      },
+      "CANCEL": "Annulla",
+      "SEND": "Invia",
+      "SENDING": "Invio in corso...",
+      "FIRST_NAME_REQUIRED": "Il nome è obbligatorio.",
+      "LAST_NAME_REQUIRED": "Il cognome è obbligatorio.",
+      "EMAIL_REQUIRED": "L'email è obbligatoria.",
+      "INVALID_EMAIL": "Inserisci un indirizzo email valido.",
+      "PHONE_REQUIRED": "Il numero di telefono è obbligatorio.",
+      "ORGANIZATION_KEY_MISSING": "Manca la chiave dell'organizzazione.",
+      "SEND_FAILED": "Impossibile inviare la richiesta di contatto."
+    },
+    "MANAGE_TRANSLATIONS_BUTTON": "Gestisci traduzioni"
+  },
+  "ORGANIZATIONS": {
+    "PAGE_TITLE": "Organizzazioni",
+    "FILTERS": {
+      "ALL": "Tutti",
+      "COMPLETED": "Completato",
+      "PENDING": "In sospeso",
+      "EXPIRED": "Scaduto",
+      "REJECTED": "Rifiutata",
+      "ACTIVE": "Attivo",
+      "INACTIVE": "Inattivo"
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Cerca per nome dell'organizzazione o email"
+    },
+    "ADD_ORGANIZATION_BUTTON": "Aggiungi organizzazione",
+    "TABLE": {
+      "HEADERS": {
+        "ORGANIZATION_NAME": "Nome dell'organizzazione",
+        "EMAIL": "Email",
+        "REGISTRATION": "Registrazione",
+        "ACTIVE": "Attivo"
+      },
+      "TOOLTIPS": {
+        "REGISTRATION": "Mostra se il primo utente dell'organizzazione ha completato l'invito via email, se è ancora in attesa di conferma o se l'invito è scaduto.",
+        "ACTIVE": "Indica se l'organizzazione è attualmente attiva o disattivata senza essere stata rimossa dal database."
+      },
+      "LOADING": "Caricamento organizzazioni…",
+      "NO_RESULTS": "Nessuna organizzazione corrisponde ai filtri attuali.",
+      "EMPTY_DESCRIPTION": "Non hai organizzazioni corrispondenti ai filtri selezionati.",
+      "NO_INACTIVE_ORGANIZATIONS": "Nessuna organizzazione inattiva",
+      "NO_INACTIVE_ORGANIZATIONS_DESCRIPTION": "Non hai organizzazioni inattive.",
+      "NO_ACTIVE_ORGANIZATIONS": "Nessuna organizzazione attiva",
+      "NO_ACTIVE_ORGANIZATIONS_DESCRIPTION": "Non hai organizzazioni attive.",
+      "NO_COMPLETED_ORGANIZATIONS": "Nessuna organizzazione completata",
+      "NO_COMPLETED_ORGANIZATIONS_DESCRIPTION": "Non hai organizzazioni completate.",
+      "NO_PENDING_ORGANIZATIONS": "Nessuna organizzazione in sospeso",
+      "NO_PENDING_ORGANIZATIONS_DESCRIPTION": "Non hai organizzazioni in sospeso.",
+      "NO_EXPIRED_ORGANIZATIONS": "Nessuna organizzazione scaduta",
+      "NO_EXPIRED_ORGANIZATIONS_DESCRIPTION": "Non hai organizzazioni scadute.",
+      "RESEND_INVITATION": "Invia di nuovo l'invito"
+    },
+    "TOASTS": {
+      "ORGANIZATION_CREATED": {
+        "TITLE": "Organizzazione creata con successo!",
+        "DESCRIPTION": "{{name}} è stata creata e il primo utente ha ricevuto un link per accedere alla piattaforma."
+      },
+      "ORGANIZATION_DEACTIVATED": {
+        "TITLE": "Organizzazione disattivata con successo!",
+        "DESCRIPTION": "{{name}} è stata disattivata. Gli utenti di questa organizzazione non hanno più accesso alla piattaforma."
+      },
+      "ORGANIZATION_REACTIVATED": {
+        "TITLE": "Organizzazione riattivata con successo!",
+        "DESCRIPTION": "{{name}} è stata riattivata. Gli utenti di questa organizzazione ora hanno accesso alla piattaforma."
+      },
+      "UNDO": "Annulla"
+    },
+    "REGISTRATION_STATUS": {
+      "COMPLETED": "Completato",
+      "PENDING": "In sospeso",
+      "EXPIRED": "Scaduto",
+      "REJECTED": "Rifiutata"
+    },
+    "NEW_ORGANIZATION": {
+      "TITLE": "Nuova organizzazione",
+      "FIELDS": {
+        "NAME": {
+          "LABEL": "Nome dell'organizzazione",
+          "PLACEHOLDER": "Nome dell'organizzazione",
+          "REQUIRED": "*",
+          "HELPER_TEXT": "Il nome non può essere modificato una volta creata l'organizzazione."
+        },
+        "CONFIRM_NAME": {
+          "LABEL": "Conferma nome dell'organizzazione",
+          "PLACEHOLDER": "Conferma nome dell'organizzazione",
+          "REQUIRED": "*"
+        },
+        "EMAIL": {
+          "LABEL": "Email dell'organizzazione",
+          "PLACEHOLDER": "Email dell'organizzazione",
+          "REQUIRED": "*",
+          "HELPER_TEXT": "Questo indirizzo email non può essere modificato una volta creata l'organizzazione. Per garantire un accesso continuo, ti consigliamo di utilizzare un'email organizzativa condivisa (ad es. admin@maturoscope.com) anziché una personale."
+        },
+        "CONFIRM_EMAIL": {
+          "LABEL": "Conferma email dell'organizzazione",
+          "PLACEHOLDER": "Conferma email dell'organizzazione",
+          "REQUIRED": "*"
+        },
+        "DEFAULT_LANGUAGE": {
+          "LABEL": "Lingua predefinita",
+          "DESCRIPTION": "È la lingua predefinita usata nella dashboard e nello strumento. Solo le lingue con tutti i servizi tradotti possono essere impostate come predefinite."
+        }
+      },
+      "ERRORS": {
+        "FIELD_REQUIRED": "Questo campo non può essere lasciato vuoto.",
+        "INVALID_EMAIL": "Inserisci un indirizzo email valido.",
+        "EMAILS_DONT_MATCH": "Le email non corrispondono.",
+        "NAMES_DONT_MATCH": "I nomi dell'organizzazione non corrispondono.",
+        "CREATE_FAILED": "Impossibile creare l'organizzazione.",
+        "UNEXPECTED_ERROR": "Si è verificato un errore imprevisto durante la creazione dell'organizzazione."
+      },
+      "BUTTONS": {
+        "CREATE": "Crea organizzazione",
+        "CREATING": "Creazione in corso…"
+      }
+    },
+    "UNSAVED_CHANGES": {
+      "TITLE": "Modifiche non salvate",
+      "MESSAGE": "Hai modifiche non salvate. Se esci ora, i tuoi ultimi aggiornamenti andranno persi.",
+      "CANCEL": "Annulla",
+      "LEAVE_ANYWAY": "Esci comunque"
+    },
+    "DEACTIVATE_ORGANIZATION": {
+      "TITLE": "Stai per disattivare {{name}}",
+      "MESSAGE": "Una volta disattivata, gli utenti di questa organizzazione non avranno più accesso alla piattaforma.",
+      "CANCEL": "Annulla",
+      "CONFIRM": "Sì, disattiva"
+    },
+    "NOTIFICATIONS": {
+      "ORGANIZATION_CREATED": "Organizzazione creata con successo",
+      "INVITATION_RESENT": "Invito inviato di nuovo con successo!",
+      "UPDATE_FAILED": "Impossibile aggiornare lo stato dell'organizzazione.",
+      "RESEND_FAILED": "Impossibile inviare nuovamente l'invito.",
+      "LOAD_FAILED": "Impossibile caricare le organizzazioni.",
+      "LOAD_ERROR": "Errore imprevisto durante il recupero delle organizzazioni."
+    }
+  },
+  "WELCOME_MODAL": {
+    "TITLE": "Benvenuto! Configuriamo la tua organizzazione.",
+    "DESCRIPTION": "Aiuta i tuoi utenti a riconoscere la tua organizzazione aggiungendo il tuo logo e avatar. Appariranno su tutti i questionari, le email e i PDF.",
+    "REMIND_LATER": "Ricordamelo più tardi",
+    "GO_TO_SETTINGS": "Vai alle impostazioni"
+  }
+}

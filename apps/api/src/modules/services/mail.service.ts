@@ -2,6 +2,7 @@ import { Injectable, type OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { BaseMailService } from '../../common/mail/mail.service';
 import { StructuredLoggerService } from '../../common/logger/structured-logger.service';
+import { normalizeLanguage } from '../../common/i18n/languages';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as ejs from 'ejs';
@@ -98,11 +99,11 @@ export class ServiceContactMailService extends BaseMailService implements OnModu
     }
   }
 
-  private getEmailContent(language: string, companyName: string): EmailContent {
-    const lang = language?.toUpperCase() === 'FR' ? 'FR' : 'EN';
+  getEmailContent(language: string, companyName: string): EmailContent {
+    const lang = normalizeLanguage(language);
 
-    const translations = {
-      EN: {
+    const translations: Record<string, EmailContent> = {
+      en: {
         subject: `New Qualified Lead - ${companyName}`,
         greeting: 'Hi',
         introMessage:
@@ -141,7 +142,7 @@ export class ServiceContactMailService extends BaseMailService implements OnModu
         questionsMessage: 'Questions? Contact us at',
         footerMessage: 'Didn\'t expect this email? No worries — just ignore it.',
       },
-      FR: {
+      fr: {
         subject: `Nouveau lead qualifié - ${companyName}`,
         greeting: 'Bonjour',
         introMessage:
@@ -180,9 +181,165 @@ export class ServiceContactMailService extends BaseMailService implements OnModu
         questionsMessage: 'Des questions ? Contactez-nous à',
         footerMessage: 'Vous n\'attendiez pas cet e-mail ? Pas de souci — ignorez-le simplement.',
       },
+      es: {
+        subject: `Nuevo lead cualificado - ${companyName}`,
+        greeting: 'Hola',
+        introMessage:
+          'Un nuevo <strong>lead cualificado</strong> ha solicitado tu experiencia a través de Maturoscope.',
+        instructionMessage:
+          'Un <strong>cliente potencial</strong> ha sido emparejado con tu servicio. Revisa los detalles a continuación y ponte en contacto para comenzar:',
+        projectDetailsTitle: 'Detalles del proyecto',
+        clientInformationTitle: 'Información del cliente',
+        projectNameLabel: 'Nombre del proyecto',
+        serviceNeededLabel: 'Servicio requerido',
+        gapToCompleteLabel: 'BRECHA A COMPLETAR',
+        highestPriorityLabel: 'Prioridad más alta',
+        categoryLevelLabel: 'Categoría y nivel',
+        currentlyAtLevel: 'Actualmente en el nivel',
+        companyLabel: 'Organización',
+        nameLabel: 'Nombre',
+        emailLabel: 'Correo electrónico',
+        phoneLabel: 'Teléfono',
+        commentsLabel: 'Comentarios',
+        reviewMessage:
+          'Por favor, revisa el Informe de Madurez completo adjunto y contacta al cliente en un plazo de 3 días hábiles.',
+        contactButtonText: 'Contactar al lead ahora',
+        contactSubject: (projectName: string) => `${projectName} - Listos para ayudarte a avanzar`,
+        emailSubjectPrefix: 'Nuevo lead de',
+        reassignmentMessage: '¿No puedes tomar este lead? Habla y reasígnalo a:',
+        reassignmentSubject: (companyName: string) => `Lead reasignado: ${companyName} necesita apoyo experto`,
+        forwardAskLine: '¿Puedes tomar este lead? Te reenvío los detalles a continuación:',
+        forwardProjectLabel: 'Proyecto',
+        forwardServiceLabel: 'Servicio',
+        forwardGapLabel: 'Brecha',
+        forwardCategoryLevelLabel: 'Categoría y nivel',
+        forwardClientLabel: 'Cliente',
+        forwardClientEmailLabel: 'Correo del cliente',
+        forwardClientPhoneLabel: 'Teléfono del cliente',
+        forwardThanksLabel: 'Gracias',
+        questionsMessage: '¿Preguntas? Contáctanos en',
+        footerMessage: '¿No esperabas este correo? No te preocupes, simplemente ignóralo.',
+      },
+      it: {
+        subject: `Nuovo lead qualificato - ${companyName}`,
+        greeting: 'Ciao',
+        introMessage:
+          'Un nuovo <strong>lead qualificato</strong> ha richiesto la tua competenza tramite Maturoscope.',
+        instructionMessage:
+          'Un <strong>cliente potenziale</strong> è stato abbinato al tuo servizio. Controlla i dettagli qui sotto e mettiti in contatto per iniziare:',
+        projectDetailsTitle: 'Dettagli del progetto',
+        clientInformationTitle: 'Informazioni cliente',
+        projectNameLabel: 'Nome del progetto',
+        serviceNeededLabel: 'Servizio richiesto',
+        gapToCompleteLabel: 'DIVARIO DA COLMARE',
+        highestPriorityLabel: 'Priorità più alta',
+        categoryLevelLabel: 'Categoria e livello',
+        currentlyAtLevel: 'Attualmente al livello',
+        companyLabel: 'Organizzazione',
+        nameLabel: 'Nome',
+        emailLabel: 'Email',
+        phoneLabel: 'Telefono',
+        commentsLabel: 'Commenti',
+        reviewMessage:
+          'Si prega di consultare il Report di Maturità completo allegato e di contattare il cliente entro 3 giorni lavorativi.',
+        contactButtonText: 'Contatta il lead ora',
+        contactSubject: (projectName: string) => `${projectName} - Pronti ad aiutarti ad andare avanti`,
+        emailSubjectPrefix: 'Nuovo lead da',
+        reassignmentMessage: 'Non puoi gestire questo lead? Parla e riassegnalo a:',
+        reassignmentSubject: (companyName: string) => `Lead riassegnato: ${companyName} ha bisogno di supporto esperto`,
+        forwardAskLine: 'Puoi gestire questo lead? Ti inoltro i dettagli qui sotto:',
+        forwardProjectLabel: 'Progetto',
+        forwardServiceLabel: 'Servizio',
+        forwardGapLabel: 'Divario',
+        forwardCategoryLevelLabel: 'Categoria e livello',
+        forwardClientLabel: 'Cliente',
+        forwardClientEmailLabel: 'Email cliente',
+        forwardClientPhoneLabel: 'Telefono cliente',
+        forwardThanksLabel: 'Grazie',
+        questionsMessage: 'Domande? Contattaci a',
+        footerMessage: 'Non ti aspettavi questa email? Nessun problema — ignorala pure.',
+      },
+      sl: {
+        subject: `Nov kvalificiran potencialni kupec - ${companyName}`,
+        greeting: 'Pozdravljeni',
+        introMessage:
+          'Nov <strong>kvalificiran potencialni kupec</strong> je prek Maturoscope zaprosil za vaše strokovno znanje.',
+        instructionMessage:
+          '<strong>Potencialni kupec</strong> je bil povezan z vašo storitvijo. Preglejte spodnje podrobnosti in stopite v stik za začetek:',
+        projectDetailsTitle: 'Podrobnosti projekta',
+        clientInformationTitle: 'Podatki o stranki',
+        projectNameLabel: 'Ime projekta',
+        serviceNeededLabel: 'Potrebna storitev',
+        gapToCompleteLabel: 'VRZEL ZA ZAPOLNITEV',
+        highestPriorityLabel: 'Najvišja prioriteta',
+        categoryLevelLabel: 'Kategorija in raven',
+        currentlyAtLevel: 'Trenutno na ravni',
+        companyLabel: 'Organizacija',
+        nameLabel: 'Ime',
+        emailLabel: 'E-pošta',
+        phoneLabel: 'Telefon',
+        commentsLabel: 'Komentarji',
+        reviewMessage:
+          'Prosimo, preglejte priloženo celotno poročilo o zrelosti in stopite v stik s stranko v 3 delovnih dneh.',
+        contactButtonText: 'Kontaktiraj zdaj',
+        contactSubject: (projectName: string) => `${projectName} - Pripravljeni vam pomagati naprej`,
+        emailSubjectPrefix: 'Nov lead od',
+        reassignmentMessage: 'Ne morete prevzeti tega leada? Pogovorite se in ga dodelite:',
+        reassignmentSubject: (companyName: string) => `Predodeljen lead: ${companyName} potrebuje strokovno podporo`,
+        forwardAskLine: 'Lahko prevzamete ta lead? Spodaj vam posredujem podrobnosti:',
+        forwardProjectLabel: 'Projekt',
+        forwardServiceLabel: 'Storitev',
+        forwardGapLabel: 'Vrzel',
+        forwardCategoryLevelLabel: 'Kategorija in raven',
+        forwardClientLabel: 'Stranka',
+        forwardClientEmailLabel: 'E-pošta stranke',
+        forwardClientPhoneLabel: 'Telefon stranke',
+        forwardThanksLabel: 'Hvala',
+        questionsMessage: 'Vprašanja? Pišite nam na',
+        footerMessage: 'Niste pričakovali te e-pošte? Brez skrbi — preprosto jo prezrite.',
+      },
+      el: {
+        subject: `Νέο ποιοτικό lead - ${companyName}`,
+        greeting: 'Γεια',
+        introMessage:
+          'Ένα νέο <strong>ποιοτικό lead</strong> ζήτησε την εξειδίκευσή σας μέσω του Maturoscope.',
+        instructionMessage:
+          'Ένας <strong>δυνητικός πελάτης</strong> αντιστοιχίστηκε με την υπηρεσία σας. Δείτε τις παρακάτω λεπτομέρειες και επικοινωνήστε για να ξεκινήσετε:',
+        projectDetailsTitle: 'Λεπτομέρειες έργου',
+        clientInformationTitle: 'Στοιχεία πελάτη',
+        projectNameLabel: 'Όνομα έργου',
+        serviceNeededLabel: 'Απαιτούμενη υπηρεσία',
+        gapToCompleteLabel: 'ΚΕΝΟ ΠΡΟΣ ΚΑΛΥΨΗ',
+        highestPriorityLabel: 'Υψηλότερη προτεραιότητα',
+        categoryLevelLabel: 'Κατηγορία και επίπεδο',
+        currentlyAtLevel: 'Αυτήν τη στιγμή στο επίπεδο',
+        companyLabel: 'Οργανισμός',
+        nameLabel: 'Όνομα',
+        emailLabel: 'Email',
+        phoneLabel: 'Τηλέφωνο',
+        commentsLabel: 'Σχόλια',
+        reviewMessage:
+          'Παρακαλούμε ελέγξτε την επισυναπτόμενη πλήρη Αναφορά Ωριμότητας και επικοινωνήστε με τον πελάτη εντός 3 εργάσιμων ημερών.',
+        contactButtonText: 'Επικοινωνήστε τώρα',
+        contactSubject: (projectName: string) => `${projectName} - Έτοιμοι να σας βοηθήσουμε να προχωρήσετε`,
+        emailSubjectPrefix: 'Νέο lead από',
+        reassignmentMessage: 'Δεν μπορείτε να αναλάβετε αυτό το lead; Μιλήστε και αναθέστε το ξανά σε:',
+        reassignmentSubject: (companyName: string) => `Επαναανάθεση lead: ${companyName} χρειάζεται εξειδικευμένη υποστήριξη`,
+        forwardAskLine: 'Μπορείτε να αναλάβετε αυτό το lead; Σας προωθώ τις λεπτομέρειες παρακάτω:',
+        forwardProjectLabel: 'Έργο',
+        forwardServiceLabel: 'Υπηρεσία',
+        forwardGapLabel: 'Κενό',
+        forwardCategoryLevelLabel: 'Κατηγορία και επίπεδο',
+        forwardClientLabel: 'Πελάτης',
+        forwardClientEmailLabel: 'Email πελάτη',
+        forwardClientPhoneLabel: 'Τηλέφωνο πελάτη',
+        forwardThanksLabel: 'Ευχαριστώ',
+        questionsMessage: 'Ερωτήσεις; Επικοινωνήστε στο',
+        footerMessage: 'Δεν περιμένατε αυτό το email; Μην ανησυχείτε — απλώς αγνοήστε το.',
+      },
     };
 
-    return translations[lang];
+    return translations[lang] ?? translations.en;
   }
 
   async sendServiceContactEmail({
@@ -205,7 +362,7 @@ export class ServiceContactMailService extends BaseMailService implements OnModu
     const content = this.getEmailContent(language, safeCompanyName);
 
     const expertFullName = `${expertFirstName || ''} ${expertLastName || ''}`.trim() || 'Expert';
-    const htmlLang = language?.toUpperCase() === 'FR' ? 'fr' : 'en';
+    const htmlLang = normalizeLanguage(language);
     const clientFullName = `${clientData.firstName} ${clientData.lastName}`;
 
     // Prepare company logo HTML

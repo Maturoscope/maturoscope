@@ -3,9 +3,58 @@
     "TITLE": "Titre"
   },
   "LANGUAJES": {
-    "TITLE": "Changer de langue", 
+    "TITLE": "Changer de langue",
     "EN": "Anglais",
-    "FR": "Français"
+    "FR": "Français",
+    "ES": "Espagnol",
+    "IT": "Italien",
+    "SL": "Slovène",
+    "EL": "Grec"
+  },
+  "LANGUAGES": {
+    "MENU_LABEL": "Langues",
+    "SECTION_TITLE": "Langues disponibles",
+    "SECTION_DESCRIPTION": "Activez les langues dans lesquelles vous travaillez. Une langue devient disponible pour les utilisateurs uniquement lorsque chaque service est traduit. Vous pouvez revoir ou traduire la langue choisie en cliquant sur « Revoir » ou « Traduire ».",
+    "STATUS_LIVE": "En ligne",
+    "STATUS_DRAFT": "Brouillon",
+    "REVIEW": "Revoir",
+    "TRANSLATE": "Traduire",
+    "TURN_OFF_DIALOG": {
+      "TITLE": "Désactiver {{language}} ?",
+      "DESCRIPTION": "Les utilisateurs ne pourront plus choisir {{language}}. Vos traductions sont conservées — réactivez-la et elle sera de nouveau en ligne immédiatement.",
+      "CONFIRM": "Oui, désactiver",
+      "CANCEL": "Annuler"
+    },
+    "TOASTS": {
+      "ACTIVATED": {
+        "TITLE": "{{language}} activée",
+        "DESCRIPTION": "La langue est désormais disponible là où ses traductions sont complètes."
+      },
+      "DEACTIVATED": {
+        "TITLE": "{{language}} désactivée",
+        "DESCRIPTION": "Les utilisateurs ne peuvent plus choisir cette langue. Vos traductions sont conservées."
+      },
+      "ERROR": {
+        "TITLE": "Une erreur est survenue"
+      }
+    },
+    "MODAL": {
+      "TITLE": "Gérer les traductions",
+      "LANGUAGES_COLUMN": "Langues",
+      "STATUS_COLUMN": "Statut",
+      "MISSING": "Manquant",
+      "DONE": "Terminé",
+      "SERVICE_NAME_PLACEHOLDER": "Nom du service",
+      "DESCRIPTION_PLACEHOLDER": "Brève description",
+      "PROGRESS": "{{done}} sur {{total}}",
+      "SAVE": "Enregistrer",
+      "CANCEL": "Annuler",
+      "CLOSE": "Fermer"
+    },
+    "DEFAULT_LANGUAGE": {
+      "LABEL": "Langue par défaut",
+      "DESCRIPTION": "C'est la langue par défaut utilisée dans le tableau de bord et l'outil. Seules les langues dont tous les services sont traduits peuvent être définies par défaut."
+    }
   },
   "COMPLETE_REGISTRATION": {
     "PAGE": {
@@ -596,7 +645,8 @@
         "MAIN_CONTACT": "Contact principal",
         "SECONDARY_CONTACT": "Contact secondaire",
         "ACTIVE": "Actif",
-        "ACTIONS": "Actions"
+        "ACTIONS": "Actions",
+        "TRANSLATION": "Traduction"
       },
       "ACTIVE_TOOLTIP": "Les services inactifs ne sont pas recommandés aux utilisateurs à la fin de l'évaluation.",
       "LOADING": "Chargement des services...",
@@ -611,6 +661,11 @@
       "FOOTER": {
         "SHOWING": "Affichage de {{count}} lignes",
         "ROWS_PER_PAGE": "Lignes par page"
+      },
+      "TRANSLATION_TOOLTIP": "Indique si ce service est traduit dans toutes les langues activées.",
+      "TRANSLATION_STATUS": {
+        "DONE": "Terminé",
+        "MISSING": "Manquant"
       }
     },
     "MODAL": {
@@ -620,7 +675,8 @@
       "STEPS": {
         "SERVICE_INFO": "Informations sur le service",
         "CATEGORY_SCALE": "Catégories et écarts",
-        "CONTACTS": "Informations de contact"
+        "CONTACTS": "Informations de contact",
+        "TRANSLATE": "Traduire"
       },
       "STEP_1": {
         "NAME": {
@@ -645,7 +701,11 @@
         "URL": {
           "LABEL": "URL",
           "PLACEHOLDER": "URL"
-        }
+        },
+        "NAME_LABEL": "Nom du service",
+        "DESCRIPTION_LABEL": "Brève description",
+        "NAME_PLACEHOLDER": "eg. Intelligent Structural Monitoring Service",
+        "DESCRIPTION_PLACEHOLDER": "eg. 24/7 structural monitoring with IoT sensors and predictive analytics to detect anomalies and prevent failures in buildings in real-time."
       },
       "STEP_2": {
         "TITLE": "Sélectionner les catégories et les niveaux de satisfaction",
@@ -661,7 +721,11 @@
           "TRL": "Niveau de maturité technologique",
           "MkRL": "Niveau de maturité du marché",
           "MfRL": "Niveau de maturité de fabrication"
-        }
+        },
+        "NONE": "Aucune autre langue n'est activée. Activez des langues dans les Paramètres pour ajouter des traductions.",
+        "COPY": "Copier",
+        "COPIED": "Copié",
+        "OPTIONAL": "(optionnel)"
       },
       "STEP_3": {
         "MAIN_CONTACT": {
@@ -797,7 +861,8 @@
       "PHONE_REQUIRED": "Le numéro de téléphone est requis.",
       "ORGANIZATION_KEY_MISSING": "La clé d'organisation est manquante.",
       "SEND_FAILED": "Échec de l'envoi de la demande de contact."
-    }
+    },
+    "MANAGE_TRANSLATIONS_BUTTON": "Gérer les traductions"
   },
   "ORGANIZATIONS": {
     "PAGE_TITLE": "Organisations",
@@ -885,6 +950,10 @@
           "LABEL": "Confirmer l'e-mail de l'organisation",
           "PLACEHOLDER": "Confirmer l'e-mail de l'organisation",
           "REQUIRED": "*"
+        },
+        "DEFAULT_LANGUAGE": {
+          "LABEL": "Langue par défaut",
+          "DESCRIPTION": "Langue par défaut utilisée dans le tableau de bord et l'outil. Seules les langues dont tous les services sont traduits peuvent être définies par défaut."
         }
       },
       "ERRORS": {

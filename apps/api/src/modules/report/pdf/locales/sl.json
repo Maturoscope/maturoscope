@@ -1,0 +1,56 @@
+{
+  "lang": "sl",
+  "header": {
+    "by": "avtor"
+  },
+  "report": {
+    "title": "Profil zrelosti",
+    "completedOn": "Zaključeno dne"
+  },
+  "overview": {
+    "title": "Pregled",
+    "phaseLabel": "Faza",
+    "notScoredLabel": "Ni ocenjeno",
+    "notScoredDescription": "Vsa vprašanja označena kot Ni relevantno",
+    "stages": {
+      "trl": {
+        "label": "TRL",
+        "description": "Raven tehnološke pripravljenosti"
+      },
+      "mkrl": {
+        "label": "MkRL",
+        "description": "Raven tržne pripravljenosti"
+      },
+      "mfrl": {
+        "label": "MfRL",
+        "description": "Raven proizvodne pripravljenosti"
+      }
+    }
+  },
+  "detailedReport": {
+    "title": "Podrobno poročilo",
+    "description": "Spodaj poiščite oznake »Storitev na voljo«, da vidite, kje lahko naši strokovnjaki pospešijo vaš napredek.",
+    "currentFocus": "Trenutni poudarek",
+    "primaryRiskToMitigate": "Glavno tveganje za ublažitev",
+    "toReachLevel": "Za dosego ravni",
+    "copyLevelLabel": "Raven",
+    "copyHighestLevel": "Najvišja dosežena raven",
+    "completeTheGapsBelow": "Zapolnite spodnje vrzeli",
+    "serviceAvailable": "Storitev na voljo",
+    "servicesAvailable": "Storitve na voljo",
+    "comingSoon": "Kmalu",
+    "gapLabel": "Vrzel",
+    "servicesColumnLabel": "Storitve",
+    "descriptionColumnLabel": "Opis",
+    "noScoreTitle": "Ni ocene {scale}",
+    "noScoreDescription": "Vsa vprašanja {scale} ste označili kot Ni relevantno; ni vrzeli ali razpoložljivih storitev."
+  },
+  "answers": {
+    "title": "Vaši odgovori",
+    "notApplicable": "Ni relevantno"
+  },
+  "footer": {
+    "disclaimer": "Čeprav so orodje zasnovali strokovnjaki iz gradbenega sektorja, rezultati tega testa ne predstavljajo uradnega potrdila in so zgolj informativne narave.",
+    "policy": "Projekt METABUILDING LABS je prejel sredstva iz okvirnega programa Evropske unije za raziskave in inovacije Obzorje 2020 na podlagi sporazuma o dodelitvi sredstev št. 953193. Za vsebino tega dokumenta je v celoti odgovoren avtor. Evropska komisija ni odgovorna za morebitno uporabo informacij, ki jih vsebuje."
+  }
+}

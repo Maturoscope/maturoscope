@@ -1,0 +1,281 @@
+{
+  "lang": "es",
+  "common": {
+    "loadingLabel": "Cargando...",
+    "notApplicableLabel": "No aplicable"
+  },
+  "header": {
+    "stringConnector": "por"
+  },
+  "backBar": {
+    "buttonLabel": "Atrás"
+  },
+  "homepage": {
+    "hero": {
+      "heading": {
+        "title": "Evalúa la madurez de tu innovación en minutos.",
+        "description": "Obtén un análisis instantáneo de tus niveles de madurez tecnológica, de mercado y de fabricación, e identifica servicios para mejorarlos"
+      },
+      "information": {
+        "noAccount": "No se requiere cuenta",
+        "noStored": "No almacenamos tu información",
+        "tooltip": "No almacenamos, conservamos ni reutilizamos ninguna de la información que introduces. Todos los datos se procesan de forma temporal y se eliminan automáticamente para garantizar la total confidencialidad.",
+        "buttonLabel": "Empecemos",
+        "estimatedTime": "12 minutos"
+      },
+      "criteria": {
+        "title": "La herramienta evalúa 3 dimensiones clave",
+        "keys": [
+          {
+            "icon": "/icons/homepage/criteria-trl.svg",
+            "title": "TRL - Nivel de madurez tecnológica",
+            "description": "¿Cuál es el nivel actual de tu innovación?",
+            "questionsCount": "7 preguntas"
+          },
+          {
+            "icon": "/icons/homepage/criteria-mkrl.svg",
+            "title": "MkRL - Nivel de madurez de mercado",
+            "description": "¿Cómo llegar al mercado?",
+            "questionsCount": "4 preguntas"
+          },
+          {
+            "icon": "/icons/homepage/criteria-mfrl.svg",
+            "title": "MfRL - Nivel de madurez de fabricación",
+            "description": "¿Cómo replicar el producto de forma rápida y rentable?",
+            "questionsCount": "4 preguntas"
+          }
+        ]
+      }
+    },
+    "policy": {
+      "description": "El proyecto METABUILDING LABS ha recibido financiación del programa de investigación e innovación Horizonte 2020 de la Unión Europea, en virtud del acuerdo de subvención n.º 953193. La responsabilidad exclusiva del contenido de este documento recae enteramente en la opinión del autor. La Comisión Europea no es responsable del uso que pueda hacerse de la información que contiene. El proyecto STAR*track ha recibido financiación del programa de investigación e innovación Horizonte Europa de la Unión Europea, en virtud del acuerdo de subvención n.º 101147509",
+      "conceivedByLabel": "Concebido por",
+      "copyright": "Desarrollado por",
+      "contactUsLabel": "Contáctanos",
+      "privacyPolicyLabel": "Política de privacidad",
+      "privacyPolicyModal": {
+        "title": "Política de Privacidad",
+        "lastUpdatedLabel": "Última actualización: [17/01/2026]"
+      }
+    },
+    "gdprModal": {
+      "message": "Este cuestionario utiliza cookies necesarias y almacenamiento local para guardar tu progreso de forma temporal. No utilizamos cookies de seguimiento ni publicitarias, y no recopilamos información personal.",
+      "learnMoreLabel": "Más información"
+    }
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "Lo sentimos, no pudimos encontrar la página que buscas."
+  },
+  "beforeWeBegin": {
+    "title": "Antes de comenzar",
+    "paragraphs": [
+      "Cada respuesta describe un nivel que debes cumplir por completo. Si dudas entre dos respuestas, **selecciona el nivel de madurez más bajo**.",
+      "Si una pregunta no se aplica al proyecto que estás evaluando, **selecciona \"No aplica\"** y continúa.",
+      "Al final de cada escala podrás revisar tus respuestas y editarlas si es necesario."
+    ],
+    "buttonLabel": "Iniciar evaluación"
+  },
+  "begin": {
+    "title": "¿Qué vamos a evaluar hoy?",
+    "label": "Nombra tu proyecto",
+    "placeholder": "Prototipo de Panel Solar v2",
+    "backButtonLabel": "Atrás",
+    "nextButtonLabel": "Continuar",
+    "evaluation": {
+      "title": "¿Qué estás evaluando?",
+      "description": "Selecciona a continuación en qué escalas quieres evaluar tu innovación. Cada escala tiene sus particularidades y se recomienda o no según el tipo de innovación.",
+      "availableDimensionsTitle": "Dimensiones disponibles",
+      "availableDimensionsDescription": "Elige las que quieras evaluar.",
+      "recommendedLabel": "Recomendado",
+      "disclaimer": "TRL y MfRL fueron diseñados para productos físicos. Si algunas preguntas no aplican, márcalas como No aplicable.",
+      "types": {
+        "product": {
+          "label": "Producto",
+          "description": "Algo que se fabrica"
+        },
+        "software": {
+          "label": "Software",
+          "description": "Una app, plataforma o herramienta digital"
+        },
+        "service": {
+          "label": "Servicio",
+          "description": "Consultoría, instalación, operaciones"
+        }
+      },
+      "dimensions": {
+        "trl": "TRL — Nivel de madurez tecnológica",
+        "mkrl": "MkRL — Nivel de madurez de mercado",
+        "mfrl": "MfRL — Nivel de madurez de fabricación"
+      }
+    }
+  },
+  "form": {
+    "buttonNextLabel": "Continuar",
+    "buttonPrevLabel": "Atrás",
+    "commentPlaceholder": "Añade notas específicas para tu informe final (Opcional)",
+    "addNoteLabel": "Añadir nota opcional",
+    "removeNoteLabel": "Eliminar",
+    "levelLabel": "Nivel",
+    "leaveQuestionnaireModal": {
+      "title": "¿Salir del cuestionario?",
+      "description": "Si sales ahora, tus respuestas se perderán.",
+      "resetButtonLabel": "Salir de todos modos",
+      "cancelButtonLabel": "Cancelar"
+    },
+    "checkpoint": {
+      "buttonLabel": "Volver a",
+      "continueToLabel": "Continuar a",
+      "seeReportLabel": "Ver informe",
+      "intermediateTitle": "{scale} completada",
+      "intermediateDescription": "Buen progreso. A continuación: {next}.",
+      "finalTitle": "Evaluación completada",
+      "finalDescription": "Tu informe está listo para generarse. (Última oportunidad para revisar: las respuestas no podrán cambiarse después de este paso.)"
+    },
+    "stages": [
+      {
+        "id": "trl",
+        "icon": "/icons/form/trl.svg",
+        "name": "TRL",
+        "reviewLabel": "Revisar respuestas"
+      },
+      {
+        "id": "mkrl",
+        "icon": "/icons/form/mkrl.svg",
+        "name": "MkRL",
+        "reviewLabel": "Revisar respuestas"
+      },
+      {
+        "id": "mfrl",
+        "icon": "/icons/form/mfrl.svg",
+        "name": "MfRL",
+        "reviewLabel": "Revisar respuestas"
+      }
+    ]
+  },
+  "review": {
+    "title": "Revisar respuestas de [STAGE_NAME]",
+    "editButtonLabel": "Editar"
+  },
+  "singleReview": {
+    "cancelButtonLabel": "Cancelar",
+    "saveButtonLabel": "Guardar",
+    "commentPlaceholder": "Añade notas específicas para tu informe final (Opcional)",
+    "unsavedChangesModal": {
+      "title": "Cambios sin guardar",
+      "description": "Tienes cambios sin guardar. Si sales ahora, tus últimas actualizaciones se perderán.",
+      "cancelButtonLabel": "Cancelar",
+      "resetButtonLabel": "Salir de todos modos"
+    },
+    "toast": {
+      "title": "Respuesta actualizada",
+      "description": "Tus actualizaciones se han guardado correctamente"
+    }
+  },
+  "results": {
+    "topBar": {
+      "title": "Tu perfil de madurez",
+      "subtitle": "Completado el ",
+      "downloadButtonLabel": "Descargar informe",
+      "talkButtonLabel": "Hablar con un experto"
+    },
+    "beforeYouGoModal": {
+      "title": "Antes de irte...",
+      "description": "Como no guardamos tus respuestas, asegúrate de haber descargado tu informe de evaluación. No podrás acceder a él más adelante.",
+      "downloadButtonLabel": "Descargar y salir",
+      "cancelButtonLabel": "Cancelar",
+      "resetButtonLabel": "Salir de todos modos"
+    },
+    "overview": {
+      "title": "Resumen",
+      "learnMoreButtonLabel": "Más información",
+      "resultsSufixLabel": "Resultados",
+      "notScoredLabel": "Sin puntuación",
+      "notScoredDescription": "Todas las preguntas marcadas como No aplicable",
+      "stages": [
+        {
+          "label": "TRL",
+          "description": "Nivel de madurez tecnológica"
+        },
+        {
+          "label": "MkRL",
+          "description": "Nivel de madurez de mercado"
+        },
+        {
+          "label": "MfRL",
+          "description": "Nivel de madurez de fabricación"
+        }
+      ]
+    },
+    "unlockNextLevel": {
+      "title": "¿Qué sigue?",
+      "steps": [
+        "Revisa tus resultados detallados a continuación.",
+        "Descarga tu informe y guárdalo para futuros hitos.",
+        "Conecta con los expertos recomendados para acelerar tu éxito."
+      ],
+      "clarification": "Después de revisar tus resultados, guárdalos y ponte en contacto con los servicios recomendados. Te ayudarán a cerrar los gaps necesarios para mejorar tu nivel de madurez."
+    },
+    "detailedReport": {
+      "title": "Informe detallado",
+      "description": "Busca las etiquetas \"Servicio disponible\" a continuación para ver dónde nuestros expertos pueden acelerar tu progreso.",
+      "copyPreLevel": "Para alcanzar el nivel ",
+      "copyPostLevel": "Cierra los gaps que aparecen abajo",
+      "copyLevelLabel": "Nivel",
+      "copyHighestLevel": "Nivel más alto alcanzado",
+      "serviceLabel": "Servicio disponible",
+      "servicesLabel": "Servicios disponibles",
+      "comingSoonLabel": "Próximamente",
+      "gapLabel": "Brecha",
+      "servicesColumnLabel": "Servicios",
+      "descriptionColumnLabel": "Descripción",
+      "focusLabel": "Enfoque actual",
+      "primaryRiskLabel": "Riesgo principal a mitigar",
+      "noScoreTitle": "Sin puntuación {scale}",
+      "noScoreDescription": "Marcaste todas las preguntas de {scale} como No aplicable; no hay brechas ni servicios disponibles."
+    },
+    "ctaBanner": {
+      "title": "Convierte este plan en realidad.",
+      "description": "No afrontes estos gaps por tu cuenta. Nuestros expertos están listos para ayudarte a alcanzar el siguiente nivel de madurez.",
+      "or": "o",
+      "disclaimer": "Aunque la herramienta fue diseñada por profesionales del sector de la construcción, los resultados de esta prueba no constituyen un certificado formal y se proporcionan únicamente con fines informativos.",
+      "talkButtonLabel": "Hablar con un experto",
+      "resetButtonLabel": "Restablecer cuestionario",
+      "resetFormModal": {
+        "title": "Restablecer cuestionario",
+        "description": "Esto eliminará permanentemente todas tus respuestas. No almacenamos tus respuestas. Descarga tu informe ahora para conservar un registro de tus resultados.",
+        "downloadButtonLabel": "Descargar y restablecer",
+        "cancelButtonLabel": "Cancelar",
+        "resetButtonLabel": "Restablecer"
+      }
+    },
+    "contactExpertModal": {
+      "supportNeeded": {
+        "title": "Apoyo necesario para:",
+        "description": "Selecciona los gaps concretos con los que te gustaría que te ayudáramos.",
+        "primaryButtonLabel": "Continuar",
+        "completedLabel": "completado",
+        "chipLabel": "Máxima prioridad para el crecimiento"
+      },
+      "reachOut": {
+        "title": "¿Cómo podemos contactarte?",
+        "description": "Proporciona tus datos para que nuestro experto sepa a quién preguntar.",
+        "primaryButtonLabel": "Solicitar contacto",
+        "secondaryButtonLabel": "Atrás",
+        "completedLabel": "completado"
+      },
+      "successStatus": {
+        "title": "¡Solicitud enviada con éxito!",
+        "description": "Nuestro equipo revisará tus necesidades y te contactará en un plazo de 72 horas. Mientras tanto, no olvides guardar tu informe completo.",
+        "primaryButtonLabel": "Descargar informe",
+        "secondaryButtonLabel": "Cerrar"
+      },
+      "failedStatus": {
+        "title": "Algo salió mal",
+        "description": "No pudimos enviar tu solicitud. Comprueba tu conexión e inténtalo de nuevo.",
+        "primaryButtonLabel": "Inténtalo de nuevo",
+        "secondaryButtonLabel": "Cerrar"
+      }
+    }
+  }
+}

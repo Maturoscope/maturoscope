@@ -24,8 +24,14 @@ interface ExtraProps {
   currentStep?: ModalStep
 }
 
-const EN_LOADING_BUTTON_LABEL = "Loading..."
-const FR_LOADING_BUTTON_LABEL = "Chargement..."
+const LOADING_BUTTON_LABEL_BY_LANG: Record<string, string> = {
+  en: "Loading...",
+  fr: "Chargement...",
+  es: "Cargando...",
+  it: "Caricamento...",
+  sl: "Nalaganje...",
+  el: "Φόρτωση...",
+}
 
 const Status = ({
   isOpen,
@@ -38,7 +44,7 @@ const Status = ({
 }: StatusProps & ExtraProps) => {
   const { lang } = useParams<{ lang: Locale }>()
   const { downloadReport, isLoading } = useDownloadReport(lang)
-  const loadingButtonLabel = lang === "en" ? EN_LOADING_BUTTON_LABEL : FR_LOADING_BUTTON_LABEL
+  const loadingButtonLabel = LOADING_BUTTON_LABEL_BY_LANG[lang] ?? LOADING_BUTTON_LABEL_BY_LANG.en
   const isSuccess = currentStep === "successStatus"
 
   const handleDownloadClick = async () => {

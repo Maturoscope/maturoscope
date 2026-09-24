@@ -1,0 +1,281 @@
+{
+  "lang": "it",
+  "common": {
+    "loadingLabel": "Caricamento...",
+    "notApplicableLabel": "Non applicabile"
+  },
+  "header": {
+    "stringConnector": "di"
+  },
+  "backBar": {
+    "buttonLabel": "Indietro"
+  },
+  "homepage": {
+    "hero": {
+      "heading": {
+        "title": "Valuta la maturità della tua innovazione in pochi minuti.",
+        "description": "Ottieni un'analisi istantanea dei tuoi livelli di maturità tecnologica, di mercato e di produzione e individua i servizi per migliorarli"
+      },
+      "information": {
+        "noAccount": "Non è richiesto alcun account",
+        "noStored": "Non memorizziamo le tue informazioni",
+        "tooltip": "Non memorizziamo, conserviamo né riutilizziamo alcuna delle informazioni inserite. Tutti i dati vengono elaborati temporaneamente ed eliminati automaticamente per garantire la massima riservatezza.",
+        "buttonLabel": "Iniziamo",
+        "estimatedTime": "12 minuti"
+      },
+      "criteria": {
+        "title": "Valuta 3 dimensioni chiave",
+        "keys": [
+          {
+            "icon": "/icons/homepage/criteria-trl.svg",
+            "title": "TRL - Livello di maturità tecnologica",
+            "description": "Qual è l'attuale livello della tua innovazione?",
+            "questionsCount": "7 domande"
+          },
+          {
+            "icon": "/icons/homepage/criteria-mkrl.svg",
+            "title": "MkRL - Livello di maturità di mercato",
+            "description": "Come raggiungere il mercato?",
+            "questionsCount": "4 domande"
+          },
+          {
+            "icon": "/icons/homepage/criteria-mfrl.svg",
+            "title": "MfRL - Livello di maturità di produzione",
+            "description": "Come replicare il prodotto in modo rapido ed economico?",
+            "questionsCount": "4 domande"
+          }
+        ]
+      }
+    },
+    "policy": {
+      "description": "Il progetto METABUILDING LABS ha ricevuto finanziamenti dal Programma Quadro per la Ricerca e l'Innovazione Horizon 2020 dell'Unione Europea, nell'ambito della Convenzione di Sovvenzione n. 953193. La responsabilità esclusiva del contenuto del presente documento è interamente dell'autore. La Commissione Europea non è responsabile dell'uso che potrebbe essere fatto delle informazioni in esso contenute. Il progetto STAR*track ha ricevuto finanziamenti dal programma di ricerca e innovazione Horizon Europe dell'Unione Europea, nell'ambito della Convenzione di Sovvenzione n. 101147509",
+      "conceivedByLabel": "Ideato da",
+      "copyright": "Sviluppato da",
+      "contactUsLabel": "Contattaci",
+      "privacyPolicyLabel": "Informativa sulla privacy",
+      "privacyPolicyModal": {
+        "title": "Informativa sulla Privacy",
+        "lastUpdatedLabel": "Ultimo aggiornamento: [17/01/2026]"
+      }
+    },
+    "gdprModal": {
+      "message": "Questo questionario utilizza cookie necessari e memoria locale per salvare temporaneamente i tuoi progressi. Non utilizziamo cookie di tracciamento o pubblicitari e non raccogliamo informazioni personali.",
+      "learnMoreLabel": "Scopri di più"
+    }
+  },
+  "notFound": {
+    "title": "Pagina non trovata",
+    "description": "Siamo spiacenti, non siamo riusciti a trovare la pagina che stai cercando."
+  },
+  "beforeWeBegin": {
+    "title": "Prima di iniziare",
+    "paragraphs": [
+      "Ogni risposta descrive un livello che devi soddisfare pienamente. Se sei indeciso tra due risposte, **seleziona il livello di maturità più basso**.",
+      "Se una domanda non si applica al progetto che stai valutando, **seleziona \"Non applicabile\"** e continua.",
+      "Al termine di ogni scala potrai rivedere le tue risposte e modificarle se necessario."
+    ],
+    "buttonLabel": "Inizia valutazione"
+  },
+  "begin": {
+    "title": "Cosa valutiamo oggi?",
+    "label": "Assegna un nome al tuo progetto",
+    "placeholder": "Prototipo di Pannello Solare v2",
+    "backButtonLabel": "Indietro",
+    "nextButtonLabel": "Continua",
+    "evaluation": {
+      "title": "Che cosa stai valutando?",
+      "description": "Seleziona di seguito su quali scale vuoi valutare la tua innovazione. Ogni scala ha le sue specificità ed è consigliata o meno in base al tipo di innovazione.",
+      "availableDimensionsTitle": "Dimensioni disponibili",
+      "availableDimensionsDescription": "Scegli quelle che vuoi valutare.",
+      "recommendedLabel": "Consigliato",
+      "disclaimer": "TRL e MfRL sono stati progettati per prodotti fisici. Se alcune domande non sono pertinenti, contrassegnale come Non applicabile.",
+      "types": {
+        "product": {
+          "label": "Prodotto",
+          "description": "Qualcosa che viene fabbricato"
+        },
+        "software": {
+          "label": "Software",
+          "description": "Un'app, piattaforma o strumento digitale"
+        },
+        "service": {
+          "label": "Servizio",
+          "description": "Consulenza, installazione, operazioni"
+        }
+      },
+      "dimensions": {
+        "trl": "TRL — Livello di maturità tecnologica",
+        "mkrl": "MkRL — Livello di maturità di mercato",
+        "mfrl": "MfRL — Livello di maturità produttiva"
+      }
+    }
+  },
+  "form": {
+    "buttonNextLabel": "Continua",
+    "buttonPrevLabel": "Indietro",
+    "commentPlaceholder": "Aggiungi note specifiche per il tuo report finale (Facoltativo)",
+    "addNoteLabel": "Aggiungi nota facoltativa",
+    "removeNoteLabel": "Rimuovi",
+    "levelLabel": "Livello",
+    "leaveQuestionnaireModal": {
+      "title": "Uscire dal questionario?",
+      "description": "Se esci ora, le tue risposte andranno perse.",
+      "resetButtonLabel": "Esci comunque",
+      "cancelButtonLabel": "Annulla"
+    },
+    "checkpoint": {
+      "buttonLabel": "Torna a",
+      "continueToLabel": "Continua con",
+      "seeReportLabel": "Vedi report",
+      "intermediateTitle": "{scale} completata",
+      "intermediateDescription": "Ottimi progressi. Prossimo: {next}.",
+      "finalTitle": "Valutazione completata",
+      "finalDescription": "Il tuo report è pronto per essere generato. (Ultima possibilità di revisione: le risposte non potranno essere modificate dopo questo passaggio.)"
+    },
+    "stages": [
+      {
+        "id": "trl",
+        "icon": "/icons/form/trl.svg",
+        "name": "TRL",
+        "reviewLabel": "Rivedi le risposte"
+      },
+      {
+        "id": "mkrl",
+        "icon": "/icons/form/mkrl.svg",
+        "name": "MkRL",
+        "reviewLabel": "Rivedi le risposte"
+      },
+      {
+        "id": "mfrl",
+        "icon": "/icons/form/mfrl.svg",
+        "name": "MfRL",
+        "reviewLabel": "Rivedi le risposte"
+      }
+    ]
+  },
+  "review": {
+    "title": "Rivedi le risposte di [STAGE_NAME]",
+    "editButtonLabel": "Modifica"
+  },
+  "singleReview": {
+    "cancelButtonLabel": "Annulla",
+    "saveButtonLabel": "Salva",
+    "commentPlaceholder": "Aggiungi note specifiche per il tuo report finale (Facoltativo)",
+    "unsavedChangesModal": {
+      "title": "Modifiche non salvate",
+      "description": "Hai modifiche non salvate. Se esci ora, i tuoi ultimi aggiornamenti andranno persi.",
+      "cancelButtonLabel": "Annulla",
+      "resetButtonLabel": "Esci comunque"
+    },
+    "toast": {
+      "title": "Risposta aggiornata",
+      "description": "I tuoi aggiornamenti sono stati salvati con successo"
+    }
+  },
+  "results": {
+    "topBar": {
+      "title": "Il tuo profilo di maturità",
+      "subtitle": "Completato il ",
+      "downloadButtonLabel": "Scarica report",
+      "talkButtonLabel": "Parla con un esperto"
+    },
+    "beforeYouGoModal": {
+      "title": "Prima di andare...",
+      "description": "Poiché non salviamo le tue risposte, assicurati di aver scaricato il report della valutazione. Non potrai accedervi in seguito.",
+      "downloadButtonLabel": "Scarica ed esci",
+      "cancelButtonLabel": "Annulla",
+      "resetButtonLabel": "Esci comunque"
+    },
+    "overview": {
+      "title": "Panoramica",
+      "learnMoreButtonLabel": "Scopri di più",
+      "resultsSufixLabel": "Risultati",
+      "notScoredLabel": "Non valutato",
+      "notScoredDescription": "Tutte le domande contrassegnate come Non applicabile",
+      "stages": [
+        {
+          "label": "TRL",
+          "description": "Livello di maturità tecnologica"
+        },
+        {
+          "label": "MkRL",
+          "description": "Livello di maturità di mercato"
+        },
+        {
+          "label": "MfRL",
+          "description": "Livello di maturità di produzione"
+        }
+      ]
+    },
+    "unlockNextLevel": {
+      "title": "Cosa succede ora?",
+      "steps": [
+        "Rivedi i tuoi risultati dettagliati qui sotto.",
+        "Scarica il tuo report e conservalo per le tappe future.",
+        "Mettiti in contatto con gli esperti consigliati per accelerare il tuo successo."
+      ],
+      "clarification": "Dopo aver rivisto i tuoi risultati, salvali e contatta i servizi consigliati. Ti aiuteranno a colmare le lacune necessarie per migliorare il tuo livello di maturità."
+    },
+    "detailedReport": {
+      "title": "Report dettagliato",
+      "description": "Cerca le etichette \"Servizio disponibile\" qui sotto per vedere dove i nostri esperti possono accelerare i tuoi progressi.",
+      "copyPreLevel": "Per raggiungere il livello ",
+      "copyPostLevel": "Colma le lacune indicate di seguito",
+      "copyLevelLabel": "Livello",
+      "copyHighestLevel": "Livello più alto raggiunto",
+      "serviceLabel": "Servizio disponibile",
+      "servicesLabel": "Servizi disponibili",
+      "comingSoonLabel": "Prossimamente",
+      "gapLabel": "Divario",
+      "servicesColumnLabel": "Servizi",
+      "descriptionColumnLabel": "Descrizione",
+      "focusLabel": "Focus attuale",
+      "primaryRiskLabel": "Rischio principale da mitigare",
+      "noScoreTitle": "Nessun punteggio {scale}",
+      "noScoreDescription": "Hai contrassegnato tutte le domande {scale} come Non applicabile: non ci sono divari né servizi disponibili."
+    },
+    "ctaBanner": {
+      "title": "Trasforma questo piano in realtà.",
+      "description": "Non affrontare queste lacune da solo. I nostri esperti sono pronti ad aiutarti a raggiungere il livello di maturità successivo.",
+      "or": "o",
+      "disclaimer": "Sebbene lo strumento sia stato progettato da professionisti del settore delle costruzioni, i risultati di questo test non costituiscono un certificato formale e sono forniti esclusivamente a scopo informativo.",
+      "talkButtonLabel": "Parla con un esperto",
+      "resetButtonLabel": "Ripristina questionario",
+      "resetFormModal": {
+        "title": "Ripristina questionario",
+        "description": "Questa azione eliminerà definitivamente tutte le tue risposte. Non memorizziamo le tue risposte. Scarica ora il tuo report per conservare una copia dei tuoi risultati.",
+        "downloadButtonLabel": "Scarica e ripristina",
+        "cancelButtonLabel": "Annulla",
+        "resetButtonLabel": "Ripristina"
+      }
+    },
+    "contactExpertModal": {
+      "supportNeeded": {
+        "title": "Supporto necessario per:",
+        "description": "Seleziona le lacune specifiche che vorresti che ti aiutassimo a colmare.",
+        "primaryButtonLabel": "Continua",
+        "completedLabel": "completato",
+        "chipLabel": "Massima priorità per la crescita"
+      },
+      "reachOut": {
+        "title": "Come possiamo contattarti?",
+        "description": "Fornisci i tuoi dati in modo che il nostro esperto sappia chi cercare.",
+        "primaryButtonLabel": "Richiedi contatto",
+        "secondaryButtonLabel": "Indietro",
+        "completedLabel": "completato"
+      },
+      "successStatus": {
+        "title": "Richiesta inviata con successo!",
+        "description": "Il nostro team esaminerà le tue esigenze e ti contatterà entro 72 ore. Nel frattempo, non dimenticare di salvare il tuo report completo.",
+        "primaryButtonLabel": "Scarica report",
+        "secondaryButtonLabel": "Chiudi"
+      },
+      "failedStatus": {
+        "title": "Qualcosa è andato storto",
+        "description": "Non siamo riusciti a inviare la tua richiesta. Controlla la connessione e riprova.",
+        "primaryButtonLabel": "Riprova",
+        "secondaryButtonLabel": "Chiudi"
+      }
+    }
+  }
+}

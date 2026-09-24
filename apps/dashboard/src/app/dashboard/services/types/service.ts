@@ -57,13 +57,19 @@ export interface ServiceSummary {
   isActive: boolean;
 }
 
+export interface ServiceTranslationInput {
+  languageCode: string;
+  name?: string;
+  description?: string;
+}
+
 export interface CreateServicePayload {
   name: string;
   nameEn: string;
-  nameFr: string;
+  nameFr?: string;
   description: string;
   descriptionEn: string;
-  descriptionFr: string;
+  descriptionFr?: string;
   url: string;
   mainContactFirstName: string;
   mainContactLastName: string;
@@ -72,6 +78,7 @@ export interface CreateServicePayload {
   secondaryContactLastName: string;
   secondaryContactEmail: string;
   gapCoverages: GapCoverage[];
+  translations?: ServiceTranslationInput[];
 }
 
 export type UpdateServicePayload = Partial<CreateServicePayload>;

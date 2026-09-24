@@ -4,7 +4,7 @@ import PrivacyPolicy from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPol
 import GdprModal from "@/components/custom/Homepage/GdprModal/GdprModal"
 import FormRedirectHandler from "@/components/common/FormRedirectHandler/FormRedirectHandler"
 // Dictionaries
-import { getDictionary, Locale } from "@/dictionaries/dictionaries"
+import { getDictionary, Locale, resolveLocale } from "@/dictionaries/dictionaries"
 
 type HomePageProps = {
   params: Promise<{ lang: string }>
@@ -12,7 +12,7 @@ type HomePageProps = {
 
 const HomePage = async ({ params }: HomePageProps) => {
   const { lang: langParam } = await params
-  const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
+  const lang: Locale = resolveLocale(langParam)
   const dictionary = await getDictionary(lang)
 
   const {

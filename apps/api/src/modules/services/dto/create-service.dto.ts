@@ -52,6 +52,26 @@ export class GapCoverageDto {
   scaleType: ScaleType;
 }
 
+export class ServiceTranslationInputDto {
+  @ApiProperty({
+    description: 'Language code (en, fr, es, it, sl, el)',
+    example: 'es',
+  })
+  @IsString()
+  languageCode: string;
+
+  @ApiPropertyOptional({ description: 'Translated service name', maxLength: 255 })
+  @IsOptional()
+  @IsString()
+  @MaxLength(255)
+  name?: string;
+
+  @ApiPropertyOptional({ description: 'Translated service description' })
+  @IsOptional()
+  @IsString()
+  description?: string;
+}
+
 export class CreateServiceDto {
   @ApiPropertyOptional({ 
     description: 'Service name (deprecated, use nameEn/nameFr)',
@@ -195,7 +215,7 @@ export class CreateServiceDto {
   @MaxLength(255)
   secondaryContactEmail?: string;
 
-  @ApiProperty({ 
+  @ApiProperty({
     description: 'Array of gap coverages this service addresses',
     type: [GapCoverageDto],
     minItems: 1
@@ -205,6 +225,18 @@ export class CreateServiceDto {
   @ValidateNested({ each: true })
   @Type(() => GapCoverageDto)
   gapCoverages: GapCoverageDto[];
+
+  @ApiPropertyOptional({
+    description:
+      'Secondary-language translations (name/description). The default language ' +
+      'is taken from nameEn/descriptionEn; en/fr also mirror the legacy columns.',
+    type: [ServiceTranslationInputDto],
+  })
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ServiceTranslationInputDto)
+  translations?: ServiceTranslationInputDto[];
 
   @ApiPropertyOptional({
     description:

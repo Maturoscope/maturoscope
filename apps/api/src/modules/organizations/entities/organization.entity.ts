@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { OrganizationLanguage } from './organization-language.entity';
 
 export enum OrganizationStatus {
   INACTIVE = 'inactive',
@@ -33,6 +34,11 @@ export class Organization {
   @Column({ type: 'text', nullable: true })
   language: string;
 
+  // Source language for translations (lowercase ISO: en, fr, es, it, sl, el).
+  // `language` above is legacy (uppercase EN/FR) and will be deprecated.
+  @Column({ type: 'varchar', length: 5, default: 'en' })
+  defaultLanguage: string;
+
   @Column({ type: 'text', nullable: true })
   avatar: string;
 
@@ -52,4 +58,8 @@ export class Organization {
 
   @OneToMany(() => User, (user) => user.organization)
   users: User[];
+
+  // Languages this organization has turned on (en, fr, es, it, sl, el).
+  @OneToMany(() => OrganizationLanguage, (language) => language.organization)
+  languages: OrganizationLanguage[];
 }

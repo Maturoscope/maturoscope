@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { useContactExpertContext } from "@/context/ContactExpertContext"
 // Utils
 import { cn } from "@/lib/utils"
+import { DATE_LOCALES } from "@/lib/dateLocales"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
 import { Gap } from "@/actions/organization"
@@ -64,7 +65,7 @@ const ResultsTopBar = ({
     if (storedCompletedOn) {
       const date = new Date(storedCompletedOn)
       const formattedDate = date.toLocaleDateString(
-        lang === "fr" ? "fr-FR" : "en-US",
+        DATE_LOCALES[lang] ?? "en-US",
         { year: "numeric", month: "long", day: "numeric" }
       )
       setCompletedOnDate(formattedDate)

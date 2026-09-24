@@ -1,7 +1,7 @@
 // Components
 import SimpleForm from "@/components/custom/BeginPage/SimpleForm/SimpleForm"
 // Dictionaries
-import { getDictionary, Locale } from "@/dictionaries/dictionaries"
+import { getDictionary, Locale, resolveLocale } from "@/dictionaries/dictionaries"
 
 type BeginPageProps = {
   params: Promise<{ lang: string }>
@@ -9,7 +9,7 @@ type BeginPageProps = {
 
 const BeginPage = async ({ params }: BeginPageProps) => {
   const { lang: langParam } = await params
-  const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
+  const lang: Locale = resolveLocale(langParam)
   const dictionary = await getDictionary(lang)
 
   const {

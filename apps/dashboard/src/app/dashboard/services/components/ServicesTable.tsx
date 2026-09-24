@@ -42,6 +42,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { ServiceSummary } from "../types/service";
 import { ActiveFilter } from "../hooks/useServiceFilters";
+import { ServiceTranslationStatus } from "@/services/languages.service";
 
 interface ServicesTableProps {
   services: ServiceSummary[];
@@ -51,6 +52,10 @@ interface ServicesTableProps {
   onView?: (service: ServiceSummary) => void;
   onToggleActive: (service: ServiceSummary, isActive: boolean) => void;
   activeFilter: ActiveFilter;
+  /** Per-service translation status (Done/Missing), keyed by service id. */
+  translationStatus?: Record<string, ServiceTranslationStatus>;
+  /** Opens the per-service translations modal. */
+  onTranslate?: (service: ServiceSummary) => void;
 }
 
 const SCALE_RANGES = [
@@ -137,6 +142,8 @@ export function ServicesTable({
   onView,
   onToggleActive,
   activeFilter,
+  translationStatus,
+  onTranslate,
 }: ServicesTableProps) {
   const { t, i18n } = useTranslation("SERVICES");
 
@@ -216,11 +223,28 @@ export function ServicesTable({
               <TableHead className="px-6 py-3 text-[#0A0A0A] font-medium align-middle bg-[#F5F5F5]">
                 {t("TABLE.HEADERS.CATEGORY_SCALE")}
               </TableHead>
-              <TableHead className="px-6 py-3 text-[#0A0A0A] font-medium align-middle bg-[#F5F5F5]">
+              <TableHead className="px-6 py-3 text-[#0A0A0A] font-medium align-middle bg-[#F5F5F5] whitespace-nowrap">
                 {t("TABLE.HEADERS.MAIN_CONTACT")}
               </TableHead>
-              <TableHead className="px-6 py-3 text-[#0A0A0A] font-medium align-middle bg-[#F5F5F5]">
+              <TableHead className="px-6 py-3 text-[#0A0A0A] font-medium align-middle bg-[#F5F5F5] whitespace-nowrap">
                 {t("TABLE.HEADERS.SECONDARY_CONTACT")}
+              </TableHead>
+              <TableHead className="px-6 py-3 text-[#0A0A0A] font-medium align-middle bg-[#F5F5F5]">
+                <div className="flex items-center gap-1.5">
+                  <span>{t("TABLE.HEADERS.TRANSLATION")}</span>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="h-3.5 w-3.5 text-[#0A0A0A] cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent
+                      side="top"
+                      className="max-w-[240px] bg-[#0A0A0A] text-white border-none"
+                      sideOffset={8}
+                    >
+                      {t("TABLE.TRANSLATION_TOOLTIP")}
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
               </TableHead>
               <TableHead className="px-6 py-3 text-[#0A0A0A] font-medium align-middle bg-[#F5F5F5]">
                 <div className="flex items-center gap-1.5">
@@ -291,6 +315,41 @@ export function ServicesTable({
                       firstName={service.secondaryContact.firstName}
                       lastName={service.secondaryContact.lastName}
                     />
+                  </TableCell>
+                  <TableCell
+                    className="px-6 py-4 align-middle"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {(() => {
+                      const st = translationStatus?.[service.id];
+                      const missing = st?.status === "missing";
+                      return (
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={cn(
+                              "inline-block rounded-md px-2 py-0.5 text-xs font-semibold",
+                              missing
+                                ? "bg-orange-100 text-orange-900"
+                                : "bg-[#F5F5F5] text-[#0A0A0A]",
+                            )}
+                          >
+                            {missing
+                              ? t("TABLE.TRANSLATION_STATUS.MISSING")
+                              : t("TABLE.TRANSLATION_STATUS.DONE")}
+                          </span>
+                          {missing && onTranslate && (
+                            <button
+                              type="button"
+                              onClick={() => onTranslate(service)}
+                              aria-label={t("TABLE.HEADERS.TRANSLATION")}
+                              className="text-[#0A0A0A] hover:text-[#0A0A0A]/70"
+                            >
+                              <Pencil className="h-4 w-4" />
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })()}
                   </TableCell>
                   <TableCell
                     className="px-6 py-4 align-middle"

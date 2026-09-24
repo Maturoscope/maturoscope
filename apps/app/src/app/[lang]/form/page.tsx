@@ -8,9 +8,7 @@ import CheckpointTopBar from "@/components/custom/FormPage/CheckpointTopBar/Chec
 import { FormProvider } from "@/context/FormContext"
 import { ProgressProvider } from "@/context/ProgressContext"
 // Dictionaries
-import { getDictionary } from "@/dictionaries/dictionaries"
-// Types
-import { Locale } from "@/dictionaries/dictionaries"
+import { getDictionary, resolveLocale, Locale } from "@/dictionaries/dictionaries"
 // Actions
 import { getQuestions } from "@/actions/questions"
 
@@ -20,7 +18,7 @@ interface FormPageProps {
 
 const FormPage = async ({ params }: FormPageProps) => {
   const { lang: langParam } = await params
-  const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
+  const lang: Locale = resolveLocale(langParam)
   const dictionary = await getDictionary(lang)
   const {
     common: { loadingLabel, notApplicableLabel },

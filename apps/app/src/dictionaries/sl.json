@@ -1,0 +1,281 @@
+{
+  "lang": "sl",
+  "common": {
+    "loadingLabel": "Nalaganje ...",
+    "notApplicableLabel": "Ni relevantno"
+  },
+  "header": {
+    "stringConnector": "avtor:"
+  },
+  "backBar": {
+    "buttonLabel": "Nazaj"
+  },
+  "homepage": {
+    "hero": {
+      "heading": {
+        "title": "Ocenite zrelost svoje inovacije v nekaj minutah.",
+        "description": "Pridobite takojšnjo analizo svoje stopnje pripravljenosti na področju tehnologije, trga in proizvodnje ter prepoznajte storitve za njihovo izboljšanje"
+      },
+      "information": {
+        "noAccount": "Račun ni potreben",
+        "noStored": "Vaših podatkov ne shranjujemo",
+        "tooltip": "Nobenih podatkov, ki jih vnesete, ne shranjujemo, ne hranimo in jih ne uporabljamo ponovno. Vsi podatki se obdelajo začasno in samodejno izbrišejo, da se zagotovi popolna zaupnost.",
+        "buttonLabel": "Začnimo",
+        "estimatedTime": "12 minut"
+      },
+      "criteria": {
+        "title": "Ocenjuje 3 ključne razsežnosti",
+        "keys": [
+          {
+            "icon": "/icons/homepage/criteria-trl.svg",
+            "title": "TRL - Stopnja tehnološke pripravljenosti",
+            "description": "Kakšna je trenutna stopnja vaše inovacije?",
+            "questionsCount": "7 vprašanj"
+          },
+          {
+            "icon": "/icons/homepage/criteria-mkrl.svg",
+            "title": "MkRL - Stopnja tržne pripravljenosti",
+            "description": "Kako doseči trg?",
+            "questionsCount": "4 vprašanja"
+          },
+          {
+            "icon": "/icons/homepage/criteria-mfrl.svg",
+            "title": "MfRL - Stopnja proizvodne pripravljenosti",
+            "description": "Kako izdelek hitro in stroškovno učinkovito podvojiti?",
+            "questionsCount": "4 vprašanja"
+          }
+        ]
+      }
+    },
+    "policy": {
+      "description": "Projekt METABUILDING LABS je prejel sredstva iz raziskovalnega in inovacijskega programa Obzorje 2020 Evropske unije v okviru sporazuma o dodelitvi sredstev št. 953193. Izključno odgovornost za vsebino tega dokumenta nosi izključno avtor. Evropska komisija ni odgovorna za kakršno koli uporabo informacij, ki jih vsebuje. Projekt STAR*track je prejel sredstva iz raziskovalnega in inovacijskega programa Obzorje Evropa Evropske unije v okviru sporazuma o dodelitvi sredstev št. 101147509",
+      "conceivedByLabel": "Zasnoval",
+      "copyright": "Razvil",
+      "contactUsLabel": "Kontaktirajte nas",
+      "privacyPolicyLabel": "Politika zasebnosti",
+      "privacyPolicyModal": {
+        "title": "Politika zasebnosti",
+        "lastUpdatedLabel": "Zadnja posodobitev: [17/01/2026]"
+      }
+    },
+    "gdprModal": {
+      "message": "Ta vprašalnik uporablja nujne piškotke in lokalno shrambo za začasno shranjevanje vašega napredka. Ne uporabljamo sledilnih ali oglaševalskih piškotkov in ne zbiramo osebnih podatkov.",
+      "learnMoreLabel": "Preberite več"
+    }
+  },
+  "notFound": {
+    "title": "Stran ni najdena",
+    "description": "Žal strani, ki jo iščete, nismo našli."
+  },
+  "beforeWeBegin": {
+    "title": "Preden začnemo",
+    "paragraphs": [
+      "Vsak odgovor opisuje raven, ki jo morate v celoti izpolnjevati. Če se odločate med dvema odgovoroma, **izberite nižjo** stopnjo zrelosti.",
+      "Če vprašanje ne velja za projekt, ki ga ocenjujete, **izberite \"Ni relevantno\"** in nadaljujte.",
+      "Na koncu vsake lestvice boste lahko pregledali svoje odgovore in jih po potrebi uredili."
+    ],
+    "buttonLabel": "Začni ocenjevanje"
+  },
+  "begin": {
+    "title": "Kaj danes ocenjujemo?",
+    "label": "Poimenujte svoj projekt",
+    "placeholder": "Prototip sončne plošče v2",
+    "backButtonLabel": "Nazaj",
+    "nextButtonLabel": "Nadaljuj",
+    "evaluation": {
+      "title": "Kaj ocenjujete?",
+      "description": "Spodaj izberite, na katerih lestvicah želite oceniti svojo inovacijo. Vsaka lestvica ima svoje posebnosti in je priporočena ali ne glede na vrsto inovacije.",
+      "availableDimensionsTitle": "Razpoložljive dimenzije",
+      "availableDimensionsDescription": "Izberite tiste, ki jih želite oceniti.",
+      "recommendedLabel": "Priporočeno",
+      "disclaimer": "TRL in MfRL sta bila zasnovana za fizične izdelke. Če nekatera vprašanja niso ustrezna, jih označite kot Ni relevantno.",
+      "types": {
+        "product": {
+          "label": "Izdelek",
+          "description": "Nekaj, kar se izdeluje"
+        },
+        "software": {
+          "label": "Programska oprema",
+          "description": "Aplikacija, platforma ali digitalno orodje"
+        },
+        "service": {
+          "label": "Storitev",
+          "description": "Svetovanje, namestitev, obratovanje"
+        }
+      },
+      "dimensions": {
+        "trl": "TRL — Raven tehnološke pripravljenosti",
+        "mkrl": "MkRL — Raven tržne pripravljenosti",
+        "mfrl": "MfRL — Raven proizvodne pripravljenosti"
+      }
+    }
+  },
+  "form": {
+    "buttonNextLabel": "Nadaljuj",
+    "buttonPrevLabel": "Nazaj",
+    "commentPlaceholder": "Dodajte posebne opombe za svoje končno poročilo (Neobvezno)",
+    "addNoteLabel": "Dodaj neobvezno opombo",
+    "removeNoteLabel": "Odstrani",
+    "levelLabel": "Raven",
+    "leaveQuestionnaireModal": {
+      "title": "Zapustite vprašalnik?",
+      "description": "Če zdaj zapustite, bodo vaši odgovori izgubljeni.",
+      "resetButtonLabel": "Vseeno zapusti",
+      "cancelButtonLabel": "Prekliči"
+    },
+    "checkpoint": {
+      "buttonLabel": "Nazaj na",
+      "continueToLabel": "Nadaljuj na",
+      "seeReportLabel": "Poglej poročilo",
+      "intermediateTitle": "{scale} zaključena",
+      "intermediateDescription": "Odličen napredek. Sledi: {next}.",
+      "finalTitle": "Ocena zaključena",
+      "finalDescription": "Vaše poročilo je pripravljeno za pripravo. (Zadnja priložnost za pregled — odgovorov po tem koraku ni več mogoče spremeniti.)"
+    },
+    "stages": [
+      {
+        "id": "trl",
+        "icon": "/icons/form/trl.svg",
+        "name": "TRL",
+        "reviewLabel": "Preglej odgovore"
+      },
+      {
+        "id": "mkrl",
+        "icon": "/icons/form/mkrl.svg",
+        "name": "MkRL",
+        "reviewLabel": "Preglej odgovore"
+      },
+      {
+        "id": "mfrl",
+        "icon": "/icons/form/mfrl.svg",
+        "name": "MfRL",
+        "reviewLabel": "Preglej odgovore"
+      }
+    ]
+  },
+  "review": {
+    "title": "Preglej odgovore za [STAGE_NAME]",
+    "editButtonLabel": "Uredi"
+  },
+  "singleReview": {
+    "cancelButtonLabel": "Prekliči",
+    "saveButtonLabel": "Shrani",
+    "commentPlaceholder": "Dodajte posebne opombe za svoje končno poročilo (Neobvezno)",
+    "unsavedChangesModal": {
+      "title": "Neshranjene spremembe",
+      "description": "Imate neshranjene spremembe. Če zdaj zapustite, bodo vaše zadnje posodobitve izgubljene.",
+      "cancelButtonLabel": "Prekliči",
+      "resetButtonLabel": "Vseeno zapusti"
+    },
+    "toast": {
+      "title": "Odgovor posodobljen",
+      "description": "Vaše posodobitve so bile uspešno shranjene"
+    }
+  },
+  "results": {
+    "topBar": {
+      "title": "Vaš profil zrelosti",
+      "subtitle": "Zaključeno dne ",
+      "downloadButtonLabel": "Prenesi poročilo",
+      "talkButtonLabel": "Pogovorite se s strokovnjakom"
+    },
+    "beforeYouGoModal": {
+      "title": "Preden odidete ...",
+      "description": "Ker vaših odgovorov ne shranjujemo, se prepričajte, da ste prenesli poročilo o oceni. Kasneje do njega ne boste mogli dostopati.",
+      "downloadButtonLabel": "Prenesi in zapusti",
+      "cancelButtonLabel": "Prekliči",
+      "resetButtonLabel": "Vseeno zapusti"
+    },
+    "overview": {
+      "title": "Pregled",
+      "learnMoreButtonLabel": "Preberite več",
+      "resultsSufixLabel": "Rezultati",
+      "notScoredLabel": "Ni ocenjeno",
+      "notScoredDescription": "Vsa vprašanja označena kot Ni relevantno",
+      "stages": [
+        {
+          "label": "TRL",
+          "description": "Stopnja tehnološke pripravljenosti"
+        },
+        {
+          "label": "MkRL",
+          "description": "Stopnja tržne pripravljenosti"
+        },
+        {
+          "label": "MfRL",
+          "description": "Stopnja proizvodne pripravljenosti"
+        }
+      ]
+    },
+    "unlockNextLevel": {
+      "title": "Kaj sledi?",
+      "steps": [
+        "Spodaj si oglejte podrobne rezultate.",
+        "Prenesite poročilo in ga shranite za prihodnje mejnike.",
+        "Povežite se s priporočenimi strokovnjaki in pospešite svoj uspeh."
+      ],
+      "clarification": "Ko pregledate svoje rezultate, jih shranite in se obrnite na priporočene storitve. Pomagale vam bodo zapolniti vrzeli, potrebne za izboljšanje vaše stopnje pripravljenosti."
+    },
+    "detailedReport": {
+      "title": "Podrobno poročilo",
+      "description": "Poiščite oznake \"Storitev na voljo\" spodaj, da vidite, kje lahko naši strokovnjaki pospešijo vaš napredek.",
+      "copyPreLevel": "Za dosego stopnje ",
+      "copyPostLevel": "Zapolnite spodnje vrzeli",
+      "copyLevelLabel": "Raven",
+      "copyHighestLevel": "Najvišja dosežena stopnja",
+      "serviceLabel": "Storitev na voljo",
+      "servicesLabel": "Storitve na voljo",
+      "comingSoonLabel": "Kmalu na voljo",
+      "gapLabel": "Vrzel",
+      "servicesColumnLabel": "Storitve",
+      "descriptionColumnLabel": "Opis",
+      "focusLabel": "Trenutni fokus",
+      "primaryRiskLabel": "Glavno tveganje za omilitev",
+      "noScoreTitle": "Ni ocene {scale}",
+      "noScoreDescription": "Vsa vprašanja {scale} ste označili kot Ni relevantno; ni vrzeli ali razpoložljivih storitev."
+    },
+    "ctaBanner": {
+      "title": "Spremenite ta načrt v resničnost.",
+      "description": "Teh vrzeli ne premagujte sami. Naši strokovnjaki so pripravljeni, da vam pomagajo doseči naslednjo stopnjo zrelosti.",
+      "or": "ali",
+      "disclaimer": "Čeprav so orodje zasnovali strokovnjaki iz gradbenega sektorja, rezultati tega testa ne predstavljajo uradnega certifikata in so na voljo zgolj v informativne namene.",
+      "talkButtonLabel": "Pogovorite se s strokovnjakom",
+      "resetButtonLabel": "Ponastavi vprašalnik",
+      "resetFormModal": {
+        "title": "Ponastavi vprašalnik",
+        "description": "S tem boste trajno izbrisali vse svoje odgovore. Vaših odgovorov ne shranjujemo. Prenesite poročilo zdaj, da ohranite zapis svojih rezultatov.",
+        "downloadButtonLabel": "Prenesi in ponastavi",
+        "cancelButtonLabel": "Prekliči",
+        "resetButtonLabel": "Ponastavi"
+      }
+    },
+    "contactExpertModal": {
+      "supportNeeded": {
+        "title": "Potrebna je podpora za:",
+        "description": "Izberite posebne vrzeli, pri katerih želite našo pomoč.",
+        "primaryButtonLabel": "Nadaljuj",
+        "completedLabel": "zaključeno",
+        "chipLabel": "Najvišja prioriteta za rast"
+      },
+      "reachOut": {
+        "title": "Kako vas lahko dosežemo?",
+        "description": "Prosimo, navedite svoje podatke, da bo naš strokovnjak vedel, koga naj vpraša.",
+        "primaryButtonLabel": "Zahtevaj stik",
+        "secondaryButtonLabel": "Nazaj",
+        "completedLabel": "zaključeno"
+      },
+      "successStatus": {
+        "title": "Zahteva uspešno poslana!",
+        "description": "Naša ekipa bo pregledala vaše potrebe in vas kontaktirala v 72 urah. Medtem ne pozabite shraniti celotnega poročila.",
+        "primaryButtonLabel": "Prenesi poročilo",
+        "secondaryButtonLabel": "Zapri"
+      },
+      "failedStatus": {
+        "title": "Prišlo je do napake",
+        "description": "Vaše zahteve nismo mogli poslati. Preverite povezavo in poskusite znova.",
+        "primaryButtonLabel": "Poskusi znova",
+        "secondaryButtonLabel": "Zapri"
+      }
+    }
+  }
+}

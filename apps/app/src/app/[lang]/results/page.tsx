@@ -1,5 +1,5 @@
 // Dictionaries
-import { getDictionary } from "@/dictionaries/dictionaries"
+import { getDictionary, resolveLocale } from "@/dictionaries/dictionaries"
 // Types
 import { Locale } from "@/dictionaries/dictionaries"
 // Components
@@ -21,7 +21,7 @@ type ResultsPageProps = {
 
 const ResultsPage = async ({ params }: ResultsPageProps) => {
   const { lang: langParam } = await params
-  const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
+  const lang: Locale = resolveLocale(langParam)
   const dictionary = await getDictionary(lang)
 
   const {

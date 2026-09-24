@@ -2,6 +2,8 @@ import { Injectable, ConflictException, NotFoundException, BadRequestException, 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Organization } from './entities/organization.entity';
+import { OrganizationLanguage } from './entities/organization-language.entity';
+import { normalizeLanguage } from '../../common/i18n/languages';
 import { OvhS3Service } from '../../common/storage/ovh-s3.service';
 import { UploadedFile } from '../../common/types/uploaded-file.type';
 import { UsersService } from '../users/users.service';
@@ -19,6 +21,8 @@ export class OrganizationsService {
   constructor(
     @InjectRepository(Organization)
     private readonly organizationRepository: Repository<Organization>,
+    @InjectRepository(OrganizationLanguage)
+    private readonly organizationLanguageRepository: Repository<OrganizationLanguage>,
     private readonly ovhS3: OvhS3Service,
     private readonly usersService: UsersService,
     structuredLogger: StructuredLoggerService,
@@ -40,8 +44,25 @@ export class OrganizationsService {
     // organizations, so we no longer block on the email already existing (as an
     // organization email or a user). The invitation flow associates an existing
     // user to the new organization instead of creating a duplicate.
-    const organization = this.organizationRepository.create(createOrganizationDto);
-    return await this.organizationRepository.save(organization);
+    const defaultLanguage = normalizeLanguage(
+      createOrganizationDto.defaultLanguage ?? createOrganizationDto.language,
+    );
+    const organization = this.organizationRepository.create({
+      ...createOrganizationDto,
+      defaultLanguage,
+    });
+    const saved = await this.organizationRepository.save(organization);
+
+    // Seed the enabled-languages set with the default (always enabled/live).
+    await this.organizationLanguageRepository.save(
+      this.organizationLanguageRepository.create({
+        organizationId: saved.id,
+        languageCode: defaultLanguage,
+        enabled: true,
+      }),
+    );
+
+    return saved;
   }
 
   async findAll(): Promise<Organization[]> {
@@ -303,6 +324,20 @@ export class OrganizationsService {
     
     const organization = await this.findOne(user.organizationId);
     organization.language = language;
+    return await this.organizationRepository.save(organization);
+  }
+
+  /**
+   * Set the organization's default (source) language. Validation that the
+   * language is Live lives in LanguagesService, which owns the multi-language
+   * rules; this method just persists the value.
+   */
+  async updateDefaultLanguage(
+    organizationId: string,
+    languageCode: string,
+  ): Promise<Organization> {
+    const organization = await this.findOne(organizationId);
+    organization.defaultLanguage = languageCode;
     return await this.organizationRepository.save(organization);
   }
 

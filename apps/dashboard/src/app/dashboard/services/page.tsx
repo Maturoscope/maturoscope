@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DynamicPageHeader } from "@/components/DynamicPageHeader";
 import { useUserContext } from "@/app/hooks/contexts/UserProvider";
@@ -12,6 +12,12 @@ import { DeleteServiceDialog } from "./components/DeleteServiceDialog";
 import { useServices } from "./hooks/useServices";
 import { useServiceFilters } from "./hooks/useServiceFilters";
 import { ServiceSummary } from "./types/service";
+import { ManageTranslationsModal } from "@/components/languages/ManageTranslationsModal";
+import {
+  LanguagesService,
+  LanguageCode,
+  ServiceTranslationStatus,
+} from "@/services/languages.service";
 
 export default function ServicesPage() {
   const { t, i18n } = useTranslation("SERVICES");
@@ -42,6 +48,61 @@ export default function ServicesPage() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedServiceId, setSelectedServiceId] = useState<string | undefined>(undefined);
+
+  // Translation status per service + enabled secondary languages, for the
+  // Translation column, the "Manage Translations" button and the per-service edit.
+  const [translationStatus, setTranslationStatus] = useState<
+    Record<string, ServiceTranslationStatus>
+  >({});
+  const [secondaryLanguages, setSecondaryLanguages] = useState<LanguageCode[]>([]);
+  const [translationModal, setTranslationModal] = useState<{
+    serviceId?: string;
+    languages: LanguageCode[];
+    initialLanguage?: LanguageCode;
+  } | null>(null);
+
+  const loadTranslationMeta = useCallback(async () => {
+    try {
+      const [statuses, langs] = await Promise.all([
+        LanguagesService.getServicesStatus(),
+        LanguagesService.getLanguages(),
+      ]);
+      setTranslationStatus(
+        Object.fromEntries(statuses.map((s) => [s.serviceId, s])),
+      );
+      setSecondaryLanguages(
+        langs.filter((l) => l.enabled && !l.isDefault).map((l) => l.code),
+      );
+    } catch {
+      // Non-blocking: the table still renders without translation status.
+    }
+  }, []);
+
+  useEffect(() => {
+    loadTranslationMeta();
+  }, [loadTranslationMeta, services]);
+
+  const handleManageTranslations = () => {
+    if (secondaryLanguages.length === 0) return;
+    setTranslationModal({
+      languages: secondaryLanguages,
+      initialLanguage: secondaryLanguages[0],
+    });
+  };
+
+  const handleTranslateService = (service: ServiceSummary) => {
+    const st = translationStatus[service.id];
+    const langs =
+      st?.missingLanguages && st.missingLanguages.length > 0
+        ? st.missingLanguages
+        : secondaryLanguages;
+    if (langs.length === 0) return;
+    setTranslationModal({
+      serviceId: service.id,
+      languages: langs,
+      initialLanguage: langs[0],
+    });
+  };
   const [isViewMode, setIsViewMode] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [serviceToDelete, setServiceToDelete] = useState<ServiceSummary | null>(null);
@@ -187,6 +248,9 @@ export default function ServicesPage() {
           onActiveFilterChange={setActiveFilter}
           statusCounts={statusCounts}
           onAddService={handleAddService}
+          onManageTranslations={
+            secondaryLanguages.length > 0 ? handleManageTranslations : undefined
+          }
         />
 
       {/* Services Table */}
@@ -198,6 +262,8 @@ export default function ServicesPage() {
         onView={handleViewService}
         onToggleActive={handleToggleActive}
         activeFilter={activeFilter}
+        translationStatus={translationStatus}
+        onTranslate={handleTranslateService}
       />
 
       {/* Service Sheet */}
@@ -212,6 +278,22 @@ export default function ServicesPage() {
         viewOnly={isViewMode}
         onEdit={handleEditFromView}
       />
+
+      {/* Manage Translations modal (header button + per-service pencil) */}
+      {translationModal && translationModal.languages.length > 0 && (
+        <ManageTranslationsModal
+          open={!!translationModal}
+          onOpenChange={(open) => !open && setTranslationModal(null)}
+          languages={translationModal.languages}
+          initialLanguage={translationModal.initialLanguage}
+          serviceId={translationModal.serviceId}
+          mode="edit"
+          onSaved={() => {
+            loadTranslationMeta();
+            fetchServices();
+          }}
+        />
+      )}
 
       {/* Delete Confirmation Dialog */}
       <DeleteServiceDialog

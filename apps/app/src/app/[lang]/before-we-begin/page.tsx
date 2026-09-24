@@ -1,7 +1,7 @@
 // Components
 import BeforeWeBegin from "@/components/custom/BeforeWeBeginPage/BeforeWeBegin"
 // Dictionaries
-import { getDictionary, Locale } from "@/dictionaries/dictionaries"
+import { getDictionary, Locale, resolveLocale } from "@/dictionaries/dictionaries"
 
 type BeforeWeBeginPageProps = {
   params: Promise<{ lang: string }>
@@ -9,7 +9,7 @@ type BeforeWeBeginPageProps = {
 
 const BeforeWeBeginPage = async ({ params }: BeforeWeBeginPageProps) => {
   const { lang: langParam } = await params
-  const lang: Locale = langParam === "en" || langParam === "fr" ? langParam : "en"
+  const lang: Locale = resolveLocale(langParam)
   const dictionary = await getDictionary(lang)
 
   const {

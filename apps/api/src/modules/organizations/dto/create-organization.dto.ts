@@ -58,13 +58,21 @@ export class CreateOrganizationDto {
   @IsString()
   signature?: string;
 
-  @ApiPropertyOptional({ 
+  @ApiPropertyOptional({
     description: 'Preferred language (en or fr)',
     example: 'en'
   })
   @IsOptional()
   @IsString()
   language?: string;
+
+  @ApiPropertyOptional({
+    description: 'Default (source) language for translations (en, fr, es, it, sl, el)',
+    example: 'en',
+  })
+  @IsOptional()
+  @IsString()
+  defaultLanguage?: string;
 
   @ApiPropertyOptional({
     description: 'URL to organization avatar/logo',

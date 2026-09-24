@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, Loader2, Pencil, X, ArrowRight, ArrowLeft } from "lucide-react";
 import { useServiceForm } from "../hooks/useServiceForm";
 import { Step1ServiceInfo } from "./Step1ServiceInfo";
+import { Step2Translate } from "./Step2Translate";
 import { Step2CategoryScale } from "./Step2CategoryScale";
 import { Step3Contacts } from "./Step3Contacts";
 import { UnsavedChangesDialog } from "./UnsavedChangesDialog";
@@ -42,7 +43,10 @@ export function ServiceSheet({
     currentStep,
     isSubmitting,
     errors,
+    defaultLanguage,
+    secondaryLanguages,
     updateField,
+    updateTranslation,
     validateField,
     clearFieldError,
     handleNext,
@@ -50,6 +54,7 @@ export function ServiceSheet({
     handleSubmit,
     canProceedToNextStep,
     reset,
+    markLoaded,
     hasUnsavedChanges,
     setFormData,
   } = useServiceForm(serviceId);
@@ -77,23 +82,50 @@ export function ServiceSheet({
               activeCategories.add(coverage.scaleType);
             });
           }
-          
-          setFormData((prev) => ({
-            ...prev,
-            nameEn: service.nameEn || '',
-            nameFr: service.nameFr || '',
-            descriptionEn: service.descriptionEn || '',
-            descriptionFr: service.descriptionFr || '',
-            url: service.url || '',
-            gapCoverages: service.gapCoverages || [],
-            activeCategories: activeCategories as Set<'TRL' | 'MkRL' | 'MfRL'>,
-            mainContactFirstName: service.mainContactFirstName || '',
-            mainContactLastName: service.mainContactLastName || '',
-            mainContactEmail: service.mainContactEmail || '',
-            secondaryContactFirstName: service.secondaryContactFirstName || '',
-            secondaryContactLastName: service.secondaryContactLastName || '',
-            secondaryContactEmail: service.secondaryContactEmail || '',
-          }));
+
+          // Build the translations map from the API's translations[] relation,
+          // falling back to the legacy en/fr columns.
+          const translations: Record<string, { name: string; description: string }> = {};
+          if (Array.isArray(service.translations)) {
+            service.translations.forEach(
+              (tr: { languageCode: string; name?: string; description?: string }) => {
+                translations[tr.languageCode] = {
+                  name: tr.name || '',
+                  description: tr.description || '',
+                };
+              },
+            );
+          }
+          if (!translations.en && (service.nameEn || service.descriptionEn)) {
+            translations.en = {
+              name: service.nameEn || '',
+              description: service.descriptionEn || '',
+            };
+          }
+          if (!translations.fr && (service.nameFr || service.descriptionFr)) {
+            translations.fr = {
+              name: service.nameFr || '',
+              description: service.descriptionFr || '',
+            };
+          }
+
+          setFormData((prev) => {
+            const loaded = {
+              ...prev,
+              translations,
+              url: service.url || '',
+              gapCoverages: service.gapCoverages || [],
+              activeCategories: activeCategories as Set<'TRL' | 'MkRL' | 'MfRL'>,
+              mainContactFirstName: service.mainContactFirstName || '',
+              mainContactLastName: service.mainContactLastName || '',
+              mainContactEmail: service.mainContactEmail || '',
+              secondaryContactFirstName: service.secondaryContactFirstName || '',
+              secondaryContactLastName: service.secondaryContactLastName || '',
+              secondaryContactEmail: service.secondaryContactEmail || '',
+            };
+            markLoaded(loaded);
+            return loaded;
+          });
         } catch (error) {
           console.error('Error loading service:', error);
         }
@@ -105,7 +137,7 @@ export function ServiceSheet({
         isMounted = false;
       };
     }
-  }, [isOpen, serviceId, setFormData]);
+  }, [isOpen, serviceId, setFormData, markLoaded]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -141,15 +173,20 @@ export function ServiceSheet({
       const result = await handleSubmit();
       if (result) {
         const newServiceId = typeof result === 'string' ? result : undefined;
-        onSuccess(formData.nameEn || formData.nameFr, newServiceId);
+        const serviceName =
+          formData.translations[defaultLanguage]?.name ||
+          formData.translations.en?.name ||
+          '';
+        onSuccess(serviceName, newServiceId);
         onClose();
       }
   };
 
   const STEPS = [
     { number: 1, label: t("MODAL.STEPS.SERVICE_INFO") },
-    { number: 2, label: t("MODAL.STEPS.CATEGORY_SCALE") },
-    { number: 3, label: t("MODAL.STEPS.CONTACTS") },
+    { number: 2, label: t("MODAL.STEPS.TRANSLATE") },
+    { number: 3, label: t("MODAL.STEPS.CATEGORY_SCALE") },
+    { number: 4, label: t("MODAL.STEPS.CONTACTS") },
   ];
 
   const progressValue = useMemo(() => {
@@ -255,7 +292,9 @@ export function ServiceSheet({
               {currentStep === 1 && (
                 <Step1ServiceInfo
                   formData={formData}
+                  defaultLanguage={defaultLanguage}
                   errors={errors}
+                  onUpdateTranslation={updateTranslation}
                   onUpdateField={updateField}
                   onValidateField={validateField}
                   onClearFieldError={clearFieldError}
@@ -263,6 +302,15 @@ export function ServiceSheet({
                 />
               )}
               {currentStep === 2 && (
+                <Step2Translate
+                  formData={formData}
+                  defaultLanguage={defaultLanguage}
+                  secondaryLanguages={secondaryLanguages}
+                  onUpdateTranslation={updateTranslation}
+                  viewOnly={viewOnly}
+                />
+              )}
+              {currentStep === 3 && (
                 <Step2CategoryScale
                   formData={formData}
                   errors={errors}
@@ -270,7 +318,7 @@ export function ServiceSheet({
                   viewOnly={viewOnly}
                 />
               )}
-              {currentStep === 3 && (
+              {currentStep === 4 && (
                 <Step3Contacts
                   formData={formData}
                   errors={errors}
@@ -304,7 +352,7 @@ export function ServiceSheet({
                 )}
               </div>
               <div className="flex items-center gap-2">
-                {currentStep < 3 ? (
+                {currentStep < 4 ? (
                   <Button
                     onClick={handleNext}
                     disabled={!canProceedToNextStep() || isSubmitting}

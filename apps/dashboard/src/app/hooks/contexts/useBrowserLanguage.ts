@@ -13,6 +13,19 @@ export const DefaultBrowserLanguageState = "EN";
 
 const STORED_LANGUAGE_KEY = "SELECTED_LANGUAGE";
 
+// Supported base language codes (uppercase). Regional variants (e.g. "ES-MX")
+// are normalized to their base by prefix.
+const SUPPORTED_LANGUAGES = ["EN", "FR", "ES", "IT", "SL", "EL"];
+
+const normalizeLanguage = (value: string | null | undefined): string => {
+  if (!value) return DefaultBrowserLanguageState;
+  const upper = value.toUpperCase();
+  return (
+    SUPPORTED_LANGUAGES.find((code) => upper.startsWith(code)) ??
+    DefaultBrowserLanguageState
+  );
+};
+
 const useBrowserLanguage = () => {
   const [browserLanguage, setBrowserLanguage] = useState<string>("EN");
   const [isInitialized, setIsInitialized] = useState(false);
@@ -31,35 +44,13 @@ const useBrowserLanguage = () => {
     
     const savedLanguage = localStorage.getItem(STORED_LANGUAGE_KEY);
 
-    let normalizedSavedLanguage = savedLanguage;
     if (savedLanguage) {
-      if (savedLanguage.startsWith("EN")) {
-        normalizedSavedLanguage = "EN";
-      } else if (savedLanguage.startsWith("FR")) {
-        normalizedSavedLanguage = "FR";
-      } else {
-        normalizedSavedLanguage = DefaultBrowserLanguageState;
-      }
-    }
-    
-    if (normalizedSavedLanguage && (normalizedSavedLanguage === "EN" || normalizedSavedLanguage === "FR")) {
-      handleBrowserLanguage(normalizedSavedLanguage);
+      handleBrowserLanguage(normalizeLanguage(savedLanguage));
       setIsInitialized(true);
       return;
     }
-    
-    let detectedLanguage: string = DefaultBrowserLanguageState;
-    const browserLang = String(window.navigator.language).toUpperCase();
-    
-    if (browserLang.startsWith("EN")) {
-      detectedLanguage = "EN";
-    } else if (browserLang.startsWith("FR")) {
-      detectedLanguage = "FR";
-    } else {
-      detectedLanguage = DefaultBrowserLanguageState;
-    }
-    
-    handleBrowserLanguage(detectedLanguage);
+
+    handleBrowserLanguage(normalizeLanguage(window.navigator.language));
     setIsInitialized(true);
   }, [isInitialized]);
 

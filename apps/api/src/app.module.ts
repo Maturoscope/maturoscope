@@ -13,6 +13,7 @@ import { UserInvitationModule } from './modules/user-invitation/user-invitation.
 import { ReadinessAssessmentModule } from './modules/readiness-assessment/readiness-assessment.module';
 import { ServicesModule } from './modules/services/services.module';
 import { StatisticsModule } from './modules/statistics/statistics.module';
+import { LanguagesModule } from './modules/languages/languages.module';
 import { AuthIdInterceptor } from './common/auth-module/interceptors/auth-id.interceptor';
 import { LoggerModule } from './common/logger/logger.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
@@ -61,6 +62,7 @@ import { SchemaInitService } from './common/schema-init/schema-init.service';
     ReadinessAssessmentModule,
     ServicesModule,
     StatisticsModule,
+    LanguagesModule,
   ],
   controllers: [AppController],
   providers: [

@@ -17,6 +17,9 @@ import { StructuredLoggerService } from '../../common/logger/structured-logger.s
 
 type I18nText = I18nTextInterface;
 
+// Supported language codes (lowercase) for single-language resolution.
+const SUPPORTED_LANGUAGES = ['en', 'fr', 'es', 'it', 'sl', 'el'];
+
 interface AssessmentDataI18n {
   scales: {
     [key: string]: {
@@ -326,17 +329,31 @@ export class ReadinessAssessmentService {
       const lowestRisks = risks.filter((r) => r.isLowest);
       lowestRisks.forEach((risk) => {
         if (risk.strategicFocus && risk.primaryRisk) {
+          const sf = risk.strategicFocus;
+          const pr = risk.primaryRisk;
           recommendations.push({
             en: `To progress to the next development phase, focus on ${risk.scale} scale and mitigate the following risks:`,
             fr: `Pour progresser vers la prochaine phase de développement, concentrez-vous sur l'échelle ${risk.scale} et atténuez les risques suivants :`,
+            es: `Para avanzar a la siguiente fase de desarrollo, concéntrate en la escala ${risk.scale} y mitiga los siguientes riesgos:`,
+            it: `Per passare alla fase di sviluppo successiva, concentrati sulla scala ${risk.scale} e mitiga i seguenti rischi:`,
+            sl: `Za napredovanje v naslednjo razvojno fazo se osredotočite na lestvico ${risk.scale} in ublažite naslednja tveganja:`,
+            el: `Για να προχωρήσετε στην επόμενη φάση ανάπτυξης, εστιάστε στην κλίμακα ${risk.scale} και μετριάστε τους ακόλουθους κινδύνους:`,
           });
           recommendations.push({
-            en: `- Strategic Focus: ${risk.strategicFocus.en}`,
-            fr: `- Focus Stratégique : ${risk.strategicFocus.fr}`,
+            en: `- Strategic Focus: ${sf.en}`,
+            fr: `- Focus Stratégique : ${sf.fr}`,
+            es: `- Enfoque estratégico: ${sf.es ?? sf.en}`,
+            it: `- Focus strategico: ${sf.it ?? sf.en}`,
+            sl: `- Strateški poudarek: ${sf.sl ?? sf.en}`,
+            el: `- Στρατηγική εστίαση: ${sf.el ?? sf.en}`,
           });
           recommendations.push({
-            en: `- Primary Risk: ${risk.primaryRisk.en}`,
-            fr: `- Risque Principal : ${risk.primaryRisk.fr}`,
+            en: `- Primary Risk: ${pr.en}`,
+            fr: `- Risque Principal : ${pr.fr}`,
+            es: `- Riesgo principal: ${pr.es ?? pr.en}`,
+            it: `- Rischio principale: ${pr.it ?? pr.en}`,
+            sl: `- Glavno tveganje: ${pr.sl ?? pr.en}`,
+            el: `- Κύριος κίνδυνος: ${pr.el ?? pr.en}`,
           });
         }
       });
@@ -344,6 +361,10 @@ export class ReadinessAssessmentService {
       recommendations.push({
         en: 'All scales are at the same development phase. Continue balanced development across all areas.',
         fr: 'Toutes les échelles sont à la même phase de développement. Continuez le développement équilibré dans tous les domaines.',
+        es: 'Todas las escalas están en la misma fase de desarrollo. Continúa un desarrollo equilibrado en todas las áreas.',
+        it: 'Tutte le scale sono nella stessa fase di sviluppo. Continua uno sviluppo equilibrato in tutte le aree.',
+        sl: 'Vse lestvice so v isti razvojni fazi. Nadaljujte z uravnoteženim razvojem na vseh področjih.',
+        el: 'Όλες οι κλίμακες βρίσκονται στην ίδια φάση ανάπτυξης. Συνεχίστε την ισορροπημένη ανάπτυξη σε όλους τους τομείς.',
       });
     }
 
@@ -375,8 +396,9 @@ export class ReadinessAssessmentService {
         return undefined;
       }
 
-      const lang = language?.toUpperCase() === 'FR' ? 'fr' : 'en';
-      return levelData[lang];
+      const lc = language?.toLowerCase() ?? 'en';
+      const lang = SUPPORTED_LANGUAGES.includes(lc) ? lc : 'en';
+      return (levelData as unknown as Record<string, string | undefined>)[lang] ?? levelData.en;
     } catch (error) {
       this.logger.error('Error getting gap description', error, { questionId, level, scaleType });
       return undefined;

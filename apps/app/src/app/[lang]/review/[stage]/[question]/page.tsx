@@ -1,5 +1,5 @@
 // Types
-import { Locale } from "@/dictionaries/dictionaries"
+import { Locale, resolveLocale } from "@/dictionaries/dictionaries"
 import { StageId } from "@/components/custom/FormPage/Form/Form"
 // Dictionaries
 import { getDictionary } from "@/dictionaries/dictionaries"
@@ -15,7 +15,7 @@ interface QuestionPageProps {
 
 const QuestionPage = async ({ params }: QuestionPageProps) => {
   const { lang: langParam, stage, question: questionId } = await params
-  const lang: Locale = (langParam === "en" || langParam === "fr") ? langParam : "en"
+  const lang: Locale = resolveLocale(langParam)
   const dictionary = await getDictionary(lang)
   const {
     common: { notApplicableLabel },

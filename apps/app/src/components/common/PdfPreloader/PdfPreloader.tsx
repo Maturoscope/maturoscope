@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import { useParams } from "next/navigation"
-import { Locale } from "@/dictionaries/dictionaries"
+import { resolveLocale } from "@/lib/locale"
 import { generateOrGetCachedPdf } from "@/hooks/useDownloadReport"
 
 /**
@@ -13,7 +13,7 @@ import { generateOrGetCachedPdf } from "@/hooks/useDownloadReport"
  */
 const PdfPreloader = () => {
   const params = useParams<{ lang?: string }>()
-  const lang = (params.lang === "fr" ? "fr" : "en") as Locale
+  const lang = resolveLocale(params.lang)
 
   useEffect(() => {
     generateOrGetCachedPdf(lang).catch(() => {

@@ -16,6 +16,10 @@ export enum ScaleType {
 export class I18nText {
   en: string;
   fr: string;
+  es?: string;
+  it?: string;
+  sl?: string;
+  el?: string;
 }
 
 export class QuestionI18nDto {
@@ -97,6 +101,10 @@ export class RiskAnalysisResultI18nDto {
 export interface I18nTextInterface {
   en: string;
   fr: string;
+  es?: string;
+  it?: string;
+  sl?: string;
+  el?: string;
 }
 
 export class AssessScaleDto {

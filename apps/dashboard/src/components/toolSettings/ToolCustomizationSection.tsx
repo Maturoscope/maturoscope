@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { LanguageSelector } from '@/components/ui/language-selector'
 import { ToolCustomizationFormData, ToolLanguageFormData } from './useToolSettingsState'
 import { Separator } from '@/components/ui/separator'
 
@@ -28,8 +27,6 @@ interface ToolCustomizationSectionProps {
 export function ToolCustomizationSection({
   customizationForm,
   setCustomizationForm,
-  languageForm,
-  setLanguageForm,
   errors,
   setErrors,
   isUpdating,
@@ -40,17 +37,6 @@ export function ToolCustomizationSection({
 
   const handleCustomizationChange = (field: keyof ToolCustomizationFormData, value: string) => {
     setCustomizationForm(prev => ({ ...prev, [field]: value }))
-    if (errors[field]) {
-      setErrors(prev => {
-        const newErrors = { ...prev }
-        delete newErrors[field]
-        return newErrors
-      })
-    }
-  }
-
-  const handleLanguageChange = (field: keyof ToolLanguageFormData, value: string) => {
-    setLanguageForm(prev => ({ ...prev, [field]: value }))
     if (errors[field]) {
       setErrors(prev => {
         const newErrors = { ...prev }
@@ -166,20 +152,6 @@ export function ToolCustomizationSection({
           </p>
           {errors.theme && (
             <p className="text-sm text-red-600">{errors.theme}</p>
-          )}
-        </div>
-
-        {/* Language Selection */}
-        <div className="space-y-2">
-          <LanguageSelector
-            value={languageForm.language}
-            onChange={(value) => handleLanguageChange('language', value)}
-            label={t('LANGUAGE.LABEL')}
-            description={t('LANGUAGE.DESCRIPTION')}
-            disabled={isUpdating}
-          />
-          {errors.language && (
-            <p className="text-sm text-red-600">{errors.language}</p>
           )}
         </div>
 

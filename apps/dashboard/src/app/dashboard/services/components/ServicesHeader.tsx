@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Plus, Search, ChevronDown, BarChart } from "lucide-react";
+import { Plus, Search, ChevronDown, BarChart, Languages } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { LevelRangeKey, ScaleType } from "../types/service";
 import { ActiveFilter } from "../hooks/useServiceFilters";
@@ -25,6 +25,7 @@ interface ServicesHeaderProps {
   onActiveFilterChange: (filter: ActiveFilter) => void;
   statusCounts: { active: number; inactive: number };
   onAddService: () => void;
+  onManageTranslations?: () => void;
 }
 
 export function ServicesHeader({
@@ -38,6 +39,7 @@ export function ServicesHeader({
   onActiveFilterChange,
   statusCounts,
   onAddService,
+  onManageTranslations,
 }: ServicesHeaderProps) {
   const { t } = useTranslation("SERVICES");
 
@@ -72,6 +74,16 @@ export function ServicesHeader({
               className="h-9 rounded-[8px] border-slate-200 pl-10"
             />
           </div>
+          {onManageTranslations && (
+            <Button
+              variant="outline"
+              onClick={onManageTranslations}
+              className="inline-flex h-9 shrink-0 items-center gap-2 rounded-[8px] border-slate-200 px-4"
+            >
+              <Languages className="h-4 w-4" />
+              {t("MANAGE_TRANSLATIONS_BUTTON")}
+            </Button>
+          )}
           <Button
             onClick={onAddService}
             className="bg-foreground text-background hover:bg-foreground/90"

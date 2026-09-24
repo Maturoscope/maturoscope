@@ -9,7 +9,7 @@ const logger = createStructuredLogger("middleware")
 const headers = { "accept-language": "en,es;q=0.5" }
 const languages = new Negotiator({ headers }).languages()
 
-const LOCALES: Locale[] = ["en", "fr"]
+const LOCALES: Locale[] = ["en", "fr", "es", "it", "sl", "el"]
 const DEFAULT_LOCALE = "en"
 
 match(languages, LOCALES, DEFAULT_LOCALE)
@@ -27,34 +27,31 @@ const getLocale = (request: NextRequest): Locale => {
   return DEFAULT_LOCALE
 }
 
-const validateOrganizationKey = async (key: string, organizationKeyFromCookie: string | null): Promise<boolean> => {
+interface OrgLanguages {
+  defaultLanguage: string
+  languages: string[]
+}
+
+/**
+ * Resolves the organization by key and returns its default + Live languages.
+ * Doubles as key validation: a missing/invalid key yields null. One request
+ * serves both the 404 guard and the locale fallback below.
+ */
+const fetchOrgLanguages = async (key: string): Promise<OrgLanguages | null> => {
   try {
-    const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/organizations/key/${key}${organizationKeyFromCookie ? `?organizationKey=${organizationKeyFromCookie}` : ""}`
-    const response = await fetch(endpoint, {
-      cache: 'no-store', // Ensure we don't cache the validation
-    })
-
+    const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/languages/public/${key}`
+    const response = await fetch(endpoint, { cache: "no-store" })
     if (!response.ok) {
-      return false
+      return null
     }
-
-    const organization = await response.json()
-    // Check if organization exists and is a valid object with properties
-    // Also check for error responses that might be valid JSON but indicate failure
-    if (!organization || typeof organization !== 'object') {
-      return false
+    const data = await response.json()
+    if (!data || typeof data !== "object" || !Array.isArray(data.languages)) {
+      return null
     }
-
-    // Check for common error indicators
-    if (organization.error || organization.message || organization.status === 'error') {
-      return false
-    }
-
-    // Organization should have at least some identifying properties
-    return Object.keys(organization).length > 0
+    return data as OrgLanguages
   } catch (error) {
-    logger.error("Error validating organization key", error, { key })
-    return false
+    logger.error("Error resolving organization languages", error, { key })
+    return null
   }
 }
 
@@ -88,11 +85,11 @@ export const middleware = async (request: NextRequest) => {
     return NextResponse.redirect(notFoundUrl)
   }
 
-  // Validate the key exists in the database
-  const isValidKey = await validateOrganizationKey(key, keyFromCookie)
+  // Resolve org (validates the key) and its Live languages in one request.
+  const orgLanguages = await fetchOrgLanguages(key)
 
   // If key is invalid, redirect to 404
-  if (!isValidKey) {
+  if (!orgLanguages) {
     const locale = getLocale(request)
     const notFoundUrl = request.nextUrl.clone()
     notFoundUrl.pathname = `/${locale}/404`
@@ -102,6 +99,22 @@ export const middleware = async (request: NextRequest) => {
 
   // Handle locale redirects
   const locale = getLocale(request)
+
+  // Fall back to the default language when the requested locale isn't Live for
+  // this organization (e.g. a directly-typed URL for a draft/disabled language).
+  if (
+    pathnameHasLocale &&
+    !orgLanguages.languages.includes(locale) &&
+    locale !== orgLanguages.defaultLanguage
+  ) {
+    const target = request.nextUrl.clone()
+    target.pathname = pathname.replace(
+      `/${locale}`,
+      `/${orgLanguages.defaultLanguage}`,
+    )
+    target.searchParams.set("key", key)
+    return NextResponse.redirect(target)
+  }
 
   // If key is in cookie but not in URL, we need to add it to URL
   if (keyFromCookie && !keyFromUrl) {

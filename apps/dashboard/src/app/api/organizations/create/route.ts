@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { name, email } = body;
+    const { name, email, defaultLanguage } = body;
 
     if (!name || !email) {
       return NextResponse.json(
@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
         name,
         email,
         key,
+        ...(defaultLanguage && { defaultLanguage }),
       }),
     });
 
