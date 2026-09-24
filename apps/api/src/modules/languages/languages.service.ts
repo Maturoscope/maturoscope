@@ -102,7 +102,7 @@ export class LanguagesService {
       this.organizationLanguageRepository.find({ where: { organizationId } }),
       this.serviceRepository.find({
         where: { organizationId, isActive: true },
-        relations: ['translations'],
+        relations: { translations: true },
       }),
     ]);
 
@@ -149,7 +149,7 @@ export class LanguagesService {
       this.getEnabledLanguages(organizationId),
       this.serviceRepository.find({
         where: { organizationId },
-        relations: ['translations'],
+        relations: { translations: true },
       }),
     ]);
 
@@ -172,7 +172,7 @@ export class LanguagesService {
       this.getEnabledLanguages(organizationId),
       this.serviceRepository.findOne({
         where: { id: serviceId, organizationId },
-        relations: ['translations'],
+        relations: { translations: true },
       }),
     ]);
 
@@ -309,7 +309,7 @@ export class LanguagesService {
       where: serviceId
         ? { id: serviceId, organizationId }
         : { organizationId, isActive: true },
-      relations: ['translations'],
+      relations: { translations: true },
       order: { createdAt: 'ASC' },
     });
 
