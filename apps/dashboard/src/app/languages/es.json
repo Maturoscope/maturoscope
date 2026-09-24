@@ -53,7 +53,7 @@
     },
     "DEFAULT_LANGUAGE": {
       "LABEL": "Idioma predeterminado",
-      "DESCRIPTION": "Es el idioma predeterminado que se usará en el panel y la herramienta."
+      "DESCRIPTION": "Es el idioma predeterminado que se usará en el panel y la herramienta. Solo los idiomas con todos los servicios traducidos pueden establecerse como predeterminados."
     }
   },
   "COMPLETE_REGISTRATION": {

@@ -303,9 +303,12 @@ export class LanguagesService {
     }
 
     const services = await this.serviceRepository.find({
+      // The bulk view only covers ACTIVE services (the ones that gate Live),
+      // matching the Live/Draft computation. A per-service edit targets the
+      // requested service regardless of its active state.
       where: serviceId
         ? { id: serviceId, organizationId }
-        : { organizationId },
+        : { organizationId, isActive: true },
       relations: ['translations'],
       order: { createdAt: 'ASC' },
     });

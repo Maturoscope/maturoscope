@@ -15,6 +15,23 @@ export type { FormStorage, LevelStorage, PhasesStorage, GapsStorage, RisksStorag
 let pendingGeneration: { lang: Locale; promise: Promise<string> } | null = null
 
 /**
+ * Generates a report PDF for the given language WITHOUT touching the shared
+ * cache. Use this for one-off copies (e.g. the organization-default-language PDF
+ * attached to the expert email) so it never evicts the visitor's cached PDF.
+ */
+export const generateReportPdf = async (lang: Locale): Promise<string> => {
+  const questionsData = await getQuestions(lang)
+  const payload = await buildReportPayload(lang, questionsData)
+  const result = await generateReport(lang, payload)
+
+  if (!result.success || !result.data) {
+    throw new Error(result.error || "Failed to generate PDF")
+  }
+
+  return result.data
+}
+
+/**
  * Returns the cached PDF base64 string for the given language.
  * If already generating, waits for the in-progress generation instead of starting a new one.
  * If nothing is cached or in-progress, generates, caches, and returns the result.
@@ -32,16 +49,9 @@ export const generateOrGetCachedPdf = async (lang: Locale): Promise<string> => {
   // 3. Start a new generation
   const promise = (async () => {
     try {
-      const questionsData = await getQuestions(lang)
-      const payload = await buildReportPayload(lang, questionsData)
-      const result = await generateReport(lang, payload)
-
-      if (!result.success || !result.data) {
-        throw new Error(result.error || "Failed to generate PDF")
-      }
-
-      pdfCache.set(result.data, lang)
-      return result.data
+      const data = await generateReportPdf(lang)
+      pdfCache.set(data, lang)
+      return data
     } finally {
       pendingGeneration = null
     }

@@ -53,7 +53,7 @@
     },
     "DEFAULT_LANGUAGE": {
       "LABEL": "Privzeti jezik",
-      "DESCRIPTION": "To je privzeti jezik, ki se uporablja v nadzorni plošči in orodju."
+      "DESCRIPTION": "To je privzeti jezik, ki se uporablja v nadzorni plošči in orodju. Kot privzete lahko nastavite le jezike, kjer so prevedene vse storitve."
     }
   },
   "COMPLETE_REGISTRATION": {

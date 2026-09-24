@@ -103,6 +103,7 @@ export function Step2Translate({
               <Input
                 id={`name-${code}`}
                 value={field.name}
+                maxLength={255}
                 onChange={(e) => onUpdateTranslation(code, "name", e.target.value)}
                 placeholder={t("MODAL.STEP_1.NAME_PLACEHOLDER")}
                 disabled={viewOnly}

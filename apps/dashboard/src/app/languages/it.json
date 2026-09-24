@@ -53,7 +53,7 @@
     },
     "DEFAULT_LANGUAGE": {
       "LABEL": "Lingua predefinita",
-      "DESCRIPTION": "È la lingua predefinita usata nella dashboard e nello strumento."
+      "DESCRIPTION": "È la lingua predefinita usata nella dashboard e nello strumento. Solo le lingue con tutti i servizi tradotti possono essere impostate come predefinite."
     }
   },
   "COMPLETE_REGISTRATION": {

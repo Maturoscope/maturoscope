@@ -47,6 +47,7 @@ export function Step1ServiceInfo({
         <Input
           id="service-name"
           value={field.name}
+          maxLength={255}
           onChange={(e) => onUpdateTranslation(defaultLanguage, "name", e.target.value)}
           onFocus={() => onClearFieldError(`${defaultLanguage}.name`)}
           placeholder={t("MODAL.STEP_1.NAME_PLACEHOLDER")}

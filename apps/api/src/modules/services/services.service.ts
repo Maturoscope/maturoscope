@@ -553,7 +553,14 @@ export class ServicesService {
     const organization = await this.organizationsService.findByKey(organizationKey);
     const companyName = organization.name || 'Maturoscope';
     const companyLogoUrl = organization.avatar || undefined;
-    const organizationLanguage = organization.language?.toUpperCase() === 'FR' ? 'FR' : 'EN';
+    // The whole expert email must be in the organization's default (source)
+    // language — NOT the end-user's language. The admin/expert reads it in the
+    // language they set up, regardless of the visitor's locale.
+    const orgLang = normalizeLanguage(organization.defaultLanguage);
+    const emailContent = this.serviceContactMailService.getEmailContent(
+      orgLang,
+      companyName,
+    );
     const supportEmail = organization.email || undefined;
 
     // Collect all unique service IDs from all gaps
@@ -564,9 +571,10 @@ export class ServicesService {
       });
     });
 
-    // Get all services by IDs
+    // Get all services by IDs (with translations for the default-language copy)
     const services = await this.serviceRepository.find({
       where: Array.from(allServiceIds).map((id) => ({ id })),
+      relations: { translations: true },
     });
 
     if (services.length === 0) {
@@ -617,9 +625,18 @@ export class ServicesService {
         continue; // Skip if service not found
       }
 
-      // Get service name and description based on organization language
-      const serviceName = organizationLanguage === 'FR' ? service.nameFr : service.nameEn;
-      const serviceDescription = organizationLanguage === 'FR' ? service.descriptionFr : service.descriptionEn;
+      // Service name/description in the organization's default language, with a
+      // fallback chain to English and the legacy columns.
+      const defaultTr = service.translations?.find((tr) => tr.languageCode === orgLang);
+      const enTr = service.translations?.find((tr) => tr.languageCode === 'en');
+      const serviceName =
+        defaultTr?.name || enTr?.name || service.nameEn || service.name || '';
+      const serviceDescription =
+        defaultTr?.description ||
+        enTr?.description ||
+        service.descriptionEn ||
+        service.description ||
+        '';
 
       // Convert categories map to array and sort by level (lowest first)
       const categoriesArray = Array.from(categoriesMap.entries()).map(([category, gaps]) => ({
@@ -648,7 +665,7 @@ export class ServicesService {
             gap.questionId,
             gap.level,
             category as ScaleType,
-            organizationLanguage,
+            orgLang,
           );
           return `<table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom: 8px; width: 100%;">
             <tr>
@@ -664,8 +681,8 @@ export class ServicesService {
         const categoryHtml = `
           <!-- CATEGORY & LEVEL -->
           <div style="border-top: 1px solid #E5E7EB; padding: 18px 0 0 0;">
-            <div style="color: #737373; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px;">Category & Level</div>
-            <div style="color: #0A0A0A; font-size: 14px; font-weight: 600; line-height: 20px;">${category} — Currently at Level ${level}</div>
+            <div style="color: #737373; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px;">${emailContent.categoryLevelLabel}</div>
+            <div style="color: #0A0A0A; font-size: 14px; font-weight: 600; line-height: 20px;">${category} — ${emailContent.currentlyAtLevel} ${level}</div>
           </div>
 
           <!-- GAP TO COMPLETE + BADGE -->
@@ -673,11 +690,11 @@ export class ServicesService {
             <table role="presentation" cellpadding="0" cellspacing="0">
               <tr>
                 <td style="color: #737373; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; vertical-align: middle; padding-right: 10px;">
-                  GAP TO COMPLETE
+                  ${emailContent.gapToCompleteLabel}
                 </td>
                 ${isHighestPriority ? `
                 <td style="vertical-align: middle;">
-                  <span style="display: inline-block; background: #171717; color: #ffffff; border-radius: 9999px; padding: 6px 12px; font-size: 12px; font-weight: 600; line-height: 1;">Highest Priority</span>
+                  <span style="display: inline-block; background: #171717; color: #ffffff; border-radius: 9999px; padding: 6px 12px; font-size: 12px; font-weight: 600; line-height: 1;">${emailContent.highestPriorityLabel}</span>
                 </td>
                 ` : ''}
               </tr>
@@ -747,7 +764,7 @@ export class ServicesService {
             companyName,
             companyLogoUrl,
             supportEmail,
-            language: organizationLanguage,
+            language: orgLang,
             reassignmentContact,
             clientData: {
               company: contactServicesDto.organization || contactServicesDto.company,

@@ -46,10 +46,12 @@ function AutoTextarea({
   value,
   onChange,
   placeholder,
+  maxLength,
 }: {
   value: string;
   onChange: (v: string) => void;
   placeholder: string;
+  maxLength?: number;
 }) {
   const ref = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
@@ -65,6 +67,7 @@ function AutoTextarea({
       rows={1}
       value={value}
       placeholder={placeholder}
+      maxLength={maxLength}
       onChange={(e) => onChange(e.target.value)}
       className="w-full resize-none overflow-hidden border-0 bg-transparent p-0 text-sm leading-6 text-[#0A0A0A] placeholder:text-gray-400 focus:outline-none focus:ring-0"
     />
@@ -247,7 +250,11 @@ export function ManageTranslationsModal({
                     }`}
                   >
                     <span>{name(code)}</span>
-                    <span className="text-xs font-semibold text-gray-500">
+                    <span
+                      className={`text-xs font-semibold ${
+                        p.done < p.total ? "text-orange-900" : "text-gray-500"
+                      }`}
+                    >
                       {t("MODAL.PROGRESS", { done: p.done, total: p.total })}
                     </span>
                   </button>
@@ -258,8 +265,10 @@ export function ManageTranslationsModal({
 
           {/* Right: source / target / status */}
           <div className="max-h-[60vh] flex-1 overflow-y-auto">
-            {/* Column header */}
-            <div className={`${COLS} border-b border-border text-sm text-gray-500`}>
+            {/* Column header (stays fixed while the rows scroll) */}
+            <div
+              className={`${COLS} sticky top-0 z-10 border-b border-border bg-background text-sm text-gray-500`}
+            >
               <span className="px-4 py-3">
                 {activeData ? name(activeData.defaultLanguage) : ""}
               </span>
@@ -294,6 +303,7 @@ export function ManageTranslationsModal({
                       <div className="border-l border-border px-4 py-3">
                         <input
                           value={e.name}
+                          maxLength={255}
                           placeholder={t("MODAL.SERVICE_NAME_PLACEHOLDER")}
                           onChange={(ev) => setField(s.serviceId, "name", ev.target.value)}
                           className="w-full border-0 bg-transparent p-0 text-sm leading-6 text-[#0A0A0A] placeholder:text-gray-400 focus:outline-none focus:ring-0"
@@ -310,6 +320,7 @@ export function ManageTranslationsModal({
                       <div className="border-l border-border px-4 py-3">
                         <AutoTextarea
                           value={e.description}
+                          maxLength={500}
                           placeholder={t("MODAL.DESCRIPTION_PLACEHOLDER")}
                           onChange={(v) => setField(s.serviceId, "description", v)}
                         />

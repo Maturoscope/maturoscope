@@ -53,7 +53,7 @@
     },
     "DEFAULT_LANGUAGE": {
       "LABEL": "Langue par défaut",
-      "DESCRIPTION": "C'est la langue par défaut utilisée dans le tableau de bord et l'outil."
+      "DESCRIPTION": "C'est la langue par défaut utilisée dans le tableau de bord et l'outil. Seules les langues dont tous les services sont traduits peuvent être définies par défaut."
     }
   },
   "COMPLETE_REGISTRATION": {
