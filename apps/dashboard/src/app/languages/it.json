@@ -487,7 +487,8 @@
         "JOINED": "Ti sei unito all'organizzazione",
         "DECLINED": "Invito rifiutato",
         "ERROR": "Qualcosa è andato storto. Riprova."
-      }
+      },
+      "REMOVED_LABEL": "Un amministratore ha rimosso il tuo accesso."
     }
   },
   "TOOL_SETTINGS": {
