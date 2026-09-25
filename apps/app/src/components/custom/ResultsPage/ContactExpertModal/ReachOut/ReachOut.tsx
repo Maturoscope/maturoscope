@@ -328,9 +328,10 @@ const ReachOut = ({
     // the visitor's). Resolve it, then attach that copy.
     let reportLang: Locale = lang
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/languages/public/${organizationKey}`,
-      )
+      // Client-side call → use the browser-reachable gateway (API_URL is internal).
+      const apiBase =
+        process.env.NEXT_PUBLIC_GATEWAY_URL || process.env.NEXT_PUBLIC_API_URL
+      const res = await fetch(`${apiBase}/languages/public/${organizationKey}`)
       if (res.ok) {
         const data = await res.json()
         if (data?.defaultLanguage) reportLang = resolveLocale(data.defaultLanguage)
