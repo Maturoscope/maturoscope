@@ -37,7 +37,10 @@ const LanguageSelect = () => {
     if (!key) return
     let cancelled = false
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/languages/public/${key}`)
+    // Client-side call → use the browser-reachable gateway (API_URL is internal).
+    const apiBase =
+      process.env.NEXT_PUBLIC_GATEWAY_URL || process.env.NEXT_PUBLIC_API_URL
+    fetch(`${apiBase}/languages/public/${key}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data: { languages?: string[] } | null) => {
         if (cancelled || !data?.languages) return
