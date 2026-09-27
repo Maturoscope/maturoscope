@@ -35,7 +35,7 @@ export default function WhyMaturoscope({ dict }: WhyMaturoscopeProps) {
     <>
       <section ref={containerRef} className="relative h-[220vh]">
         <div className="sticky top-0 flex h-svh items-center">
-          <div className="mx-auto max-w-[1440px] px-5 md:px-10">
+          <div className="mx-auto max-w-[1165px] px-5 md:px-10">
             <p className="flex flex-wrap text-3xl font-bold leading-[1.25] tracking-[-0.01em] sm:text-4xl lg:text-[44px] lg:leading-[1.3]">
               {words.map((word, i) => {
                 const start = i / words.length
@@ -62,7 +62,7 @@ function Features({ dict }: WhyMaturoscopeProps) {
       id={SECTION_IDS.whyMaturoscope}
       className="w-full bg-gradient-to-b from-[#FAFAFA] to-white py-16 md:py-24"
     >
-      <div className="mx-auto max-w-[1440px] px-5 md:px-10">
+      <div className="mx-auto max-w-[1360px] px-5 md:px-10">
         <div className="text-center">
           <span className="inline-block rounded-full bg-[#F5F5F5] px-3 py-1 text-sm font-medium text-[#525252]">
             {dict.badge}
@@ -94,7 +94,7 @@ function Features({ dict }: WhyMaturoscopeProps) {
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm">
                   <Icon className="h-5 w-5 text-[#C0410F]" strokeWidth={2} />
                 </div>
-                <h3 className="mt-16 text-lg font-bold text-[#0A0A0A]">{feature.title}</h3>
+                <h3 className="mt-8 text-lg font-bold text-[#0A0A0A] md:mt-16">{feature.title}</h3>
                 <p className="mt-3 text-[15px] leading-relaxed text-[#525252]">
                   {feature.description}
                 </p>

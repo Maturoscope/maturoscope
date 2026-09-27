@@ -34,7 +34,7 @@ function EmphasizedText({ text }: { text: string }) {
 export default function WhatYouGet({ dict }: WhatYouGetProps) {
   return (
     <section id={SECTION_IDS.whatYouGet} className="w-full py-16 md:py-24">
-      <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-12 px-5 md:grid-cols-2 md:gap-16 md:px-10">
+      <div className="mx-auto grid max-w-[1360px] grid-cols-1 gap-12 px-5 md:grid-cols-2 md:gap-16 md:px-10">
         {/* Left: heading */}
         <div>
           <span className="inline-block rounded-full bg-[#F5F5F5] px-3 py-1 text-sm font-medium text-[#525252]">

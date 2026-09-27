@@ -37,7 +37,7 @@ export default function Header({ lang, dict }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#E5E5E5] bg-white">
-      <div className="mx-auto flex h-[68px] max-w-[1440px] items-center justify-between px-5 md:px-10">
+      <div className="mx-auto flex h-[68px] max-w-[1360px] items-center justify-between px-5 md:px-10">
         <Link href={`/${lang}`} className="text-xl font-bold text-[#0A0A0A]">
           Maturoscope.
         </Link>

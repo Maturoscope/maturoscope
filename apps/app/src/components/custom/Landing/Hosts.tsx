@@ -16,7 +16,7 @@ export default function Hosts({ lang, title, subtitle, organizations }: HostsPro
 
   return (
     <section id={SECTION_IDS.hosts} className="w-full py-16 md:py-24">
-      <div className="mx-auto max-w-[1440px] px-5 md:px-10">
+      <div className="mx-auto max-w-[1165px] px-5 md:px-10">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-[-0.02em] text-[#0A0A0A] sm:text-4xl lg:text-[44px]">
             {title}

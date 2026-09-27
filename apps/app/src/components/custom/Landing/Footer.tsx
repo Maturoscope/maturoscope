@@ -43,7 +43,7 @@ export default function Footer({
   return (
     <>
       <footer className="w-full border-t border-[#E5E5E5] bg-white">
-        <div className="mx-auto max-w-[1440px] px-5 py-16 md:px-10">
+        <div className="mx-auto max-w-[1360px] px-5 py-16 md:px-10">
           {/* Top: brand + link columns */}
           <div className="flex flex-col gap-12 md:flex-row md:justify-between">
             <Link href={`/${lang}`} className="text-2xl font-bold text-[#0A0A0A]">

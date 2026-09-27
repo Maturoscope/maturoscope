@@ -38,7 +38,7 @@ export default function WhatWeMeasure({ lang, dict }: WhatWeMeasureProps) {
 /** Header shared by both layouts: badge, title and the CTA button. */
 function MeasureHeader({ lang, dict }: WhatWeMeasureProps) {
   return (
-    <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-6 px-5 md:flex-row md:items-end md:justify-between md:px-10">
+    <div className="mx-auto flex w-full max-w-[1360px] flex-col gap-6 px-5 md:flex-row md:items-end md:justify-between md:px-10">
       <div>
         <span className="inline-block rounded-full bg-[#F5F5F5] px-3 py-1 text-sm font-medium text-[#525252]">
           {dict.badge}
@@ -114,7 +114,7 @@ function DesktopMeasure({ lang, dict }: WhatWeMeasureProps) {
         <motion.div
           ref={trackRef}
           style={{ x }}
-          className="mt-16 flex gap-6 pl-[calc(max(2.5rem,(100vw-1440px)/2+2.5rem)+180px)]"
+          className="mt-16 flex gap-6 pl-[calc(max(2.5rem,(100vw-1360px)/2+2.5rem)+184px)]"
         >
           {dict.scales.map((scale, i) => (
             <div
@@ -129,7 +129,7 @@ function DesktopMeasure({ lang, dict }: WhatWeMeasureProps) {
               container's right edge when fully scrolled. */}
           <div
             aria-hidden
-            className="shrink-0 w-[max(2.5rem,calc((100vw-1440px)/2+2.5rem))]"
+            className="shrink-0 w-[max(2.5rem,calc((100vw-1360px)/2+2.5rem))]"
           />
         </motion.div>
       </div>
@@ -146,7 +146,7 @@ function MobileMeasure({ lang, dict }: WhatWeMeasureProps) {
     <div className="pb-16 pt-14">
       <MeasureHeader lang={lang} dict={dict} />
 
-      <div className="mx-auto mt-8 flex max-w-[1440px] flex-col gap-6 px-5">
+      <div className="mx-auto mt-8 flex max-w-[1360px] flex-col gap-6 px-5">
         {dict.scales.map((scale, i) => {
           const Icon = ICONS[i] ?? Lightbulb
           return (

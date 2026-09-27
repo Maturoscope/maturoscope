@@ -24,7 +24,7 @@ export default function Contact({ dict }: ContactProps) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="mx-auto flex max-w-[1440px] flex-col gap-8 px-5 py-12 md:flex-row md:items-center md:justify-between md:px-10 md:py-14"
+        className="mx-auto flex max-w-[1360px] flex-col gap-8 px-5 py-12 md:flex-row md:items-center md:justify-between md:px-10 md:py-14"
       >
         <div className="flex items-center gap-6 md:gap-10">
           <span

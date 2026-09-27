@@ -19,13 +19,13 @@ const fadeUp = {
 export default function Hero({ lang, dict }: HeroProps) {
   return (
     <section className="w-full">
-      <div className="mx-auto flex max-w-[1440px] flex-col items-center px-5 pb-8 pt-16 text-center md:px-10 md:pt-24">
+      <div className="mx-auto flex max-w-[1165px] flex-col items-center px-5 pb-8 pt-16 text-center md:px-10 md:pt-24">
         <motion.h1
           initial="hidden"
           animate="show"
           variants={fadeUp}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="max-w-[1040px] text-4xl font-bold leading-[1.08] tracking-[-0.02em] text-[#0A0A0A] sm:text-5xl lg:text-[56px]"
+          className="max-w-[960px] text-4xl font-bold leading-[1.08] tracking-[-0.02em] text-[#0A0A0A] sm:text-5xl lg:text-[60px]"
         >
           {dict.title}
         </motion.h1>
@@ -35,7 +35,7 @@ export default function Hero({ lang, dict }: HeroProps) {
           animate="show"
           variants={fadeUp}
           transition={{ duration: 0.5, ease: "easeOut", delay: 0.08 }}
-          className="mt-6 max-w-[820px] text-base leading-relaxed text-[#525252] md:text-lg"
+          className="mt-6 max-w-[760px] text-base leading-relaxed text-[#525252] md:text-lg"
         >
           {dict.subtitle}
         </motion.p>
@@ -70,7 +70,7 @@ export default function Hero({ lang, dict }: HeroProps) {
             alt="Maturoscope maturity profile"
             width={2130}
             height={1396}
-            sizes="(max-width: 1120px) 100vw, 1085px"
+            sizes="(max-width: 1165px) 100vw, 1085px"
             quality={90}
             priority
             className="h-auto w-full rounded-2xl"
