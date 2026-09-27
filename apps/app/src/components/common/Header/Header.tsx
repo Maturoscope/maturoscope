@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { usePathname, useRouter, useParams } from "next/navigation"
@@ -68,7 +69,7 @@ const Header = ({
       }
 
       try {
-        const stored = localStorage.getItem(SIGNATURE_STORAGE_KEY)
+        const stored = orgStorage.getItem(SIGNATURE_STORAGE_KEY)
         if (stored) {
           const parsed = JSON.parse(stored) as {
             organizationKey: string
@@ -90,10 +91,10 @@ const Header = ({
           organizationKey,
           url: sig,
         })
-        localStorage.setItem(SIGNATURE_STORAGE_KEY, payload)
+        orgStorage.setItem(SIGNATURE_STORAGE_KEY, payload)
         setSignature(sig)
       } else {
-        localStorage.removeItem(SIGNATURE_STORAGE_KEY)
+        orgStorage.removeItem(SIGNATURE_STORAGE_KEY)
         setSignature(null)
       }
     }
@@ -146,18 +147,18 @@ const Header = ({
 
   const handleResetForm = async () => {
     await clearAssessmentTracking()
-    localStorage.removeItem("form")
-    localStorage.removeItem("gaps")
-    localStorage.removeItem("level")
-    localStorage.removeItem("phases")
-    localStorage.removeItem("completedOn")
-    localStorage.removeItem("organization-signature")
-    localStorage.removeItem("report-pdf-cache")
-    localStorage.removeItem("risks")
-    localStorage.removeItem("projectName")
-    localStorage.removeItem("selectedScales")
-    localStorage.removeItem("evaluationType")
-    localStorage.removeItem("notScored")
+    orgStorage.removeItem("form")
+    orgStorage.removeItem("gaps")
+    orgStorage.removeItem("level")
+    orgStorage.removeItem("phases")
+    orgStorage.removeItem("completedOn")
+    orgStorage.removeItem("organization-signature")
+    orgStorage.removeItem("report-pdf-cache")
+    orgStorage.removeItem("risks")
+    orgStorage.removeItem("projectName")
+    orgStorage.removeItem("selectedScales")
+    orgStorage.removeItem("evaluationType")
+    orgStorage.removeItem("notScored")
     setActiveModal(null)
   }
 

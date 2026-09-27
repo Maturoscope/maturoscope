@@ -1,3 +1,4 @@
+import { orgStorage } from "@/lib/orgStorage"
 import { StageId } from "@/components/custom/FormPage/Form/Form"
 
 // The user can choose which maturity scales to assess (1, 2 or all 3).
@@ -21,7 +22,7 @@ export const getSelectedScales = (): StageId[] => {
   if (typeof window === "undefined") return ALL_SCALES
 
   try {
-    const raw = localStorage.getItem(SELECTED_SCALES_KEY)
+    const raw = orgStorage.getItem(SELECTED_SCALES_KEY)
     if (!raw) return ALL_SCALES
 
     const parsed = JSON.parse(raw)
@@ -42,7 +43,7 @@ export const setSelectedScales = (scales: StageId[]): void => {
   // Persist in canonical order, always keeping at least one scale.
   const ordered = ALL_SCALES.filter((scale) => scales.includes(scale))
   const safe = ordered.length > 0 ? ordered : ALL_SCALES
-  localStorage.setItem(SELECTED_SCALES_KEY, JSON.stringify(safe))
+  orgStorage.setItem(SELECTED_SCALES_KEY, JSON.stringify(safe))
 }
 
 export const isScaleSelected = (scale: StageId): boolean =>

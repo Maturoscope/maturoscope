@@ -56,6 +56,26 @@ export const getOrganizationKeyFromCookies = async (): Promise<
   return cookieStore.get("organization-key")?.value || null
 }
 
+export interface PublicOrganization {
+  name: string
+  key: string
+  avatar: string | null
+}
+
+/** Public list of active organizations for the landing page (name, key, avatar). */
+export const getPublicOrganizations = async (): Promise<PublicOrganization[]> => {
+  try {
+    const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/organizations/public`
+    const response = await fetch(endpoint, { next: { revalidate: 300 } })
+    if (!response.ok) return []
+    const data = await response.json()
+    return Array.isArray(data) ? (data as PublicOrganization[]) : []
+  } catch (error) {
+    logger.error("Error fetching public organizations", error)
+    return []
+  }
+}
+
 export type ScaleType = "TRL" | "MkRL" | "MfRL"
 
 export interface LocalizedText {

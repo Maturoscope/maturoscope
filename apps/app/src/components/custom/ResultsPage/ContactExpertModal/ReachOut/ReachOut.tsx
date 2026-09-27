@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import Image from "next/image"
 import { useState, useEffect } from "react"
 import { useForm, Controller } from "react-hook-form"
@@ -308,7 +309,7 @@ const ReachOut = ({
 
   const onSubmit = async (data: ContactFormSchema) => {
     setContactInformation(data)
-    const projectName = localStorage.getItem("projectName")
+    const projectName = orgStorage.getItem("projectName")
 
     setIsLoading(true)
 

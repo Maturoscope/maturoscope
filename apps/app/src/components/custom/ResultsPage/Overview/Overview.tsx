@@ -1,6 +1,7 @@
 "use client"
 
 // Styles
+import { orgStorage } from "@/lib/orgStorage"
 import "swiper/css"
 // Packages
 import { useState, useEffect, useRef } from "react"
@@ -120,9 +121,9 @@ const Overview = ({
   })
 
   useEffect(() => {
-    const storedLevel = localStorage.getItem("level")
-    const storedPhases = localStorage.getItem("phases")
-    const storedNotScored = localStorage.getItem("notScored")
+    const storedLevel = orgStorage.getItem("level")
+    const storedPhases = orgStorage.getItem("phases")
+    const storedNotScored = orgStorage.getItem("notScored")
 
     if (storedLevel) setLevelData(JSON.parse(storedLevel))
     if (storedPhases) setPhasesData(JSON.parse(storedPhases))

@@ -73,16 +73,38 @@ export const middleware = async (request: NextRequest) => {
   // Get organization key from cookies
   const keyFromCookie = request.cookies.get("organization-key")?.value || null
 
-  // Determine which key to use (prefer URL, fallback to cookie)
+  const locale = getLocale(request)
+  const isLocaleRoot =
+    pathname === "/" || LOCALES.some((l) => pathname === `/${l}`)
+
+  // The locale root WITHOUT an explicit ?key is always the public landing page,
+  // regardless of any stored organization-key cookie. This lets a returning
+  // visitor (who may have a questionnaire in progress) reach the landing and
+  // choose an organization. The cookie is only used to carry the key inside a
+  // questionnaire's deeper routes (below).
+  if (isLocaleRoot && !keyFromUrl) {
+    if (pathname === `/${locale}`) {
+      // Flag the request so the layout renders in landing mode (no questionnaire
+      // header, full-page scroll) even when a cookie is present.
+      const requestHeaders = new Headers(request.headers)
+      requestHeaders.set("x-landing", "1")
+      return NextResponse.next({ request: { headers: requestHeaders } })
+    }
+    const landingUrl = request.nextUrl.clone()
+    landingUrl.pathname = `/${locale}`
+    landingUrl.search = ""
+    return NextResponse.redirect(landingUrl)
+  }
+
+  // Determine which key to use (prefer URL, fallback to cookie) for the flow.
   const key = keyFromUrl || keyFromCookie
 
-  // If no key found, redirect to 404
+  // A deeper flow route with no key at all → send them to the landing.
   if (!key) {
-    const locale = getLocale(request)
-    const notFoundUrl = request.nextUrl.clone()
-    notFoundUrl.pathname = `/${locale}/404`
-    notFoundUrl.search = '' // Clear query params
-    return NextResponse.redirect(notFoundUrl)
+    const landingUrl = request.nextUrl.clone()
+    landingUrl.pathname = `/${locale}`
+    landingUrl.search = ""
+    return NextResponse.redirect(landingUrl)
   }
 
   // Resolve org (validates the key) and its Live languages in one request.
@@ -90,15 +112,11 @@ export const middleware = async (request: NextRequest) => {
 
   // If key is invalid, redirect to 404
   if (!orgLanguages) {
-    const locale = getLocale(request)
     const notFoundUrl = request.nextUrl.clone()
     notFoundUrl.pathname = `/${locale}/404`
     notFoundUrl.search = '' // Clear query params
     return NextResponse.redirect(notFoundUrl)
   }
-
-  // Handle locale redirects
-  const locale = getLocale(request)
 
   // Fall back to the default language when the requested locale isn't Live for
   // this organization (e.g. a directly-typed URL for a draft/disabled language).
@@ -147,7 +165,14 @@ export const middleware = async (request: NextRequest) => {
   let response: NextResponse
 
   if (pathnameHasLocale) {
-    response = NextResponse.next()
+    // Expose the resolved organization key as a request header so the server
+    // layout themes the very first paint with THIS host's colors/font. Reading
+    // the cookie alone lags by one navigation (the Set-Cookie below only reaches
+    // the browser on the next request), which showed the previous host's theme
+    // until a manual reload.
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.set("x-organization-key", key)
+    response = NextResponse.next({ request: { headers: requestHeaders } })
   } else if (pathname === "/") {
     const redirectUrl = new URL(`/${locale}`, request.url)
     // Preserve all query params including key
@@ -179,5 +204,5 @@ export const middleware = async (request: NextRequest) => {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|icons|images).*)"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|icons|images|landing).*)"],
 }

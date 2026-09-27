@@ -1,0 +1,89 @@
+{
+  "header": {
+    "hosts": "Gostitelji",
+    "whyMaturoscope": "Zakaj Maturoscope",
+    "whatWeMeasure": "Kaj merimo",
+    "whatYouGet": "Kaj dobite",
+    "cta": "Pojdi na vprašalnik"
+  },
+  "hero": {
+    "title": "Orodje, ki vašo inovacijo popelje na trg",
+    "subtitle": "Maturoscope, ki so ga razvili strokovnjaki iz gradbenega sektorja, inovatorjem pomaga oceniti, razumeti in pospešiti zrelost njihovih rešitev — od ideje do tržno pripravljenega izdelka.",
+    "cta": "Pojdi na vprašalnik",
+    "timeEstimate": "10 minut"
+  },
+  "hosts": {
+    "title": "Izberite svojega gostitelja",
+    "subtitle": "Dostopajte do Maturoscope prek svoje organizacije"
+  },
+  "whyMaturoscope": {
+    "body": "Razvijate inovativno rešitev v gradbeništvu — izdelek, postopek ali storitev? Z le nekaj kliki vam Maturoscope pomaga oceniti njeno zrelost in vas vodi k naslednjim korakom za uspešno komercializacijo.",
+    "badge": "Zakaj Maturoscope",
+    "title": "Hitro, zasebno in brez napora",
+    "features": [
+      {
+        "title": "Najprej zasebnost",
+        "description": "Vaši podatki ostanejo vaši. Nič se ne shranjuje ali deli — vsi odgovori se izbrišejo takoj, ko se seja konča."
+      },
+      {
+        "title": "Manj kot 12 minut",
+        "description": "Hitra in intuitivna samoocena, da se lahko hitro vrnete k tistemu, kar je pomembno."
+      },
+      {
+        "title": "Račun ni potreben",
+        "description": "Začnite takoj — brez registracije, brez gesel, brez ovir."
+      }
+    ]
+  },
+  "whatWeMeasure": {
+    "badge": "Kaj merimo",
+    "title": "Maturoscope ocenjuje tri ključne razsežnosti",
+    "cta": "Pojdi na vprašalnik",
+    "scales": [
+      {
+        "title": "TRL — Raven tehnološke zrelosti",
+        "description": "Meri, kako napredna je vaša tehnologija, od začetne zamisli do potrjene uporabe v resničnem svetu."
+      },
+      {
+        "title": "MKRL — Raven tržne zrelosti",
+        "description": "Ocenjuje, kako pripravljena je vaša rešitev za vstop na trg, sprejetje in nadgradljivost."
+      },
+      {
+        "title": "MFRL — Raven proizvodne zrelosti",
+        "description": "Ocenjuje vašo sposobnost, da rešitev proizvajate zanesljivo, učinkovito in v velikem obsegu."
+      }
+    ]
+  },
+  "whatYouGet": {
+    "badge": "Kaj dobite",
+    "title": "Jasnost in vpogledi v nekaj minutah",
+    "subtitle": "Odgovorite na nekaj vprašanj in odnesite jasno sliko o tem, kje je vaša inovacija, kaj jo zavira in kaj storiti naprej.",
+    "steps": [
+      {
+        "title": "Razumite zrelost svoje inovacije",
+        "description": "**Odkrijte, kje je vaša rešitev** v treh razsežnostih — tehnični, tržni in proizvodni zrelosti — **in prepoznajte naslednji korak.**"
+      },
+      {
+        "title": "Pridobite svoje prilagojeno poročilo",
+        "description": "Takoj prenesite **prilagojeno poročilo PDF, ki povzema vaše rezultate, napredek in ključna priporočila.**"
+      },
+      {
+        "title": "Pospešite svojo rast",
+        "description": "Dostopajte do **prilagojenega svetovanja in storitev**, zasnovanih tako, da vam pomagajo hitreje priti od prototipa do uspeha na trgu."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Podpirate inovacije v gradbeništvu?",
+    "subtitle": "Pridružite se mreži Maturoscope",
+    "cta": "Kontaktirajte nas"
+  },
+  "footer": {
+    "navigate": "Navigacija",
+    "legal": "Pravno",
+    "privacyPolicy": "Politika zasebnosti",
+    "contactUs": "Kontaktirajte nas",
+    "madeBy": "Maturoscope ustvarja",
+    "developedBy": "Razvil"
+  }
+}

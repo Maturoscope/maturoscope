@@ -1,3 +1,4 @@
+import { orgStorage } from "@/lib/orgStorage"
 import { StageId } from "@/components/custom/FormPage/Form/Form"
 
 // What the user is evaluating. Purely a UI aid on the "begin" screen: it drives
@@ -26,10 +27,10 @@ const isEvaluationType = (value: unknown): value is EvaluationType =>
 
 export const getEvaluationType = (): EvaluationType | null => {
   if (typeof window === "undefined") return null
-  const stored = localStorage.getItem(EVALUATION_TYPE_KEY)
+  const stored = orgStorage.getItem(EVALUATION_TYPE_KEY)
   return isEvaluationType(stored) ? stored : null
 }
 
 export const setEvaluationType = (type: EvaluationType): void => {
-  localStorage.setItem(EVALUATION_TYPE_KEY, type)
+  orgStorage.setItem(EVALUATION_TYPE_KEY, type)
 }

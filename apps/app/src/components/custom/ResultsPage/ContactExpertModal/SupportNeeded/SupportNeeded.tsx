@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { useParams } from "next/navigation"
@@ -83,8 +84,8 @@ const SupportNeeded = ({
   const handleButtonClick = () => setCurrentStep("reachOut")
 
   useEffect(() => {
-    const storedGaps = localStorage.getItem("gaps")
-    const storedLevel = localStorage.getItem("level")
+    const storedGaps = orgStorage.getItem("gaps")
+    const storedLevel = orgStorage.getItem("level")
 
     if (!storedGaps) return
 

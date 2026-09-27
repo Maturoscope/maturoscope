@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import { useState, useEffect, useCallback } from "react"
 // Utils
 import { cn } from "@/lib/utils"
@@ -122,10 +123,10 @@ const DetailedReport = ({
   )
 
   useEffect(() => {
-    const storedGaps = localStorage.getItem("gaps")
-    const storedLevel = localStorage.getItem("level")
-    const storedPhases = localStorage.getItem("phases")
-    const storedNotScored = localStorage.getItem("notScored")
+    const storedGaps = orgStorage.getItem("gaps")
+    const storedLevel = orgStorage.getItem("level")
+    const storedPhases = orgStorage.getItem("phases")
+    const storedNotScored = orgStorage.getItem("notScored")
 
     if (storedGaps) setGapsData(JSON.parse(storedGaps))
     if (storedNotScored) setNotScoredData(JSON.parse(storedNotScored))

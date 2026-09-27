@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
@@ -86,18 +87,18 @@ const SimpleForm = ({
   const handleLeaveConfirm = async () => {
     // Reset all form data
     await clearAssessmentTracking()
-    localStorage.removeItem("form")
-    localStorage.removeItem("gaps")
-    localStorage.removeItem("level")
-    localStorage.removeItem("phases")
-    localStorage.removeItem("completedOn")
-    localStorage.removeItem("organization-signature")
-    localStorage.removeItem("report-pdf-cache")
-    localStorage.removeItem("risks")
-    localStorage.removeItem("projectName")
-    localStorage.removeItem("selectedScales")
-    localStorage.removeItem("evaluationType")
-    localStorage.removeItem("notScored")
+    orgStorage.removeItem("form")
+    orgStorage.removeItem("gaps")
+    orgStorage.removeItem("level")
+    orgStorage.removeItem("phases")
+    orgStorage.removeItem("completedOn")
+    orgStorage.removeItem("organization-signature")
+    orgStorage.removeItem("report-pdf-cache")
+    orgStorage.removeItem("risks")
+    orgStorage.removeItem("projectName")
+    orgStorage.removeItem("selectedScales")
+    orgStorage.removeItem("evaluationType")
+    orgStorage.removeItem("notScored")
 
     setIsLeaveModalOpen(false)
     router.push(`/${lang}/`)
@@ -106,7 +107,7 @@ const SimpleForm = ({
   const handleNextButtonClick = () => {
     if (!evaluationType || selectedScales.length === 0) return
     setIsLoading(true)
-    localStorage.setItem("projectName", projectName)
+    orgStorage.setItem("projectName", projectName)
     setSelectedScales(selectedScales)
     setEvaluationType(evaluationType)
     // Track one "started" per chosen scale (fire-and-forget).
@@ -123,7 +124,7 @@ const SimpleForm = ({
   }
 
   useEffect(() => {
-    const savedProjectName = localStorage.getItem("projectName")
+    const savedProjectName = orgStorage.getItem("projectName")
     if (savedProjectName) setProjectName(savedProjectName)
 
     // Restore a previous choice (e.g. after "Back"): only when a type was set.

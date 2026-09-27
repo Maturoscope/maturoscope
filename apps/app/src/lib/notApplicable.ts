@@ -1,3 +1,4 @@
+import { orgStorage } from "@/lib/orgStorage"
 import { getSelectedScales } from "@/lib/selectedScales"
 
 // A question the user marks as "Not applicable" is stored with this sentinel
@@ -20,7 +21,7 @@ export const isNotApplicable = (value: string | undefined | null): boolean =>
 export const areAllScalesNotScored = (): boolean => {
   if (typeof window === "undefined") return false
   try {
-    const raw = localStorage.getItem("notScored")
+    const raw = orgStorage.getItem("notScored")
     const notScored = (raw ? JSON.parse(raw) : {}) as Record<string, boolean>
     const selected = getSelectedScales()
     return selected.length > 0 && selected.every((scale) => notScored[scale] === true)

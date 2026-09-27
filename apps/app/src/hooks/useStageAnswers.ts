@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import { useState, useEffect } from "react"
 // Types
 import { StageId } from "@/components/custom/FormPage/Form/Form"
@@ -42,7 +43,7 @@ const useStageAnswers = (
 
       // Read answers from localStorage
       const savedForm = JSON.parse(
-        localStorage.getItem("form") || "{}"
+        orgStorage.getItem("form") || "{}"
       ) as DefaultValues
 
       const stageAnswers = savedForm[stageName]?.questions || {}

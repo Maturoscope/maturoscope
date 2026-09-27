@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 // Components
@@ -61,7 +62,7 @@ const ResultsTopBar = ({
   const handleDownloadClick = async () => await downloadReport()
 
   useEffect(() => {
-    const storedCompletedOn = localStorage.getItem("completedOn")
+    const storedCompletedOn = orgStorage.getItem("completedOn")
     if (storedCompletedOn) {
       const date = new Date(storedCompletedOn)
       const formattedDate = date.toLocaleDateString(
@@ -75,8 +76,8 @@ const ResultsTopBar = ({
   useEffect(() => {
     setHideActions(areAllScalesNotScored())
 
-    const storedGaps = localStorage.getItem("gaps")
-    const storedLevel = localStorage.getItem("level")
+    const storedGaps = orgStorage.getItem("gaps")
+    const storedLevel = orgStorage.getItem("level")
 
     // Check if all levels are at maximum (9)
     if (storedLevel) {

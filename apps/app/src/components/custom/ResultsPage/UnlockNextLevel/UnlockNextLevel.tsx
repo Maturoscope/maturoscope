@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import { useState, useEffect } from "react"
 // Utils
 import { cn } from "@/lib/utils"
@@ -41,7 +42,7 @@ const UnlockNextLevel = ({
 
     // Check if all ASSESSED levels are at maximum (9). Only the scales the
     // user chose to assess are considered.
-    const storedLevel = localStorage.getItem("level")
+    const storedLevel = orgStorage.getItem("level")
     if (storedLevel) {
       try {
         const levelData: LevelStorage = JSON.parse(storedLevel)

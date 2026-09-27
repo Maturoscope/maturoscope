@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import { createContext, useContext, useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 // Context
@@ -109,36 +110,36 @@ const saveAssessmentToLocalStorage = (
 
   // Save gaps
   const existingGaps: GapsStorage = JSON.parse(
-    localStorage.getItem(STORAGE_KEYS.gaps) || "{}"
+    orgStorage.getItem(STORAGE_KEYS.gaps) || "{}"
   )
   existingGaps[scaleKey] = data.gaps
-  localStorage.setItem(STORAGE_KEYS.gaps, JSON.stringify(existingGaps))
+  orgStorage.setItem(STORAGE_KEYS.gaps, JSON.stringify(existingGaps))
 
   // Save level
   const existingLevel: LevelStorage = JSON.parse(
-    localStorage.getItem(STORAGE_KEYS.level) || "{}"
+    orgStorage.getItem(STORAGE_KEYS.level) || "{}"
   )
   existingLevel[scaleKey] = data.readinessLevel
-  localStorage.setItem(STORAGE_KEYS.level, JSON.stringify(existingLevel))
+  orgStorage.setItem(STORAGE_KEYS.level, JSON.stringify(existingLevel))
 
   // Save phases (null when the scale was not scored — omit it so risk analysis
   // skips this scale).
   const existingPhases: PhasesStorage = JSON.parse(
-    localStorage.getItem(STORAGE_KEYS.phases) || "{}"
+    orgStorage.getItem(STORAGE_KEYS.phases) || "{}"
   )
   if (data.developmentPhase) {
     existingPhases[scaleKey] = data.developmentPhase
   } else {
     delete existingPhases[scaleKey]
   }
-  localStorage.setItem(STORAGE_KEYS.phases, JSON.stringify(existingPhases))
+  orgStorage.setItem(STORAGE_KEYS.phases, JSON.stringify(existingPhases))
 
   // Save "not scored" flag (all questions marked Not Applicable)
   const existingNotScored: NotScoredStorage = JSON.parse(
-    localStorage.getItem(STORAGE_KEYS.notScored) || "{}"
+    orgStorage.getItem(STORAGE_KEYS.notScored) || "{}"
   )
   existingNotScored[scaleKey] = data.notScored
-  localStorage.setItem(
+  orgStorage.setItem(
     STORAGE_KEYS.notScored,
     JSON.stringify(existingNotScored)
   )
@@ -181,7 +182,7 @@ export const ProgressProvider = ({
   const isFirstQuestionOfStage = currQuestionIndex === 0
 
   const saveProgress = () =>
-    localStorage.setItem("form", JSON.stringify(getValues()))
+    orgStorage.setItem("form", JSON.stringify(getValues()))
 
   const saveLastViewedQuestion = (
     stageId: StageId,
@@ -194,14 +195,14 @@ export const ProgressProvider = ({
       isCheckpoint: checkpoint,
       timestamp: Date.now(),
     }
-    localStorage.setItem(
+    orgStorage.setItem(
       STORAGE_KEYS.lastViewedQuestion,
       JSON.stringify(lastViewed)
     )
   }
 
   const getLastViewedQuestion = (): LastViewedQuestion | null => {
-    const stored = localStorage.getItem(STORAGE_KEYS.lastViewedQuestion)
+    const stored = orgStorage.getItem(STORAGE_KEYS.lastViewedQuestion)
     if (!stored) return null
 
     try {
@@ -210,7 +211,7 @@ export const ProgressProvider = ({
       const isExpired = now - lastViewed.timestamp > LAST_VIEWED_EXPIRATION_MS
 
       if (isExpired) {
-        localStorage.removeItem(STORAGE_KEYS.lastViewedQuestion)
+        orgStorage.removeItem(STORAGE_KEYS.lastViewedQuestion)
         return null
       }
 
@@ -284,12 +285,12 @@ export const ProgressProvider = ({
     const isLastCheckpoint = !nextStage?.id
 
     if (isLastCheckpoint) {
-      localStorage.setItem("completedOn", new Date().toISOString())
+      orgStorage.setItem("completedOn", new Date().toISOString())
 
       // Pre-fetch risks and save to localStorage so buildReportPayload
       // can read them without making any network calls during PDF generation.
-      const levelData = JSON.parse(localStorage.getItem("level") || "{}")
-      const phasesData = JSON.parse(localStorage.getItem("phases") || "{}")
+      const levelData = JSON.parse(orgStorage.getItem("level") || "{}")
+      const phasesData = JSON.parse(orgStorage.getItem("phases") || "{}")
       try {
         const risksData = await getRisks({
           levels: {
@@ -303,7 +304,7 @@ export const ProgressProvider = ({
             mfrl: phasesData.mfrl?.phase,
           },
         })
-        localStorage.setItem("risks", JSON.stringify(risksData))
+        orgStorage.setItem("risks", JSON.stringify(risksData))
       } catch {
         // Risks are best-effort — PDF will still generate without them
       }
@@ -360,11 +361,11 @@ export const ProgressProvider = ({
     setStages(activeStages)
 
     // Check if form was already completed
-    const completedOn = localStorage.getItem("completedOn")
+    const completedOn = orgStorage.getItem("completedOn")
     setIsFormCompleted(!!completedOn)
 
     const savedForm = JSON.parse(
-      localStorage.getItem("form") || "{}"
+      orgStorage.getItem("form") || "{}"
     ) as DefaultValues
 
     // Check if coming from begin page (via query param)
@@ -420,7 +421,7 @@ export const ProgressProvider = ({
     // Only save after initialization to avoid overwriting with default values
     if (!isInitialized) return
 
-    const savedForm = localStorage.getItem("form")
+    const savedForm = orgStorage.getItem("form")
     if (savedForm) {
       saveLastViewedQuestion(currStageId, currQuestionId, isCheckpoint)
     }

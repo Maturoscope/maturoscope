@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 // Components
@@ -62,7 +63,7 @@ const QuestionEditor = ({
   useEffect(() => {
     // Read selected answer and comment from localStorage
     const savedForm = JSON.parse(
-      localStorage.getItem("form") || "{}"
+      orgStorage.getItem("form") || "{}"
     ) as DefaultValues
 
     const answerId = savedForm[stageName]?.questions?.[question.id] || null
@@ -105,7 +106,7 @@ const QuestionEditor = ({
 
     // Read current form data from localStorage
     const savedForm = JSON.parse(
-      localStorage.getItem("form") || "{}"
+      orgStorage.getItem("form") || "{}"
     ) as DefaultValues
 
     // Update the answer and comment for this question
@@ -125,7 +126,7 @@ const QuestionEditor = ({
     }
 
     // Save back to localStorage
-    localStorage.setItem("form", JSON.stringify(updatedForm))
+    orgStorage.setItem("form", JSON.stringify(updatedForm))
 
     // Submit assessment to the backend
     const scale = STAGE_TO_SCALE[stageName]

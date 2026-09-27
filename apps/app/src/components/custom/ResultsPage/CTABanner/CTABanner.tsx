@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 // Components
@@ -68,18 +69,18 @@ const CTABanner = ({
 
   const handleResetForm = async () => {
     await clearAssessmentTracking()
-    localStorage.removeItem("form")
-    localStorage.removeItem("gaps")
-    localStorage.removeItem("level")
-    localStorage.removeItem("phases")
-    localStorage.removeItem("completedOn")
-    localStorage.removeItem("organization-signature")
-    localStorage.removeItem("report-pdf-cache")
-    localStorage.removeItem("risks")
-    localStorage.removeItem("projectName")
-    localStorage.removeItem("selectedScales")
-    localStorage.removeItem("evaluationType")
-    localStorage.removeItem("notScored")
+    orgStorage.removeItem("form")
+    orgStorage.removeItem("gaps")
+    orgStorage.removeItem("level")
+    orgStorage.removeItem("phases")
+    orgStorage.removeItem("completedOn")
+    orgStorage.removeItem("organization-signature")
+    orgStorage.removeItem("report-pdf-cache")
+    orgStorage.removeItem("risks")
+    orgStorage.removeItem("projectName")
+    orgStorage.removeItem("selectedScales")
+    orgStorage.removeItem("evaluationType")
+    orgStorage.removeItem("notScored")
     setIsResetFormModalOpen(false)
   }
 
@@ -98,8 +99,8 @@ const CTABanner = ({
   useEffect(() => {
     setHideBanner(areAllScalesNotScored())
 
-    const storedGaps = localStorage.getItem("gaps")
-    const storedLevel = localStorage.getItem("level")
+    const storedGaps = orgStorage.getItem("gaps")
+    const storedLevel = orgStorage.getItem("level")
 
     // Check if all levels are at maximum (9)
     if (storedLevel) {

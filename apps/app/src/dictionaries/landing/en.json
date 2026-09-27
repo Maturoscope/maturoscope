@@ -1,0 +1,89 @@
+{
+  "header": {
+    "hosts": "Hosts",
+    "whyMaturoscope": "Why Maturoscope",
+    "whatWeMeasure": "What we measure",
+    "whatYouGet": "What you get",
+    "cta": "Go to questionnaire"
+  },
+  "hero": {
+    "title": "The tool that drives your innovation to market",
+    "subtitle": "Developed by experts in the building and construction sector, Maturoscope helps innovators assess, understand, and accelerate the maturity of their solutions — from idea to market-ready product.",
+    "cta": "Go to questionnaire",
+    "timeEstimate": "10 minutes"
+  },
+  "hosts": {
+    "title": "Choose your host",
+    "subtitle": "Access Maturoscope through your organization"
+  },
+  "whyMaturoscope": {
+    "body": "You're developing an innovative solution in construction — a product, a process, or a service? With just a few clicks, the Maturoscope helps you evaluate its maturity and guides you towards the next steps for successful commercialization.",
+    "badge": "Why Maturoscope",
+    "title": "Fast, private, and effortless",
+    "features": [
+      {
+        "title": "Privacy first",
+        "description": "Your data stays yours. Nothing is stored or shared — all responses are deleted as soon as your session ends."
+      },
+      {
+        "title": "Less than 12 minutes",
+        "description": "A quick, intuitive self-assessment so you can get back to building what matters."
+      },
+      {
+        "title": "No account needed",
+        "description": "Start instantly — no sign-ups, no passwords, no barriers."
+      }
+    ]
+  },
+  "whatWeMeasure": {
+    "badge": "What we measure",
+    "title": "Maturoscope evaluates three key dimensions",
+    "cta": "Go to questionnaire",
+    "scales": [
+      {
+        "title": "TRL — Technology Readiness Level",
+        "description": "Measures how advanced your technology is, from initial concept to validated real-world application."
+      },
+      {
+        "title": "MKRL — Market Readiness Level",
+        "description": "Assesses how prepared your solution is for market launch, adoption, and scalability."
+      },
+      {
+        "title": "MFRL — Manufacturing Readiness Level",
+        "description": "Evaluates your ability to produce your solution reliably, efficiently, and at scale."
+      }
+    ]
+  },
+  "whatYouGet": {
+    "badge": "What you get",
+    "title": "Clarity and insights in minutes",
+    "subtitle": "Answer a few questions and walk away with a clear picture of where your innovation stands, what's holding it back, and what to do next.",
+    "steps": [
+      {
+        "title": "Understand your innovation's maturity",
+        "description": "**Discover where your solution stands** across three dimensions — technical, market, and manufacturing readiness — **and identify what's next.**"
+      },
+      {
+        "title": "Get your personalized report",
+        "description": "Instantly download a **tailored PDF report summarizing your results, progress, and key recommendations.**"
+      },
+      {
+        "title": "Accelerate your growth",
+        "description": "Access **customized guidance and services** designed to help you move faster from prototype to market success."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Supporting innovation in construction?",
+    "subtitle": "Join the Maturoscope network",
+    "cta": "Contact Us"
+  },
+  "footer": {
+    "navigate": "Navigate",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy Policy",
+    "contactUs": "Contact us",
+    "madeBy": "Maturoscope by",
+    "developedBy": "Developed by"
+  }
+}
