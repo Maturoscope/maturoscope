@@ -1,6 +1,6 @@
 import type { NextConfig } from "next"
 
-// Build trigger: rebuild app to pick up NEXT_PUBLIC_STANDALONE_ORG_KEYS (2026-09-30)
+// Build trigger: rebuild app to pick up NEXT_PUBLIC_STANDALONE_ORG_KEYS (2026-09-30 / secrets fix)
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [

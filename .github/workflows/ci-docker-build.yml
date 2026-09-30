@@ -201,13 +201,13 @@ jobs:
             NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.PROD_GOOGLE_MAPS_API_KEY }}"
             NEXT_PUBLIC_GATEWAY_URL="${{ secrets.PROD_NEXT_PUBLIC_GATEWAY_URL }}"
             NEXT_SERVER_ACTIONS_ENCRYPTION_KEY="${{ secrets.PROD_NEXT_SERVER_ACTIONS_ENCRYPTION_KEY }}"
-            NEXT_PUBLIC_STANDALONE_ORG_KEYS="${{ vars.PROD_STANDALONE_ORG_KEYS }}"
+            NEXT_PUBLIC_STANDALONE_ORG_KEYS="${{ secrets.PROD_STANDALONE_ORG_KEYS }}"
             echo "🔧 Using PRODUCTION secrets"
           else
             NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="${{ secrets.STAGING_GOOGLE_MAPS_API_KEY || secrets.PROD_GOOGLE_MAPS_API_KEY || 'staging-key' }}"
             NEXT_PUBLIC_GATEWAY_URL="${{ secrets.STAGING_GATEWAY_URL || 'https://api.staging.yourapp.com' }}"
             NEXT_SERVER_ACTIONS_ENCRYPTION_KEY="${{ secrets.STAGING_NEXT_SERVER_ACTIONS_ENCRYPTION_KEY }}"
-            NEXT_PUBLIC_STANDALONE_ORG_KEYS="${{ vars.STAGING_STANDALONE_ORG_KEYS }}"
+            NEXT_PUBLIC_STANDALONE_ORG_KEYS="${{ secrets.STAGING_STANDALONE_ORG_KEYS }}"
             echo "🔧 Using STAGING secrets"
           fi
           
