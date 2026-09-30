@@ -3,16 +3,25 @@ import Hero from "@/components/custom/Homepage/Hero/Hero"
 import PrivacyPolicy from "@/components/custom/Homepage/PrivacyPolicy/PrivacyPolicy"
 import GdprModal from "@/components/custom/Homepage/GdprModal/GdprModal"
 import FormRedirectHandler from "@/components/common/FormRedirectHandler/FormRedirectHandler"
+import Landing from "@/components/custom/Landing/Landing"
 // Dictionaries
 import { getDictionary, Locale, resolveLocale } from "@/dictionaries/dictionaries"
 
 type HomePageProps = {
   params: Promise<{ lang: string }>
+  searchParams: Promise<{ key?: string }>
 }
 
-const HomePage = async ({ params }: HomePageProps) => {
+const HomePage = async ({ params, searchParams }: HomePageProps) => {
   const { lang: langParam } = await params
+  const { key } = await searchParams
   const lang: Locale = resolveLocale(langParam)
+
+  // No organization key → public marketing landing page.
+  if (!key) {
+    return <Landing lang={lang} />
+  }
+
   const dictionary = await getDictionary(lang)
 
   const {

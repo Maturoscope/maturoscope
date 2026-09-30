@@ -1,5 +1,6 @@
 // Packages
 import type { Metadata } from "next"
+import { headers } from "next/headers"
 import { Geist, Inter, Open_Sans, Poppins } from "next/font/google"
 import { MotionConfig } from "motion/react"
 // Dictionaries
@@ -60,7 +61,18 @@ export default async function RootLayout({
   // Validate and ensure lang is a valid Locale
   const lang: Locale = resolveLocale(langParam)
 
-  const organizationKey = await getOrganizationKeyFromCookies()
+  // The middleware flags landing requests (locale root without a ?key) so this
+  // works even when an organization-key cookie is present. The landing scrolls
+  // the full page and brings its own header, so we skip the questionnaire chrome
+  // and the single-viewport height constraint, and use the default theme.
+  const requestHeaders = await headers()
+  const isLanding = requestHeaders.get("x-landing") === "1"
+  // The middleware sets x-organization-key to the freshly resolved host on the
+  // current request, so the first paint themes with the right host even right
+  // after switching. Fall back to the cookie (e.g. direct RSC calls) otherwise.
+  const organizationKey = isLanding
+    ? null
+    : requestHeaders.get("x-organization-key") ?? (await getOrganizationKeyFromCookies())
   const { accentColor, font } = (await getOrganizationTheme(organizationKey)) ?? { accentColor: DEFAULT_ACCENT_THEME, font: DEFAULT_FONT_THEME }
   const fontClassName = FONTS_CLASSNAMES[font]
 
@@ -77,11 +89,19 @@ export default async function RootLayout({
   return (
     <html
       lang={lang}
-      className={`${fontClassName} antialiased`}
+      // On the landing, enable native smooth anchor scrolling and offset the
+      // scroll target below the sticky header (~68px) so nav links land cleanly.
+      className={`${fontClassName} antialiased${isLanding ? " scroll-smooth scroll-pt-20" : ""}`}
       data-accent-theme={accentColor}
       data-font-theme={font}
     >
-      <body className="flex flex-col items-center justify-start w-full lg:h-svh bg-background">
+      <body
+        className={
+          isLanding
+            ? "flex w-full flex-col items-center bg-white"
+            : "flex flex-col items-center justify-start w-full lg:h-svh bg-background"
+        }
+      >
         <OrganizationKeyHandler />
         <ThemeProvider
           initialTheme={accentColor}
@@ -89,11 +109,13 @@ export default async function RootLayout({
           fontClassNames={FONTS_CLASSNAMES}
         >
           <MotionConfig reducedMotion="user">
-            <Header
-              stringConnector={stringConnector}
-              leaveQuestionnaireModal={leaveQuestionnaireModal}
-              beforeYouGoModal={beforeYouGoModal}
-            />
+            {!isLanding && (
+              <Header
+                stringConnector={stringConnector}
+                leaveQuestionnaireModal={leaveQuestionnaireModal}
+                beforeYouGoModal={beforeYouGoModal}
+              />
+            )}
             {children}
           </MotionConfig>
         </ThemeProvider>

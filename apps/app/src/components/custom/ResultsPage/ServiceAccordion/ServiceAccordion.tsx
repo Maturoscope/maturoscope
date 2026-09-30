@@ -117,8 +117,10 @@ const ServiceAccordion = ({
 
         <span
           className={cn(
-            "shrink-0 text-xs font-semibold uppercase pt-1 hidden lg:block",
-            hasServices ? "text-[#0D9488]" : "text-[#854D0E]"
+            "shrink-0 text-xs font-semibold uppercase hidden lg:inline-block",
+            hasServices
+              ? "pt-1 text-[#0D9488]"
+              : "rounded-full bg-[#F4F4F5] px-3 py-1 text-[#71717A]"
           )}
         >
           {hasServices ? resolvedServiceLabel : comingSoonLabel}
@@ -128,8 +130,10 @@ const ServiceAccordion = ({
       {/* Mobile badge (below the title) */}
       <span
         className={cn(
-          "text-xs font-semibold uppercase block lg:hidden ml-[26px] mt-2",
-          hasServices ? "text-[#0D9488]" : "text-[#854D0E]"
+          "text-xs font-semibold uppercase lg:hidden ml-[26px] mt-2",
+          hasServices
+            ? "block text-[#0D9488]"
+            : "inline-block rounded-full bg-[#F4F4F5] px-3 py-1 text-[#71717A]"
         )}
       >
         {hasServices ? resolvedServiceLabel : comingSoonLabel}

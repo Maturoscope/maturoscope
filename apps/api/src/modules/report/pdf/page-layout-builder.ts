@@ -213,6 +213,8 @@ class PageBuilder {
   private pages: PageDescriptor[] = [];
   private currentPage: PageDescriptor;
   private remainingHeight: number;
+  // Standalone orgs: every gap is a header-only slice (no services rendered).
+  private hideServices = false;
 
   constructor() {
     this.currentPage = { blocks: [] };
@@ -282,8 +284,9 @@ class PageBuilder {
     for (let gapIdx = 0; gapIdx < scale.gaps.length; gapIdx++) {
       const gap = scale.gaps[gapIdx];
 
-      // Gap with no services (COMING SOON) - treat as atomic
-      if (!gap.hasServices || gap.recommendedServices.length === 0) {
+      // Gap with no services (COMING SOON), or a standalone org (services
+      // hidden) - treat as atomic (header only, no service rows).
+      if (this.hideServices || !gap.hasServices || gap.recommendedServices.length === 0) {
         const gapHeight = estimateGapHeaderHeight(gap);
 
         if (usedHeight + gapHeight > this.remainingHeight) {
@@ -402,6 +405,8 @@ class PageBuilder {
   }
 
   build(reportData: ReportDataDto): PageDescriptor[] {
+    this.hideServices = reportData.hideServices ?? false;
+
     // ── Page 1: Overview + Detailed title + start of first scale gaps ──
     this.addBlock({ type: 'overview' }, OVERVIEW_TOTAL);
     this.addBlock({ type: 'detailed-title' }, 0); // already accounted in OVERVIEW_TOTAL

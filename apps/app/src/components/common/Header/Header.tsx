@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { usePathname, useRouter, useParams } from "next/navigation"
@@ -21,6 +22,8 @@ import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/Leave
 import { useDownloadReport } from "@/hooks/useDownloadReport"
 // Utils
 import { areAllScalesNotScored } from "@/lib/notApplicable"
+import { getOrgHomeUrl } from "@/lib/orgNavigation"
+import { isStandaloneOrgKey } from "@/lib/standaloneOrg"
 
 export interface HeaderProps {
   stringConnector: string
@@ -40,6 +43,8 @@ const Header = ({
   const [activeModal, setActiveModal] = useState<"leave" | "beforeYouGo" | null>(null)
   const [signature, setSignature] = useState<string | null>(null)
   const [logoUrl, setLogoUrl] = useState<string | null>(null)
+  // Standalone orgs are example pages: hide the "by <logo>" signature for them.
+  const [isStandalone, setIsStandalone] = useState(false)
   const [allNotScored, setAllNotScored] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
@@ -61,6 +66,7 @@ const Header = ({
 
     const loadSignature = async () => {
       const organizationKey = getCookie("organization-key")
+      setIsStandalone(isStandaloneOrgKey(organizationKey))
 
       if (!organizationKey) {
         setSignature(null)
@@ -68,7 +74,7 @@ const Header = ({
       }
 
       try {
-        const stored = localStorage.getItem(SIGNATURE_STORAGE_KEY)
+        const stored = orgStorage.getItem(SIGNATURE_STORAGE_KEY)
         if (stored) {
           const parsed = JSON.parse(stored) as {
             organizationKey: string
@@ -90,10 +96,10 @@ const Header = ({
           organizationKey,
           url: sig,
         })
-        localStorage.setItem(SIGNATURE_STORAGE_KEY, payload)
+        orgStorage.setItem(SIGNATURE_STORAGE_KEY, payload)
         setSignature(sig)
       } else {
-        localStorage.removeItem(SIGNATURE_STORAGE_KEY)
+        orgStorage.removeItem(SIGNATURE_STORAGE_KEY)
         setSignature(null)
       }
     }
@@ -135,7 +141,7 @@ const Header = ({
     isBeforeWeBegin || /\/(begin|form|review|results)(\/|$)/.test(pathname)
 
   const handleBackButtonClick = () => {
-    if (isBeforeWeBegin) router.push(`/${lang}`)
+    if (isBeforeWeBegin) router.push(getOrgHomeUrl(lang))
     else if (isResultsPage) {
       // Nothing to download (every scale marked Not Applicable): skip the
       // "before you go" modal and just reset everything and leave.
@@ -146,30 +152,30 @@ const Header = ({
 
   const handleResetForm = async () => {
     await clearAssessmentTracking()
-    localStorage.removeItem("form")
-    localStorage.removeItem("gaps")
-    localStorage.removeItem("level")
-    localStorage.removeItem("phases")
-    localStorage.removeItem("completedOn")
-    localStorage.removeItem("organization-signature")
-    localStorage.removeItem("report-pdf-cache")
-    localStorage.removeItem("risks")
-    localStorage.removeItem("projectName")
-    localStorage.removeItem("selectedScales")
-    localStorage.removeItem("evaluationType")
-    localStorage.removeItem("notScored")
+    orgStorage.removeItem("form")
+    orgStorage.removeItem("gaps")
+    orgStorage.removeItem("level")
+    orgStorage.removeItem("phases")
+    orgStorage.removeItem("completedOn")
+    orgStorage.removeItem("organization-signature")
+    orgStorage.removeItem("report-pdf-cache")
+    orgStorage.removeItem("risks")
+    orgStorage.removeItem("projectName")
+    orgStorage.removeItem("selectedScales")
+    orgStorage.removeItem("evaluationType")
+    orgStorage.removeItem("notScored")
     setActiveModal(null)
   }
 
   const handleResetButtonClick = () => {
     handleResetForm()
-    router.push(`/${lang}`)
+    router.push(getOrgHomeUrl(lang))
   }
 
   const handleDownloadButtonClick = async () => {
     await downloadReport()
     handleResetForm()
-    router.push(`/${lang}`)
+    router.push(getOrgHomeUrl(lang))
   }
 
   return (
@@ -234,7 +240,7 @@ const Header = ({
           </div>
 
 
-          {signature && (
+          {signature && !isStandalone && (
             <>
               <span className="text-sm font-medium">{stringConnector}</span>
               {logoUrl ? (

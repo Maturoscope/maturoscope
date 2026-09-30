@@ -1,40 +1,19 @@
 "use client"
 
-import { useEffect } from "react"
-import { useSearchParams } from "next/navigation"
-
-const OrganizationKeyHandler = () => {
-  const searchParams = useSearchParams()
-
-  useEffect(() => {
-    const keyFromUrl = searchParams.get("key")
-    
-    // Get organization key from cookie
-    const getCookie = (name: string): string | null => {
-      const value = `; ${document.cookie}`
-      const parts = value.split(`; ${name}=`)
-      if (parts.length === 2) {
-        return parts.pop()?.split(";").shift() || null
-      }
-      return null
-    }
-
-    const keyFromCookie = getCookie("organization-key")
-
-    // If both keys exist and they're different, reset everything
-    if (keyFromUrl && keyFromCookie && keyFromUrl !== keyFromCookie) {
-      // Clear all localStorage
-      localStorage.clear()
-
-      // Clear the organization-key cookie
-      document.cookie = "organization-key=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
-
-      // Reload the page to start fresh with the new key
-      window.location.reload()
-    }
-  }, [searchParams])
-
-  return null
-}
+/**
+ * Previously this component wiped ALL localStorage whenever the visitor switched
+ * organizations, to stop one host's answers from bleeding into another. That was
+ * both unreliable (the middleware refreshes the organization-key cookie before
+ * this ran, so the mismatch was rarely detected) and destructive (it erased any
+ * other host's in-progress questionnaire).
+ *
+ * Isolation is now handled by namespacing every questionnaire key per
+ * organization in localStorage — see {@link file://../../../lib/orgStorage.ts}.
+ * Each host reads and writes under its own `org:<key>:*` namespace, so multiple
+ * in-progress questionnaires coexist safely and no cross-host reset is needed.
+ *
+ * The component is kept as a no-op so existing mount points don't need changing.
+ */
+const OrganizationKeyHandler = () => null
 
 export default OrganizationKeyHandler

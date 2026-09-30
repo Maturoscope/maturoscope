@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import { useState, useEffect, useCallback } from "react"
 // Utils
 import { cn } from "@/lib/utils"
@@ -32,6 +33,7 @@ export interface DetailedReportProps {
 
 interface ExtraProps {
   className?: string
+  isStandalone?: boolean
 }
 
 interface NotScoredStorage {
@@ -83,6 +85,7 @@ const DetailedReport = ({
   noScoreTitle,
   noScoreDescription,
   className,
+  isStandalone = false,
 }: DetailedReportProps & ExtraProps) => {
   const [gapsData, setGapsData] = useState<GapsStorage>({})
   const [levelData, setLevelData] = useState<LevelStorage>({})
@@ -122,10 +125,10 @@ const DetailedReport = ({
   )
 
   useEffect(() => {
-    const storedGaps = localStorage.getItem("gaps")
-    const storedLevel = localStorage.getItem("level")
-    const storedPhases = localStorage.getItem("phases")
-    const storedNotScored = localStorage.getItem("notScored")
+    const storedGaps = orgStorage.getItem("gaps")
+    const storedLevel = orgStorage.getItem("level")
+    const storedPhases = orgStorage.getItem("phases")
+    const storedNotScored = orgStorage.getItem("notScored")
 
     if (storedGaps) setGapsData(JSON.parse(storedGaps))
     if (storedNotScored) setNotScoredData(JSON.parse(storedNotScored))
@@ -176,6 +179,7 @@ const DetailedReport = ({
             strategicFocus={riskData?.strategicFocus}
             primaryRisk={riskData?.primaryRisk}
             gaps={gaps ?? []}
+            isStandalone={isStandalone}
           />
         )
       })}

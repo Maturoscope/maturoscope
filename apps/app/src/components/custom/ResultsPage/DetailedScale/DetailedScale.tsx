@@ -30,6 +30,7 @@ interface DetailedScaleProps {
   primaryRisk?: LocalizedText
   notScored?: boolean
   gaps: Gap[]
+  isStandalone?: boolean
 }
 
 interface ExtraProps {
@@ -65,6 +66,7 @@ const DetailedScale = ({
   primaryRisk,
   notScored = false,
   gaps,
+  isStandalone = false,
   className,
 }: DetailedScaleProps & ExtraProps) => {
   const { lang } = useParams<{ lang: Locale }>()
@@ -128,7 +130,14 @@ const DetailedScale = ({
         </div>
       </div>
 
-      <div className="w-full flex flex-col gap-2.5 p-6 rounded-3xl bg-white h-min">
+      <div
+        className={cn(
+          "w-full flex flex-col gap-2.5 h-min",
+          // Standalone orgs drop the white card wrapper: gaps sit on the page as
+          // individual white cards.
+          !isStandalone && "p-6 rounded-3xl bg-white"
+        )}
+      >
         {notScored ? (
           <div className="flex flex-col gap-1">
             <span className="font-semibold text-base">{scoreTitle}</span>
@@ -136,6 +145,32 @@ const DetailedScale = ({
               {scoreDescription}
             </span>
           </div>
+        ) : isStandalone ? (
+          // Standalone orgs have no services: show gaps as a plain list of white
+          // bordered cards (no accordion, no service chips, no white wrapper).
+          level >= 9 || gaps.length === 0 ? (
+            <div className="rounded-xl border border-border bg-white px-4 py-3.5">
+              <p className="text-sm lg:text-base font-medium text-foreground">
+                {levelSummary}
+              </p>
+            </div>
+          ) : (
+            <>
+              <span className="font-semibold text-base">{levelSummary}</span>
+              <div className="flex flex-col gap-2.5">
+                {gaps.map((gap, index) => (
+                  <div
+                    key={gap.questionId}
+                    className="rounded-xl border border-border bg-white px-4 py-3.5"
+                  >
+                    <p className="text-sm lg:text-base font-medium text-foreground">
+                      {gapLabel} {index + 1}: {gap.gapDescription[lang] ?? gap.gapDescription.en}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </>
+          )
         ) : (
           <>
             <span className="font-semibold text-base">{levelSummary}</span>

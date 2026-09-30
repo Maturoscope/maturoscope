@@ -1,8 +1,10 @@
 "use client"
 
+import { orgStorage } from "@/lib/orgStorage"
 import { useEffect, useState } from "react"
 import { useRouter, useParams } from "next/navigation"
 import { Locale } from "@/dictionaries/dictionaries"
+import { getOrgHomeUrl } from "@/lib/orgNavigation"
 
 const ResultsRedirectHandler = () => {
   const router = useRouter()
@@ -10,12 +12,12 @@ const ResultsRedirectHandler = () => {
   const [shouldRedirect, setShouldRedirect] = useState<string | null>(null)
 
   useEffect(() => {
-    const savedForm = localStorage.getItem("form")
-    const completedOn = localStorage.getItem("completedOn")
+    const savedForm = orgStorage.getItem("form")
+    const completedOn = orgStorage.getItem("completedOn")
 
-    // If user hasn't started the questionnaire, redirect to home
+    // If user hasn't started the questionnaire, redirect to the org home
     if (!savedForm) {
-      setShouldRedirect(`/${lang}`)
+      setShouldRedirect(getOrgHomeUrl(lang))
       return
     }
 

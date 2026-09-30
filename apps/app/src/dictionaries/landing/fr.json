@@ -1,0 +1,91 @@
+{
+  "header": {
+    "hosts": "Prestataires de services",
+    "whyMaturoscope": "Pourquoi Maturoscope",
+    "whatWeMeasure": "Ce que nous mesurons",
+    "whatYouGet": "Ce que vous obtenez",
+    "cta": "Commencer"
+  },
+  "hero": {
+    "title": "L'outil qui propulse votre innovation vers le marché",
+    "subtitle": "Développé par des experts du secteur du bâtiment et de la construction, Maturoscope aide les innovateurs à évaluer, comprendre et accélérer la maturité de leurs solutions — de l'idée au produit prêt à commercialiser.",
+    "cta": "Commencer",
+    "timeEstimate": "10 minutes"
+  },
+  "hosts": {
+    "title": "Choisissez votre prestataire de services",
+    "subtitle": "Chaque prestataire vous donne accès à Maturoscope, ainsi qu'à des services et des conseils d'experts adaptés au stade de développement de votre innovation.",
+    "badge": "Prestataires de services",
+    "selectLabel": "Sélectionnez un prestataire pour accéder au questionnaire"
+  },
+  "whyMaturoscope": {
+    "body": "Développez-vous une solution innovante dans la construction, qu'il s'agisse d'un produit, d'un procédé ou d'un service ? En quelques clics, le Maturoscope vous aide à évaluer sa maturité et vous guide vers les prochaines étapes pour une commercialisation réussie.",
+    "badge": "Pourquoi Maturoscope",
+    "title": "Rapide, privé et sans effort",
+    "features": [
+      {
+        "title": "Confidentialité avant tout",
+        "description": "Vos données restent les vôtres. Rien n'est stocké ni partagé — toutes les réponses sont supprimées dès la fin de votre session."
+      },
+      {
+        "title": "Moins de 12 minutes",
+        "description": "Une auto-évaluation rapide et intuitive pour vous permettre de retourner à l'essentiel."
+      },
+      {
+        "title": "Aucun compte requis",
+        "description": "Commencez immédiatement — sans inscription, sans mot de passe, sans obstacle."
+      }
+    ]
+  },
+  "whatWeMeasure": {
+    "badge": "Ce que nous mesurons",
+    "title": "Maturoscope évalue trois dimensions clés",
+    "cta": "Commencer",
+    "scales": [
+      {
+        "title": "TRL — Niveau de maturité technologique",
+        "description": "Mesure le degré d'avancement de votre technologie, du concept initial à l'application validée en conditions réelles."
+      },
+      {
+        "title": "MKRL — Niveau de maturité commerciale",
+        "description": "Évalue le niveau de préparation de votre solution pour son lancement, son adoption et sa mise à l'échelle sur le marché."
+      },
+      {
+        "title": "MFRL — Niveau de maturité industrielle",
+        "description": "Évalue votre capacité à produire votre solution de manière fiable, efficace et à grande échelle."
+      }
+    ]
+  },
+  "whatYouGet": {
+    "badge": "Ce que vous obtenez",
+    "title": "Clarté et perspectives en quelques minutes",
+    "subtitle": "Répondez à quelques questions et repartez avec une vision claire de la situation de votre innovation, de ce qui la freine et des prochaines étapes.",
+    "steps": [
+      {
+        "title": "Comprenez la maturité de votre innovation",
+        "description": "**Découvrez où se situe votre solution** selon trois dimensions — maturité technique, commerciale et industrielle — **et identifiez la suite.**"
+      },
+      {
+        "title": "Obtenez votre rapport personnalisé",
+        "description": "Téléchargez instantanément un **rapport PDF sur mesure résumant vos résultats, votre progression et les recommandations clés.**"
+      },
+      {
+        "title": "Accélérez votre croissance",
+        "description": "Accédez à des **conseils et services personnalisés** conçus pour vous aider à passer plus vite du prototype au succès commercial."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Vous soutenez l'innovation dans la construction ?",
+    "subtitle": "Rejoignez le réseau Maturoscope et obtenez votre propre outil de mise en relation de services.",
+    "cta": "Nous contacter"
+  },
+  "footer": {
+    "navigate": "Naviguer",
+    "legal": "Mentions légales",
+    "privacyPolicy": "Politique de confidentialité",
+    "contactUs": "Nous contacter",
+    "madeBy": "Maturoscope par",
+    "developedBy": "Développé par"
+  }
+}

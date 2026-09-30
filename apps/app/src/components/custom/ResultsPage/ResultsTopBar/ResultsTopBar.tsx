@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 // Components
@@ -35,6 +36,7 @@ export interface ResultsTopBarProps {
 
 interface ExtraProps {
   className?: string
+  isStandalone?: boolean
 }
 
 const ResultsTopBar = ({
@@ -44,6 +46,7 @@ const ResultsTopBar = ({
   talkButtonLabel,
   lang,
   className,
+  isStandalone = false,
 }: ResultsTopBarProps & ExtraProps) => {
   const [completedOnDate, setCompletedOnDate] = useState<string>("")
   const [isTalkToExpertButtonDisabled, setIsTalkToExpertButtonDisabled] = useState<boolean>(false)
@@ -61,7 +64,7 @@ const ResultsTopBar = ({
   const handleDownloadClick = async () => await downloadReport()
 
   useEffect(() => {
-    const storedCompletedOn = localStorage.getItem("completedOn")
+    const storedCompletedOn = orgStorage.getItem("completedOn")
     if (storedCompletedOn) {
       const date = new Date(storedCompletedOn)
       const formattedDate = date.toLocaleDateString(
@@ -75,8 +78,8 @@ const ResultsTopBar = ({
   useEffect(() => {
     setHideActions(areAllScalesNotScored())
 
-    const storedGaps = localStorage.getItem("gaps")
-    const storedLevel = localStorage.getItem("level")
+    const storedGaps = orgStorage.getItem("gaps")
+    const storedLevel = orgStorage.getItem("level")
 
     // Check if all levels are at maximum (9)
     if (storedLevel) {
@@ -140,7 +143,7 @@ const ResultsTopBar = ({
           >
             {isLoading ? "Loading..." : downloadButtonLabel}
           </Button>
-          {!isAllLevelsMax && (
+          {!isAllLevelsMax && !isStandalone && (
             <Button
               variant="default"
               accent

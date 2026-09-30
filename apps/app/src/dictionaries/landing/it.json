@@ -1,0 +1,91 @@
+{
+  "header": {
+    "hosts": "Fornitori di servizi",
+    "whyMaturoscope": "Perché Maturoscope",
+    "whatWeMeasure": "Cosa misuriamo",
+    "whatYouGet": "Cosa ottieni",
+    "cta": "Inizia"
+  },
+  "hero": {
+    "title": "Lo strumento che porta la tua innovazione sul mercato",
+    "subtitle": "Sviluppato da esperti del settore edile e delle costruzioni, Maturoscope aiuta gli innovatori a valutare, comprendere e accelerare la maturità delle loro soluzioni — dall'idea al prodotto pronto per il mercato.",
+    "cta": "Inizia",
+    "timeEstimate": "10 minuti"
+  },
+  "hosts": {
+    "title": "Scegli il tuo fornitore di servizi",
+    "subtitle": "Ogni fornitore ti dà accesso a Maturoscope, insieme a servizi e consulenza esperta su misura per la fase di sviluppo della tua innovazione.",
+    "badge": "Fornitori di servizi",
+    "selectLabel": "Seleziona un fornitore per accedere al questionario"
+  },
+  "whyMaturoscope": {
+    "body": "Stai sviluppando una soluzione innovativa nell'edilizia, che si tratti di un prodotto, un processo o un servizio? In pochi clic, Maturoscope ti aiuta a valutarne la maturità e ti guida verso i passi successivi per una commercializzazione di successo.",
+    "badge": "Perché Maturoscope",
+    "title": "Veloce, privato e senza sforzo",
+    "features": [
+      {
+        "title": "Prima la privacy",
+        "description": "I tuoi dati restano tuoi. Nulla viene memorizzato o condiviso: tutte le risposte vengono eliminate al termine della sessione."
+      },
+      {
+        "title": "Meno di 12 minuti",
+        "description": "Un'autovalutazione rapida e intuitiva per tornare subito a ciò che conta."
+      },
+      {
+        "title": "Nessun account richiesto",
+        "description": "Inizia subito: senza registrazioni, senza password, senza barriere."
+      }
+    ]
+  },
+  "whatWeMeasure": {
+    "badge": "Cosa misuriamo",
+    "title": "Maturoscope valuta tre dimensioni chiave",
+    "cta": "Inizia",
+    "scales": [
+      {
+        "title": "TRL — Livello di maturità tecnologica",
+        "description": "Misura quanto è avanzata la tua tecnologia, dal concetto iniziale all'applicazione convalidata nel mondo reale."
+      },
+      {
+        "title": "MKRL — Livello di maturità di mercato",
+        "description": "Valuta quanto è pronta la tua soluzione per il lancio, l'adozione e la scalabilità sul mercato."
+      },
+      {
+        "title": "MFRL — Livello di maturità produttiva",
+        "description": "Valuta la tua capacità di produrre la soluzione in modo affidabile, efficiente e su larga scala."
+      }
+    ]
+  },
+  "whatYouGet": {
+    "badge": "Cosa ottieni",
+    "title": "Chiarezza e insight in pochi minuti",
+    "subtitle": "Rispondi a poche domande e ottieni un quadro chiaro di dove si trova la tua innovazione, cosa la frena e quali sono i prossimi passi.",
+    "steps": [
+      {
+        "title": "Comprendi la maturità della tua innovazione",
+        "description": "**Scopri a che punto è la tua soluzione** in tre dimensioni — maturità tecnica, di mercato e produttiva — **e individua il prossimo passo.**"
+      },
+      {
+        "title": "Ottieni il tuo report personalizzato",
+        "description": "Scarica subito un **report PDF su misura che riassume i tuoi risultati, i progressi e le raccomandazioni chiave.**"
+      },
+      {
+        "title": "Accelera la tua crescita",
+        "description": "Accedi a **consulenza e servizi personalizzati** pensati per aiutarti a passare più rapidamente dal prototipo al successo sul mercato."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Sostieni l'innovazione nell'edilizia?",
+    "subtitle": "Entra nella rete Maturoscope e ottieni il tuo strumento di matchmaking dei servizi.",
+    "cta": "Contattaci"
+  },
+  "footer": {
+    "navigate": "Naviga",
+    "legal": "Note legali",
+    "privacyPolicy": "Informativa sulla privacy",
+    "contactUs": "Contattaci",
+    "madeBy": "Maturoscope di",
+    "developedBy": "Sviluppato da"
+  }
+}

@@ -1,6 +1,7 @@
 "use client"
 
 // Packages
+import { orgStorage } from "@/lib/orgStorage"
 import { createContext, useContext, useEffect } from "react"
 import { useForm, UseFormGetValues, Control } from "react-hook-form"
 // Types
@@ -25,7 +26,7 @@ export const FormProvider = ({ children }: FormProviderProps) => {
   })
 
   useEffect(() => {
-    const savedForm = JSON.parse(localStorage.getItem("form") || "{}")
+    const savedForm = JSON.parse(orgStorage.getItem("form") || "{}")
     if (!savedForm || Object.keys(savedForm).length === 0) return
 
     // Ensure backward compatibility: add comments if they don't exist

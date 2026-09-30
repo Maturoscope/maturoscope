@@ -1,3 +1,4 @@
+import { orgStorage } from "@/lib/orgStorage"
 import { Locale } from "@/dictionaries/dictionaries"
 import { StageId, QuestionData } from "@/components/custom/FormPage/Form/Form"
 import type { DevelopmentPhase, Gap, LocalizedText } from "@/actions/organization"
@@ -109,18 +110,18 @@ export const buildReportPayload = async (
   lang: Locale,
   questionsData: { id: StageId; name: string; questions: QuestionData[] }[]
 ): Promise<ReportPayload> => {
-  const formData: FormStorage = JSON.parse(localStorage.getItem("form") || "{}")
-  const levelData: LevelStorage = JSON.parse(localStorage.getItem("level") || "{}")
-  const phasesData: PhasesStorage = JSON.parse(localStorage.getItem("phases") || "{}")
-  const gapsData: GapsStorage = JSON.parse(localStorage.getItem("gaps") || "{}")
+  const formData: FormStorage = JSON.parse(orgStorage.getItem("form") || "{}")
+  const levelData: LevelStorage = JSON.parse(orgStorage.getItem("level") || "{}")
+  const phasesData: PhasesStorage = JSON.parse(orgStorage.getItem("phases") || "{}")
+  const gapsData: GapsStorage = JSON.parse(orgStorage.getItem("gaps") || "{}")
   const notScoredData: Partial<Record<StageId, boolean>> = JSON.parse(
-    localStorage.getItem("notScored") || "{}"
+    orgStorage.getItem("notScored") || "{}"
   )
 
   // Read risks from localStorage (pre-saved by ProgressContext after last checkpoint)
   let risksData: RisksStorage | null = null
   try {
-    const storedRisks = localStorage.getItem("risks")
+    const storedRisks = orgStorage.getItem("risks")
     if (storedRisks) {
       risksData = JSON.parse(storedRisks)
     }
@@ -128,20 +129,20 @@ export const buildReportPayload = async (
     // ignore
   }
 
-  const storedCompletedOn = localStorage.getItem("completedOn")
+  const storedCompletedOn = orgStorage.getItem("completedOn")
   const completedOnDate = storedCompletedOn ? new Date(storedCompletedOn) : new Date()
   const completedOn = completedOnDate.toLocaleDateString(
     DATE_LOCALES[lang] ?? "en-US",
     { year: "numeric", month: "long", day: "numeric" }
   )
 
-  const projectName = localStorage.getItem("projectName") || undefined
+  const projectName = orgStorage.getItem("projectName") || undefined
 
   // Signature: read from localStorage cache (pre-saved by Header component)
   const SIGNATURE_STORAGE_KEY = "organization-signature"
   let signatureUrl: string | undefined
   try {
-    const stored = localStorage.getItem(SIGNATURE_STORAGE_KEY)
+    const stored = orgStorage.getItem(SIGNATURE_STORAGE_KEY)
     if (stored) {
       const parsed = JSON.parse(stored) as { organizationKey: string; url: string }
       if (parsed.url) {

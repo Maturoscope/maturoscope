@@ -1,12 +1,10 @@
 "use client"
 
 // Packages
-import { useEffect } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import { useEffect, useState } from "react"
+import { createPortal } from "react-dom"
 // Utils
 import { cn } from "@/lib/utils"
-// Animations
-import { SIMPLE_FADE_VARIANT } from "@/animations/common"
 
 export interface ModalProps {
   isOpen: boolean
@@ -30,6 +28,13 @@ const Modal = ({
     if (closeOnOverlayClick) setIsOpen(false)
   }
 
+  // Render into a portal on document.body so the fixed overlay is positioned
+  // relative to the viewport, not any transformed ancestor (e.g. the FadeIn
+  // reveal wrapper, whose lingering `transform` would otherwise make the
+  // overlay only cover part of the screen).
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+
   useEffect(() => {
     if (isOpen) document.body.style.overflowY = "hidden"
     else document.body.style.overflowY = ""
@@ -39,27 +44,32 @@ const Modal = ({
     }
   }, [isOpen])
 
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          variants={SIMPLE_FADE_VARIANT}
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
-          transition={{ duration: 0.2 }}
-          onClick={handleOverlayClick}
-          className="w-full h-full fixed top-0 left-0 bg-black/40 z-50 px-4 lg:px-0 flex items-center justify-center"
-        >
-          <div
-            onClick={handleClick}
-            className={cn("bg-white p-6 rounded-lg", className)}
-          >
-            {children}
-          </div>
-        </motion.div>
+  if (!mounted) return null
+
+  // The overlay stays mounted and fades via a pure CSS opacity transition
+  // (toggled by `isOpen`), rather than mounting/unmounting a framer-motion
+  // element on each open. A freshly-mounted animated element re-runs its enter
+  // animation whenever React StrictMode double-invokes mount effects (dev),
+  // which showed up as the modal flickering closed-then-open. A CSS transition
+  // on an always-present node has no such lifecycle to double-fire.
+  return createPortal(
+    <div
+      onClick={handleOverlayClick}
+      aria-hidden={!isOpen}
+      className={cn(
+        "fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 lg:px-0",
+        "transition-opacity duration-200 ease-out",
+        isOpen ? "opacity-100" : "pointer-events-none opacity-0"
       )}
-    </AnimatePresence>
+    >
+      <div
+        onClick={handleClick}
+        className={cn("bg-white p-6 rounded-lg", className)}
+      >
+        {isOpen && children}
+      </div>
+    </div>,
+    document.body
   )
 }
 

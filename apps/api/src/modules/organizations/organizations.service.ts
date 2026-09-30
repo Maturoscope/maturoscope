@@ -1,7 +1,7 @@
 import { Injectable, ConflictException, NotFoundException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Organization } from './entities/organization.entity';
+import { Organization, OrganizationStatus } from './entities/organization.entity';
 import { OrganizationLanguage } from './entities/organization-language.entity';
 import { normalizeLanguage } from '../../common/i18n/languages';
 import { OvhS3Service } from '../../common/storage/ovh-s3.service';
@@ -69,6 +69,24 @@ export class OrganizationsService {
     return await this.organizationRepository.find({
       order: { createdAt: 'DESC' },
     });
+  }
+
+  /**
+   * Public, minimal list of active organizations for the end-user landing page.
+   * Only exposes what's needed to render a link (name, key, avatar).
+   */
+  async findAllPublic(): Promise<
+    { name: string; key: string; avatar: string | null }[]
+  > {
+    const organizations = await this.organizationRepository.find({
+      where: { status: OrganizationStatus.ACTIVE },
+      order: { name: 'ASC' },
+    });
+    return organizations.map((org) => ({
+      name: org.name,
+      key: org.key,
+      avatar: org.avatar ?? null,
+    }));
   }
 
   async findAllWithRegistrationStatus(): Promise<OrganizationResponseDto[]> {

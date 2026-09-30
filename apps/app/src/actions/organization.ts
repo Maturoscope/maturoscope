@@ -3,6 +3,7 @@
 import { cookies } from "next/headers"
 import { DEFAULT_ACCENT_THEME, DEFAULT_FONT_THEME } from "@/context/ThemeContext"
 import { createStructuredLogger } from "@/lib/structured-logger"
+import { isStandaloneOrgKey } from "@/lib/standaloneOrg"
 
 const logger = createStructuredLogger("actions/organization")
 
@@ -54,6 +55,30 @@ export const getOrganizationKeyFromCookies = async (): Promise<
 > => {
   const cookieStore = await cookies()
   return cookieStore.get("organization-key")?.value || null
+}
+
+export interface PublicOrganization {
+  name: string
+  key: string
+  avatar: string | null
+}
+
+/** Public list of active organizations for the landing page (name, key, avatar). */
+export const getPublicOrganizations = async (): Promise<PublicOrganization[]> => {
+  try {
+    const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/organizations/public`
+    const response = await fetch(endpoint, { next: { revalidate: 300 } })
+    if (!response.ok) return []
+    const data = await response.json()
+    if (!Array.isArray(data)) return []
+    // Standalone organizations are never listed as hosts on the landing.
+    return (data as PublicOrganization[]).filter(
+      (org) => !isStandaloneOrgKey(org.key)
+    )
+  } catch (error) {
+    logger.error("Error fetching public organizations", error)
+    return []
+  }
 }
 
 export type ScaleType = "TRL" | "MkRL" | "MfRL"

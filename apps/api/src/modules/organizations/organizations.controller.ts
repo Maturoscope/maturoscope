@@ -65,6 +65,17 @@ export class OrganizationsController {
     return this.organizationsService.findAll();
   }
 
+  @Get('public')
+  @ApiOperation({
+    summary: 'List active organizations (PUBLIC)',
+    description:
+      'Minimal list of active organizations (name, key, avatar) for the end-user landing page.',
+  })
+  @ApiResponse({ status: 200, description: 'Public list of organizations' })
+  findAllPublic() {
+    return this.organizationsService.findAllPublic();
+  }
+
   @Auth(ValidRoles.user)
   @Patch('avatar')
   @UseInterceptors(FileInterceptor('file'))
