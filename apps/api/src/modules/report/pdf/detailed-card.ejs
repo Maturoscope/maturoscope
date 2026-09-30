@@ -63,7 +63,8 @@
               t, gap, index: slice.gapIndex, indexBgColor, accentColor,
               showGapHeader: slice.showGapHeader,
               serviceStartIndex: slice.serviceStartIndex,
-              serviceEndIndex: slice.serviceEndIndex
+              serviceEndIndex: slice.serviceEndIndex,
+              hideServices: typeof hideServices !== 'undefined' && hideServices
             }) %>
           <% }) %>
         </div>

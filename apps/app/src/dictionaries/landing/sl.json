@@ -1,23 +1,25 @@
 {
   "header": {
-    "hosts": "Gostitelji",
+    "hosts": "Ponudniki storitev",
     "whyMaturoscope": "Zakaj Maturoscope",
     "whatWeMeasure": "Kaj merimo",
     "whatYouGet": "Kaj dobite",
-    "cta": "Pojdi na vprašalnik"
+    "cta": "Začni"
   },
   "hero": {
     "title": "Orodje, ki vašo inovacijo popelje na trg",
     "subtitle": "Maturoscope, ki so ga razvili strokovnjaki iz gradbenega sektorja, inovatorjem pomaga oceniti, razumeti in pospešiti zrelost njihovih rešitev — od ideje do tržno pripravljenega izdelka.",
-    "cta": "Pojdi na vprašalnik",
+    "cta": "Začni",
     "timeEstimate": "10 minut"
   },
   "hosts": {
-    "title": "Izberite svojega gostitelja",
-    "subtitle": "Dostopajte do Maturoscope prek svoje organizacije"
+    "title": "Izberite svojega ponudnika storitev",
+    "subtitle": "Vsak ponudnik vam omogoča dostop do Maturoscope ter storitve in strokovne nasvete, prilagojene stopnji razvoja vaše inovacije.",
+    "badge": "Ponudniki storitev",
+    "selectLabel": "Izberite ponudnika za dostop do vprašalnika"
   },
   "whyMaturoscope": {
-    "body": "Razvijate inovativno rešitev v gradbeništvu — izdelek, postopek ali storitev? Z le nekaj kliki vam Maturoscope pomaga oceniti njeno zrelost in vas vodi k naslednjim korakom za uspešno komercializacijo.",
+    "body": "Ali razvijate inovativno rešitev v gradbeništvu, naj gre za izdelek, postopek ali storitev? V le nekaj klikih vam Maturoscope pomaga oceniti njeno zrelost in vas vodi k naslednjim korakom za uspešno komercializacijo.",
     "badge": "Zakaj Maturoscope",
     "title": "Hitro, zasebno in brez napora",
     "features": [
@@ -38,7 +40,7 @@
   "whatWeMeasure": {
     "badge": "Kaj merimo",
     "title": "Maturoscope ocenjuje tri ključne razsežnosti",
-    "cta": "Pojdi na vprašalnik",
+    "cta": "Začni",
     "scales": [
       {
         "title": "TRL — Raven tehnološke zrelosti",
@@ -75,7 +77,7 @@
   },
   "contact": {
     "title": "Podpirate inovacije v gradbeništvu?",
-    "subtitle": "Pridružite se mreži Maturoscope",
+    "subtitle": "Pridružite se mreži Maturoscope in pridobite svoje orodje za povezovanje storitev.",
     "cta": "Kontaktirajte nas"
   },
   "footer": {

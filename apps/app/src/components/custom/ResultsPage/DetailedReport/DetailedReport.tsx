@@ -33,6 +33,7 @@ export interface DetailedReportProps {
 
 interface ExtraProps {
   className?: string
+  isStandalone?: boolean
 }
 
 interface NotScoredStorage {
@@ -84,6 +85,7 @@ const DetailedReport = ({
   noScoreTitle,
   noScoreDescription,
   className,
+  isStandalone = false,
 }: DetailedReportProps & ExtraProps) => {
   const [gapsData, setGapsData] = useState<GapsStorage>({})
   const [levelData, setLevelData] = useState<LevelStorage>({})
@@ -177,6 +179,7 @@ const DetailedReport = ({
             strategicFocus={riskData?.strategicFocus}
             primaryRisk={riskData?.primaryRisk}
             gaps={gaps ?? []}
+            isStandalone={isStandalone}
           />
         )
       })}

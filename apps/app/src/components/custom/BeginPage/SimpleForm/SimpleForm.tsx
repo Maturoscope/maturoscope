@@ -18,6 +18,7 @@ import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/Leave
 import { StageId } from "@/components/custom/FormPage/Form/Form"
 // Utils
 import { getSelectedScales, setSelectedScales } from "@/lib/selectedScales"
+import { getOrgHomeUrl } from "@/lib/orgNavigation"
 import {
   EvaluationType,
   RECOMMENDED_BY_TYPE,
@@ -101,7 +102,7 @@ const SimpleForm = ({
     orgStorage.removeItem("notScored")
 
     setIsLeaveModalOpen(false)
-    router.push(`/${lang}/`)
+    router.push(getOrgHomeUrl(lang))
   }
 
   const handleNextButtonClick = () => {

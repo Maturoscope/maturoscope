@@ -8,6 +8,7 @@ import { StageId } from "@/components/custom/FormPage/Form/Form"
 import { Locale } from "@/dictionaries/dictionaries"
 // Utils
 import { ALL_SCALES, getSelectedScales } from "@/lib/selectedScales"
+import { getOrgHomeUrl } from "@/lib/orgNavigation"
 
 interface ReviewStageGuardProps {
   stage: string
@@ -27,7 +28,7 @@ const ReviewStageGuard = ({ stage, lang }: ReviewStageGuardProps) => {
     const isSelected = getSelectedScales().includes(stage as StageId)
 
     if (!isValidStage || !isSelected) {
-      router.replace(`/${lang}`)
+      router.replace(getOrgHomeUrl(lang))
     }
   }, [stage, lang, router])
 

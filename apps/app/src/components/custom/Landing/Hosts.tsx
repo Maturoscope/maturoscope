@@ -6,30 +6,48 @@ import { SECTION_IDS } from "./constants"
 
 interface HostsProps {
   lang: string
+  badge: string
   title: string
   subtitle: string
+  selectLabel: string
   organizations: PublicOrganization[]
 }
 
-export default function Hosts({ lang, title, subtitle, organizations }: HostsProps) {
+export default function Hosts({
+  lang,
+  badge,
+  title,
+  subtitle,
+  selectLabel,
+  organizations,
+}: HostsProps) {
   if (organizations.length === 0) return null
 
   return (
     <section id={SECTION_IDS.hosts} className="w-full py-16 md:py-24">
       <div className="mx-auto max-w-[1165px] px-5 md:px-10">
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-[-0.02em] text-[#0A0A0A] sm:text-4xl lg:text-[44px]">
+          <span className="inline-block rounded-full bg-[#F5F5F5] px-3 py-1 text-sm font-medium text-[#525252]">
+            {badge}
+          </span>
+          <h2 className="mt-4 text-3xl font-bold tracking-[-0.02em] text-[#0A0A0A] sm:text-4xl lg:text-[44px]">
             {title}
           </h2>
-          <p className="mt-3 text-base text-[#525252] md:text-lg">{subtitle}</p>
+          <p className="mx-auto mt-3 max-w-[680px] text-base text-[#525252] md:text-lg">
+            {subtitle}
+          </p>
         </div>
+
+        <p className="mt-12 text-center text-xs font-semibold uppercase tracking-wide text-[#A3A3A3]">
+          {selectLabel}
+        </p>
 
         <motion.div
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
           variants={{ show: { transition: { staggerChildren: 0.04 } } }}
-          className="mt-10 flex flex-wrap justify-center gap-4"
+          className="mt-6 flex flex-wrap justify-center gap-4"
         >
           {organizations.map((org) => (
             <motion.div

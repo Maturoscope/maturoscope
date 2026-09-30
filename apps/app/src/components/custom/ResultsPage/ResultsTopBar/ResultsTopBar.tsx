@@ -36,6 +36,7 @@ export interface ResultsTopBarProps {
 
 interface ExtraProps {
   className?: string
+  isStandalone?: boolean
 }
 
 const ResultsTopBar = ({
@@ -45,6 +46,7 @@ const ResultsTopBar = ({
   talkButtonLabel,
   lang,
   className,
+  isStandalone = false,
 }: ResultsTopBarProps & ExtraProps) => {
   const [completedOnDate, setCompletedOnDate] = useState<string>("")
   const [isTalkToExpertButtonDisabled, setIsTalkToExpertButtonDisabled] = useState<boolean>(false)
@@ -141,7 +143,7 @@ const ResultsTopBar = ({
           >
             {isLoading ? "Loading..." : downloadButtonLabel}
           </Button>
-          {!isAllLevelsMax && (
+          {!isAllLevelsMax && !isStandalone && (
             <Button
               variant="default"
               accent

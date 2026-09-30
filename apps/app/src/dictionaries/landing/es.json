@@ -1,23 +1,25 @@
 {
   "header": {
-    "hosts": "Anfitriones",
+    "hosts": "Proveedores de servicios",
     "whyMaturoscope": "Por qué Maturoscope",
     "whatWeMeasure": "Qué medimos",
     "whatYouGet": "Qué obtienes",
-    "cta": "Ir al cuestionario"
+    "cta": "Comenzar"
   },
   "hero": {
     "title": "La herramienta que impulsa tu innovación al mercado",
     "subtitle": "Desarrollada por expertos del sector de la construcción, Maturoscope ayuda a los innovadores a evaluar, comprender y acelerar la madurez de sus soluciones — de la idea al producto listo para el mercado.",
-    "cta": "Ir al cuestionario",
+    "cta": "Comenzar",
     "timeEstimate": "10 minutos"
   },
   "hosts": {
-    "title": "Elige tu anfitrión",
-    "subtitle": "Accede a Maturoscope a través de tu organización"
+    "title": "Elige tu proveedor de servicios",
+    "subtitle": "Cada proveedor te da acceso a Maturoscope, junto con servicios y asesoramiento experto adaptados a la etapa de desarrollo de tu innovación.",
+    "badge": "Proveedores de servicios",
+    "selectLabel": "Selecciona un proveedor para acceder al cuestionario"
   },
   "whyMaturoscope": {
-    "body": "¿Estás desarrollando una solución innovadora en la construcción: un producto, un proceso o un servicio? Con solo unos clics, Maturoscope te ayuda a evaluar su madurez y te guía hacia los próximos pasos para una comercialización exitosa.",
+    "body": "¿Estás desarrollando una solución innovadora en la construcción, ya sea un producto, un proceso o un servicio? En solo unos clics, Maturoscope te ayuda a evaluar su madurez y te guía hacia los próximos pasos para una comercialización exitosa.",
     "badge": "Por qué Maturoscope",
     "title": "Rápido, privado y sin esfuerzo",
     "features": [
@@ -38,7 +40,7 @@
   "whatWeMeasure": {
     "badge": "Qué medimos",
     "title": "Maturoscope evalúa tres dimensiones clave",
-    "cta": "Ir al cuestionario",
+    "cta": "Comenzar",
     "scales": [
       {
         "title": "TRL — Nivel de madurez tecnológica",
@@ -75,7 +77,7 @@
   },
   "contact": {
     "title": "¿Apoyas la innovación en la construcción?",
-    "subtitle": "Únete a la red Maturoscope",
+    "subtitle": "Únete a la red Maturoscope y obtén tu propia herramienta de conexión de servicios.",
     "cta": "Contáctanos"
   },
   "footer": {

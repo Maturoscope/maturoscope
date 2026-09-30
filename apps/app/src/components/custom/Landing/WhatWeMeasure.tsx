@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { Lightbulb, Store, Settings, type LucideIcon } from "lucide-react"
 import { motion, useScroll, useTransform } from "motion/react"
 import type { LandingDictionary } from "@/dictionaries/landing"
-import { SECTION_IDS, questionnaireHref } from "./constants"
+import { SECTION_IDS } from "./constants"
 
 interface WhatWeMeasureProps {
   lang: string
@@ -36,7 +36,7 @@ export default function WhatWeMeasure({ lang, dict }: WhatWeMeasureProps) {
 }
 
 /** Header shared by both layouts: badge, title and the CTA button. */
-function MeasureHeader({ lang, dict }: WhatWeMeasureProps) {
+function MeasureHeader({ dict }: WhatWeMeasureProps) {
   return (
     <div className="mx-auto flex w-full max-w-[1360px] flex-col gap-6 px-5 md:flex-row md:items-end md:justify-between md:px-10">
       <div>
@@ -48,7 +48,7 @@ function MeasureHeader({ lang, dict }: WhatWeMeasureProps) {
         </h2>
       </div>
       <a
-        href={questionnaireHref(lang)}
+        href={`#${SECTION_IDS.hosts}`}
         className="shrink-0 self-start rounded-lg bg-[#C0410F] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#A6380D] md:self-auto"
       >
         {dict.cta}

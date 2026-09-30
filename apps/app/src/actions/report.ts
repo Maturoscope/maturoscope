@@ -3,6 +3,7 @@
 import { Locale } from "@/dictionaries/dictionaries"
 import { getOrganizationKeyFromCookies } from "./organization"
 import { createStructuredLogger } from "@/lib/structured-logger"
+import { isStandaloneOrgKey } from "@/lib/standaloneOrg"
 
 const logger = createStructuredLogger("actions/report")
 
@@ -44,6 +45,8 @@ export interface ReportPayload {
   signature?: string
   // Organization accent colour (hex) from the backend theme.
   accentColor?: string
+  // Standalone orgs: the PDF lists gaps only, hiding services and their badges.
+  hideServices?: boolean
   // Only the scales the user chose to assess are present.
   trl?: ScalePayload
   mkrl?: ScalePayload
@@ -64,12 +67,21 @@ export const generateReport = async (
     const organizationKey = await getOrganizationKeyFromCookies()
     const endpoint = `${process.env.NEXT_PUBLIC_API_URL}/report/${lang}${organizationKey ? `?organizationKey=${organizationKey}` : ""}`
 
+    // Standalone orgs are example pages: gaps-only PDF (no services / badges)
+    // and no organization signature ("by <logo>") in the header.
+    const isStandalone = isStandaloneOrgKey(organizationKey)
+    const body: ReportPayload = {
+      ...payload,
+      hideServices: isStandalone,
+      signature: isStandalone ? undefined : payload.signature,
+    }
+
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(body),
     })
 
     if (!response.ok) {

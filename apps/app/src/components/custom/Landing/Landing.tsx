@@ -29,16 +29,18 @@ export default async function Landing({ lang }: LandingProps) {
   return (
     <div className="w-full bg-white text-[#0A0A0A]">
       <Header lang={lang} dict={dict.header} />
-      <Hero lang={lang} dict={dict.hero} />
-      <Hosts
-        lang={lang}
-        title={dict.hosts.title}
-        subtitle={dict.hosts.subtitle}
-        organizations={organizations}
-      />
+      <Hero dict={dict.hero} />
       <WhyMaturoscope dict={dict.whyMaturoscope} />
       <WhatWeMeasure lang={lang} dict={dict.whatWeMeasure} />
       <WhatYouGet dict={dict.whatYouGet} />
+      <Hosts
+        lang={lang}
+        badge={dict.hosts.badge}
+        title={dict.hosts.title}
+        subtitle={dict.hosts.subtitle}
+        selectLabel={dict.hosts.selectLabel}
+        organizations={organizations}
+      />
       <Contact dict={dict.contact} />
       <Footer
         lang={lang}

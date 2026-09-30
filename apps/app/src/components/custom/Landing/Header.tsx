@@ -5,7 +5,7 @@ import Link from "next/link"
 import { Menu, X } from "lucide-react"
 import type { Locale } from "@/lib/locale"
 import type { LandingDictionary } from "@/dictionaries/landing"
-import { SECTION_IDS, questionnaireHref } from "./constants"
+import { SECTION_IDS } from "./constants"
 import LanguageMenu from "./LanguageMenu"
 
 interface HeaderProps {
@@ -27,13 +27,13 @@ export default function Header({ lang, dict }: HeaderProps) {
   }, [menuOpen])
 
   const navLinks = [
-    { href: `#${SECTION_IDS.hosts}`, label: dict.hosts },
     { href: `#${SECTION_IDS.whyMaturoscope}`, label: dict.whyMaturoscope },
     { href: `#${SECTION_IDS.whatWeMeasure}`, label: dict.whatWeMeasure },
     { href: `#${SECTION_IDS.whatYouGet}`, label: dict.whatYouGet },
+    { href: `#${SECTION_IDS.hosts}`, label: dict.hosts },
   ]
 
-  const cta = questionnaireHref(lang)
+  const cta = `#${SECTION_IDS.hosts}`
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-[#E5E5E5] bg-white">

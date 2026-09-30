@@ -24,6 +24,7 @@ import { clearAssessmentTracking } from "@/actions/tracking"
 import { useDownloadReport } from "@/hooks/useDownloadReport"
 // Utils
 import { areAllScalesNotScored } from "@/lib/notApplicable"
+import { getOrgHomeUrl } from "@/lib/orgNavigation"
 
 interface LevelStorage {
   trl?: number
@@ -43,6 +44,7 @@ export interface CTABannerProps {
 
 interface ExtraProps {
   className?: string
+  isStandalone?: boolean
 }
 
 const CTABanner = ({
@@ -54,6 +56,7 @@ const CTABanner = ({
   resetButtonLabel,
   resetFormModal,
   className,
+  isStandalone = false,
 }: CTABannerProps & ExtraProps) => {
   const [isResetFormModalOpen, setIsResetFormModalOpen] = useState(false)
   const [isTalkToExpertButtonDisabled, setIsTalkToExpertButtonDisabled] = useState<boolean>(false)
@@ -88,12 +91,12 @@ const CTABanner = ({
 
   const handleResetButtonClick = () => {
     handleResetForm()
-    router.push(`/${lang}`)
+    router.push(getOrgHomeUrl(lang))
   }
 
   const handleDownloadButtonClick = async () => {
     await downloadReport()
-    router.push(`/${lang}`)
+    router.push(getOrgHomeUrl(lang))
   }
 
   useEffect(() => {
@@ -151,7 +154,7 @@ const CTABanner = ({
         onResetClick={handleResetButtonClick}
       />
 
-      {!isAllLevelsMax && !hideBanner && (
+      {!isAllLevelsMax && !hideBanner && !isStandalone && (
         <>
           <div
             className={cn(

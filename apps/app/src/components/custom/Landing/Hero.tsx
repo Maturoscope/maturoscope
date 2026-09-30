@@ -4,10 +4,9 @@ import Image from "next/image"
 import { Timer } from "lucide-react"
 import { motion } from "motion/react"
 import type { LandingDictionary } from "@/dictionaries/landing"
-import { questionnaireHref } from "./constants"
+import { SECTION_IDS } from "./constants"
 
 interface HeroProps {
-  lang: string
   dict: LandingDictionary["hero"]
 }
 
@@ -16,7 +15,7 @@ const fadeUp = {
   show: { opacity: 1, y: 0 },
 }
 
-export default function Hero({ lang, dict }: HeroProps) {
+export default function Hero({ dict }: HeroProps) {
   return (
     <section className="w-full">
       <div className="mx-auto flex max-w-[1165px] flex-col items-center px-5 pb-8 pt-16 text-center md:px-10 md:pt-24">
@@ -48,7 +47,7 @@ export default function Hero({ lang, dict }: HeroProps) {
           className="mt-8 flex items-center gap-5"
         >
           <a
-            href={questionnaireHref(lang)}
+            href={`#${SECTION_IDS.hosts}`}
             className="rounded-lg bg-[#C0410F] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#A6380D]"
           >
             {dict.cta}

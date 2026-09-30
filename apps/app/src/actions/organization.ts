@@ -3,6 +3,7 @@
 import { cookies } from "next/headers"
 import { DEFAULT_ACCENT_THEME, DEFAULT_FONT_THEME } from "@/context/ThemeContext"
 import { createStructuredLogger } from "@/lib/structured-logger"
+import { isStandaloneOrgKey } from "@/lib/standaloneOrg"
 
 const logger = createStructuredLogger("actions/organization")
 
@@ -69,7 +70,11 @@ export const getPublicOrganizations = async (): Promise<PublicOrganization[]> =>
     const response = await fetch(endpoint, { next: { revalidate: 300 } })
     if (!response.ok) return []
     const data = await response.json()
-    return Array.isArray(data) ? (data as PublicOrganization[]) : []
+    if (!Array.isArray(data)) return []
+    // Standalone organizations are never listed as hosts on the landing.
+    return (data as PublicOrganization[]).filter(
+      (org) => !isStandaloneOrgKey(org.key)
+    )
   } catch (error) {
     logger.error("Error fetching public organizations", error)
     return []

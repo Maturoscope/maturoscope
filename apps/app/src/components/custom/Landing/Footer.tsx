@@ -32,10 +32,10 @@ export default function Footer({
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false)
 
   const navLinks = [
-    { href: `#${SECTION_IDS.hosts}`, label: nav.hosts },
     { href: `#${SECTION_IDS.whyMaturoscope}`, label: nav.whyMaturoscope },
     { href: `#${SECTION_IDS.whatWeMeasure}`, label: nav.whatWeMeasure },
     { href: `#${SECTION_IDS.whatYouGet}`, label: nav.whatYouGet },
+    { href: `#${SECTION_IDS.hosts}`, label: nav.hosts },
   ]
 
   const mailto = `mailto:${CONTACT_EMAIL}?subject=Contact%20from%20Maturoscope`

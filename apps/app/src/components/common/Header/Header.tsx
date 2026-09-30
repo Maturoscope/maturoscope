@@ -22,6 +22,8 @@ import { LeaveQuestionnaireModalProps } from "@/components/custom/FormPage/Leave
 import { useDownloadReport } from "@/hooks/useDownloadReport"
 // Utils
 import { areAllScalesNotScored } from "@/lib/notApplicable"
+import { getOrgHomeUrl } from "@/lib/orgNavigation"
+import { isStandaloneOrgKey } from "@/lib/standaloneOrg"
 
 export interface HeaderProps {
   stringConnector: string
@@ -41,6 +43,8 @@ const Header = ({
   const [activeModal, setActiveModal] = useState<"leave" | "beforeYouGo" | null>(null)
   const [signature, setSignature] = useState<string | null>(null)
   const [logoUrl, setLogoUrl] = useState<string | null>(null)
+  // Standalone orgs are example pages: hide the "by <logo>" signature for them.
+  const [isStandalone, setIsStandalone] = useState(false)
   const [allNotScored, setAllNotScored] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
@@ -62,6 +66,7 @@ const Header = ({
 
     const loadSignature = async () => {
       const organizationKey = getCookie("organization-key")
+      setIsStandalone(isStandaloneOrgKey(organizationKey))
 
       if (!organizationKey) {
         setSignature(null)
@@ -136,7 +141,7 @@ const Header = ({
     isBeforeWeBegin || /\/(begin|form|review|results)(\/|$)/.test(pathname)
 
   const handleBackButtonClick = () => {
-    if (isBeforeWeBegin) router.push(`/${lang}`)
+    if (isBeforeWeBegin) router.push(getOrgHomeUrl(lang))
     else if (isResultsPage) {
       // Nothing to download (every scale marked Not Applicable): skip the
       // "before you go" modal and just reset everything and leave.
@@ -164,13 +169,13 @@ const Header = ({
 
   const handleResetButtonClick = () => {
     handleResetForm()
-    router.push(`/${lang}`)
+    router.push(getOrgHomeUrl(lang))
   }
 
   const handleDownloadButtonClick = async () => {
     await downloadReport()
     handleResetForm()
-    router.push(`/${lang}`)
+    router.push(getOrgHomeUrl(lang))
   }
 
   return (
@@ -235,7 +240,7 @@ const Header = ({
           </div>
 
 
-          {signature && (
+          {signature && !isStandalone && (
             <>
               <span className="text-sm font-medium">{stringConnector}</span>
               {logoUrl ? (

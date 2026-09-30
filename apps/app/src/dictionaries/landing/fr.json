@@ -1,23 +1,25 @@
 {
   "header": {
-    "hosts": "Hôtes",
+    "hosts": "Prestataires de services",
     "whyMaturoscope": "Pourquoi Maturoscope",
     "whatWeMeasure": "Ce que nous mesurons",
     "whatYouGet": "Ce que vous obtenez",
-    "cta": "Accéder au questionnaire"
+    "cta": "Commencer"
   },
   "hero": {
     "title": "L'outil qui propulse votre innovation vers le marché",
     "subtitle": "Développé par des experts du secteur du bâtiment et de la construction, Maturoscope aide les innovateurs à évaluer, comprendre et accélérer la maturité de leurs solutions — de l'idée au produit prêt à commercialiser.",
-    "cta": "Accéder au questionnaire",
+    "cta": "Commencer",
     "timeEstimate": "10 minutes"
   },
   "hosts": {
-    "title": "Choisissez votre hôte",
-    "subtitle": "Accédez à Maturoscope via votre organisation"
+    "title": "Choisissez votre prestataire de services",
+    "subtitle": "Chaque prestataire vous donne accès à Maturoscope, ainsi qu'à des services et des conseils d'experts adaptés au stade de développement de votre innovation.",
+    "badge": "Prestataires de services",
+    "selectLabel": "Sélectionnez un prestataire pour accéder au questionnaire"
   },
   "whyMaturoscope": {
-    "body": "Vous développez une solution innovante dans la construction — un produit, un procédé ou un service ? En quelques clics, le Maturoscope vous aide à évaluer sa maturité et vous guide vers les prochaines étapes pour une commercialisation réussie.",
+    "body": "Développez-vous une solution innovante dans la construction, qu'il s'agisse d'un produit, d'un procédé ou d'un service ? En quelques clics, le Maturoscope vous aide à évaluer sa maturité et vous guide vers les prochaines étapes pour une commercialisation réussie.",
     "badge": "Pourquoi Maturoscope",
     "title": "Rapide, privé et sans effort",
     "features": [
@@ -38,7 +40,7 @@
   "whatWeMeasure": {
     "badge": "Ce que nous mesurons",
     "title": "Maturoscope évalue trois dimensions clés",
-    "cta": "Accéder au questionnaire",
+    "cta": "Commencer",
     "scales": [
       {
         "title": "TRL — Niveau de maturité technologique",
@@ -75,7 +77,7 @@
   },
   "contact": {
     "title": "Vous soutenez l'innovation dans la construction ?",
-    "subtitle": "Rejoignez le réseau Maturoscope",
+    "subtitle": "Rejoignez le réseau Maturoscope et obtenez votre propre outil de mise en relation de services.",
     "cta": "Nous contacter"
   },
   "footer": {

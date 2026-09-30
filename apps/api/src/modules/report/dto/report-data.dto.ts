@@ -117,6 +117,11 @@ export class ReportDataDto {
   @Matches(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)
   accentColor?: string;
 
+  // Standalone orgs: the PDF lists gaps only, hiding services and their badges.
+  @IsBoolean()
+  @IsOptional()
+  hideServices?: boolean;
+
   // The user chooses which scales to assess (1, 2 or all 3), so each scale is
   // optional; only the assessed ones are sent and rendered in the PDF.
   @IsOptional()
