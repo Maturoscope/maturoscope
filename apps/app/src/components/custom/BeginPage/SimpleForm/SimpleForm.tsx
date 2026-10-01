@@ -148,59 +148,67 @@ const SimpleForm = ({
         />
       )}
 
-      <div className="w-full h-full flex flex-col gap-4 justify-center">
-        <h1
-          className="reveal text-3xl lg:text-4xl font-bold mb-2 text-foreground"
-          style={{ "--reveal-delay": "0.1s" } as React.CSSProperties}
-        >
-          {title}
-        </h1>
-        <div
-          className="reveal w-full flex flex-col items-end gap-1"
-          style={{ "--reveal-delay": "0.18s" } as React.CSSProperties}
-        >
-          <label
-            htmlFor="project-name"
-            className="w-full text-sm font-medium text-foreground"
+      {/* Scrollable content area. On a short viewport (mobile) this scrolls on
+          its own while the footer below stays pinned; `min-h-full justify-center`
+          centers the form when it fits and lets it scroll from the top when it
+          doesn't (avoids the flex `justify-center` top-clipping bug). */}
+      <div className="flex-1 min-h-0 w-full overflow-y-auto">
+        <div className="w-full flex flex-col gap-4 min-h-full justify-center py-4">
+          <h1
+            className="reveal text-3xl lg:text-4xl font-bold mb-2 text-foreground"
+            style={{ "--reveal-delay": "0.1s" } as React.CSSProperties}
           >
-            {label}
-          </label>
-          <input
-            id="project-name"
-            placeholder={placeholder}
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-            type="text"
-            maxLength={MAX_PROJECT_NAME_LENGTH}
-            className="w-full h-9 rounded-md border border-input bg-white px-3 py-2 text-sm ring-offset-background data-placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
-          />
-          <span className="text-xs text-muted-foreground">
-            <span className="text-foreground">{projectName.length}</span>/
-            {MAX_PROJECT_NAME_LENGTH}
-          </span>
-        </div>
+            {title}
+          </h1>
+          <div
+            className="reveal w-full flex flex-col items-end gap-1"
+            style={{ "--reveal-delay": "0.18s" } as React.CSSProperties}
+          >
+            <label
+              htmlFor="project-name"
+              className="w-full text-sm font-medium text-foreground"
+            >
+              {label}
+            </label>
+            <input
+              id="project-name"
+              placeholder={placeholder}
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+              type="text"
+              maxLength={MAX_PROJECT_NAME_LENGTH}
+              className="w-full h-9 rounded-md border border-input bg-white px-3 py-2 text-sm ring-offset-background data-placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
+            />
+            <span className="text-xs text-muted-foreground">
+              <span className="text-foreground">{projectName.length}</span>/
+              {MAX_PROJECT_NAME_LENGTH}
+            </span>
+          </div>
 
-        <div
-          className="reveal w-full h-px bg-border my-2"
-          style={{ "--reveal-delay": "0.3s" } as React.CSSProperties}
-        />
-
-        <div
-          className="reveal w-full mt-4"
-          style={{ "--reveal-delay": "0.34s" } as React.CSSProperties}
-        >
-          <EvaluationSelector
-            dict={evaluation}
-            evaluationType={evaluationType}
-            selectedScales={selectedScales}
-            onSelectType={handleSelectType}
-            onToggleScale={toggleScale}
+          <div
+            className="reveal w-full h-px bg-border my-2"
+            style={{ "--reveal-delay": "0.3s" } as React.CSSProperties}
           />
+
+          <div
+            className="reveal w-full mt-4"
+            style={{ "--reveal-delay": "0.34s" } as React.CSSProperties}
+          >
+            <EvaluationSelector
+              dict={evaluation}
+              evaluationType={evaluationType}
+              selectedScales={selectedScales}
+              onSelectType={handleSelectType}
+              onToggleScale={toggleScale}
+            />
+          </div>
         </div>
       </div>
 
+      {/* Footer stays pinned at the bottom of the viewport-height form while the
+          content above scrolls; a top border separates it on mobile. */}
       <div
-        className="reveal w-full mb-4 lg:mb-8 flex items-center justify-between gap-3"
+        className="reveal shrink-0 w-full flex items-center justify-between gap-3 border-t border-border bg-background pt-4 pb-[calc(1rem_+_env(safe-area-inset-bottom))] lg:border-0 lg:pt-3 lg:pb-8"
         style={{ "--reveal-delay": "0.34s" } as React.CSSProperties}
       >
         <Button variant="outline" size="lg" className="w-max" onClick={handleBackButtonClick}>

@@ -70,7 +70,7 @@ export default function WhatYouGet({ dict }: WhatYouGetProps) {
                 </div>
                 <div className="pt-3">
                   <h3 className="text-lg font-semibold text-[#0A0A0A]">{step.title}</h3>
-                  <p className="mt-2 text-[15px] leading-relaxed text-[#A3A3A3]">
+                  <p className="mt-2 text-[15px] leading-relaxed text-[#737373]">
                     <EmphasizedText text={step.description} />
                   </p>
                 </div>
