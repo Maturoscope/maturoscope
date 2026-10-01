@@ -38,7 +38,7 @@ export default function Hosts({
           </p>
         </div>
 
-        <p className="mt-12 text-center text-xs font-semibold uppercase tracking-wide text-[#A3A3A3]">
+        <p className="mt-12 text-center text-xs font-semibold uppercase tracking-wide text-[#737373]">
           {selectLabel}
         </p>
 

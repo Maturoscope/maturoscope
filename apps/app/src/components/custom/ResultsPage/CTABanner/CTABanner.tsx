@@ -89,8 +89,10 @@ const CTABanner = ({
 
   const handleTalkButtonClick = () => openModal()
 
-  const handleResetButtonClick = () => {
-    handleResetForm()
+  const handleResetButtonClick = async () => {
+    // Await the reset so org-scoped storage is cleared before navigating;
+    // otherwise the org home's FormRedirectHandler bounces back to /form.
+    await handleResetForm()
     router.push(getOrgHomeUrl(lang))
   }
 

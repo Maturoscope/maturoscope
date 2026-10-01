@@ -24,28 +24,20 @@ export default function Contact({ dict }: ContactProps) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="mx-auto flex max-w-[1360px] flex-col gap-8 px-5 py-12 md:flex-row md:items-center md:justify-between md:px-10 md:py-14"
+        className="mx-auto flex max-w-[1360px] flex-col items-center gap-8 px-5 py-12 text-center md:flex-row md:items-center md:justify-between md:px-10 md:py-14 md:text-left"
       >
-        <div className="flex items-center gap-6 md:gap-10">
-          <span
-            aria-hidden
-            className="text-[64px] font-bold leading-none text-[#7c2d12] md:text-[84px]"
-          >
-            M.
-          </span>
-          <div>
-            <h2 className="text-2xl font-bold leading-tight tracking-[-0.01em] text-[#7c2d12] sm:text-3xl lg:text-4xl">
-              {dict.title}
-            </h2>
-            <p className="mt-2 text-lg font-semibold text-[#7c2d12]/60">
-              {dict.subtitle}
-            </p>
-          </div>
+        <div>
+          <h2 className="text-2xl font-bold leading-tight tracking-[-0.01em] text-[#7c2d12] sm:text-3xl lg:text-4xl">
+            {dict.title}
+          </h2>
+          <p className="mt-2 text-lg font-semibold text-[#7c2d12]/60">
+            {dict.subtitle}
+          </p>
         </div>
 
         <a
           href={mailto}
-          className="shrink-0 self-start rounded-lg bg-[#7c2d12] px-6 py-2.5 text-sm font-medium text-[#fafafa] shadow-sm transition-opacity hover:opacity-90 md:self-auto"
+          className="shrink-0 self-center rounded-lg bg-[#7c2d12] px-6 py-2.5 text-sm font-medium text-[#fafafa] shadow-sm transition-opacity hover:opacity-90 md:self-auto"
         >
           {dict.cta}
         </a>

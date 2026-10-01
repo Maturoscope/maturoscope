@@ -2,7 +2,7 @@
 
 // Packages
 import { orgStorage } from "@/lib/orgStorage"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { usePathname, useRouter, useParams } from "next/navigation"
 // Utils
@@ -45,6 +45,11 @@ const Header = ({
   const [logoUrl, setLogoUrl] = useState<string | null>(null)
   // Standalone orgs are example pages: hide the "by <logo>" signature for them.
   const [isStandalone, setIsStandalone] = useState(false)
+  // Where the leave/reset confirmation should navigate once confirmed. The back
+  // button leaves to the org home; the Maturoscope logo leaves to the public
+  // landing. A ref (not state) so the value is current synchronously when the
+  // modal's confirm handler reads it.
+  const leaveDestinationRef = useRef<"home" | "landing">("home")
   const [allNotScored, setAllNotScored] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
@@ -137,14 +142,48 @@ const Header = ({
   // The back button (and its leave/before-you-go modals) only apply to the
   // assessment flow. Derived from the route so the Header can live in the
   // persistent layout instead of remounting on every page.
-  const showBackButton =
-    isBeforeWeBegin || /\/(begin|form|review|results)(\/|$)/.test(pathname)
+  // True while the user is actually inside the assessment (has started it).
+  // "before we begin" and the org home are excluded: nothing is stored there.
+  const isInQuestionnaire = /\/(begin|form|review|results)(\/|$)/.test(pathname)
+  const showBackButton = isBeforeWeBegin || isInQuestionnaire
+
+  const landingUrl = `/${lang}`
+  // Navigate to wherever the leave/reset was aimed. Leaving to the landing uses
+  // a hard navigation: the `[lang]` layout is shared with the org pages, so a
+  // client push wouldn't re-run it and `isLanding` (set from middleware's
+  // x-landing header) would stay stale, leaving the questionnaire header mounted
+  // under the landing's own header (double header). The org home keeps the
+  // questionnaire chrome, so a client push is fine there.
+  const navigateAfterLeave = () => {
+    if (leaveDestinationRef.current === "landing") {
+      window.location.href = landingUrl
+    } else {
+      router.push(getOrgHomeUrl(lang))
+    }
+  }
 
   const handleBackButtonClick = () => {
+    leaveDestinationRef.current = "home"
     if (isBeforeWeBegin) router.push(getOrgHomeUrl(lang))
     else if (isResultsPage) {
       // Nothing to download (every scale marked Not Applicable): skip the
       // "before you go" modal and just reset everything and leave.
+      if (allNotScored) handleResetButtonClick()
+      else setActiveModal("beforeYouGo")
+    } else setActiveModal("leave")
+  }
+
+  // Clicking the Maturoscope logo always goes to the public landing. If the user
+  // has started the questionnaire, confirm first (same modal as the back button)
+  // so in-progress answers aren't lost silently; otherwise go straight there.
+  const handleLogoClick = () => {
+    if (!isInQuestionnaire) {
+      // Hard navigation so the shared layout re-renders in landing mode.
+      window.location.href = landingUrl
+      return
+    }
+    leaveDestinationRef.current = "landing"
+    if (isResultsPage) {
       if (allNotScored) handleResetButtonClick()
       else setActiveModal("beforeYouGo")
     } else setActiveModal("leave")
@@ -167,15 +206,18 @@ const Header = ({
     setActiveModal(null)
   }
 
-  const handleResetButtonClick = () => {
-    handleResetForm()
-    router.push(getOrgHomeUrl(lang))
+  const handleResetButtonClick = async () => {
+    // Await the reset so org-scoped storage ("form", etc.) is actually cleared
+    // before navigating. Otherwise the org home's FormRedirectHandler still sees
+    // a saved form and bounces the user back to /form.
+    await handleResetForm()
+    navigateAfterLeave()
   }
 
   const handleDownloadButtonClick = async () => {
     await downloadReport()
-    handleResetForm()
-    router.push(getOrgHomeUrl(lang))
+    await handleResetForm()
+    navigateAfterLeave()
   }
 
   return (
@@ -222,7 +264,12 @@ const Header = ({
           </>
         )}
         <div className="flex items-center gap-2 text-foreground">
-          <div className="ml-4">
+          <button
+            type="button"
+            onClick={handleLogoClick}
+            aria-label="Maturoscope"
+            className="ml-4 flex items-center cursor-pointer"
+          >
             <Image
               src="/icons/maturoscope-desktop.svg"
               alt="Maturoscope"
@@ -237,7 +284,7 @@ const Header = ({
               height={14}
               className="block lg:hidden"
             />
-          </div>
+          </button>
 
 
           {signature && !isStandalone && (
